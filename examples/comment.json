@@ -1,0 +1,9 @@
+{
+  "id": "urn:srcos:comment:001",
+  "type": "Comment",
+  "specVersion": "2.0.0",
+  "targetId": "urn:srcos:mapping:001",
+  "author": "urn:srcos:subject:user:me",
+  "createdAt": "2025-12-24T05:00:00Z",
+  "body": "Looks correct; promote to curated after review."
+}

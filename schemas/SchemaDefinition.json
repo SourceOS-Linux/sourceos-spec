@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SchemaDefinition.json",
+  "title": "SchemaDefinition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "fields"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:schema:"
+    },
+    "type": {
+      "const": "SchemaDefinition"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "EntityField.json"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "Link.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "urn:srcos:mapping:001",
+  "type": "MappingSpec",
+  "specVersion": "2.0.0",
+  "from": {
+    "datasetId": "urn:srcos:dataset:health_obs",
+    "fieldPath": "$.patient.dateOfBirth"
+  },
+  "to": {
+    "datasetId": "urn:srcos:dataset:another_source",
+    "fieldPath": "$.dob"
+  },
+  "confidence": 0.92,
+  "evidence": [
+    {
+      "method": "labelStringSim",
+      "score": 0.74,
+      "notes": "DOB vs dateOfBirth",
+      "artifacts": [
+        "labels"
+      ]
+    },
+    {
+      "method": "valueContainment",
+      "score": 0.95,
+      "notes": "overlapping date distribution",
+      "artifacts": [
+        "profileStats"
+      ]
+    }
+  ],
+  "state": "proposed"
+}

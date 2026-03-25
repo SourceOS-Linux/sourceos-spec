@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Connector.json",
+  "title": "Connector",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "kind",
+    "config"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:connector:"
+    },
+    "type": {
+      "const": "Connector"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "s3",
+        "gcs",
+        "azureBlob",
+        "rdbms",
+        "kafka",
+        "filesystem",
+        "httpApi",
+        "lakehouse"
+      ]
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "status": {
+      "enum": [
+        "active",
+        "disabled",
+        "deprecated"
+      ],
+      "default": "active"
+    }
+  }
+}

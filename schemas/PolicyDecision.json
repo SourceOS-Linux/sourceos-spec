@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PolicyDecision.json",
+  "title": "PolicyDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "decision",
+    "policyId",
+    "inputs",
+    "issuedAt",
+    "expiresAt",
+    "decisionHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:decision:"
+    },
+    "type": {
+      "const": "PolicyDecision"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "decision": {
+      "enum": [
+        "permit",
+        "deny",
+        "permitWithObligations"
+      ]
+    },
+    "policyId": {
+      "type": "string",
+      "pattern": "^urn:srcos:policy:"
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "object",
+        "purpose"
+      ],
+      "properties": {
+        "subject": {
+          "$ref": "SubjectContext.json"
+        },
+        "object": {
+          "$ref": "ObjectContext.json"
+        },
+        "purpose": {
+          "type": "string"
+        },
+        "environment": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "$ref": "Obligation.json"
+      }
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    }
+  }
+}

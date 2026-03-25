@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkflowEdge.json",
+  "title": "WorkflowEdge",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "from",
+    "to"
+  ],
+  "properties": {
+    "from": {
+      "type": "string"
+    },
+    "to": {
+      "type": "string"
+    }
+  }
+}

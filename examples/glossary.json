@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:glossary:dob",
+  "type": "GlossaryTerm",
+  "specVersion": "2.0.0",
+  "name": "Date of Birth",
+  "definition": "A person's date of birth (DOB).",
+  "synonyms": [
+    "DOB",
+    "birth date"
+  ],
+  "tags": [
+    {
+      "tag": "pii",
+      "state": "curated",
+      "confidence": 0.95,
+      "source": "analyst",
+      "evidence": [
+        "curated glossary"
+      ],
+      "review": {
+        "reviewedBy": "urn:srcos:subject:user:me",
+        "reviewedAt": "2025-12-24T05:00:00Z",
+        "comment": "PII term"
+      }
+    }
+  ],
+  "authorityLinks": [],
+  "relatedTerms": [],
+  "links": []
+}

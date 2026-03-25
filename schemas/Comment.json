@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Comment.json",
+  "title": "Comment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "targetId",
+    "author",
+    "createdAt",
+    "body"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:comment:"
+    },
+    "type": {
+      "const": "Comment"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "targetId": {
+      "type": "string"
+    },
+    "author": {
+      "type": "string"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "body": {
+      "type": "string"
+    }
+  }
+}

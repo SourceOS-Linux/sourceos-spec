@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PhysicalAsset.json",
+  "title": "PhysicalAsset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "assetKind",
+    "connectorId",
+    "location"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:asset:"
+    },
+    "type": {
+      "const": "PhysicalAsset"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "assetKind": {
+      "enum": [
+        "objectStore",
+        "rdbms",
+        "stream",
+        "file",
+        "api",
+        "lakehouse"
+      ]
+    },
+    "connectorId": {
+      "type": "string",
+      "pattern": "^urn:srcos:connector:"
+    },
+    "location": {
+      "type": "string"
+    },
+    "identification": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "vendor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "account": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "region": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resourceId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

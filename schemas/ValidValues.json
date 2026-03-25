@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ValidValues.json",
+  "title": "ValidValues",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "values"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "enumeration",
+        "range",
+        "regex"
+      ]
+    },
+    "values": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "min": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "max": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "pattern": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

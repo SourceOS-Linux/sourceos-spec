@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DataSphere.json",
+  "title": "DataSphere",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "sphereId",
+    "name",
+    "boundary",
+    "controls"
+  ],
+  "properties": {
+    "sphereId": {
+      "type": "string",
+      "pattern": "^urn:srcos:sphere:"
+    },
+    "name": {
+      "type": "string"
+    },
+    "boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "zone": {
+          "type": "string"
+        },
+        "networkPolicy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "storagePolicy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "accessEnforcer": {
+          "type": "string"
+        },
+        "provenance": {
+          "enum": [
+            "off",
+            "hashes",
+            "signed"
+          ]
+        },
+        "containerAttestation": {
+          "enum": [
+            "none",
+            "basic",
+            "strict"
+          ]
+        }
+      }
+    }
+  }
+}

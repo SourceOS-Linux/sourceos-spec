@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Agreement.json",
+  "title": "Agreement",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "title",
+    "parties",
+    "terms",
+    "effective"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:agreement:"
+    },
+    "type": {
+      "const": "Agreement"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "parties": {
+      "type": "array",
+      "items": {
+        "$ref": "Party.json"
+      },
+      "minItems": 1
+    },
+    "terms": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "license",
+        "restrictions"
+      ],
+      "properties": {
+        "license": {
+          "type": "string"
+        },
+        "restrictions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attributionRequired": {
+          "type": "boolean",
+          "default": false
+        },
+        "dataRetentionDays": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "jurisdiction": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "effective": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start"
+      ],
+      "properties": {
+        "start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "end": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "Link.json"
+      }
+    }
+  }
+}

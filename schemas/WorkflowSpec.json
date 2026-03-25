@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkflowSpec.json",
+  "title": "WorkflowSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:workflow:"
+    },
+    "type": {
+      "const": "WorkflowSpec"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "WorkflowNode.json"
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "$ref": "WorkflowEdge.json"
+      }
+    },
+    "triggers": {
+      "type": "array",
+      "items": {
+        "$ref": "Trigger.json"
+      }
+    },
+    "policyBindings": {
+      "type": "array",
+      "items": {
+        "$ref": "PolicyBinding.json"
+      }
+    }
+  }
+}

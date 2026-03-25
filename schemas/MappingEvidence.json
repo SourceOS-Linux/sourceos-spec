@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MappingEvidence.json",
+  "title": "MappingEvidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "method",
+    "score"
+  ],
+  "properties": {
+    "method": {
+      "enum": [
+        "labelExact",
+        "labelStringSim",
+        "valueCosine",
+        "valueContainment",
+        "kvOverlap",
+        "ontologyAnchor",
+        "blocking"
+      ]
+    },
+    "score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "artifacts": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

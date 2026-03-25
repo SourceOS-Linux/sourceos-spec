@@ -1,0 +1,16 @@
+{
+  "@context": {
+    "srcos": "https://schemas.srcos.ai/v2/",
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+    "prov": "http://www.w3.org/ns/prov#",
+    "id": "@id",
+    "type": "@type",
+    "Dataset": "srcos:Dataset",
+    "Field": "srcos:Field",
+    "Policy": "srcos:Policy",
+    "WorkflowSpec": "srcos:WorkflowSpec",
+    "RunRecord": "srcos:RunRecord",
+    "Agreement": "srcos:Agreement",
+    "GlossaryTerm": "srcos:GlossaryTerm"
+  }
+}

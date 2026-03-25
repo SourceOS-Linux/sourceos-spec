@@ -1,0 +1,42 @@
+{
+  "id": "urn:srcos:decision:aa11bb22",
+  "type": "PolicyDecision",
+  "specVersion": "2.0.0",
+  "decision": "permitWithObligations",
+  "policyId": "urn:srcos:policy:export_health_restricted",
+  "inputs": {
+    "subject": {
+      "subjectId": "urn:srcos:subject:user:me",
+      "kind": "user",
+      "roles": [
+        "owner"
+      ],
+      "attributes": {}
+    },
+    "object": {
+      "objectId": "urn:srcos:dataset:health_obs",
+      "objectType": "dataset",
+      "tags": [
+        "health"
+      ],
+      "zone": "curated",
+      "attributes": {}
+    },
+    "purpose": "export",
+    "environment": {
+      "device": "SourceOS.local"
+    }
+  },
+  "obligations": [
+    {
+      "name": "obfuscate_before_export",
+      "when": "pre",
+      "params": {
+        "workload": "urn:srcos:workload:obfuscator_v1"
+      }
+    }
+  ],
+  "issuedAt": "2025-12-24T05:00:00Z",
+  "expiresAt": "2025-12-24T06:00:00Z",
+  "decisionHash": "sha256:054282cdcbac6f6b791aba2fd011b4e44f18bcc6e1dd2c63a872c314a818d5ec"
+}

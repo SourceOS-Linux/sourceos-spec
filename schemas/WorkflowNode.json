@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkflowNode.json",
+  "title": "WorkflowNode",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "nodeId",
+    "workload",
+    "inputs",
+    "outputs"
+  ],
+  "properties": {
+    "nodeId": {
+      "type": "string"
+    },
+    "workload": {
+      "$ref": "WorkloadSpec.json"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "DataRef.json"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "DataRef.json"
+      }
+    },
+    "requiredObligations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "resources": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cpu": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "memory": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "gpu": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

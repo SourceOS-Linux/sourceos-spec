@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GlossaryTerm.json",
+  "title": "GlossaryTerm",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "definition"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:glossary:"
+    },
+    "type": {
+      "const": "GlossaryTerm"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "definition": {
+      "type": "string"
+    },
+    "synonyms": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "$ref": "TagAssignment.json"
+      }
+    },
+    "authorityLinks": {
+      "type": "array",
+      "items": {
+        "$ref": "AuthorityLink.json"
+      }
+    },
+    "relatedTerms": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:glossary:"
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "Link.json"
+      }
+    }
+  }
+}

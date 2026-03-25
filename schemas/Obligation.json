@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Obligation.json",
+  "title": "Obligation",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "when"
+  ],
+  "properties": {
+    "name": {
+      "enum": [
+        "obfuscate_before_export",
+        "log_access",
+        "retain_provenance",
+        "mask_fields",
+        "aggregate_only",
+        "attest_container"
+      ]
+    },
+    "when": {
+      "enum": [
+        "pre",
+        "post",
+        "runtime"
+      ]
+    },
+    "params": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

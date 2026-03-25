@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SubjectSelector.json",
+  "title": "SubjectSelector",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind"
+  ],
+  "properties": {
+    "kind": {
+      "enum": [
+        "user",
+        "service",
+        "app",
+        "workload",
+        "any"
+      ]
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

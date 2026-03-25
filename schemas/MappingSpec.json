@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MappingSpec.json",
+  "title": "MappingSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "from",
+    "to",
+    "confidence",
+    "evidence",
+    "state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:mapping:"
+    },
+    "type": {
+      "const": "MappingSpec"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "from": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "datasetId",
+        "fieldPath"
+      ],
+      "properties": {
+        "datasetId": {
+          "type": "string",
+          "pattern": "^urn:srcos:dataset:"
+        },
+        "fieldPath": {
+          "type": "string"
+        }
+      }
+    },
+    "to": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "datasetId",
+        "fieldPath"
+      ],
+      "properties": {
+        "datasetId": {
+          "type": "string",
+          "pattern": "^urn:srcos:dataset:"
+        },
+        "fieldPath": {
+          "type": "string"
+        }
+      }
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "MappingEvidence.json"
+      }
+    },
+    "state": {
+      "enum": [
+        "proposed",
+        "curated",
+        "rejected"
+      ]
+    }
+  }
+}

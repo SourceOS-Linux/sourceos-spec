@@ -1,0 +1,61 @@
+{
+  "id": "urn:srcos:field:dob",
+  "type": "Field",
+  "specVersion": "2.0.0",
+  "datasetId": "urn:srcos:dataset:health_obs",
+  "path": "$.patient.dateOfBirth",
+  "dataType": "date",
+  "semantics": {
+    "tags": [
+      {
+        "tag": "pii.dob",
+        "state": "curated",
+        "confidence": 0.99,
+        "source": "analyst",
+        "evidence": [
+          "schema field review"
+        ],
+        "review": {
+          "reviewedBy": "urn:srcos:subject:user:me",
+          "reviewedAt": "2025-12-24T05:00:00Z",
+          "comment": "DOB confirmed"
+        }
+      }
+    ],
+    "glossaryTerms": [
+      "urn:srcos:glossary:dob"
+    ],
+    "authorityLinks": []
+  },
+  "quality": {
+    "profile": {
+      "rowCount": 1000,
+      "nullCount": 0,
+      "distinctCount": 997,
+      "topValues": [
+        {
+          "value": "1982-01-01",
+          "count": 2
+        }
+      ],
+      "min": "1930-01-01",
+      "max": "2024-12-31",
+      "patterns": []
+    },
+    "metrics": [
+      {
+        "name": "completeness",
+        "value": 1.0,
+        "details": {}
+      },
+      {
+        "name": "validity",
+        "value": 0.995,
+        "details": {
+          "invalidRows": 5
+        }
+      }
+    ]
+  },
+  "links": []
+}

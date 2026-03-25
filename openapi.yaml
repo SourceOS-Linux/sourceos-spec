@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: SourceOS/SociOS Metadata Plane API
+  version: 2.0.0
+servers:
+  - url: https://api.srcos.local
+paths:
+  /v2/connectors:
+    post:
+      operationId: upsertConnector
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Connector.json' }
+      responses:
+        '200': { description: ok }
+  /v2/assets:
+    post:
+      operationId: upsertPhysicalAsset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/PhysicalAsset.json' }
+      responses:
+        '200': { description: ok }
+  /v2/schemas:
+    post:
+      operationId: upsertSchemaDefinition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SchemaDefinition.json' }
+      responses:
+        '200': { description: ok }
+  /v2/agreements:
+    post:
+      operationId: upsertAgreement
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Agreement.json' }
+      responses:
+        '200': { description: ok }
+  /v2/glossary:
+    post:
+      operationId: upsertGlossaryTerm
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/GlossaryTerm.json' }
+      responses:
+        '200': { description: ok }
+  /v2/datasets:
+    post:
+      operationId: upsertDataset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Dataset.json' }
+      responses:
+        '200': { description: ok }
+  /v2/fields:
+    post:
+      operationId: upsertField
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Field.json' }
+      responses:
+        '200': { description: ok }
+  /v2/mappings:
+    post:
+      operationId: upsertMapping
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/MappingSpec.json' }
+      responses:
+        '200': { description: ok }
+  /v2/policies:
+    post:
+      operationId: upsertPolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Policy.json' }
+      responses:
+        '200': { description: ok }
+  /v2/decisions/evaluate:
+    post:
+      operationId: evaluatePolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [subject, object, purpose]
+              properties:
+                subject: { $ref: './schemas/SubjectContext.json' }
+                object: { $ref: './schemas/ObjectContext.json' }
+                purpose: { type: string }
+                environment: { type: object }
+      responses:
+        '200':
+          description: decision
+          content:
+            application/json:
+              schema: { $ref: './schemas/PolicyDecision.json' }
+  /v2/tokens/issue:
+    post:
+      operationId: issueToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/PolicyDecision.json' }
+      responses:
+        '200':
+          description: token
+          content:
+            application/json:
+              schema: { $ref: './schemas/CapabilityToken.json' }
+  /v2/workflows:
+    post:
+      operationId: upsertWorkflow
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/WorkflowSpec.json' }
+      responses:
+        '200': { description: ok }
+  /v2/runs:
+    post:
+      operationId: recordRun
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/RunRecord.json' }
+      responses:
+        '200': { description: ok }
+  /v2/provenance:
+    post:
+      operationId: recordProvenance
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/ProvenanceRecord.json' }
+      responses:
+        '200': { description: ok }
+  /v2/comments:
+    post:
+      operationId: createComment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Comment.json' }
+      responses:
+        '200': { description: ok }
+  /v2/ratings:
+    post:
+      operationId: createRating
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Rating.json' }
+      responses:
+        '200': { description: ok }

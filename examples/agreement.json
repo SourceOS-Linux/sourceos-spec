@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:agreement:default",
+  "type": "Agreement",
+  "specVersion": "2.0.0",
+  "title": "Default personal data agreement",
+  "description": "Example agreement showing retention and restrictions",
+  "parties": [
+    {
+      "partyId": "urn:srcos:party:self",
+      "name": "Self",
+      "kind": "person",
+      "authorityLinks": []
+    }
+  ],
+  "terms": {
+    "license": "personal-use",
+    "restrictions": [
+      "no-third-party-sale",
+      "no-reidentify"
+    ],
+    "attributionRequired": false,
+    "dataRetentionDays": 365,
+    "jurisdiction": "US-PA"
+  },
+  "effective": {
+    "start": "2025-12-24T05:00:00Z",
+    "end": null
+  },
+  "links": []
+}

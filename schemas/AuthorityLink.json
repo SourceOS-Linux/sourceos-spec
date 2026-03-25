@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AuthorityLink.json",
+  "title": "AuthorityLink",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "system",
+    "value"
+  ],
+  "properties": {
+    "system": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    },
+    "url": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "uri"
+    }
+  }
+}

@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Dataset.json",
+  "title": "Dataset",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "assetRef",
+    "schemaRef",
+    "governance",
+    "lifecycle"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:dataset:"
+    },
+    "type": {
+      "const": "Dataset"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "assetRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:asset:"
+    },
+    "schemaRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:schema:"
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "agreements"
+      ],
+      "properties": {
+        "classification": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "agreements": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^urn:srcos:agreement:"
+          }
+        },
+        "usageDefinitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "zones": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "raw",
+              "curated",
+              "gold",
+              "restricted"
+            ]
+          }
+        }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "stateSince"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "raw",
+            "selected",
+            "legalConformant",
+            "curated",
+            "published",
+            "deprecated"
+          ]
+        },
+        "stateSince": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "Link.json"
+      }
+    }
+  }
+}

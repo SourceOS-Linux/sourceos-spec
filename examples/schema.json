@@ -1,0 +1,41 @@
+{
+  "id": "urn:srcos:schema:health_obs_v1",
+  "type": "SchemaDefinition",
+  "specVersion": "2.0.0",
+  "name": "health_obs_v1",
+  "description": "Example schema",
+  "fields": [
+    {
+      "name": "patient.dateOfBirth",
+      "dataType": "date",
+      "nullable": false,
+      "validValues": {
+        "kind": "range",
+        "values": [],
+        "min": null,
+        "max": null,
+        "pattern": null
+      },
+      "tags": [
+        {
+          "tag": "pii.dob",
+          "state": "curated",
+          "confidence": 0.99,
+          "source": "analyst",
+          "evidence": [
+            "specialist review"
+          ],
+          "review": {
+            "reviewedBy": "urn:srcos:subject:user:me",
+            "reviewedAt": "2025-12-24T05:00:00Z",
+            "comment": "DOB"
+          }
+        }
+      ],
+      "glossaryTerms": [
+        "urn:srcos:glossary:dob"
+      ]
+    }
+  ],
+  "links": []
+}

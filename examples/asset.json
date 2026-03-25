@@ -1,0 +1,14 @@
+{
+  "id": "urn:srcos:asset:lake_curated_health",
+  "type": "PhysicalAsset",
+  "specVersion": "2.0.0",
+  "assetKind": "lakehouse",
+  "connectorId": "urn:srcos:connector:local_s3",
+  "location": "s3://lake/curated/health/obs",
+  "identification": {
+    "vendor": "local",
+    "account": null,
+    "region": null,
+    "resourceId": null
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PolicyBinding.json",
+  "title": "PolicyBinding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "policyId",
+    "appliesTo"
+  ],
+  "properties": {
+    "policyId": {
+      "type": "string",
+      "pattern": "^urn:srcos:policy:"
+    },
+    "appliesTo": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

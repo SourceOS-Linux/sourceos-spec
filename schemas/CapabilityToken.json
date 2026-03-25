@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityToken.json",
+  "title": "CapabilityToken",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "tokenId",
+    "subject",
+    "scope",
+    "purpose",
+    "decisionRef",
+    "exp",
+    "signature"
+  ],
+  "properties": {
+    "tokenId": {
+      "type": "string"
+    },
+    "subject": {
+      "$ref": "SubjectContext.json"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operations"
+      ],
+      "properties": {
+        "datasetIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^urn:srcos:dataset:"
+          }
+        },
+        "fieldPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assetIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^urn:srcos:asset:"
+          }
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "read",
+              "write",
+              "export",
+              "transform",
+              "share"
+            ]
+          }
+        }
+      }
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "decisionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:decision:"
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "$ref": "Obligation.json"
+      }
+    },
+    "iat": {
+      "type": "integer"
+    },
+    "exp": {
+      "type": "integer"
+    },
+    "signature": {
+      "type": "string"
+    }
+  }
+}

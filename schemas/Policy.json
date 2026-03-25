@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Policy.json",
+  "title": "Policy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "scope",
+    "rules",
+    "obligations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:policy:"
+    },
+    "type": {
+      "const": "Policy"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subjects",
+        "objects",
+        "purposes"
+      ],
+      "properties": {
+        "subjects": {
+          "type": "array",
+          "items": {
+            "$ref": "SubjectSelector.json"
+          }
+        },
+        "objects": {
+          "type": "array",
+          "items": {
+            "$ref": "ObjectSelector.json"
+          }
+        },
+        "purposes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "$ref": "Rule.json"
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "$ref": "Obligation.json"
+      }
+    },
+    "exceptions": {
+      "type": "array",
+      "items": {
+        "$ref": "Exception.json"
+      }
+    }
+  }
+}

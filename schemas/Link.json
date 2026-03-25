@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Link.json",
+  "title": "Link",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rel",
+    "href"
+  ],
+  "properties": {
+    "rel": {
+      "type": "string"
+    },
+    "href": {
+      "type": "string"
+    },
+    "type": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

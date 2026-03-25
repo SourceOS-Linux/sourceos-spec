@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ObjectContext.json",
+  "title": "ObjectContext",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "objectId",
+    "objectType"
+  ],
+  "properties": {
+    "objectId": {
+      "type": "string"
+    },
+    "objectType": {
+      "enum": [
+        "dataset",
+        "field",
+        "asset",
+        "run",
+        "provenance",
+        "schema",
+        "agreement"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "zone": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "attributes": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

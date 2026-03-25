@@ -1,0 +1,59 @@
+{
+  "id": "urn:srcos:run:77cc88dd",
+  "type": "RunRecord",
+  "specVersion": "2.0.0",
+  "workload": {
+    "workloadId": "urn:srcos:workload:obfuscator_v1",
+    "kind": "container",
+    "image": "ghcr.io/srcos/obfuscator:v1",
+    "entrypoint": "obfuscate",
+    "params": {
+      "mode": "k-anon",
+      "k": 5
+    }
+  },
+  "sphere": {
+    "sphereId": "urn:srcos:sphere:personal_curated",
+    "name": "Personal Curated Sphere",
+    "boundary": {
+      "zone": "curated",
+      "networkPolicy": null,
+      "storagePolicy": null
+    },
+    "controls": {
+      "accessEnforcer": "enforcer.v2",
+      "provenance": "hashes",
+      "containerAttestation": "basic"
+    }
+  },
+  "inputs": [
+    {
+      "refType": "dataset",
+      "id": "urn:srcos:dataset:health_obs",
+      "fieldPaths": [
+        "$.patient.dateOfBirth"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "refType": "dataset",
+      "id": "urn:srcos:dataset:obfuscated_out",
+      "fieldPaths": []
+    }
+  ],
+  "tokenRef": "tok_123",
+  "decisionRef": "urn:srcos:decision:aa11bb22",
+  "status": "succeeded",
+  "time": {
+    "startedAt": "2025-12-24T05:00:00Z",
+    "endedAt": "2025-12-24T05:00:10Z"
+  },
+  "provenanceRef": "urn:srcos:prov:001",
+  "integrity": {
+    "inputsHash": null,
+    "outputsHash": null,
+    "runHash": null,
+    "signature": null
+  }
+}

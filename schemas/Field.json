@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Field.json",
+  "title": "Field",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "datasetId",
+    "path",
+    "dataType",
+    "semantics",
+    "quality"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:field:"
+    },
+    "type": {
+      "const": "Field"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "datasetId": {
+      "type": "string",
+      "pattern": "^urn:srcos:dataset:"
+    },
+    "path": {
+      "type": "string"
+    },
+    "dataType": {
+      "type": "string"
+    },
+    "semantics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tags"
+      ],
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "$ref": "TagAssignment.json"
+          }
+        },
+        "glossaryTerms": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^urn:srcos:glossary:"
+          }
+        },
+        "authorityLinks": {
+          "type": "array",
+          "items": {
+            "$ref": "AuthorityLink.json"
+          }
+        }
+      }
+    },
+    "quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "profile": {
+          "$ref": "ProfileStats.json"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "$ref": "QualityMetric.json"
+          }
+        }
+      }
+    },
+    "links": {
+      "type": "array",
+      "items": {
+        "$ref": "Link.json"
+      }
+    }
+  }
+}

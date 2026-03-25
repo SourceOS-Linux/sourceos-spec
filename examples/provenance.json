@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:prov:001",
+  "type": "ProvenanceRecord",
+  "specVersion": "2.0.0",
+  "activity": "urn:srcos:run:77cc88dd",
+  "agent": "urn:srcos:workload:obfuscator_v1",
+  "entities": [
+    {
+      "entityId": "urn:srcos:dataset:health_obs",
+      "role": "input",
+      "hash": null
+    },
+    {
+      "entityId": "urn:srcos:dataset:obfuscated_out",
+      "role": "output",
+      "hash": null
+    }
+  ],
+  "createdAt": "2025-12-24T05:00:10Z",
+  "signature": null
+}

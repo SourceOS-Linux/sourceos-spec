@@ -1,0 +1,12 @@
+{
+  "id": "urn:srcos:connector:local_s3",
+  "type": "Connector",
+  "specVersion": "2.0.0",
+  "name": "Local S3",
+  "kind": "s3",
+  "config": {
+    "endpoint": "https://s3.local",
+    "auth": "env"
+  },
+  "status": "active"
+}

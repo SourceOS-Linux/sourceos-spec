@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:dataset:health_obs",
+  "type": "Dataset",
+  "specVersion": "2.0.0",
+  "name": "Personal.Health.Observations",
+  "description": "Example curated dataset",
+  "assetRef": "urn:srcos:asset:lake_curated_health",
+  "schemaRef": "urn:srcos:schema:health_obs_v1",
+  "governance": {
+    "classification": [
+      "health",
+      "sensitive"
+    ],
+    "agreements": [
+      "urn:srcos:agreement:default"
+    ],
+    "usageDefinitions": [
+      "personal_analytics"
+    ],
+    "zones": [
+      "curated",
+      "restricted"
+    ]
+  },
+  "lifecycle": {
+    "state": "curated",
+    "stateSince": "2025-12-24T05:00:00Z"
+  },
+  "links": []
+}

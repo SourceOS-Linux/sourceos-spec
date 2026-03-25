@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Exception.json",
+  "title": "Exception",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "reason"
+  ],
+  "properties": {
+    "name": {
+      "type": "string"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

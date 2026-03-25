@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ObjectSelector.json",
+  "title": "ObjectSelector",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "objectType"
+  ],
+  "properties": {
+    "objectType": {
+      "enum": [
+        "dataset",
+        "field",
+        "asset",
+        "run",
+        "provenance",
+        "schema",
+        "agreement",
+        "any"
+      ]
+    },
+    "match": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

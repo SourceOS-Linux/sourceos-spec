@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ProfileStats.json",
+  "title": "ProfileStats",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "rowCount",
+    "nullCount"
+  ],
+  "properties": {
+    "rowCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "nullCount": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "distinctCount": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "topValues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "value",
+          "count"
+        ],
+        "properties": {
+          "value": {
+            "type": "string"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "min": {
+      "type": [
+        "string",
+        "number",
+        "null"
+      ]
+    },
+    "max": {
+      "type": [
+        "string",
+        "number",
+        "null"
+      ]
+    },
+    "patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

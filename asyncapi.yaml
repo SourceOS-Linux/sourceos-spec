@@ -1,0 +1,30 @@
+asyncapi: 2.6.0
+info:
+  title: SourceOS/SociOS Event Spine
+  version: 2.0.0
+channels:
+  srcos.v2.dataset.events:
+    publish:
+      message:
+        name: DatasetEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.policy.events:
+    publish:
+      message:
+        name: PolicyEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.run.events:
+    publish:
+      message:
+        name: RunEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.mapping.events:
+    publish:
+      message:
+        name: MappingEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.glossary.events:
+    publish:
+      message:
+        name: GlossaryEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }

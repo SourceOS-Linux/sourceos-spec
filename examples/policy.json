@@ -1,0 +1,59 @@
+{
+  "id": "urn:srcos:policy:export_health_restricted",
+  "type": "Policy",
+  "specVersion": "2.0.0",
+  "name": "Health export must be obfuscated",
+  "scope": {
+    "subjects": [
+      {
+        "kind": "any",
+        "match": {}
+      }
+    ],
+    "objects": [
+      {
+        "objectType": "dataset",
+        "match": {
+          "classification": [
+            "health"
+          ]
+        }
+      }
+    ],
+    "purposes": [
+      "export",
+      "share"
+    ]
+  },
+  "rules": [
+    {
+      "effect": "permit",
+      "operations": [
+        "read",
+        "export"
+      ],
+      "condition": {
+        "language": "jsonlogic",
+        "expr": {
+          "==": [
+            {
+              "var": "purpose"
+            },
+            "export"
+          ]
+        },
+        "notes": "minimal condition"
+      }
+    }
+  ],
+  "obligations": [
+    {
+      "name": "obfuscate_before_export",
+      "when": "pre",
+      "params": {
+        "workload": "urn:srcos:workload:obfuscator_v1"
+      }
+    }
+  ],
+  "exceptions": []
+}

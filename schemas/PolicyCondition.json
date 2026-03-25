@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PolicyCondition.json",
+  "title": "PolicyCondition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "language",
+    "expr"
+  ],
+  "properties": {
+    "language": {
+      "enum": [
+        "jsonlogic",
+        "cel",
+        "rego",
+        "cedar"
+      ]
+    },
+    "expr": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

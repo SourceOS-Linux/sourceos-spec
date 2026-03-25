@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/QualityMetric.json",
+  "title": "QualityMetric",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "value"
+  ],
+  "properties": {
+    "name": {
+      "enum": [
+        "completeness",
+        "validity",
+        "uniqueness",
+        "consistency",
+        "timeliness"
+      ]
+    },
+    "value": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  }
+}

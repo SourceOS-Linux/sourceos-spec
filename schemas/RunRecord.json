@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RunRecord.json",
+  "title": "RunRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "workload",
+    "sphere",
+    "inputs",
+    "outputs",
+    "tokenRef",
+    "status",
+    "time"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:run:"
+    },
+    "type": {
+      "const": "RunRecord"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "workload": {
+      "$ref": "WorkloadSpec.json"
+    },
+    "sphere": {
+      "$ref": "DataSphere.json"
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "$ref": "DataRef.json"
+      }
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "$ref": "DataRef.json"
+      }
+    },
+    "tokenRef": {
+      "type": "string"
+    },
+    "decisionRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "enum": [
+        "started",
+        "succeeded",
+        "failed",
+        "aborted"
+      ]
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startedAt"
+      ],
+      "properties": {
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "provenanceRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:prov:"
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "inputsHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "outputsHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "runHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "signature": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    }
+  }
+}

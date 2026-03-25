@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DataRef.json",
+  "title": "DataRef",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "refType",
+    "id"
+  ],
+  "properties": {
+    "refType": {
+      "enum": [
+        "dataset",
+        "asset",
+        "streamTopic",
+        "file"
+      ]
+    },
+    "id": {
+      "type": "string"
+    },
+    "fieldPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

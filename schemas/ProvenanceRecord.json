@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ProvenanceRecord.json",
+  "title": "ProvenanceRecord",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "activity",
+    "agent",
+    "entities",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:prov:"
+    },
+    "type": {
+      "const": "ProvenanceRecord"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "activity": {
+      "type": "string",
+      "description": "Activity identifier (run/workflow node)"
+    },
+    "agent": {
+      "type": "string",
+      "description": "Agent identifier (subject/workload/service)"
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "entityId",
+          "role"
+        ],
+        "properties": {
+          "entityId": {
+            "type": "string"
+          },
+          "role": {
+            "enum": [
+              "input",
+              "output",
+              "intermediate"
+            ]
+          },
+          "hash": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "sha256:..."
+          }
+        }
+      }
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
