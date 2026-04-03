@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SkillManifest.json",
+  "title": "SkillManifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "version",
+    "entryDoc",
+    "description",
+    "activationRules",
+    "requires",
+    "policyBindings",
+    "artifactOutputs",
+    "reviewMode",
+    "allowShellExecution"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:skill:"
+    },
+    "type": {
+      "const": "SkillManifest"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "entryDoc": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "activationRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "intentTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "requires": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "binaries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "anyBins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "executionSurfaceRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:surface:"
+    },
+    "policyBindings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "artifactOutputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "reviewMode": {
+      "type": "boolean"
+    },
+    "allowShellExecution": {
+      "type": "boolean"
+    },
+    "protectedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
