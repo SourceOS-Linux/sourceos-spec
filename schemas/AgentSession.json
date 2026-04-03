@@ -1,0 +1,157 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentSession.json",
+  "title": "AgentSession",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "role",
+    "status",
+    "mode",
+    "workspaceRef",
+    "substrate",
+    "surface",
+    "skillRefs",
+    "memoryRefs",
+    "decisionRefs",
+    "time"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:"
+    },
+    "type": {
+      "const": "AgentSession"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "parentSessionRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:session:"
+    },
+    "role": {
+      "enum": [
+        "main",
+        "explorer",
+        "planner",
+        "executor",
+        "reviewer",
+        "auditor",
+        "reverser",
+        "custom"
+      ]
+    },
+    "status": {
+      "enum": [
+        "created",
+        "waiting",
+        "running",
+        "paused",
+        "completed",
+        "failed",
+        "canceled",
+        "merged",
+        "reversed"
+      ]
+    },
+    "mode": {
+      "enum": [
+        "plan",
+        "ask",
+        "execute",
+        "review"
+      ]
+    },
+    "workspaceRef": {
+      "type": "string"
+    },
+    "worktreeRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "substrate": {
+      "enum": [
+        "local",
+        "remote-local",
+        "cloud",
+        "background",
+        "event-pushed",
+        "ci"
+      ]
+    },
+    "surface": {
+      "$ref": "ExecutionSurface.json"
+    },
+    "provider": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "skillRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:skill:"
+      }
+    },
+    "memoryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:memory:"
+      }
+    },
+    "transcriptRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:transcript:"
+    },
+    "decisionRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:exec-decision:"
+      }
+    },
+    "telemetryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:telemetry:"
+      }
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startedAt"
+      ],
+      "properties": {
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
