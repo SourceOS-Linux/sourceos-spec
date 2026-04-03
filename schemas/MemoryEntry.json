@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MemoryEntry.json",
+  "title": "MemoryEntry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "kind",
+    "namespace",
+    "key",
+    "payloadRef",
+    "citationRefs",
+    "scope",
+    "freshness"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:memory:"
+    },
+    "type": {
+      "const": "MemoryEntry"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "enum": [
+        "rule",
+        "learned",
+        "recap"
+      ]
+    },
+    "namespace": {
+      "type": "string"
+    },
+    "key": {
+      "type": "string"
+    },
+    "payloadRef": {
+      "type": "string"
+    },
+    "authoritativeRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "citationRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace",
+        "pathPrefixes"
+      ],
+      "properties": {
+        "workspace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pathPrefixes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sessionRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:session:"
+        }
+      }
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "learnedAt"
+      ],
+      "properties": {
+        "learnedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reviewedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ttl": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
