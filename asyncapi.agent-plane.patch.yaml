@@ -1,0 +1,27 @@
+# additive AsyncAPI patch fragment for the core agent-plane schema family
+channels:
+  srcos.v2.session.events:
+    publish:
+      message:
+        name: SessionEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.execution.events:
+    publish:
+      message:
+        name: ExecutionEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.skill.events:
+    publish:
+      message:
+        name: SkillEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.memory.events:
+    publish:
+      message:
+        name: MemoryEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.receipt.events:
+    publish:
+      message:
+        name: ReceiptEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
