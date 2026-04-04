@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/FrustrationSignal.json",
+  "title": "FrustrationSignal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","type","specVersion","sessionRef","signal","capturedAt"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:frustration:"},
+    "type": {"const": "FrustrationSignal"},
+    "specVersion": {"type": "string"},
+    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
+    "signal": {"enum": ["strong-negative-language","cancel","repeated-failure","tool-loop","user-interrupt"]},
+    "count": {"type": ["integer","null"], "minimum": 0},
+    "capturedAt": {"type": "string", "format": "date-time"}
+  }
+}
