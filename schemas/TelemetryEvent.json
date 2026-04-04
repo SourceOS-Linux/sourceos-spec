@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TelemetryEvent.json",
+  "title": "TelemetryEvent",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","type","specVersion","sessionRef","eventType","capturedAt"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:telemetry:"},
+    "type": {"const": "TelemetryEvent"},
+    "specVersion": {"type": "string"},
+    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
+    "eventType": {"type": "string"},
+    "severity": {"enum": ["debug","info","warn","error"]},
+    "capturedAt": {"type": "string", "format": "date-time"}
+  }
+}
