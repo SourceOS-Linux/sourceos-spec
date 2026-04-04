@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReleaseReceipt.json",
+  "title": "ReleaseReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","type","specVersion","releaseTarget","verifiedAt","status"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:release-receipt:"},
+    "type": {"const": "ReleaseReceipt"},
+    "specVersion": {"type": "string"},
+    "releaseTarget": {"type": "string"},
+    "sourceRef": {"type": ["string","null"]},
+    "artifactHashes": {"type": "array", "items": {"type": "string"}},
+    "checks": {"type": "array", "items": {"type": "string"}},
+    "status": {"enum": ["verified","failed","partial"]},
+    "verifiedAt": {"type": "string", "format": "date-time"}
+  }
+}
