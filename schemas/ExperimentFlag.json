@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExperimentFlag.json",
+  "title": "ExperimentFlag",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","type","specVersion","name","state"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:flag:"},
+    "type": {"const": "ExperimentFlag"},
+    "specVersion": {"type": "string"},
+    "name": {"type": "string"},
+    "state": {"enum": ["off","shadow","internal","beta","on","retired"]},
+    "owner": {"type": ["string","null"]},
+    "description": {"type": ["string","null"]},
+    "killSwitch": {"type": "boolean"}
+  }
+}
