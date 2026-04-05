@@ -1,39 +1,81 @@
-# Agent-Plane Schema Documentation
+# Agent Plane Schema Documentation
 
 ## Overview
-This document provides comprehensive details about the Agent-Plane schemas, including usage examples, URN patterns, spec metadata explanation, and validation instructions.
+This document provides comprehensive documentation on the Agent Plane schemas, including URN patterns, specification metadata explanation, and usage examples for key entities such as ExecutionDecision, AgentSession, and SessionReceipt.
 
-## Usage Examples
-### Example 1: Basic Usage
-```json
-{
-  "exampleKey": "exampleValue"
-}
-```
-
-### Example 2: Advanced Usage
-```json
-{
-  "advancedKey": [{
-    "nestedKey": "nestedValue"
-  }]
-}
-```
+## Schema Families Table
+| Schema Family         | Description                               |
+|-----------------------|-------------------------------------------|
+| ExecutionDecision     | Represents the decision made by the agent. |
+| AgentSession          | Represents a session of an agent.         |
+| SessionReceipt        | Represents a receipt for a session.       |
 
 ## URN Patterns
-The URN patterns for the agent-plane schemas follow the structure: `urn:example:<entity>:<id>`.
-- **Example:** `urn:sourceos:agent:12345`
+### ExecutionDecision URN
+- **Pattern**: `urn:sourceos:execution:decision:<decision_id>`
 
-## Spec Metadata Explanation
-- **version:** The version of the schema being used.
-- **description:** A brief overview of the schema.
+### AgentSession URN
+- **Pattern**: `urn:sourceos:agent:session:<session_id>`
+
+### SessionReceipt URN
+- **Pattern**: `urn:sourceos:receipt:<receipt_id>`
+
+## Schema Metadata Explanation
+Each schema includes metadata that describes its purpose, version, and last updated information.
+
+- **Version**: Indicates the version of the schema.
+- **Last Updated**: Date when the schema was last modified.
+
+## Usage Examples
+### ExecutionDecision Example
+```json
+{
+  "id": "urn:sourceos:execution:decision:12345",
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-04-05"
+  },
+  "decision": "approve"
+}
+```
+
+### AgentSession Example
+```json
+{
+  "id": "urn:sourceos:agent:session:12345",
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-04-05"
+  },
+  "status": "active"
+}
+```
+
+### SessionReceipt Example
+```json
+{
+  "id": "urn:sourceos:receipt:12345",
+  "metadata": {
+    "version": "1.0",
+    "lastUpdated": "2026-04-05"
+  },
+  "result": "success"
+}
+```
 
 ## Validation Instructions
-To validate the agent-plane schema, use the following command:
-```bash
-jsonschema -i example.json schema.json
-```
-Make sure to replace `example.json` with your JSON data file and `schema.json` with your schema file.
+Schema validation must be performed against the JSON Schema specification outlined in the [official documentation](https://json-schema.org/).
 
-## Conclusion
-This documentation serves as a reference for working with Agent-Plane schemas. For further details, please refer to the additional resources provided in the repository.
+## Versioning Discipline
+Follow semantic versioning for all schema updates:
+- Major version when incompatible API changes are made,
+- Minor version when functionality is added in a backward-compatible manner,
+- Patch version when backward-compatible bug fixes are introduced.
+
+## Current Status
+All schemas are currently under active development. All feedback is welcomed.
+
+## References
+- [JSON Schema Official Website](https://json-schema.org/)
+- SourceOS Documentation
+- API Reference links
