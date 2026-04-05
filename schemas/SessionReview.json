@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SessionReview.json",
+  "title": "SessionReview",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "summaryRef",
+    "learnedMemoryRefs",
+    "reviewedAt"
+  ],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:session-review:"},
+    "type": {"const": "SessionReview"},
+    "specVersion": {"type": "string"},
+    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
+    "summaryRef": {"type": "string"},
+    "learnedMemoryRefs": {"type": "array", "items": {"type": "string", "pattern": "^urn:srcos:memory:"}},
+    "followupRefs": {"type": "array", "items": {"type": "string"}},
+    "reviewedAt": {"type": "string", "format": "date-time"}
+  }
+}

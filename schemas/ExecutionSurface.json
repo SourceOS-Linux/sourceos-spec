@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExecutionSurface.json",
+  "title": "ExecutionSurface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pty",
+    "workdir",
+    "background",
+    "reviewOnly",
+    "worktreeStrategy",
+    "sandboxMode",
+    "networkMode",
+    "egressAllowlist",
+    "elevated"
+  ],
+  "properties": {
+    "pty": {
+      "type": "boolean"
+    },
+    "workdir": {
+      "type": "string"
+    },
+    "background": {
+      "type": "boolean"
+    },
+    "reviewOnly": {
+      "type": "boolean"
+    },
+    "worktreeStrategy": {
+      "enum": [
+        "none",
+        "existing",
+        "create-temp",
+        "named"
+      ]
+    },
+    "sandboxMode": {
+      "enum": [
+        "none",
+        "user",
+        "container",
+        "vm",
+        "browser-sandbox"
+      ]
+    },
+    "networkMode": {
+      "enum": [
+        "none",
+        "allowlist",
+        "full"
+      ]
+    },
+    "egressAllowlist": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "elevated": {
+      "type": "boolean"
+    },
+    "protectedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "approvalProfile": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}

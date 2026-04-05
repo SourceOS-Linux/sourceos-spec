@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExecutionDecision.json",
+  "title": "ExecutionDecision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "decision",
+    "reason",
+    "issuedAt",
+    "decisionHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:exec-decision:"
+    },
+    "type": {
+      "const": "ExecutionDecision"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:"
+    },
+    "toolRequestRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:tool:"
+    },
+    "decision": {
+      "enum": [
+        "allow",
+        "deny",
+        "ask",
+        "defer",
+        "rewrite"
+      ]
+    },
+    "reason": {
+      "type": "string"
+    },
+    "updatedInput": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true
+    },
+    "policyRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:policy:"
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RolloutPolicy.json",
+  "title": "RolloutPolicy",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id","type","specVersion","flagRef","rules"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:rollout:"},
+    "type": {"const": "RolloutPolicy"},
+    "specVersion": {"type": "string"},
+    "flagRef": {"type": "string", "pattern": "^urn:srcos:flag:"},
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["audience","state"],
+        "properties": {
+          "audience": {"type": "string"},
+          "state": {"enum": ["off","shadow","internal","beta","on"]},
+          "percentage": {"type": ["number","null"], "minimum": 0, "maximum": 100}
+        }
+      }
+    },
+    "notes": {"type": ["string","null"]}
+  }
+}

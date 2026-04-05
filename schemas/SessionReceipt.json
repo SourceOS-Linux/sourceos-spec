@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SessionReceipt.json",
+  "title": "SessionReceipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "status",
+    "artifactRefs",
+    "decisionRefs",
+    "gateResults",
+    "capturedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:receipt:session:"
+    },
+    "type": {
+      "const": "SessionReceipt"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:"
+    },
+    "status": {
+      "enum": [
+        "success",
+        "failure",
+        "paused",
+        "deferred",
+        "canceled"
+      ]
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decisionRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:exec-decision:"
+      }
+    },
+    "gateResults": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

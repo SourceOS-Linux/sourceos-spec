@@ -1,0 +1,56 @@
+# additive OpenAPI patch fragment for the core agent-plane schema family
+paths:
+  /v2/sessions:
+    post:
+      operationId: upsertAgentSession
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/AgentSession.json' }
+      responses:
+        '200': { description: ok }
+  /v2/execution/decide:
+    post:
+      operationId: decideExecution
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/ExecutionDecision.json' }
+      responses:
+        '200':
+          description: execution decision
+          content:
+            application/json:
+              schema: { $ref: './schemas/ExecutionDecision.json' }
+  /v2/skills:
+    post:
+      operationId: upsertSkillManifest
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SkillManifest.json' }
+      responses:
+        '200': { description: ok }
+  /v2/memory:
+    post:
+      operationId: upsertMemoryEntry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/MemoryEntry.json' }
+      responses:
+        '200': { description: ok }
+  /v2/receipts/session:
+    post:
+      operationId: recordSessionReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SessionReceipt.json' }
+      responses:
+        '200': { description: ok }
