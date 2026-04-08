@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Trigger.json",
   "title": "Trigger",
+  "description": "Specifies how a WorkflowSpec is activated: on a cron schedule, in response to an event, or manually.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,19 +14,22 @@
         "schedule",
         "event",
         "manual"
-      ]
+      ],
+      "description": "The trigger type: schedule (cron), event (reacts to an AsyncAPI channel message), or manual."
     },
     "schedule": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Cron expression for schedule triggers (e.g. \"0 2 * * *\"). Required when kind is \"schedule\"."
     },
     "eventType": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "AsyncAPI event type string for event triggers. Required when kind is \"event\"."
     }
   }
 }

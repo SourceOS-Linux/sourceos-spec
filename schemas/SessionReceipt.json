@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/SessionReceipt.json",
   "title": "SessionReceipt",
+  "description": "The final outcome record for a completed AgentSession. Records the terminal status, all produced artifacts, execution decisions, and gate results.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -18,17 +19,21 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:receipt:session:"
+      "pattern": "^urn:srcos:receipt:session:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:receipt:session:<local-id>"
     },
     "type": {
-      "const": "SessionReceipt"
+      "const": "SessionReceipt",
+      "description": "Discriminator constant \u2014 always \"SessionReceipt\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "sessionRef": {
       "type": "string",
-      "pattern": "^urn:srcos:session:"
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession this receipt summarises. Pattern: urn:srcos:session:<id>"
     },
     "status": {
       "enum": [
@@ -37,30 +42,35 @@
         "paused",
         "deferred",
         "canceled"
-      ]
+      ],
+      "description": "Terminal status of the session: success, failure, paused, deferred, or canceled."
     },
     "artifactRefs": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "References to artifacts produced by the session (e.g. PRs, files, reports)."
     },
     "decisionRefs": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:exec-decision:"
-      }
+      },
+      "description": "URNs of all ExecutionDecisions recorded during the session. Pattern: urn:srcos:exec-decision:<id>"
     },
     "gateResults": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Identifiers of post-session gate checks and their outcomes."
     },
     "capturedAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this receipt was recorded."
     }
   }
 }

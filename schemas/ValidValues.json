@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ValidValues.json",
   "title": "ValidValues",
+  "description": "A constraint on the acceptable values for an EntityField: an enumeration list, a numeric range, or a regex pattern.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,31 +15,36 @@
         "enumeration",
         "range",
         "regex"
-      ]
+      ],
+      "description": "The constraint type: enumeration (fixed list), range (numeric min/max), or regex (pattern match)."
     },
     "values": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "The list of allowed values for enumeration constraints. Empty for range and regex constraints."
     },
     "min": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "description": "Minimum allowed numeric value for range constraints. Null for other kinds."
     },
     "max": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "description": "Maximum allowed numeric value for range constraints. Null for other kinds."
     },
     "pattern": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Regular expression pattern for regex constraints. Null for other kinds."
     }
   }
 }

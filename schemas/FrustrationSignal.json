@@ -2,16 +2,58 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/FrustrationSignal.json",
   "title": "FrustrationSignal",
+  "description": "A behavioural telemetry signal indicating that an agent or user is experiencing difficulty (e.g. repeated failure, tool loop, user interrupt).",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id","type","specVersion","sessionRef","signal","capturedAt"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "signal",
+    "capturedAt"
+  ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:frustration:"},
-    "type": {"const": "FrustrationSignal"},
-    "specVersion": {"type": "string"},
-    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
-    "signal": {"enum": ["strong-negative-language","cancel","repeated-failure","tool-loop","user-interrupt"]},
-    "count": {"type": ["integer","null"], "minimum": 0},
-    "capturedAt": {"type": "string", "format": "date-time"}
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:frustration:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:frustration:<local-id>"
+    },
+    "type": {
+      "const": "FrustrationSignal",
+      "description": "Discriminator constant \u2014 always \"FrustrationSignal\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession in which this signal was observed. Pattern: urn:srcos:session:<id>"
+    },
+    "signal": {
+      "enum": [
+        "strong-negative-language",
+        "cancel",
+        "repeated-failure",
+        "tool-loop",
+        "user-interrupt"
+      ],
+      "description": "The observed signal type: strong-negative-language, cancel, repeated-failure, tool-loop, or user-interrupt."
+    },
+    "count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Number of times this signal was observed in the session (null if not counted)."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this signal was first captured."
+    }
   }
 }

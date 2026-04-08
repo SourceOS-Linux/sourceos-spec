@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/CapabilityToken.json",
   "title": "CapabilityToken",
+  "description": "A short-lived, cryptographically signed access grant derived from a PolicyDecision. Scopes the holder to specific datasets, fields, assets, and operations.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,10 +16,12 @@
   ],
   "properties": {
     "tokenId": {
-      "type": "string"
+      "type": "string",
+      "description": "Unique identifier for this token (plain string, not a URN)."
     },
     "subject": {
-      "$ref": "SubjectContext.json"
+      "$ref": "SubjectContext.json",
+      "description": "The subject context describing the token holder."
     },
     "scope": {
       "type": "object",
@@ -59,29 +62,36 @@
             ]
           }
         }
-      }
+      },
+      "description": "The resources and operations this token grants access to."
     },
     "purpose": {
-      "type": "string"
+      "type": "string",
+      "description": "The declared purpose for which this token may be used (e.g. \"export\", \"analytics\")."
     },
     "decisionRef": {
       "type": "string",
-      "pattern": "^urn:srcos:decision:"
+      "pattern": "^urn:srcos:decision:",
+      "description": "URN of the PolicyDecision that authorised this token. Pattern: urn:srcos:decision:<id>"
     },
     "obligations": {
       "type": "array",
       "items": {
         "$ref": "Obligation.json"
-      }
+      },
+      "description": "Obligations the token holder must fulfil when exercising this token."
     },
     "iat": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Issued-at timestamp as a Unix epoch integer (seconds since 1970-01-01T00:00:00Z)."
     },
     "exp": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Expiry timestamp as a Unix epoch integer (seconds since 1970-01-01T00:00:00Z)."
     },
     "signature": {
-      "type": "string"
+      "type": "string",
+      "description": "Cryptographic signature over the token contents (format defined by the issuing service)."
     }
   }
 }

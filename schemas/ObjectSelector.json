@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ObjectSelector.json",
   "title": "ObjectSelector",
+  "description": "A match clause used in a Policy scope to select which object types and attributes the policy applies to.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -18,11 +19,13 @@
         "schema",
         "agreement",
         "any"
-      ]
+      ],
+      "description": "The object type this selector matches: dataset, field, asset, run, provenance, schema, agreement, or any."
     },
     "match": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Attribute match criteria. Keys and values are defined by the policy engine implementation."
     }
   }
 }

@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/SchemaDefinition.json",
   "title": "SchemaDefinition",
+  "description": "A named, versioned logical schema composed of EntityFields. Referenced by a Dataset to describe its structure.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,34 +15,41 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:schema:"
+      "pattern": "^urn:srcos:schema:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:schema:<local-id>"
     },
     "type": {
-      "const": "SchemaDefinition"
+      "const": "SchemaDefinition",
+      "description": "Discriminator constant \u2014 always \"SchemaDefinition\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable name for this schema (e.g. \"health_obs_v1\")."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional description of the schema's purpose and the entity it represents."
     },
     "fields": {
       "type": "array",
       "items": {
         "$ref": "EntityField.json"
-      }
+      },
+      "description": "The ordered list of EntityField descriptors that make up this schema."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Supplementary hyperlinks."
     }
   }
 }

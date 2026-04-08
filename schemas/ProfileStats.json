@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ProfileStats.json",
   "title": "ProfileStats",
+  "description": "Statistical summary of a dataset column: row count, null count, distinct count, top-N values, min, max, and observed string patterns.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,18 +12,21 @@
   "properties": {
     "rowCount": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Total number of rows in the profiled column."
     },
     "nullCount": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Number of rows with a null value in this column."
     },
     "distinctCount": {
       "type": [
         "integer",
         "null"
       ],
-      "minimum": 0
+      "minimum": 0,
+      "description": "Number of distinct non-null values (null if not computed)."
     },
     "topValues": {
       "type": "array",
@@ -42,27 +46,31 @@
             "minimum": 0
           }
         }
-      }
+      },
+      "description": "The most frequent values and their counts, sorted descending by count."
     },
     "min": {
       "type": [
         "string",
         "number",
         "null"
-      ]
+      ],
+      "description": "Minimum observed value (as string or number depending on data type)."
     },
     "max": {
       "type": [
         "string",
         "number",
         "null"
-      ]
+      ],
+      "description": "Maximum observed value (as string or number depending on data type)."
     },
     "patterns": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Regex or format patterns observed in string values (e.g. date formats, ID formats)."
     }
   }
 }

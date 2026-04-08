@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/TagAssignment.json",
   "title": "TagAssignment",
+  "description": "A classification tag attached to a field or glossary term, with a confidence score, source attribution, and optional human review record.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -12,19 +13,22 @@
   ],
   "properties": {
     "tag": {
-      "type": "string"
+      "type": "string",
+      "description": "The classification tag identifier (e.g. \"pii.dob\", \"sensitive\", \"health\")."
     },
     "state": {
       "enum": [
         "inferred",
         "curated",
         "rejected"
-      ]
+      ],
+      "description": "Curation state: inferred (ML or rule-assigned, unreviewed), curated (analyst-confirmed), or rejected."
     },
     "confidence": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Confidence score for this tag assignment, in the range [0, 1]."
     },
     "source": {
       "enum": [
@@ -32,13 +36,15 @@
         "analyst",
         "rule",
         "import"
-      ]
+      ],
+      "description": "How the tag was assigned: ml (machine learning model), analyst (human review), rule (rule engine), or import (external system)."
     },
     "evidence": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Human-readable notes or artifact identifiers supporting this tag assignment."
     },
     "review": {
       "type": "object",
@@ -63,7 +69,8 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Optional human review record: who reviewed, when, and their comment."
     }
   }
 }
