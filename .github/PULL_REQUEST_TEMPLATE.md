@@ -39,6 +39,7 @@ spectral lint openapi.yaml
 asyncapi validate asyncapi.yaml
 
 # Merge-conflict marker check
+git grep -nE '^(<{7}|={7}|>{7})' -- .
 rg -n '^(<{7}|={7}|>{7})' .github/PULL_REQUEST_TEMPLATE.md CHANGELOG.md CONTRIBUTING.md README.md asyncapi.agent-plane.patch.yaml asyncapi.yaml examples/community.json examples/rating.json openapi.agent-plane.patch.yaml openapi.yaml schemas/AgentSession.json schemas/Agreement.json schemas/AuthorityLink.json schemas/CapabilityToken.json schemas/Comment.json schemas/Community.json schemas/Connector.json schemas/DataRef.json schemas/DataSphere.json schemas/Dataset.json schemas/EntityField.json schemas/EventEnvelope.json schemas/Exception.json schemas/ExecutionDecision.json schemas/ExecutionSurface.json
 ```
 
