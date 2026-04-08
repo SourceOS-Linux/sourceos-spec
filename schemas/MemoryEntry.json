@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MemoryEntry.json",
+  "title": "MemoryEntry",
+  "description": "A persistent agent memory of kind `rule` (standing instruction), `learned` (inferred from past sessions), or `recap` (post-session summary). Scoped to a workspace and path prefix list.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "kind",
+    "namespace",
+    "key",
+    "payloadRef",
+    "citationRefs",
+    "scope",
+    "freshness"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:memory:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:memory:<local-id>"
+    },
+    "type": {
+      "const": "MemoryEntry",
+      "description": "Discriminator constant \u2014 always \"MemoryEntry\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "kind": {
+      "enum": [
+        "rule",
+        "learned",
+        "recap"
+      ],
+      "description": "Memory type: rule (standing instruction that always applies), learned (inferred from past experience), or recap (end-of-session summary)."
+    },
+    "namespace": {
+      "type": "string",
+      "description": "Logical grouping for this memory (e.g. \"coding-standards\", \"user-preferences\")."
+    },
+    "key": {
+      "type": "string",
+      "description": "Unique key within the namespace for this memory entry."
+    },
+    "payloadRef": {
+      "type": "string",
+      "description": "Reference to the full memory content (file path, blob URI, or inline URN)."
+    },
+    "authoritativeRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional reference to the authoritative source that this memory was derived from."
+    },
+    "citationRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "References to sources that support or justify this memory."
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace",
+        "pathPrefixes"
+      ],
+      "properties": {
+        "workspace": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "pathPrefixes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sessionRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:session:"
+        }
+      },
+      "description": "The workspace and path prefixes this memory is relevant to."
+    },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "learnedAt"
+      ],
+      "properties": {
+        "learnedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "reviewedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "ttl": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "description": "When this memory was learned, optionally reviewed, and its time-to-live in seconds."
+    }
+  }
+}

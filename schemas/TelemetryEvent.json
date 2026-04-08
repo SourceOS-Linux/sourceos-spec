@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TelemetryEvent.json",
+  "title": "TelemetryEvent",
+  "description": "A structured diagnostic or operational log event emitted during an AgentSession.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "eventType",
+    "capturedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:telemetry:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:telemetry:<local-id>"
+    },
+    "type": {
+      "const": "TelemetryEvent",
+      "description": "Discriminator constant \u2014 always \"TelemetryEvent\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession that emitted this event. Pattern: urn:srcos:session:<id>"
+    },
+    "eventType": {
+      "type": "string",
+      "description": "Application-specific event type identifier (e.g. \"tool.invoked\", \"memory.loaded\", \"skill.activated\")."
+    },
+    "severity": {
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "description": "Log severity: debug, info, warn, or error."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this event was captured."
+    }
+  }
+}

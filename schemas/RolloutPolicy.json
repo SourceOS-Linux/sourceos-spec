@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RolloutPolicy.json",
+  "title": "RolloutPolicy",
+  "description": "Audience-based percentage rollout rules for an ExperimentFlag. Controls which user segments see which flag state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "flagRef",
+    "rules"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:rollout:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:rollout:<local-id>"
+    },
+    "type": {
+      "const": "RolloutPolicy",
+      "description": "Discriminator constant \u2014 always \"RolloutPolicy\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "flagRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:flag:",
+      "description": "URN of the ExperimentFlag this rollout policy controls. Pattern: urn:srcos:flag:<id>"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "audience",
+          "state"
+        ],
+        "properties": {
+          "audience": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "off",
+              "shadow",
+              "internal",
+              "beta",
+              "on"
+            ]
+          },
+          "percentage": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          }
+        }
+      },
+      "description": "Ordered list of audience-state-percentage rules. First matching rule wins."
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional notes about the rollout strategy."
+    }
+  }
+}

@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentSession.json",
+  "title": "AgentSession",
+  "description": "A single autonomous agent session. Tracks the role, mode, execution substrate, bound skills and memories, and all execution decisions made during the session.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "role",
+    "status",
+    "mode",
+    "workspaceRef",
+    "substrate",
+    "surface",
+    "skillRefs",
+    "memoryRefs",
+    "decisionRefs",
+    "time"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:session:<local-id>"
+    },
+    "type": {
+      "const": "AgentSession",
+      "description": "Discriminator constant \u2014 always \"AgentSession\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "parentSessionRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the parent session if this is a sub-session (e.g. an explorer launched by a main session). Null for root sessions."
+    },
+    "role": {
+      "enum": [
+        "main",
+        "explorer",
+        "planner",
+        "executor",
+        "reviewer",
+        "auditor",
+        "reverser",
+        "custom"
+      ],
+      "description": "The functional role this session plays: main (top-level coordinator), explorer (research), planner, executor, reviewer, auditor, reverser (undo), or custom."
+    },
+    "status": {
+      "enum": [
+        "created",
+        "waiting",
+        "running",
+        "paused",
+        "completed",
+        "failed",
+        "canceled",
+        "merged",
+        "reversed"
+      ],
+      "description": "Lifecycle state of the session: created \u2192 waiting \u2192 running \u2192 paused \u2192 completed/failed/canceled/merged/reversed."
+    },
+    "mode": {
+      "enum": [
+        "plan",
+        "ask",
+        "execute",
+        "review"
+      ],
+      "description": "The current operating mode: plan (design only), ask (gather information), execute (make changes), or review (assess results)."
+    },
+    "workspaceRef": {
+      "type": "string",
+      "description": "Identifier of the workspace (repository, project, or environment) this session operates in."
+    },
+    "worktreeRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional reference to a git worktree if the session works in an isolated branch checkout."
+    },
+    "substrate": {
+      "enum": [
+        "local",
+        "remote-local",
+        "cloud",
+        "background",
+        "event-pushed",
+        "ci"
+      ],
+      "description": "Where the agent runtime is hosted: local (developer machine), remote-local (remote dev), cloud, background (async), event-pushed, or ci (CI pipeline)."
+    },
+    "surface": {
+      "$ref": "ExecutionSurface.json",
+      "description": "The execution surface constraints (sandbox mode, network policy, protected paths) applied to this session."
+    },
+    "provider": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional name of the AI model provider or runtime host."
+    },
+    "skillRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:skill:"
+      },
+      "description": "URNs of the SkillManifests available to this session."
+    },
+    "memoryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:memory:"
+      },
+      "description": "URNs of the MemoryEntries loaded into this session."
+    },
+    "transcriptRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:transcript:",
+      "description": "Optional URN of the conversation transcript artifact."
+    },
+    "decisionRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:exec-decision:"
+      },
+      "description": "URNs of all ExecutionDecisions recorded during this session."
+    },
+    "telemetryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:telemetry:"
+      },
+      "description": "URNs of TelemetryEvents emitted during this session."
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "startedAt"
+      ],
+      "properties": {
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "description": "Session timing: startedAt (required) and optional endedAt."
+    }
+  }
+}

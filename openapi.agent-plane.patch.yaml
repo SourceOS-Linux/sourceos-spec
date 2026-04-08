@@ -1,0 +1,130 @@
+# Additive OpenAPI patch fragment for the agent-plane schema family.
+# Merge this file into openapi.yaml at build time.
+# All operations require bearerAuth (inherited from the base spec security requirement).
+
+tags:
+  - name: Agent Plane
+    description: Agent sessions, execution decisions, skills, memory, and session receipts
+
+paths:
+  /v2/sessions:
+    post:
+      operationId: upsertAgentSession
+      summary: Upsert an AgentSession
+      description: Creates or updates an autonomous agent session record with its role, mode, substrate, and execution surface. Idempotent on `id`.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/AgentSession.json' }
+      responses:
+        '200':
+          description: AgentSession created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to upsert sessions.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/execution/decide:
+    post:
+      operationId: decideExecution
+      summary: Record an ExecutionDecision
+      description: |
+        Persists an immutable execution decision (allow, deny, ask, defer, or rewrite) made by
+        an agent during a session. Returns the stored ExecutionDecision with its assigned URN.
+        Idempotent on `id`.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/ExecutionDecision.json' }
+      responses:
+        '200':
+          description: ExecutionDecision recorded and returned.
+          content:
+            application/json:
+              schema: { $ref: './schemas/ExecutionDecision.json' }
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record execution decisions.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/skills:
+    post:
+      operationId: upsertSkillManifest
+      summary: Upsert a SkillManifest
+      description: Creates or updates an agent skill manifest with its activation rules, requirements, and policy bindings. Idempotent on `id`.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SkillManifest.json' }
+      responses:
+        '200':
+          description: SkillManifest created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to upsert skill manifests.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/memory:
+    post:
+      operationId: upsertMemoryEntry
+      summary: Upsert a MemoryEntry
+      description: Creates or updates a persistent agent memory entry of kind rule, learned, or recap. Idempotent on `id`.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/MemoryEntry.json' }
+      responses:
+        '200':
+          description: MemoryEntry created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to upsert memory entries.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/receipts/session:
+    post:
+      operationId: recordSessionReceipt
+      summary: Record a SessionReceipt
+      description: Persists the final outcome record for a completed AgentSession, including all produced artifacts and gate results. Idempotent on `id`.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SessionReceipt.json' }
+      responses:
+        '200':
+          description: SessionReceipt recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record session receipts.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+

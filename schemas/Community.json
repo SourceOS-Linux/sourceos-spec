@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Community.json",
   "title": "Community",
+  "description": "A named group of subject URNs, used to manage team-level access and notification subscriptions.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,34 +14,41 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:community:"
+      "pattern": "^urn:srcos:community:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:community:<local-id>"
     },
     "type": {
-      "const": "Community"
+      "const": "Community",
+      "description": "Discriminator constant \u2014 always \"Community\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable name of the community."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional description of the community's purpose."
     },
     "members": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of subject URNs that are members of this community."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Supplementary hyperlinks (e.g. team chat, wiki page)."
     }
   }
 }

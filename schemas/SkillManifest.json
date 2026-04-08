@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SkillManifest.json",
+  "title": "SkillManifest",
+  "description": "A declared agent capability (skill) with activation rules, binary/tool requirements, policy bindings, expected artifact outputs, and safety settings.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "version",
+    "entryDoc",
+    "description",
+    "activationRules",
+    "requires",
+    "policyBindings",
+    "artifactOutputs",
+    "reviewMode",
+    "allowShellExecution"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:skill:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:skill:<local-id>"
+    },
+    "type": {
+      "const": "SkillManifest",
+      "description": "Discriminator constant \u2014 always \"SkillManifest\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of this skill (e.g. \"pdf-reader\", \"code-reviewer\")."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version of this skill manifest."
+    },
+    "entryDoc": {
+      "type": "string",
+      "description": "Path or URN of the primary documentation or instruction file for this skill."
+    },
+    "description": {
+      "type": "string",
+      "description": "One-paragraph description of what this skill does and when to use it."
+    },
+    "activationRules": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filePatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "intentTags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Conditions under which this skill should be automatically activated: slash commands, file patterns, or intent tags."
+    },
+    "requires": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "binaries": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "anyBins": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Runtime requirements: required binaries, any-of binaries, and required tool names."
+    },
+    "executionSurfaceRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:surface:",
+      "description": "Optional URN of an ExecutionSurface override for this skill. Pattern: urn:srcos:surface:<id>"
+    },
+    "policyBindings": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Policy URNs that govern use of this skill."
+    },
+    "artifactOutputs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Identifiers of artifact types this skill is expected to produce."
+    },
+    "reviewMode": {
+      "type": "boolean",
+      "description": "When true, the skill operates in review-only mode and must not make changes."
+    },
+    "allowShellExecution": {
+      "type": "boolean",
+      "description": "Whether this skill is permitted to execute shell commands."
+    },
+    "protectedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "File system paths this skill must not access."
+    }
+  }
+}

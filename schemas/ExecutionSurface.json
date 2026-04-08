@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExecutionSurface.json",
+  "title": "ExecutionSurface",
+  "description": "The sandboxing and runtime constraints of an agent's execution environment: PTY, working directory, sandbox mode, network mode, and protected path list.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "pty",
+    "workdir",
+    "background",
+    "reviewOnly",
+    "worktreeStrategy",
+    "sandboxMode",
+    "networkMode",
+    "egressAllowlist",
+    "elevated"
+  ],
+  "properties": {
+    "pty": {
+      "type": "boolean",
+      "description": "Whether a pseudo-terminal (PTY) should be allocated for the agent process."
+    },
+    "workdir": {
+      "type": "string",
+      "description": "Absolute path to the working directory for the agent session."
+    },
+    "background": {
+      "type": "boolean",
+      "description": "Whether the agent runs as a background (non-interactive) process."
+    },
+    "reviewOnly": {
+      "type": "boolean",
+      "description": "When true, the agent may read and analyse but must not modify anything."
+    },
+    "worktreeStrategy": {
+      "enum": [
+        "none",
+        "existing",
+        "create-temp",
+        "named"
+      ],
+      "description": "How git worktrees are managed: none (no worktree), existing (use current), create-temp (ephemeral), or named (persistent named worktree)."
+    },
+    "sandboxMode": {
+      "enum": [
+        "none",
+        "user",
+        "container",
+        "vm",
+        "browser-sandbox"
+      ],
+      "description": "Isolation level: none, user-level sandbox, container, VM, or browser sandbox."
+    },
+    "networkMode": {
+      "enum": [
+        "none",
+        "allowlist",
+        "full"
+      ],
+      "description": "Network access: none (air-gapped), allowlist (egress restricted to egressAllowlist), or full (unrestricted)."
+    },
+    "egressAllowlist": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Hostnames or CIDR ranges permitted for outbound network access when networkMode is \"allowlist\"."
+    },
+    "elevated": {
+      "type": "boolean",
+      "description": "Whether the agent runs with elevated (e.g. root or administrator) privileges."
+    },
+    "protectedPaths": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "File system paths the agent must not read from or write to."
+    },
+    "approvalProfile": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional identifier of a human-approval profile that governs when the agent must pause and wait for explicit sign-off."
+    }
+  }
+}

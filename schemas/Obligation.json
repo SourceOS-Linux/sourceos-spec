@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Obligation.json",
   "title": "Obligation",
+  "description": "An action that must be performed before (`pre`), after (`post`), or at runtime (`runtime`) as a condition of a permitted operation. Attached to PolicyDecisions and CapabilityTokens.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,18 +18,21 @@
         "mask_fields",
         "aggregate_only",
         "attest_container"
-      ]
+      ],
+      "description": "The required action: obfuscate_before_export, log_access, retain_provenance, mask_fields, aggregate_only, or attest_container."
     },
     "when": {
       "enum": [
         "pre",
         "post",
         "runtime"
-      ]
+      ],
+      "description": "When the obligation must be fulfilled: pre (before the operation), post (after), or runtime (during)."
     },
     "params": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Parameters for the obligation action (e.g. the workload URN to invoke for obfuscation)."
     }
   }
 }

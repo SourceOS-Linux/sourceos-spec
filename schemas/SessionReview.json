@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SessionReview.json",
+  "title": "SessionReview",
+  "description": "A post-session learning review that summarises an AgentSession and links to the MemoryEntries extracted from it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "summaryRef",
+    "learnedMemoryRefs",
+    "reviewedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:session-review:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:session-review:<local-id>"
+    },
+    "type": {
+      "const": "SessionReview",
+      "description": "Discriminator constant \u2014 always \"SessionReview\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession being reviewed. Pattern: urn:srcos:session:<id>"
+    },
+    "summaryRef": {
+      "type": "string",
+      "description": "Reference to the summary artifact produced by this review."
+    },
+    "learnedMemoryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:memory:"
+      },
+      "description": "URNs of MemoryEntries extracted and persisted from this session. Pattern: urn:srcos:memory:<id>"
+    },
+    "followupRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "References to follow-up tasks or sessions spawned by this review."
+    },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this review was conducted."
+    }
+  }
+}

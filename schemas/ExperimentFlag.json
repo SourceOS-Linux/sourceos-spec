@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExperimentFlag.json",
+  "title": "ExperimentFlag",
+  "description": "A feature flag with a governed lifecycle: off \u2192 shadow \u2192 internal \u2192 beta \u2192 on \u2192 retired. Carries a kill-switch for emergency disablement.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "state"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:flag:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:flag:<local-id>"
+    },
+    "type": {
+      "const": "ExperimentFlag",
+      "description": "Discriminator constant \u2014 always \"ExperimentFlag\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable name of the feature flag (e.g. \"new-obfuscation-algorithm\")."
+    },
+    "state": {
+      "enum": [
+        "off",
+        "shadow",
+        "internal",
+        "beta",
+        "on",
+        "retired"
+      ],
+      "description": "Current lifecycle state: off, shadow (dark launch), internal (staff only), beta, on (general availability), or retired."
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional URN or username of the team or person responsible for this flag."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional description of what feature this flag controls."
+    },
+    "killSwitch": {
+      "type": "boolean",
+      "description": "When true, activating this flag will immediately disable the feature regardless of rollout rules."
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReleaseReceipt.json",
+  "title": "ReleaseReceipt",
+  "description": "A verified release record carrying artifact hashes, gate check results, and an overall release status for a specific release target.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "releaseTarget",
+    "verifiedAt",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:release-receipt:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:release-receipt:<local-id>"
+    },
+    "type": {
+      "const": "ReleaseReceipt",
+      "description": "Discriminator constant \u2014 always \"ReleaseReceipt\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "releaseTarget": {
+      "type": "string",
+      "description": "The identifier of the release target (e.g. \"v2.0.0\", \"staging\", \"production\")."
+    },
+    "sourceRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional reference to the source commit, tag, or artifact set."
+    },
+    "artifactHashes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "sha256: prefixed hashes of all artifacts included in this release."
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Identifiers of the gate checks that were run (e.g. \"unit-tests\", \"schema-lint\", \"security-scan\")."
+    },
+    "status": {
+      "enum": [
+        "verified",
+        "failed",
+        "partial"
+      ],
+      "description": "Overall release status: verified (all checks passed), failed (at least one check failed), or partial."
+    },
+    "verifiedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the release was verified."
+    }
+  }
+}

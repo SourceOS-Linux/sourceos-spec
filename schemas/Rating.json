@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Rating.json",
   "title": "Rating",
+  "description": "A 1\u20135 star rating attached to any addressable object, used to surface user-assessed data quality and usefulness.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,28 +17,35 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:rating:"
+      "pattern": "^urn:srcos:rating:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:rating:<local-id>"
     },
     "type": {
-      "const": "Rating"
+      "const": "Rating",
+      "description": "Discriminator constant \u2014 always \"Rating\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "targetId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the object being rated."
     },
     "rater": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the subject who submitted this rating."
     },
     "createdAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the rating was submitted."
     },
     "value": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 5
+      "maximum": 5,
+      "description": "The star rating value, an integer in the range [1, 5]."
     }
   }
 }

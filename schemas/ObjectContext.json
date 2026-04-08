@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ObjectContext.json",
   "title": "ObjectContext",
+  "description": "The access-control context for the object (resource) side of a PolicyDecision request. Carries the object's type, classification tags, zone, and arbitrary attributes.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -10,7 +11,8 @@
   ],
   "properties": {
     "objectId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the data object being accessed."
     },
     "objectType": {
       "enum": [
@@ -21,23 +23,27 @@
         "provenance",
         "schema",
         "agreement"
-      ]
+      ],
+      "description": "The type of the object: dataset, field, asset, run, provenance, schema, or agreement."
     },
     "tags": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Classification tags currently applied to this object."
     },
     "zone": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "The data zone this object resides in (e.g. \"raw\", \"curated\", \"restricted\")."
     },
     "attributes": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Arbitrary additional attributes for use in policy condition expressions."
     }
   }
 }
