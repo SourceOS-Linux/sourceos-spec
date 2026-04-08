@@ -1,0 +1,36 @@
+{
+  "nodeId": "obfuscate_pii",
+  "workload": {
+    "workloadId": "urn:srcos:workload:obfuscator_v1",
+    "kind": "container",
+    "image": "ghcr.io/srcos/obfuscator:v1",
+    "entrypoint": "obfuscate",
+    "params": {
+      "mode": "k-anon",
+      "k": 5
+    }
+  },
+  "inputs": [
+    {
+      "refType": "dataset",
+      "id": "urn:srcos:dataset:health_obs",
+      "fieldPaths": [
+        "$.patient.dateOfBirth"
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "refType": "dataset",
+      "id": "urn:srcos:dataset:obfuscated_out",
+      "fieldPaths": []
+    }
+  ],
+  "requiredObligations": [
+    "attest_container"
+  ],
+  "resources": {
+    "cpu": "2",
+    "memory": "4Gi"
+  }
+}

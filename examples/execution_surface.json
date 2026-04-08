@@ -1,0 +1,20 @@
+{
+  "pty": true,
+  "workdir": "/home/runner/work/sourceos-spec",
+  "background": false,
+  "reviewOnly": false,
+  "worktreeStrategy": "none",
+  "sandboxMode": "user",
+  "networkMode": "allowlist",
+  "egressAllowlist": [
+    "github.com",
+    "api.openai.com",
+    "schemas.srcos.ai"
+  ],
+  "elevated": false,
+  "protectedPaths": [
+    ".git/config",
+    ".env"
+  ],
+  "approvalProfile": null
+}

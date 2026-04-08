@@ -1,0 +1,9 @@
+{
+  "method": "valueContainment",
+  "score": 0.95,
+  "notes": "95% value overlap between source date distribution and target dob distribution",
+  "artifacts": [
+    "profileStats",
+    "sampleValues"
+  ]
+}

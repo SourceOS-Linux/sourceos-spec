@@ -1,0 +1,5 @@
+{
+  "kind": "schedule",
+  "schedule": "0 2 * * *",
+  "eventType": null
+}

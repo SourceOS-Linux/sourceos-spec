@@ -1,0 +1,10 @@
+{
+  "workloadId": "urn:srcos:workload:obfuscator_v1",
+  "kind": "container",
+  "image": "ghcr.io/srcos/obfuscator:v1",
+  "entrypoint": "obfuscate",
+  "params": {
+    "mode": "k-anon",
+    "k": 5
+  }
+}

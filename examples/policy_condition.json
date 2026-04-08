@@ -1,0 +1,27 @@
+{
+  "language": "jsonlogic",
+  "expr": {
+    "and": [
+      {
+        "in": [
+          {
+            "var": "purpose"
+          },
+          [
+            "export",
+            "share"
+          ]
+        ]
+      },
+      {
+        "in": [
+          "health",
+          {
+            "var": "object.tags"
+          }
+        ]
+      }
+    ]
+  },
+  "notes": "Matches any export or share action on a dataset tagged 'health'"
+}

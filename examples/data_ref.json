@@ -1,0 +1,8 @@
+{
+  "refType": "dataset",
+  "id": "urn:srcos:dataset:health_obs",
+  "fieldPaths": [
+    "$.patient.dateOfBirth",
+    "$.patient.id"
+  ]
+}

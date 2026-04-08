@@ -1,0 +1,26 @@
+{
+  "id": "urn:srcos:memory:m_001",
+  "type": "MemoryEntry",
+  "specVersion": "2.0.0",
+  "kind": "rule",
+  "namespace": "repo.conventions",
+  "key": "always-use-additionalProperties-false",
+  "payloadRef": "urn:srcos:artifact:mem_payload_001",
+  "authoritativeRef": "urn:srcos:skill:json-schema-author",
+  "citationRefs": [
+    "urn:srcos:session:prior_001"
+  ],
+  "scope": {
+    "workspace": "urn:srcos:workspace:sourceos-spec",
+    "pathPrefixes": [
+      "/schemas",
+      "/examples"
+    ],
+    "sessionRef": null
+  },
+  "freshness": {
+    "learnedAt": "2026-01-01T00:00:00Z",
+    "reviewedAt": "2026-01-15T10:00:00Z",
+    "ttl": null
+  }
+}

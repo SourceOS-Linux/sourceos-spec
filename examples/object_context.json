@@ -1,0 +1,14 @@
+{
+  "objectId": "urn:srcos:dataset:health_obs",
+  "objectType": "dataset",
+  "tags": [
+    "health",
+    "sensitive",
+    "pii"
+  ],
+  "zone": "curated",
+  "attributes": {
+    "classification": "restricted",
+    "region": "US-PA"
+  }
+}

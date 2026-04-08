@@ -1,2 +1,0 @@
-Imported from: /Users/michaelheller/Downloads/srcos_spec_v2
-Canonical name: sourceos-spec

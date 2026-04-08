@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:receipt:session:sr_001",
+  "type": "SessionReceipt",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:a1b2c3d4",
+  "status": "success",
+  "artifactRefs": [
+    "urn:srcos:artifact:diff_schema_readme",
+    "urn:srcos:artifact:contributing_md"
+  ],
+  "decisionRefs": [
+    "urn:srcos:exec-decision:d9e0f1a2"
+  ],
+  "gateResults": [
+    "schema-validation:pass",
+    "lint:pass"
+  ],
+  "capturedAt": "2026-01-15T10:45:00Z"
+}

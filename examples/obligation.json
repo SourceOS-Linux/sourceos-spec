@@ -1,0 +1,9 @@
+{
+  "name": "obfuscate_before_export",
+  "when": "pre",
+  "params": {
+    "workload": "urn:srcos:workload:obfuscator_v1",
+    "mode": "k-anon",
+    "k": 5
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "sphereId": "urn:srcos:sphere:personal_curated",
+  "name": "Personal Curated Sphere",
+  "boundary": {
+    "zone": "curated",
+    "networkPolicy": "deny-egress",
+    "storagePolicy": "encrypted-at-rest"
+  },
+  "controls": {
+    "accessEnforcer": "enforcer.v2",
+    "provenance": "hashes",
+    "containerAttestation": "basic"
+  }
+}
