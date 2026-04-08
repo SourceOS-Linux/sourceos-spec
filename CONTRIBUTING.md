@@ -156,6 +156,7 @@ Validate before committing:
 ```bash
 spectral lint openapi.yaml
 asyncapi validate asyncapi.yaml
+rg -n '^(<{7}|={7}|>{7})' .github/PULL_REQUEST_TEMPLATE.md CHANGELOG.md CONTRIBUTING.md README.md asyncapi.agent-plane.patch.yaml asyncapi.yaml examples/community.json examples/rating.json openapi.agent-plane.patch.yaml openapi.yaml schemas/AgentSession.json schemas/Agreement.json schemas/AuthorityLink.json schemas/CapabilityToken.json schemas/Comment.json schemas/Community.json schemas/Connector.json schemas/DataRef.json schemas/DataSphere.json schemas/Dataset.json schemas/EntityField.json schemas/EventEnvelope.json schemas/Exception.json schemas/ExecutionDecision.json schemas/ExecutionSurface.json
 ```
 
 ---
@@ -188,6 +189,7 @@ The PR template will remind you, but here is the complete list:
 - [ ] ADR created in `docs/adr/` if design rationale is non-obvious
 - [ ] `semantic/context.jsonld` and `hydra.jsonld` updated for first-class types
 - [ ] `specVersion` bumped if required (see [Breaking vs additive changes](#breaking-vs-additive-changes))
+- [ ] No Git merge conflict markers remain in touched files
 
 ---
 
