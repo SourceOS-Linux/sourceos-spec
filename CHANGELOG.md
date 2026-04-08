@@ -28,6 +28,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 
 ### Fixed
 - `schemas/README.md` used `urn:sourceos:` prefix — corrected to `urn:srcos:` throughout
+- Resolved cross-branch merge conflicts across core docs/specs/examples and agent-plane schemas to restore a clean, mergeable branch state
 
 ---
 
