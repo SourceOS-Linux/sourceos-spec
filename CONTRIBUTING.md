@@ -156,6 +156,7 @@ Validate before committing:
 ```bash
 spectral lint openapi.yaml
 asyncapi validate asyncapi.yaml
+git grep -nE '^(<{7}|={7}|>{7})' -- .
 ```
 
 ---
@@ -188,6 +189,7 @@ The PR template will remind you, but here is the complete list:
 - [ ] ADR created in `docs/adr/` if design rationale is non-obvious
 - [ ] `semantic/context.jsonld` and `hydra.jsonld` updated for first-class types
 - [ ] `specVersion` bumped if required (see [Breaking vs additive changes](#breaking-vs-additive-changes))
+- [ ] No Git merge conflict markers remain in touched files
 
 ---
 

@@ -24,6 +24,7 @@
 - [ ] `specVersion` bumped if this is a breaking change
 - [ ] ADR created in `docs/adr/` if the design involves a non-obvious choice
 - [ ] `semantic/context.jsonld` and `hydra.jsonld` updated for new first-class types
+- [ ] No Git merge conflict markers remain in touched files
 
 ## Validation commands run
 
@@ -36,6 +37,9 @@ spectral lint openapi.yaml
 
 # AsyncAPI lint
 asyncapi validate asyncapi.yaml
+
+# Merge-conflict marker check
+git grep -nE '^(<{7}|={7}|>{7})' -- .
 ```
 
 ## Related issues / ADRs
