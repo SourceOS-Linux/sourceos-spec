@@ -25,6 +25,7 @@ This file follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) conve
 - `.github/PULL_REQUEST_TEMPLATE.md` proper PR template.
 
 ### Changed
+- Reconciled long-lived branch drift across documentation, API contracts, examples, and schema artifacts to unblock merge-to-`main` conflict resolution (no contract-level semantic changes).
 - `openapi.yaml` — added `info.description`, `info.contact`, `info.license`, `components/responses` (BadRequest, Unauthorized, Forbidden, NotFound, InternalServerError), `GET` and `DELETE` operations for all resources, operation `summary` and `description` strings, and 4xx/5xx responses on all endpoints.
 - `openapi.agent-plane.patch.yaml` — added operation summaries, descriptions, `GET` operations for sessions, skills, and memory, and error responses.
 - `asyncapi.yaml` — added `info.description`, `info.contact`, `info.license`, `subscribe` directions for all channels, channel `description` and `operationId` values, and five new channels for `agreement`, `connector`, `provenance`, `schema`, and `token` events.
