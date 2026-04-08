@@ -1,0 +1,9 @@
+{
+  "id": "urn:srcos:frustration:f001",
+  "type": "FrustrationSignal",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:s001",
+  "signal": "repeated-failure",
+  "count": 3,
+  "capturedAt": "2025-12-24T05:05:00Z"
+}

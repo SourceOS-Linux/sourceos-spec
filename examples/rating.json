@@ -1,0 +1,9 @@
+{
+  "id": "urn:srcos:rating:rate001",
+  "type": "Rating",
+  "specVersion": "2.0.0",
+  "targetId": "urn:srcos:dataset:health_obs",
+  "rater": "urn:srcos:subject:user:me",
+  "createdAt": "2025-12-24T05:00:00Z",
+  "value": 5
+}

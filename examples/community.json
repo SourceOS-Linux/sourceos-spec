@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:community:data-governance-team",
+  "type": "Community",
+  "specVersion": "2.0.0",
+  "name": "Data Governance Team",
+  "description": "The team responsible for reviewing and curating classification tags, glossary terms, and data agreements.",
+  "members": [
+    "urn:srcos:subject:user:me",
+    "urn:srcos:subject:user:alice",
+    "urn:srcos:subject:user:bob"
+  ],
+  "links": [
+    {"rel": "self", "href": "https://api.srcos.local/v2/communities/data-governance-team", "type": "application/json"}
+  ]
+}

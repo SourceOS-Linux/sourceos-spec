@@ -1,0 +1,11 @@
+{
+  "id": "urn:srcos:receipt:session:r001",
+  "type": "SessionReceipt",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:s001",
+  "status": "success",
+  "artifactRefs": ["pr://github.com/SourceOS-Linux/sourceos-spec/pulls/1"],
+  "decisionRefs": ["urn:srcos:exec-decision:ed001"],
+  "gateResults": ["unit-tests:passed", "schema-lint:passed"],
+  "capturedAt": "2025-12-24T05:10:00Z"
+}
