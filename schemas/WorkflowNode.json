@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/WorkflowNode.json",
   "title": "WorkflowNode",
+  "description": "A single processing node in a WorkflowSpec DAG, wrapping a WorkloadSpec with input/output DataRefs, obligation requirements, and resource limits.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -12,28 +13,33 @@
   ],
   "properties": {
     "nodeId": {
-      "type": "string"
+      "type": "string",
+      "description": "Unique identifier for this node within the WorkflowSpec DAG."
     },
     "workload": {
-      "$ref": "WorkloadSpec.json"
+      "$ref": "WorkloadSpec.json",
+      "description": "The workload specification to execute at this node."
     },
     "inputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
-      }
+      },
+      "description": "DataRefs describing the input data consumed by this node."
     },
     "outputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
-      }
+      },
+      "description": "DataRefs describing the output data produced by this node."
     },
     "requiredObligations": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Obligation names that must be fulfilled before this node may execute."
     },
     "resources": {
       "type": "object",
@@ -57,7 +63,8 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Optional resource request hints: CPU (e.g. \"2\"), memory (e.g. \"4Gi\"), and GPU count."
     }
   }
 }

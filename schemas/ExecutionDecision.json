@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ExecutionDecision.json",
   "title": "ExecutionDecision",
+  "description": "An immutable audit record of a single agent execution decision (allow, deny, ask, defer, or rewrite) made during an AgentSession.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,24 +18,29 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:exec-decision:"
+      "pattern": "^urn:srcos:exec-decision:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:exec-decision:<local-id>"
     },
     "type": {
-      "const": "ExecutionDecision"
+      "const": "ExecutionDecision",
+      "description": "Discriminator constant \u2014 always \"ExecutionDecision\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "sessionRef": {
       "type": "string",
-      "pattern": "^urn:srcos:session:"
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession in which this decision was made. Pattern: urn:srcos:session:<id>"
     },
     "toolRequestRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:tool:"
+      "pattern": "^urn:srcos:tool:",
+      "description": "Optional URN of the tool call or action request this decision responds to. Pattern: urn:srcos:tool:<id>"
     },
     "decision": {
       "enum": [
@@ -43,45 +49,53 @@
         "ask",
         "defer",
         "rewrite"
-      ]
+      ],
+      "description": "The outcome: allow (proceed as requested), deny (block), ask (prompt user), defer (pause for later), or rewrite (modify input before proceeding)."
     },
     "reason": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable explanation of why this decision was reached."
     },
     "updatedInput": {
       "type": [
         "object",
         "null"
       ],
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "When `decision` is \"rewrite\", the modified input object to use instead of the original."
     },
     "policyRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:policy:"
+      "pattern": "^urn:srcos:policy:",
+      "description": "Optional URN of the Policy that drove this decision. Pattern: urn:srcos:policy:<id>"
     },
     "obligations": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Obligation identifiers the session must fulfil as a result of this decision."
     },
     "issuedAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this decision was recorded."
     },
     "expiresAt": {
       "type": [
         "string",
         "null"
       ],
-      "format": "date-time"
+      "format": "date-time",
+      "description": "Optional ISO 8601 date-time after which this decision is no longer valid."
     },
     "decisionHash": {
       "type": "string",
-      "pattern": "^sha256:"
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed hash of the canonical decision payload for tamper-evidence."
     }
   }
 }

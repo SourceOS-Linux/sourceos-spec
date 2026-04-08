@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/MappingEvidence.json",
   "title": "MappingEvidence",
+  "description": "A single piece of evidence supporting a MappingSpec, produced by one specific matching method (label similarity, value overlap, ontology anchor, etc.).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -18,24 +19,28 @@
         "kvOverlap",
         "ontologyAnchor",
         "blocking"
-      ]
+      ],
+      "description": "The matching method: labelExact, labelStringSim (string similarity), valueCosine, valueContainment, kvOverlap, ontologyAnchor, or blocking."
     },
     "score": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Confidence score for this evidence item, in the range [0, 1]."
     },
     "notes": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional human-readable notes about this evidence."
     },
     "artifacts": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Identifiers of the artifacts (profiles, labels, ontologies) used to produce this evidence."
     }
   }
 }

@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Field.json",
   "title": "Field",
+  "description": "A fully annotated, quality-profiled field bound to a specific Dataset. Extends EntityField with a live quality profile, statistics, and external links.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,23 +18,29 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:field:"
+      "pattern": "^urn:srcos:field:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:field:<local-id>"
     },
     "type": {
-      "const": "Field"
+      "const": "Field",
+      "description": "Discriminator constant \u2014 always \"Field\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "datasetId": {
       "type": "string",
-      "pattern": "^urn:srcos:dataset:"
+      "pattern": "^urn:srcos:dataset:",
+      "description": "URN of the Dataset this field belongs to. Pattern: urn:srcos:dataset:<id>"
     },
     "path": {
-      "type": "string"
+      "type": "string",
+      "description": "JSONPath expression locating this field within the dataset (e.g. \"$.patient.dateOfBirth\")."
     },
     "dataType": {
-      "type": "string"
+      "type": "string",
+      "description": "The logical data type of this field (e.g. \"string\", \"integer\", \"date\")."
     },
     "semantics": {
       "type": "object",
@@ -61,7 +68,8 @@
             "$ref": "AuthorityLink.json"
           }
         }
-      }
+      },
+      "description": "Semantic annotations: classification tags, linked glossary terms, and authority links."
     },
     "quality": {
       "type": "object",
@@ -76,13 +84,15 @@
             "$ref": "QualityMetric.json"
           }
         }
-      }
+      },
+      "description": "Quality metadata: column statistics profile and named quality dimension scores."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Supplementary hyperlinks."
     }
   }
 }

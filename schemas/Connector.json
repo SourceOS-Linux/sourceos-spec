@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Connector.json",
   "title": "Connector",
+  "description": "A named, typed connection configuration for a physical data store (S3, GCS, Azure Blob, RDBMS, Kafka, filesystem, HTTP API, or lakehouse).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,16 +16,20 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:connector:"
+      "pattern": "^urn:srcos:connector:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:connector:<local-id>"
     },
     "type": {
-      "const": "Connector"
+      "const": "Connector",
+      "description": "Discriminator constant \u2014 always \"Connector\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable name for this connector."
     },
     "kind": {
       "enum": [
@@ -36,11 +41,13 @@
         "filesystem",
         "httpApi",
         "lakehouse"
-      ]
+      ],
+      "description": "The storage technology type: s3, gcs, azureBlob, rdbms, kafka, filesystem, httpApi, or lakehouse."
     },
     "config": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Connector-specific configuration object. Structure is defined by the `kind` value."
     },
     "status": {
       "enum": [
@@ -48,7 +55,8 @@
         "disabled",
         "deprecated"
       ],
-      "default": "active"
+      "default": "active",
+      "description": "Operational status: active (default), disabled, or deprecated."
     }
   }
 }

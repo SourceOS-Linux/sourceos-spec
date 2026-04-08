@@ -2,29 +2,176 @@ asyncapi: 2.6.0
 info:
   title: SourceOS/SociOS Event Spine
   version: 2.0.0
+  description: |
+    The SourceOS/SociOS Event Spine carries domain events from the metadata governance plane.
+    All messages use the EventEnvelope schema as their payload wrapper. The `eventType` field
+    inside the envelope identifies the domain event (e.g. "DatasetUpserted", "PolicyEvaluated").
+
+    Consumers should subscribe to only the channels relevant to their domain.
+    All channels use Kafka as the default broker.
+
+servers:
+  development:
+    url: kafka://localhost:9092
+    protocol: kafka
+    description: Local Kafka broker for development and testing.
+  production:
+    url: kafka://kafka.srcos.internal:9092
+    protocol: kafka
+    description: Production Kafka cluster.
+
+defaultContentType: application/json
+
 channels:
   srcos.v2.dataset.events:
+    description: Events emitted when a Dataset, Field, SchemaDefinition, or PhysicalAsset is created or updated.
+    bindings:
+      kafka:
+        topic: srcos.v2.dataset.events
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 604800000
+          cleanup.policy: delete
     publish:
+      operationId: publishDatasetEvent
+      summary: Publish a dataset domain event
+      description: Publishes an event whenever a Dataset, Field, SchemaDefinition, or PhysicalAsset changes state.
       message:
         name: DatasetEvent
+        title: Dataset Domain Event
+        summary: A change event for a Dataset, Field, SchemaDefinition, or PhysicalAsset.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `DatasetUpserted` — a Dataset was created or updated
+          - `FieldUpserted` — a Field was created or updated
+          - `SchemaDefinitionUpserted` — a SchemaDefinition was created or updated
+          - `PhysicalAssetUpserted` — a PhysicalAsset was created or updated
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the affected entity, used as the Kafka message key for partition co-location.
+
   srcos.v2.policy.events:
+    description: Events emitted when a Policy is created or updated, or when a PolicyDecision is recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.policy.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
     publish:
+      operationId: publishPolicyEvent
+      summary: Publish a policy domain event
+      description: Publishes an event whenever a Policy is upserted or a PolicyDecision is evaluated.
       message:
         name: PolicyEvent
+        title: Policy Domain Event
+        summary: A change event for a Policy or PolicyDecision.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `PolicyUpserted` — a Policy was created or updated
+          - `PolicyDecisionRecorded` — a PolicyDecision was evaluated and persisted
+          - `CapabilityTokenIssued` — a CapabilityToken was issued
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the affected Policy or PolicyDecision.
+
   srcos.v2.run.events:
+    description: Events emitted when a RunRecord or ProvenanceRecord is persisted.
+    bindings:
+      kafka:
+        topic: srcos.v2.run.events
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
     publish:
+      operationId: publishRunEvent
+      summary: Publish a run domain event
+      description: Publishes an event when a workload run completes or provenance is captured.
       message:
         name: RunEvent
+        title: Run Domain Event
+        summary: A completion event for a RunRecord or ProvenanceRecord.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `RunRecorded` — a RunRecord was persisted
+          - `ProvenanceRecorded` — a ProvenanceRecord was persisted
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the RunRecord or ProvenanceRecord.
+
   srcos.v2.mapping.events:
+    description: Events emitted when a MappingSpec is created, updated, or its state changes.
+    bindings:
+      kafka:
+        topic: srcos.v2.mapping.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 604800000
+          cleanup.policy: delete
     publish:
+      operationId: publishMappingEvent
+      summary: Publish a mapping domain event
+      description: Publishes an event whenever a MappingSpec is upserted or its review state changes.
       message:
         name: MappingEvent
+        title: Mapping Domain Event
+        summary: A change event for a MappingSpec.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `MappingUpserted` — a MappingSpec was created or updated
+          - `MappingStateChanged` — a MappingSpec state changed (proposed → curated, rejected)
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the affected MappingSpec.
+
   srcos.v2.glossary.events:
+    description: Events emitted when a GlossaryTerm is created or updated.
+    bindings:
+      kafka:
+        topic: srcos.v2.glossary.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 604800000
+          cleanup.policy: delete
     publish:
+      operationId: publishGlossaryEvent
+      summary: Publish a glossary domain event
+      description: Publishes an event whenever a GlossaryTerm is upserted.
       message:
         name: GlossaryEvent
+        title: Glossary Domain Event
+        summary: A change event for a GlossaryTerm.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `GlossaryTermUpserted` — a GlossaryTerm was created or updated
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the affected GlossaryTerm.
+

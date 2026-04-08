@@ -1,0 +1,53 @@
+{
+  "id": "urn:srcos:workflow:etl_health_obfuscation_v1",
+  "type": "WorkflowSpec",
+  "specVersion": "2.0.0",
+  "name": "Health Obfuscation ETL Workflow",
+  "nodes": [
+    {
+      "nodeId": "ingest",
+      "workload": {
+        "workloadId": "urn:srcos:workload:ingestor_v1",
+        "kind": "container",
+        "image": "ghcr.io/srcos/ingestor:v1",
+        "entrypoint": "ingest",
+        "params": {"source": "raw"}
+      },
+      "inputs": [
+        {"refType": "asset", "id": "urn:srcos:asset:lake_curated_health", "fieldPaths": []}
+      ],
+      "outputs": [
+        {"refType": "dataset", "id": "urn:srcos:dataset:health_obs", "fieldPaths": []}
+      ],
+      "requiredObligations": [],
+      "resources": {"cpu": "1", "memory": "2Gi", "gpu": null}
+    },
+    {
+      "nodeId": "obfuscate",
+      "workload": {
+        "workloadId": "urn:srcos:workload:obfuscator_v1",
+        "kind": "container",
+        "image": "ghcr.io/srcos/obfuscator:v1",
+        "entrypoint": "obfuscate",
+        "params": {"mode": "k-anon", "k": 5}
+      },
+      "inputs": [
+        {"refType": "dataset", "id": "urn:srcos:dataset:health_obs", "fieldPaths": ["$.patient.dateOfBirth"]}
+      ],
+      "outputs": [
+        {"refType": "dataset", "id": "urn:srcos:dataset:obfuscated_out", "fieldPaths": []}
+      ],
+      "requiredObligations": ["obfuscate_before_export"],
+      "resources": {"cpu": "2", "memory": "4Gi", "gpu": null}
+    }
+  ],
+  "edges": [
+    {"from": "ingest", "to": "obfuscate"}
+  ],
+  "triggers": [
+    {"kind": "schedule", "schedule": "0 2 * * *", "eventType": null}
+  ],
+  "policyBindings": [
+    {"policyId": "urn:srcos:policy:export_health_restricted", "appliesTo": {}}
+  ]
+}

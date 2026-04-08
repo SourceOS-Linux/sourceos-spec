@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ProvenanceRecord.json",
   "title": "ProvenanceRecord",
+  "description": "A W3C PROV-compatible lineage record linking a RunRecord activity to its input and output data entities.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,13 +17,16 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:prov:"
+      "pattern": "^urn:srcos:prov:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:prov:<local-id>"
     },
     "type": {
-      "const": "ProvenanceRecord"
+      "const": "ProvenanceRecord",
+      "description": "Discriminator constant \u2014 always \"ProvenanceRecord\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "activity": {
       "type": "string",
@@ -60,17 +64,20 @@
             "description": "sha256:..."
           }
         }
-      }
+      },
+      "description": "The data entities consumed (role: input) and produced (role: output) by the activity."
     },
     "createdAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this provenance record was created."
     },
     "signature": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional cryptographic signature over the provenance record."
     }
   }
 }

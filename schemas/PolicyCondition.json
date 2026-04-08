@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/PolicyCondition.json",
   "title": "PolicyCondition",
+  "description": "A rule-evaluation expression in one of four declared languages: jsonlogic, cel, rego, or cedar. Embedded inside a Rule.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,17 +16,20 @@
         "cel",
         "rego",
         "cedar"
-      ]
+      ],
+      "description": "The expression language: jsonlogic (embeddable JSON rules), cel (Common Expression Language), rego (OPA Rego), or cedar (AWS Cedar)."
     },
     "expr": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "The condition expression. Structure is defined by the `language` value."
     },
     "notes": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional human-readable notes explaining the condition logic."
     }
   }
 }

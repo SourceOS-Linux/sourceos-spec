@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Dataset.json",
   "title": "Dataset",
+  "description": "A logical, governance-annotated view of a PhysicalAsset. References the physical asset, schema, and all applicable agreements and classification tags.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,30 +18,37 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:dataset:"
+      "pattern": "^urn:srcos:dataset:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:dataset:<local-id>"
     },
     "type": {
-      "const": "Dataset"
+      "const": "Dataset",
+      "description": "Discriminator constant \u2014 always \"Dataset\"."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable fully-qualified name (e.g. \"Domain.Subdomain.EntityName\")."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional description of the dataset's content and purpose."
     },
     "assetRef": {
       "type": "string",
-      "pattern": "^urn:srcos:asset:"
+      "pattern": "^urn:srcos:asset:",
+      "description": "URN of the PhysicalAsset that backs this dataset. Pattern: urn:srcos:asset:<id>"
     },
     "schemaRef": {
       "type": "string",
-      "pattern": "^urn:srcos:schema:"
+      "pattern": "^urn:srcos:schema:",
+      "description": "URN of the SchemaDefinition that describes this dataset's structure. Pattern: urn:srcos:schema:<id>"
     },
     "governance": {
       "type": "object",
@@ -80,7 +88,8 @@
             ]
           }
         }
-      }
+      },
+      "description": "Governance metadata: classification tags, applicable agreements, usage definitions, and zone membership."
     },
     "lifecycle": {
       "type": "object",
@@ -104,13 +113,15 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "description": "Lifecycle state and the timestamp when the dataset entered that state."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Supplementary hyperlinks."
     }
   }
 }
