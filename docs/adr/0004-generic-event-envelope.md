@@ -1,4 +1,4 @@
-# ADR-0003: Generic EventEnvelope for all channels
+# ADR-0004: Generic EventEnvelope for all channels
 
 **Status:** Accepted  
 **Date:** 2025-12-24  

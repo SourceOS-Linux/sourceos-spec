@@ -1,4 +1,4 @@
-# ADR-0002: Typed `PolicyCondition` with declared expression language
+# ADR-0003: Typed `PolicyCondition` with declared expression language
 
 **Date:** 2025-12-24  
 **Status:** Accepted

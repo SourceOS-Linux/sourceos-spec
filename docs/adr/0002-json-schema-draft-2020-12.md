@@ -1,4 +1,4 @@
-# ADR-0001: Use JSON Schema draft 2020-12
+# ADR-0002: Use JSON Schema draft 2020-12
 
 **Status:** Accepted  
 **Date:** 2025-12-24  
