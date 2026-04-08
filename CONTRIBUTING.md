@@ -1,193 +1,208 @@
-# Contributing to SourceOS Spec
+# Contributing to SourceOS/SociOS Typed Contracts
 
-Thank you for contributing to the SourceOS/SociOS Typed Contracts Specification.
-
-## Contents
-
-- [What lives in this repo](#what-lives-in-this-repo)
-- [Before you open a PR](#before-you-open-a-pr)
-- [Schema design conventions](#schema-design-conventions)
-- [URN naming conventions](#urn-naming-conventions)
-- [Adding a new schema](#adding-a-new-schema)
-- [Modifying an existing schema](#modifying-an-existing-schema)
-- [Adding or updating examples](#adding-or-updating-examples)
-- [API and event-spine changes](#api-and-event-spine-changes)
-- [Semantic overlay changes](#semantic-overlay-changes)
-- [Review process](#review-process)
-- [Versioning policy](#versioning-policy)
+Thank you for contributing to the spec!  This guide covers the conventions you must follow so that every schema remains machine-readable, internally consistent, and backward-compatible.
 
 ---
 
-## What lives in this repo
+## Table of contents
 
-This repository is a **specification**, not an implementation. Changes here define the contract that all SourceOS implementations must conform to. Think carefully before making breaking changes — they require a major version bump and coordinated migration across all consumers.
-
----
-
-## Before you open a PR
-
-1. **Run local validation:**
-
-   ```bash
-   # Validate all schemas are syntactically correct JSON Schema 2020-12
-   npm install -g ajv-cli
-   for f in schemas/*.json; do
-     ajv compile -s "$f" && echo "$f: ok"
-   done
-
-   # Validate all examples against their schemas
-   for f in examples/*.json; do
-     type=$(jq -r '.type // empty' "$f")
-     [ -n "$type" ] && ajv validate -s "schemas/${type}.json" -d "$f" && echo "$f: ok"
-   done
-   ```
-
-2. **Ensure CI passes** — the `validate.yml` workflow runs automatically on every PR.
-
-3. **One concern per PR** — separate schema additions, bug fixes, and breaking changes into distinct PRs.
+1. [Pre-requisites](#pre-requisites)
+2. [Repository structure recap](#repository-structure-recap)
+3. [Adding a new schema](#adding-a-new-schema)
+4. [Modifying an existing schema](#modifying-an-existing-schema)
+5. [URN naming guide](#urn-naming-guide)
+6. [Updating the API specs](#updating-the-api-specs)
+7. [Writing examples](#writing-examples)
+8. [Pull-request checklist](#pull-request-checklist)
+9. [Breaking vs additive changes](#breaking-vs-additive-changes)
 
 ---
 
-## Schema design conventions
+## Pre-requisites
 
-All schemas must follow these rules:
+```bash
+# Validate schemas and examples with AJV (Node ≥ 18)
+npm install -g ajv-cli
 
-1. **`"$schema": "https://json-schema.org/draft/2020-12/schema"`** — always pin the draft version.
-2. **`"$id": "https://schemas.srcos.ai/v2/<SchemaName>.json"`** — canonical ID must match the filename.
-3. **`"additionalProperties": false`** — no open-ended objects. This enforces strict schema evolution.
-4. **`"description"` on every schema** — add a top-level `description` field explaining the schema's purpose.
-5. **`"description"` on every property** — all properties must have a `description` string.
-6. **Use `$ref`** to reference other schemas rather than inlining their structure.
-7. **Discriminator constants** — top-level objects include a `"type"` property with `"const": "<SchemaName>"` to support polymorphic deserialization.
-8. **No `$defs`/`definitions` in individual files** — shared sub-schemas live in their own files.
-9. **Nullability** — use `"type": ["string", "null"]` (or equivalent) for optional nullable fields; never use `required` to hide optionality.
-10. **Enums** — prefer explicit `"enum": [...]` over free strings wherever the value space is finite and stable.
+# Validate OpenAPI spec
+npm install -g @stoplight/spectral-cli
 
----
-
-## URN naming conventions
-
-All stable IDs use URNs in the pattern:
-
-```
-urn:srcos:<family>:<local-id>
+# Validate AsyncAPI spec
+npm install -g @asyncapi/cli
 ```
 
-Where `<family>` is a short lowercase noun (e.g., `dataset`, `policy`, `session`, `skill`). Examples:
+---
 
-- `urn:srcos:dataset:health_obs`
-- `urn:srcos:policy:export_health_restricted`
-- `urn:srcos:session:a1b2c3d4`
+## Repository structure recap
 
-Local IDs may be UUIDs, slugs, or short hashes — but must be globally unique within the family.
+```
+schemas/          JSON Schema (draft 2020-12) — one file per type
+examples/         One conforming example JSON per schema type
+openapi.yaml      Metadata-plane REST API
+openapi.agent-plane.patch.yaml   Agent-plane additive REST patch
+asyncapi.yaml     Metadata-plane event channels
+asyncapi.agent-plane.patch.yaml  Agent-plane additive event channels
+semantic/         JSON-LD context + Hydra API documentation
+docs/adr/         Architecture Decision Records
+```
 
 ---
 
 ## Adding a new schema
 
-1. Create `schemas/<SchemaName>.json` using the template below.
-2. Add an entry for it in `schemas/README.md` under the appropriate area.
-3. Add a corresponding example file `examples/<snake_case_name>.json`.
-4. If the schema represents a first-class API resource, add an endpoint to `openapi.yaml` (or the appropriate patch file).
-5. If it generates events, add a channel to `asyncapi.yaml` (or the appropriate patch file).
-6. Add the type mapping to `semantic/context.jsonld`.
-7. If it is API-accessible, add a `hydra:supportedClass` entry to `semantic/hydra.jsonld`.
+### 1 Create the schema file
 
-### Schema template
+Save it to `schemas/<TypeName>.json`.  The filename must be `PascalCase` and match the `title` field exactly.
+
+**Required top-level fields:**
 
 ```json
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://schemas.srcos.ai/v2/MySchema.json",
-  "title": "MySchema",
-  "description": "One paragraph explaining what this schema represents and when it is used.",
+  "$id": "https://schemas.srcos.ai/v2/<TypeName>.json",
+  "title": "<TypeName>",
+  "description": "One-sentence description of what this object represents.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "type", "specVersion"],
+  "required": ["id", "type", "specVersion", ...],
   "properties": {
     "id": {
       "type": "string",
-      "description": "Stable URN identifying this object (urn:srcos:<family>:<id>)."
+      "pattern": "^urn:srcos:<type-slug>:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:<type-slug>:<local-id>"
     },
     "type": {
-      "const": "MySchema",
-      "description": "Discriminator constant — always 'MySchema'."
+      "const": "<TypeName>",
+      "description": "Discriminator constant — always \"<TypeName>\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     }
   }
 }
 ```
 
+**Rules:**
+- Every property **must** have a `"description"` field (or a `$ref` that resolves to a described type).
+- `"additionalProperties": false` is required on every object.
+- Nullable fields use `"type": ["<base-type>", "null"]`.
+- Timestamps use `"type": "string", "format": "date-time"`.
+- All cross-object references use a URN `"pattern"` constraint that matches the target type's URN prefix.
+
+### 2 Add the schema to the appropriate family
+
+Update `schemas/README.md` — add a row to the correct family table.
+
+### 3 Add a conforming example
+
+Create `examples/<typename>.json` (lowercase filename).  The example must validate against the schema:
+
+```bash
+ajv validate -s schemas/<TypeName>.json -d examples/<typename>.json
+```
+
+### 4 Expose the type in the OpenAPI spec
+
+Add a `POST /v2/<plural-path>` operation to `openapi.yaml` (metadata-plane types) or `openapi.agent-plane.patch.yaml` (agent-plane types).  Every operation **must** include `summary`, `description`, `tags`, and at minimum `200`, `400`, and `422` responses.
+
+### 5 Add an AsyncAPI channel (if the type generates events)
+
+Add the channel to `asyncapi.yaml` or `asyncapi.agent-plane.patch.yaml`.  Include a `description` on both the channel and the message.
+
+### 6 Update the semantic context (if needed)
+
+If the new type is a first-class domain concept (not a supporting sub-type), add it to `semantic/context.jsonld` and add a `hydra:supportedClass` entry to `semantic/hydra.jsonld`.
+
+### 7 Write an ADR (if the design involves a non-obvious choice)
+
+Create `docs/adr/NNN-<short-title>.md` using the template at `docs/adr/0000-template.md`.
+
 ---
 
 ## Modifying an existing schema
 
-### Backward-compatible changes (minor version bump)
-- Adding a new **optional** property
-- Adding a new enum value (consumers must handle unknown values gracefully)
-- Relaxing a constraint (e.g., removing a `minLength`)
-- Adding a new schema file
-
-### Breaking changes (major version bump)
-- Adding a new **required** property to an existing schema
-- Removing or renaming a property
-- Narrowing a type (e.g., `string` → `enum`)
-- Removing an enum value
-- Changing a `$ref` target
-
-Breaking changes require:
-1. Incrementing the major version in `README.md`, `openapi.yaml`, and `asyncapi.yaml`.
-2. A migration note in `CHANGELOG.md`.
-3. An ADR in `docs/adr/` explaining the rationale.
+| Change type | Allowed? | Notes |
+|-------------|----------|-------|
+| Add optional property | ✅ Minor bump | Existing documents remain valid |
+| Add required property | ⚠️ Major bump | Existing documents become invalid — must bump `specVersion` major and log in `CHANGELOG.md` + ADR |
+| Remove property | ⚠️ Major bump | Same as above |
+| Narrow a type (e.g. `string` → `enum`) | ⚠️ Major bump | |
+| Widen a type (e.g. add enum value) | ✅ Minor bump | |
+| Fix a `pattern` bug | ✅ Patch bump | |
+| Change a `description` | ✅ No version bump | |
 
 ---
 
-## Adding or updating examples
+## URN naming guide
 
-Every schema should have a corresponding example file in `examples/`. Naming convention:
+All stable identifiers follow the scheme `urn:srcos:<type-slug>:<local-id>`.
 
-- Use `snake_case` matching the schema name: `SchemaDefinition.json` → `schema.json` (or `schema_definition.json` for new files).
-- The example must be a **valid** instance of the schema — CI validates this automatically.
-- Examples should be realistic and self-contained (all referenced URNs should also appear in other examples where possible).
-- Null values should be shown for optional nullable fields to make the shape of the object clear.
-
----
-
-## API and event-spine changes
-
-- **New REST endpoints:** Add to `openapi.yaml` (metadata plane) or `openapi.agent-plane.patch.yaml` (agent plane). Follow the existing pattern: include `summary`, `description`, `tags`, and responses for `200`, `400`, `401`, `403`, and `500`.
-- **New event channels:** Add to `asyncapi.yaml` or `asyncapi.agent-plane.patch.yaml`. Include both `publish` and `subscribe` directions, a `description`, and `operationId` values.
+- **`type-slug`** is lowercase, hyphen-separated, and maps one-to-one to a schema title (see the full table in [ARCHITECTURE.md](ARCHITECTURE.md#4-urn-identity-scheme)).
+- **`local-id`** is a URL-safe slug chosen by the producer.  It must be unique within the type namespace.  Recommended format: `[a-z0-9][a-z0-9_-]*`.
+- Use existing URN prefixes — do **not** invent new slugs without updating `ARCHITECTURE.md` and this guide.
 
 ---
 
-## Semantic overlay changes
+## Updating the API specs
 
-- `semantic/context.jsonld` — Add a mapping for every new schema type.
-- `semantic/hydra.jsonld` — Add a `hydra:supportedClass` entry for every new API-accessible resource, listing all supported HTTP methods.
+- `openapi.yaml` and `openapi.agent-plane.patch.yaml` follow OpenAPI 3.0.3.
+- All operations must have: `operationId` (camelCase verb + noun), `summary` (≤ 10 words), `description`, at least one `tags` entry, and response codes `200`, `400`, `401`, `403`, `422`.
+- `asyncapi.yaml` and `asyncapi.agent-plane.patch.yaml` follow AsyncAPI 2.6.0.
+- All channels must have a `description`.  All messages must have `name`, `title`, `summary`, and `description`.
+
+Validate before committing:
+
+```bash
+spectral lint openapi.yaml
+asyncapi validate asyncapi.yaml
+git grep -nE '^(<{7}|={7}|>{7})' -- .
+rg -n '^(<{7}|={7}|>{7})' .github/PULL_REQUEST_TEMPLATE.md CHANGELOG.md CONTRIBUTING.md README.md asyncapi.agent-plane.patch.yaml asyncapi.yaml examples/community.json examples/rating.json openapi.agent-plane.patch.yaml openapi.yaml schemas/AgentSession.json schemas/Agreement.json schemas/AuthorityLink.json schemas/CapabilityToken.json schemas/Comment.json schemas/Community.json schemas/Connector.json schemas/DataRef.json schemas/DataSphere.json schemas/Dataset.json schemas/EntityField.json schemas/EventEnvelope.json schemas/Exception.json schemas/ExecutionDecision.json schemas/ExecutionSurface.json
+```
 
 ---
 
-## Review process
+## Writing examples
 
-1. Open a pull request against `main`.
-2. The automated `validate.yml` workflow must pass (schema lint + example validation).
-3. At least one maintainer must review and approve.
-4. The PR description must reference the area affected (schema family, API, event spine, or semantic overlay).
-5. Breaking changes require two maintainer approvals and an ADR.
+- One file per schema type, saved as `examples/<typename>.json` (all-lowercase filename matching the schema `title` lowercased).
+- The example must be a **complete**, valid document — all required fields present.
+- Use the shared cross-reference URNs already established in other examples (e.g. `urn:srcos:dataset:health_obs`) so the example set tells a coherent end-to-end story.
+- Validate the example before committing:
+
+```bash
+ajv validate -s schemas/<TypeName>.json -d examples/<typename>.json
+```
 
 ---
 
-## Versioning policy
+## Pull-request checklist
 
-This specification uses [semantic versioning](https://semver.org/):
+The PR template will remind you, but here is the complete list:
 
-| Bump | When |
-|---|---|
-| Patch (`2.0.x`) | Bug fixes, description improvements, example additions |
-| Minor (`2.x.0`) | New optional properties, new schemas, new enum values, new API endpoints |
-| Major (`3.0.0`) | Breaking changes to existing schemas or removal of resources |
+- [ ] Schema file created/updated in `schemas/`
+- [ ] `"description"` present on schema and all properties
+- [ ] `"additionalProperties": false` on all object types
+- [ ] Example file created/updated in `examples/` and passes AJV validation
+- [ ] `schemas/README.md` updated (schema family table)
+- [ ] `openapi.yaml` or patch updated with full operation metadata
+- [ ] `asyncapi.yaml` or patch updated with channel/message descriptions
+- [ ] `CHANGELOG.md` updated
+- [ ] ADR created in `docs/adr/` if design rationale is non-obvious
+- [ ] `semantic/context.jsonld` and `hydra.jsonld` updated for first-class types
+- [ ] `specVersion` bumped if required (see [Breaking vs additive changes](#breaking-vs-additive-changes))
+- [ ] No Git merge conflict markers remain in touched files
 
-The version appears in `openapi.yaml` (`info.version`), `asyncapi.yaml` (`info.version`), and should be reflected in the `specVersion` field of all new records written after the bump.
+---
+
+## Breaking vs additive changes
+
+A **breaking change** is any change that can cause a previously valid document to become invalid, or a previously invalid document to become valid in an unexpected way.  Breaking changes:
+
+1. Must bump the `specVersion` major version in the affected schema(s).
+2. Must be documented in `CHANGELOG.md` under a new `## [X.0.0]` heading.
+3. Must have a corresponding ADR in `docs/adr/`.
+4. Should include a migration guide in the ADR.
+
+An **additive change** (new optional field, new enum value, new endpoint) bumps the minor version only.
+
+A **bug fix** (pattern correction, description improvement) bumps the patch version only.

@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/MemoryEntry.json",
   "title": "MemoryEntry",
+  "description": "A persistent agent memory of kind `rule` (standing instruction), `learned` (inferred from past sessions), or `recap` (post-session summary). Scoped to a workspace and path prefix list.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,15 +21,15 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:memory:",
-      "description": "Stable URN identifying this memory entry (urn:srcos:memory:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:memory:<local-id>"
     },
     "type": {
       "const": "MemoryEntry",
-      "description": "Discriminator constant \u2014 always 'MemoryEntry'."
+      "description": "Discriminator constant \u2014 always \"MemoryEntry\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "kind": {
       "enum": [
@@ -36,33 +37,33 @@
         "learned",
         "recap"
       ],
-      "description": "Category of memory: 'rule' (explicit instruction), 'learned' (inferred pattern), or 'recap' (session summary)."
+      "description": "Memory type: rule (standing instruction that always applies), learned (inferred from past experience), or recap (end-of-session summary)."
     },
     "namespace": {
       "type": "string",
-      "description": "Dot-separated namespace isolating this entry (e.g., 'user.preferences', 'repo.conventions')."
+      "description": "Logical grouping for this memory (e.g. \"coding-standards\", \"user-preferences\")."
     },
     "key": {
       "type": "string",
-      "description": "Human-readable key within the namespace identifying this specific memory."
+      "description": "Unique key within the namespace for this memory entry."
     },
     "payloadRef": {
       "type": "string",
-      "description": "URN or path pointing to the full content of this memory entry."
+      "description": "Reference to the full memory content (file path, blob URI, or inline URN)."
     },
     "authoritativeRef": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Optional URN of a source document that this memory was derived from."
+      "description": "Optional reference to the authoritative source that this memory was derived from."
     },
     "citationRefs": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "URNs of sessions or documents that provide evidence for this memory."
+      "description": "References to sources that support or justify this memory."
     },
     "scope": {
       "type": "object",
@@ -92,7 +93,7 @@
           "pattern": "^urn:srcos:session:"
         }
       },
-      "description": "Scope restrictions: workspace, pathPrefixes, and optional sessionRef."
+      "description": "The workspace and path prefixes this memory is relevant to."
     },
     "freshness": {
       "type": "object",
@@ -120,8 +121,7 @@
           "minimum": 0
         }
       },
-      "description": "Freshness tracking: learnedAt (required), reviewedAt, and ttl (seconds)."
+      "description": "When this memory was learned, optionally reviewed, and its time-to-live in seconds."
     }
-  },
-  "description": "A durable knowledge entry stored in the agent's persistent memory layer, classified by kind (explicit rule, learned pattern, or session recap), with namespace scoping and freshness tracking."
+  }
 }

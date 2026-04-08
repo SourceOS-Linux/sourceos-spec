@@ -1,94 +1,154 @@
 # Additive AsyncAPI patch fragment for the agent-plane schema family.
-# Merge with asyncapi.yaml to obtain the complete event-spine surface.
+# Merge this file into asyncapi.yaml at build time using @asyncapi/bundler.
+# All channels use Kafka with the same broker configuration as the base spec.
+
 channels:
   srcos.v2.session.events:
-    description: >
-      Events related to AgentSession lifecycle.
-      Common eventType values: SessionCreated, SessionStatusChanged,
-      SessionCompleted, SessionFailed.
+    description: Events emitted when an AgentSession is created, updated, or reaches a terminal state.
+    bindings:
+      kafka:
+        topic: srcos.v2.session.events
+        partitions: 6
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
     publish:
-      summary: Publish a Session event.
       operationId: publishSessionEvent
+      summary: Publish an agent session domain event
+      description: Publishes an event when an AgentSession's state changes or a SessionReceipt is recorded.
       message:
         name: SessionEvent
-        title: Session Event
-        summary: An event envelope wrapping an AgentSession state change.
+        title: Agent Session Domain Event
+        summary: A lifecycle event for an AgentSession or SessionReceipt.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `AgentSessionStarted` — a new AgentSession was created with status "running"
+          - `AgentSessionCompleted` — an AgentSession reached a terminal status
+          - `SessionReceiptRecorded` — a SessionReceipt was persisted for a completed session
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
-    subscribe:
-      summary: Receive Session events.
-      operationId: subscribeSessionEvents
-      message:
-        name: SessionEvent
-        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the affected AgentSession.
+
   srcos.v2.execution.events:
-    description: >
-      Events related to ExecutionDecision records within agent sessions.
-      Common eventType values: ExecutionDecisionIssued.
+    description: Events emitted when an ExecutionDecision is recorded by an agent session.
+    bindings:
+      kafka:
+        topic: srcos.v2.execution.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
     publish:
-      summary: Publish an Execution event.
       operationId: publishExecutionEvent
+      summary: Publish an execution decision event
+      description: Publishes an event whenever an agent records an ExecutionDecision (allow, deny, ask, defer, or rewrite).
       message:
         name: ExecutionEvent
-        title: Execution Event
-        summary: An event envelope wrapping an ExecutionDecision record.
+        title: Execution Decision Domain Event
+        summary: An immutable event for a recorded ExecutionDecision.
+        description: |
+          The `eventType` in the payload envelope is always `ExecutionDecisionRecorded`.
+          The payload contains the full ExecutionDecision object.
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
-    subscribe:
-      summary: Receive Execution events.
-      operationId: subscribeExecutionEvents
-      message:
-        name: ExecutionEvent
-        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the ExecutionDecision.
+
   srcos.v2.skill.events:
-    description: >
-      Events related to SkillManifest registration and updates.
-      Common eventType values: SkillRegistered, SkillUpdated, SkillDeprecated.
+    description: Events emitted when a SkillManifest is registered or updated.
+    bindings:
+      kafka:
+        topic: srcos.v2.skill.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 604800000
+          cleanup.policy: delete
     publish:
-      summary: Publish a Skill event.
       operationId: publishSkillEvent
+      summary: Publish a skill manifest domain event
+      description: Publishes an event whenever a SkillManifest is created or updated.
       message:
         name: SkillEvent
-        title: Skill Event
-        summary: An event envelope wrapping a SkillManifest lifecycle change.
+        title: Skill Manifest Domain Event
+        summary: A change event for a SkillManifest.
+        description: |
+          The `eventType` in the payload envelope is `SkillManifestUpserted`.
+          The payload contains the full SkillManifest object.
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
-    subscribe:
-      summary: Receive Skill events.
-      operationId: subscribeSkillEvents
-      message:
-        name: SkillEvent
-        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the SkillManifest.
+
   srcos.v2.memory.events:
-    description: >
-      Events related to MemoryEntry writes and evictions in the agent
-      memory store. Common eventType values: MemoryWritten, MemoryEvicted.
+    description: Events emitted when a MemoryEntry is created, updated, or reviewed.
+    bindings:
+      kafka:
+        topic: srcos.v2.memory.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 604800000
+          cleanup.policy: delete
     publish:
-      summary: Publish a Memory event.
       operationId: publishMemoryEvent
+      summary: Publish a memory entry domain event
+      description: Publishes an event when a MemoryEntry is upserted or a SessionReview extracts new memories.
       message:
         name: MemoryEvent
-        title: Memory Event
-        summary: An event envelope wrapping a MemoryEntry write or eviction.
+        title: Memory Entry Domain Event
+        summary: A lifecycle event for a MemoryEntry or SessionReview.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `MemoryEntryUpserted` — a MemoryEntry was created or updated
+          - `SessionReviewCompleted` — a SessionReview was recorded with learned memory refs
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
-    subscribe:
-      summary: Receive Memory events.
-      operationId: subscribeMemoryEvents
-      message:
-        name: MemoryEvent
-        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the MemoryEntry or SessionReview.
+
   srcos.v2.receipt.events:
-    description: >
-      Events emitted when session or release receipts are recorded.
-      Common eventType values: SessionReceiptRecorded, ReleaseReceiptRecorded.
+    description: Events emitted when a ReleaseReceipt is verified or fails.
+    bindings:
+      kafka:
+        topic: srcos.v2.receipt.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
     publish:
-      summary: Publish a Receipt event.
       operationId: publishReceiptEvent
+      summary: Publish a release receipt event
+      description: Publishes an event when a ReleaseReceipt is recorded after a deployment verification.
       message:
         name: ReceiptEvent
-        title: Receipt Event
-        summary: An event envelope wrapping a SessionReceipt or ReleaseReceipt.
+        title: Release Receipt Domain Event
+        summary: A verification event for a ReleaseReceipt.
+        description: |
+          The `eventType` in the payload envelope identifies the outcome:
+          - `ReleaseVerified` — all gate checks passed and the release is verified
+          - `ReleaseFailed` — one or more gate checks failed
+        contentType: application/json
         payload: { $ref: './schemas/EventEnvelope.json' }
-    subscribe:
-      summary: Receive Receipt events.
-      operationId: subscribeReceiptEvents
-      message:
-        name: ReceiptEvent
-        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the ReleaseReceipt.
+

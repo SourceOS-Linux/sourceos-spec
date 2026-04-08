@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/PolicyBinding.json",
   "title": "PolicyBinding",
+  "description": "Associates a Policy with a WorkflowSpec or SkillManifest, enforcing that policy for all runs of that workflow or invocations of that skill.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -12,13 +13,12 @@
     "policyId": {
       "type": "string",
       "pattern": "^urn:srcos:policy:",
-      "description": "URN of the Policy being bound."
+      "description": "URN of the Policy to enforce. Pattern: urn:srcos:policy:<id>"
     },
     "appliesTo": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Predicate identifying the workflow node(s) or workload(s) this binding covers."
+      "description": "Selector describing the resources or contexts to which this binding applies."
     }
-  },
-  "description": "An association between a Policy and the specific WorkflowNode or WorkloadSpec to which it is applied at execution time."
+  }
 }

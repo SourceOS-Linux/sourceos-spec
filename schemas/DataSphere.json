@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/DataSphere.json",
   "title": "DataSphere",
+  "description": "A bounded, policy-controlled execution environment. Defines the zone, network policy, and integrity controls under which a workload runs.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,11 +15,11 @@
     "sphereId": {
       "type": "string",
       "pattern": "^urn:srcos:sphere:",
-      "description": "Stable URN identifying this DataSphere."
+      "description": "Stable URN identifier. Pattern: urn:srcos:sphere:<local-id>"
     },
     "name": {
       "type": "string",
-      "description": "Human-readable name of this DataSphere."
+      "description": "Human-readable name for this data sphere."
     },
     "boundary": {
       "type": "object",
@@ -40,7 +41,7 @@
           ]
         }
       },
-      "description": "Zone, network-policy, and storage-policy constraints defining the perimeter."
+      "description": "Zone and policy boundaries: the logical zone name, an optional network policy reference, and an optional storage policy reference."
     },
     "controls": {
       "type": "object",
@@ -64,8 +65,7 @@
           ]
         }
       },
-      "description": "Access enforcer, provenance mode, and container attestation settings."
+      "description": "Enforcement controls: the access enforcer identifier, provenance recording level, and container attestation level."
     }
-  },
-  "description": "A logical isolation boundary within which workloads execute, defined by zone constraints, network policies, storage policies, and access-control settings."
+  }
 }

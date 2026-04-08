@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Trigger.json",
   "title": "Trigger",
+  "description": "Specifies how a WorkflowSpec is activated: on a cron schedule, in response to an event, or manually.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,22 +15,21 @@
         "event",
         "manual"
       ],
-      "description": "The type of trigger."
+      "description": "The trigger type: schedule (cron), event (reacts to an AsyncAPI channel message), or manual."
     },
     "schedule": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Cron expression for schedule triggers (e.g., '0 2 * * *')."
+      "description": "Cron expression for schedule triggers (e.g. \"0 2 * * *\"). Required when kind is \"schedule\"."
     },
     "eventType": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Event type string that activates this trigger when kind is 'event'."
+      "description": "AsyncAPI event type string for event triggers. Required when kind is \"event\"."
     }
-  },
-  "description": "A workflow activation specification that causes a WorkflowSpec to execute when a scheduled time fires, a named event type is received, or a manual invocation is made."
+  }
 }

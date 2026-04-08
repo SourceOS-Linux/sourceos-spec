@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/TagAssignment.json",
   "title": "TagAssignment",
+  "description": "A classification tag attached to a field or glossary term, with a confidence score, source attribution, and optional human review record.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -13,7 +14,7 @@
   "properties": {
     "tag": {
       "type": "string",
-      "description": "The classification tag string (e.g., 'pii.email', 'financial.revenue')."
+      "description": "The classification tag identifier (e.g. \"pii.dob\", \"sensitive\", \"health\")."
     },
     "state": {
       "enum": [
@@ -21,13 +22,13 @@
         "curated",
         "rejected"
       ],
-      "description": "Current curation state of this tag assignment."
+      "description": "Curation state: inferred (ML or rule-assigned, unreviewed), curated (analyst-confirmed), or rejected."
     },
     "confidence": {
       "type": "number",
       "minimum": 0,
       "maximum": 1,
-      "description": "Confidence score in the range [0, 1] from the detection source."
+      "description": "Confidence score for this tag assignment, in the range [0, 1]."
     },
     "source": {
       "enum": [
@@ -36,14 +37,14 @@
         "rule",
         "import"
       ],
-      "description": "How this tag was assigned."
+      "description": "How the tag was assigned: ml (machine learning model), analyst (human review), rule (rule engine), or import (external system)."
     },
     "evidence": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of evidence artifact names or descriptions supporting this tag."
+      "description": "Human-readable notes or artifact identifiers supporting this tag assignment."
     },
     "review": {
       "type": "object",
@@ -69,8 +70,7 @@
           ]
         }
       },
-      "description": "Human review details: reviewer URN, review timestamp, and a comment."
+      "description": "Optional human review record: who reviewed, when, and their comment."
     }
-  },
-  "description": "A classification tag applied to a field, glossary term, or dataset column, recording the curation state, confidence score, detection source, supporting evidence, and human review details."
+  }
 }

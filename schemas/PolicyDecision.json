@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/PolicyDecision.json",
   "title": "PolicyDecision",
+  "description": "The immutable, hash-signed audit record of a single /v2/decisions/evaluate call. Outcome is permit, deny, or permitWithObligations.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -19,15 +20,15 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:decision:",
-      "description": "Stable URN identifying this decision record (urn:srcos:decision:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:decision:<local-id>"
     },
     "type": {
       "const": "PolicyDecision",
-      "description": "Discriminator constant \u2014 always 'PolicyDecision'."
+      "description": "Discriminator constant \u2014 always \"PolicyDecision\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "decision": {
       "enum": [
@@ -35,12 +36,12 @@
         "deny",
         "permitWithObligations"
       ],
-      "description": "The decision outcome."
+      "description": "The evaluation outcome: permit, deny, or permitWithObligations."
     },
     "policyId": {
       "type": "string",
       "pattern": "^urn:srcos:policy:",
-      "description": "URN of the Policy that produced this decision."
+      "description": "URN of the Policy that produced this decision. Pattern: urn:srcos:policy:<id>"
     },
     "inputs": {
       "type": "object",
@@ -65,30 +66,29 @@
           "additionalProperties": true
         }
       },
-      "description": "The evaluated subject context, object context, purpose, and environment."
+      "description": "The exact subject, object, purpose, and environment inputs that were evaluated."
     },
     "obligations": {
       "type": "array",
       "items": {
         "$ref": "Obligation.json"
       },
-      "description": "Obligations the accessing subject must fulfil (present when decision is 'permitWithObligations')."
+      "description": "Obligations attached to a permitWithObligations decision."
     },
     "issuedAt": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 timestamp when the decision was issued."
+      "description": "ISO 8601 date-time when this decision was issued."
     },
     "expiresAt": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 timestamp after which the decision must not be acted upon."
+      "description": "ISO 8601 date-time after which this decision is no longer valid."
     },
     "decisionHash": {
       "type": "string",
       "pattern": "^sha256:",
-      "description": "SHA-256 hash over the canonical JSON of this record for non-repudiation."
+      "description": "sha256: prefixed hash of the canonical inputs+outcome for tamper-evidence."
     }
-  },
-  "description": "The immutable, hash-signed result of evaluating a Policy for a specific subject\u2013object\u2013purpose triple, recording the decision outcome and any obligations attached to a permit."
+  }
 }

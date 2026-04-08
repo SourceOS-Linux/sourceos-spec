@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/DataRef.json",
   "title": "DataRef",
+  "description": "A typed pointer to a data entity (dataset, asset, stream topic, or file) with optional field-path restrictions.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,19 +17,18 @@
         "streamTopic",
         "file"
       ],
-      "description": "The category of the referenced data entity."
+      "description": "The type of data entity referenced: dataset, asset, streamTopic, or file."
     },
     "id": {
       "type": "string",
-      "description": "URN of the referenced data entity."
+      "description": "URN or identifier of the referenced entity."
     },
     "fieldPaths": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "Optional JSONPath expressions narrowing the reference to specific fields."
+      "description": "Optional JSONPath expressions restricting which fields of the entity are in scope (e.g. \"$.patient.dateOfBirth\")."
     }
-  },
-  "description": "A typed reference to a data entity (dataset, asset, stream, or file) with optional field-path scoping for fine-grained lineage tracking."
+  }
 }

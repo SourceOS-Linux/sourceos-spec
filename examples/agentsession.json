@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:session:s001",
+  "type": "AgentSession",
+  "specVersion": "2.0.0",
+  "role": "executor",
+  "status": "completed",
+  "mode": "execute",
+  "workspaceRef": "workspace:sourceos-local",
+  "worktreeRef": null,
+  "substrate": "local",
+  "surface": {
+    "pty": true,
+    "workdir": "/home/runner/work/sourceos-spec",
+    "background": false,
+    "reviewOnly": false,
+    "worktreeStrategy": "none",
+    "sandboxMode": "user",
+    "networkMode": "allowlist",
+    "egressAllowlist": ["api.github.com", "*.srcos.ai"],
+    "elevated": false,
+    "protectedPaths": [".git/config", ".env"],
+    "approvalProfile": null
+  },
+  "provider": "openai",
+  "skillRefs": ["urn:srcos:skill:obfuscation-runner"],
+  "memoryRefs": ["urn:srcos:memory:m001"],
+  "transcriptRef": null,
+  "decisionRefs": ["urn:srcos:exec-decision:ed001"],
+  "telemetryRefs": ["urn:srcos:telemetry:t001"],
+  "time": {
+    "startedAt": "2025-12-24T05:00:00Z",
+    "endedAt": "2025-12-24T05:10:00Z"
+  }
+}

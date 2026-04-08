@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/AgentSession.json",
   "title": "AgentSession",
+  "description": "A single autonomous agent session. Tracks the role, mode, execution substrate, bound skills and memories, and all execution decisions made during the session.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -23,15 +24,15 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:session:",
-      "description": "Stable URN identifying this session (urn:srcos:session:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:session:<local-id>"
     },
     "type": {
       "const": "AgentSession",
-      "description": "Discriminator constant \u2014 always 'AgentSession'."
+      "description": "Discriminator constant \u2014 always \"AgentSession\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "parentSessionRef": {
       "type": [
@@ -39,7 +40,7 @@
         "null"
       ],
       "pattern": "^urn:srcos:session:",
-      "description": "URN of the parent session when this is a sub-session (null for root sessions)."
+      "description": "URN of the parent session if this is a sub-session (e.g. an explorer launched by a main session). Null for root sessions."
     },
     "role": {
       "enum": [
@@ -52,7 +53,7 @@
         "reverser",
         "custom"
       ],
-      "description": "Functional role this agent session plays in the overall task."
+      "description": "The functional role this session plays: main (top-level coordinator), explorer (research), planner, executor, reviewer, auditor, reverser (undo), or custom."
     },
     "status": {
       "enum": [
@@ -66,7 +67,7 @@
         "merged",
         "reversed"
       ],
-      "description": "Lifecycle state of the session."
+      "description": "Lifecycle state of the session: created \u2192 waiting \u2192 running \u2192 paused \u2192 completed/failed/canceled/merged/reversed."
     },
     "mode": {
       "enum": [
@@ -75,18 +76,18 @@
         "execute",
         "review"
       ],
-      "description": "Interaction mode: plan (propose-only), ask (clarify), execute (take actions), or review (read-only assessment)."
+      "description": "The current operating mode: plan (design only), ask (gather information), execute (make changes), or review (assess results)."
     },
     "workspaceRef": {
       "type": "string",
-      "description": "URN or path identifying the workspace repository being operated on."
+      "description": "Identifier of the workspace (repository, project, or environment) this session operates in."
     },
     "worktreeRef": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Optional URN of the git worktree used for isolated edits."
+      "description": "Optional reference to a git worktree if the session works in an isolated branch checkout."
     },
     "substrate": {
       "enum": [
@@ -97,18 +98,18 @@
         "event-pushed",
         "ci"
       ],
-      "description": "Execution substrate the agent is running on."
+      "description": "Where the agent runtime is hosted: local (developer machine), remote-local (remote dev), cloud, background (async), event-pushed, or ci (CI pipeline)."
     },
     "surface": {
       "$ref": "ExecutionSurface.json",
-      "description": "Execution surface constraints (sandbox, network, paths) for this session."
+      "description": "The execution surface constraints (sandbox mode, network policy, protected paths) applied to this session."
     },
     "provider": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Model or service provider backing the agent (e.g., 'openai', 'anthropic')."
+      "description": "Optional name of the AI model provider or runtime host."
     },
     "skillRefs": {
       "type": "array",
@@ -116,7 +117,7 @@
         "type": "string",
         "pattern": "^urn:srcos:skill:"
       },
-      "description": "Ordered list of SkillManifest URNs active during this session."
+      "description": "URNs of the SkillManifests available to this session."
     },
     "memoryRefs": {
       "type": "array",
@@ -124,7 +125,7 @@
         "type": "string",
         "pattern": "^urn:srcos:memory:"
       },
-      "description": "URNs of MemoryEntry objects injected into the session context."
+      "description": "URNs of the MemoryEntries loaded into this session."
     },
     "transcriptRef": {
       "type": [
@@ -132,7 +133,7 @@
         "null"
       ],
       "pattern": "^urn:srcos:transcript:",
-      "description": "Optional URN pointing to the full conversation transcript artifact."
+      "description": "Optional URN of the conversation transcript artifact."
     },
     "decisionRefs": {
       "type": "array",
@@ -140,7 +141,7 @@
         "type": "string",
         "pattern": "^urn:srcos:exec-decision:"
       },
-      "description": "URNs of ExecutionDecision records (urn:srcos:exec-decision:<id>) produced during this session."
+      "description": "URNs of all ExecutionDecisions recorded during this session."
     },
     "telemetryRefs": {
       "type": "array",
@@ -148,7 +149,7 @@
         "type": "string",
         "pattern": "^urn:srcos:telemetry:"
       },
-      "description": "URNs of TelemetryEvent records emitted during this session."
+      "description": "URNs of TelemetryEvents emitted during this session."
     },
     "time": {
       "type": "object",
@@ -169,8 +170,7 @@
           "format": "date-time"
         }
       },
-      "description": "Session timing: startedAt and optional endedAt (ISO 8601)."
+      "description": "Session timing: startedAt (required) and optional endedAt."
     }
-  },
-  "description": "A record of a single agent task-execution session, capturing the role, substrate, execution surface, skill/memory references, and timing for a discrete unit of agentic work."
+  }
 }

@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Community.json",
   "title": "Community",
+  "description": "A named group of subject URNs, used to manage team-level access and notification subscriptions.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,41 +15,40 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:community:",
-      "description": "Stable URN identifying this community (urn:srcos:community:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:community:<local-id>"
     },
     "type": {
       "const": "Community",
-      "description": "Discriminator constant \u2014 always 'Community'."
+      "description": "Discriminator constant \u2014 always \"Community\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
       "type": "string",
-      "description": "Display name of the community."
+      "description": "Human-readable name of the community."
     },
     "description": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Optional description of the community's purpose or scope."
+      "description": "Optional description of the community's purpose."
     },
     "members": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of subject URNs who are members of this community."
+      "description": "List of subject URNs that are members of this community."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
       },
-      "description": "Optional hypermedia links to related resources."
+      "description": "Supplementary hyperlinks (e.g. team chat, wiki page)."
     }
-  },
-  "description": "A named group of subjects (users, services) that share common data interests or governance scope within the platform."
+  }
 }

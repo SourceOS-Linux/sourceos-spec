@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:memory:m001",
+  "type": "MemoryEntry",
+  "specVersion": "2.0.0",
+  "kind": "learned",
+  "namespace": "obfuscation-preferences",
+  "key": "k-anon-default-k",
+  "payloadRef": "blob://memory/m001-payload.json",
+  "authoritativeRef": null,
+  "citationRefs": ["urn:srcos:session:s001"],
+  "scope": {
+    "workspace": "workspace:sourceos-local",
+    "pathPrefixes": ["schemas/", "examples/"],
+    "sessionRef": "urn:srcos:session:s001"
+  },
+  "freshness": {
+    "learnedAt": "2025-12-24T05:10:00Z",
+    "reviewedAt": null,
+    "ttl": 2592000
+  }
+}

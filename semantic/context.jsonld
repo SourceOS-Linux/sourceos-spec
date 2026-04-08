@@ -6,6 +6,7 @@
     "schema": "https://schema.org/",
     "id": "@id",
     "type": "@type",
+
     "AgentSession": "srcos:AgentSession",
     "Agreement": "srcos:Agreement",
     "AuthorityLink": "srcos:AuthorityLink",
@@ -39,13 +40,13 @@
     "PolicyCondition": "srcos:PolicyCondition",
     "PolicyDecision": "srcos:PolicyDecision",
     "ProfileStats": "srcos:ProfileStats",
-    "ProvenanceRecord": "prov:Activity",
+    "ProvenanceRecord": "srcos:ProvenanceRecord",
     "QualityMetric": "srcos:QualityMetric",
     "Rating": "srcos:Rating",
     "ReleaseReceipt": "srcos:ReleaseReceipt",
     "RolloutPolicy": "srcos:RolloutPolicy",
     "Rule": "srcos:Rule",
-    "RunRecord": "prov:Activity",
+    "RunRecord": "srcos:RunRecord",
     "SchemaDefinition": "srcos:SchemaDefinition",
     "SessionReceipt": "srcos:SessionReceipt",
     "SessionReview": "srcos:SessionReview",
@@ -59,6 +60,11 @@
     "WorkflowEdge": "srcos:WorkflowEdge",
     "WorkflowNode": "srcos:WorkflowNode",
     "WorkflowSpec": "srcos:WorkflowSpec",
-    "WorkloadSpec": "srcos:WorkloadSpec"
+    "WorkloadSpec": "srcos:WorkloadSpec",
+
+    "wasGeneratedBy": { "@id": "prov:wasGeneratedBy", "@type": "@id" },
+    "used":           { "@id": "prov:used",           "@type": "@id" },
+    "wasAssociatedWith": { "@id": "prov:wasAssociatedWith", "@type": "@id" },
+    "wasDerivedFrom":    { "@id": "prov:wasDerivedFrom",    "@type": "@id" }
   }
 }

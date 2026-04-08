@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/RunRecord.json",
   "title": "RunRecord",
+  "description": "The audit record of a single workload execution. References the WorkloadSpec, DataSphere, input/output DataRefs, CapabilityToken, and ProvenanceRecord.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -20,48 +21,48 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:run:",
-      "description": "Stable URN identifying this run (urn:srcos:run:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:run:<local-id>"
     },
     "type": {
       "const": "RunRecord",
-      "description": "Discriminator constant \u2014 always 'RunRecord'."
+      "description": "Discriminator constant \u2014 always \"RunRecord\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "workload": {
       "$ref": "WorkloadSpec.json",
-      "description": "The WorkloadSpec that was executed."
+      "description": "The workload specification that was executed."
     },
     "sphere": {
       "$ref": "DataSphere.json",
-      "description": "The DataSphere boundary in which execution occurred."
+      "description": "The data sphere (execution environment) in which the workload ran."
     },
     "inputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
       },
-      "description": "List of input DataRefs consumed by this run."
+      "description": "DataRefs describing the input data entities consumed by this run."
     },
     "outputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
       },
-      "description": "List of output DataRefs produced by this run."
+      "description": "DataRefs describing the output data entities produced by this run."
     },
     "tokenRef": {
       "type": "string",
-      "description": "Token ID (from CapabilityToken) that authorised this execution."
+      "description": "Identifier of the CapabilityToken authorising this run."
     },
     "decisionRef": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Optional URN of the PolicyDecision that issued the capability token."
+      "description": "Optional URN of the PolicyDecision that authorised this run."
     },
     "status": {
       "enum": [
@@ -70,7 +71,7 @@
         "failed",
         "aborted"
       ],
-      "description": "Final execution status."
+      "description": "Execution outcome: started, succeeded, failed, or aborted."
     },
     "time": {
       "type": "object",
@@ -91,7 +92,7 @@
           "format": "date-time"
         }
       },
-      "description": "Execution timing: startedAt and endedAt (ISO 8601)."
+      "description": "Run timing: startedAt (required) and optional endedAt."
     },
     "provenanceRef": {
       "type": [
@@ -99,7 +100,7 @@
         "null"
       ],
       "pattern": "^urn:srcos:prov:",
-      "description": "Optional URN of the ProvenanceRecord created for this run."
+      "description": "Optional URN of the ProvenanceRecord capturing lineage for this run. Pattern: urn:srcos:prov:<id>"
     },
     "integrity": {
       "type": "object",
@@ -130,8 +131,7 @@
           ]
         }
       },
-      "description": "Optional hashes of inputs, outputs, and the run record itself, plus a signature."
+      "description": "Optional integrity hashes for inputs, outputs, and the run itself, plus an optional signature."
     }
-  },
-  "description": "A record of a single workload execution within a DataSphere, capturing the workload specification, input and output data references, the capability token used, execution status, timing, and lineage hook."
+  }
 }

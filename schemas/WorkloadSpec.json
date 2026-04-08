@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/WorkloadSpec.json",
   "title": "WorkloadSpec",
+  "description": "A runnable workload specification: a container image, Spark job, serverless function, or stream processor with its entry point and parameters.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,7 +15,7 @@
     "workloadId": {
       "type": "string",
       "pattern": "^urn:srcos:workload:",
-      "description": "Stable URN identifying this workload specification (urn:srcos:workload:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:workload:<local-id>"
     },
     "kind": {
       "enum": [
@@ -23,21 +24,20 @@
         "function",
         "streamProcessor"
       ],
-      "description": "The execution substrate or framework for this workload."
+      "description": "The execution model: sparkJob, container, function (serverless), or streamProcessor."
     },
     "image": {
       "type": "string",
-      "description": "Container image reference, JAR path, function ARN, or equivalent."
+      "description": "Container image reference or function ARN (e.g. \"ghcr.io/org/image:tag\")."
     },
     "entrypoint": {
       "type": "string",
-      "description": "Command, function name, or class to invoke within the image."
+      "description": "The command or function handler to invoke (e.g. \"obfuscate\", \"handler.main\")."
     },
     "params": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Workload-specific parameters passed at execution time."
+      "description": "Arbitrary execution parameters passed to the workload at runtime."
     }
-  },
-  "description": "The specification of a single executable computational unit \u2014 a container, Spark job, serverless function, or stream processor \u2014 that can be referenced by a RunRecord or WorkflowNode."
+  }
 }

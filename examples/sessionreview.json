@@ -1,0 +1,10 @@
+{
+  "id": "urn:srcos:session-review:sr001",
+  "type": "SessionReview",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:s001",
+  "summaryRef": "blob://summaries/s001-summary.md",
+  "learnedMemoryRefs": ["urn:srcos:memory:m001"],
+  "followupRefs": [],
+  "reviewedAt": "2025-12-24T05:15:00Z"
+}

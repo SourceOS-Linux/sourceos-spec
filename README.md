@@ -1,35 +1,64 @@
-# SourceOS/SociOS Typed Contracts Specification (v2)
+# SourceOS/SociOS Typed Contracts Starter Kit (v2)
 
-A machine-readable, implementation-ready specification for the SourceOS/SociOS platform's metadata plane and agent plane. The spec defines the full set of typed objects, REST API contracts, event-spine channels, and semantic overlays needed to govern, catalogue, and trace data assets and agentic workloads end-to-end.
+This revision closes the biggest implementability gaps from v1:
+- Adds Agreement + Glossary + Connector/Asset + SchemaDefinition + Provenance + Collaboration objects
+- Upgrades policy conditions to a typed `PolicyCondition` with a declared language (jsonlogic/cel/rego/cedar)
+- Adds a minimal Hydra/JSON-LD semantic overlay (semantic/context.jsonld + semantic/hydra.jsonld)
+- Upgrades Dataset to reference Asset + Schema + Agreements explicitly (no implicit physical fields)
 
-## Contents
+## Topology position
 
-- [Why this exists](#why-this-exists)
-- [Repository layout](#repository-layout)
-- [Architecture overview](#architecture-overview)
-- [Schema families](#schema-families)
-- [Implementation path](#implementation-path)
-- [Compatibility discipline](#compatibility-discipline)
-- [Validation](#validation)
-- [Contributing](#contributing)
+- **Role:** canonical typed-contract, JSON-LD, and shared vocabulary lane for SourceOS / AgentOS.
+- **Connects to:**
+  - `SociOS-Linux/agentos-spine` — Linux-side integration/workspace spine that consumes and routes these contracts
+  - `SociOS-Linux/workstation-contracts` — workstation/CI specialization and conformance lane
+  - `SociOS-Linux/SourceOS` — immutable substrate that should consume typed policy and artifact semantics
+  - `SociOS-Linux/socios` — opt-in automation layer that should reference, not redefine, these contracts
+  - `SocioProphet/sociosphere` — platform workspace controller that may mirror or reuse shared contract vocabulary
+  - `SocioProphet/socioprophet` and `SociOS-Linux/socioslinux-web` — public documentation surfaces that explain these contracts downstream
+- **Not this repo:**
+  - workspace controller
+  - image builder
+  - public docs site
+  - opt-in automation plane
+- **Semantic direction:** this repo should become the canonical home for shared repo ontology, JSON-LD contexts, and vocabulary definitions that other repos publish by reference.
+
+## Why this matters
+If a contract bundle does not cover agreements, glossary, and asset connectors, the metadata plane cannot unify governance and meaning end-to-end.
+We now have a closed set of object families that directly correspond to the Open Metadata Types taxonomy areas:
+- Area 1: Physical assets -> Connector, PhysicalAsset
+- Area 2: Glossary -> GlossaryTerm
+- Area 3: Governance -> Policy/Decision/Token/Obligations
+- Area 4: Collaboration -> Comment/Rating/Community
+- Area 5: Models/Schemas -> SchemaDefinition, EntityField, ValidValues
+- Area 6: Agreements -> Agreement, Party
+
+## Minimal implementation path (practical)
+1) Schema validation: AJV (Node) or jsonschema (Python).
+2) Codegen: TypeScript types (quicktype) or Python models (datamodel-code-generator for Pydantic).
+3) API service: OpenAPI -> FastAPI scaffold.
+4) Event spine: AsyncAPI -> Kafka topics with schema validation at the producer/consumer boundaries.
+
+## Compatibility discipline
+- IDs are stable URNs; specVersion is semver.
+- Additive changes should remain backward compatible; breaking changes increment major.
+# SourceOS/SociOS Typed Contracts
+
+**SourceOS/SociOS Typed Contracts** is the canonical, machine-readable specification for the SourceOS metadata governance platform and the SociOS agent plane. It defines the full set of JSON Schemas, an OpenAPI REST surface, an AsyncAPI event spine, and a JSON-LD / Hydra semantic overlay that together make up the "contract layer" every implementation component must satisfy.
+
+> **Spec version:** `2.0.0` &nbsp;|&nbsp; **License:** see [LICENSE](LICENSE)
 
 ---
 
-## Why this exists
+## Why this repository exists
 
-If a contract bundle does not cover agreements, glossary, physical assets, agent sessions, and execution decisions, the metadata plane cannot unify governance and meaning end-to-end. This specification closes that gap with a closed set of object families that map directly to the Open Metadata Types taxonomy:
+A metadata governance platform can only unify data meaning, policy, provenance, and agent execution if every component agrees on the *shape* of the objects it exchanges.  This repository is that shared agreement.  Downstream consumers include:
 
-| Area | Schema families |
-|------|-----------------|
-| Area 1 — Physical assets | `Connector`, `PhysicalAsset` |
-| Area 2 — Glossary | `GlossaryTerm`, `AuthorityLink` |
-| Area 3 — Governance | `Policy`, `Rule`, `PolicyCondition`, `PolicyDecision`, `CapabilityToken`, `Obligation`, `Exception` |
-| Area 4 — Collaboration | `Comment`, `Rating`, `Community` |
-| Area 5 — Models/Schemas | `SchemaDefinition`, `EntityField`, `ValidValues`, `Field`, `MappingSpec`, `MappingEvidence` |
-| Area 6 — Agreements | `Agreement`, `Party` |
-| Area 7 — Lineage | `RunRecord`, `ProvenanceRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataRef`, `DataSphere` |
-| Area 8 — Agent Plane | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
-| Cross-cutting | `EventEnvelope`, `TagAssignment`, `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt`, `Link`, `ProfileStats`, `QualityMetric` |
+- **API services** — scaffolded from `openapi.yaml` (metadata plane) and `openapi.agent-plane.patch.yaml` (agent plane).
+- **Event consumers** — Kafka topics declared in `asyncapi.yaml` + `asyncapi.agent-plane.patch.yaml`.
+- **Validators** — AJV (Node.js) or `jsonschema` (Python) loaded from `schemas/`.
+- **Code generators** — TypeScript types via [quicktype](https://quicktype.io); Python models via [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
+- **Semantic tooling** — JSON-LD context + Hydra API documentation in `semantic/`.
 
 ---
 
@@ -37,107 +66,65 @@ If a contract bundle does not cover agreements, glossary, physical assets, agent
 
 ```
 sourceos-spec/
-├── README.md                          # This file
-├── CONTRIBUTING.md                    # How to contribute
-├── CHANGELOG.md                       # Version history
-├── LICENSE                            # MIT licence
+├── README.md                         # This file
+├── ARCHITECTURE.md                   # Two-plane architecture, schema families, lifecycle
+├── CONTRIBUTING.md                   # How to add / modify schemas and API specs
+├── CHANGELOG.md                      # Spec version history
+├── LICENSE
 │
-├── schemas/                           # 54 JSON Schema (draft 2020-12) files
-│   ├── README.md                      # Per-family schema documentation
-│   ├── AgentSession.json
-│   ├── Agreement.json
-│   └── ...                            # (all other schemas)
+├── openapi.yaml                      # Metadata-plane REST API (v2)
+├── openapi.agent-plane.patch.yaml    # Additive agent-plane REST endpoints
+├── asyncapi.yaml                     # Metadata-plane event channels
+├── asyncapi.agent-plane.patch.yaml   # Agent-plane event channels
 │
-├── examples/                          # Concrete JSON example payloads (one per schema)
-│   ├── agreement.json
-│   ├── agent_session.json
-│   └── ...
+├── schemas/                          # 54 JSON Schema (draft 2020-12) files
+│   └── README.md                     # Schema catalog and URN patterns
 │
-├── openapi.yaml                       # OpenAPI 3.0.3 — Metadata Plane endpoints
-├── openapi.agent-plane.patch.yaml     # Additive OpenAPI patch — Agent Plane endpoints
-├── asyncapi.yaml                      # AsyncAPI 2.6.0 — Metadata Plane event channels
-├── asyncapi.agent-plane.patch.yaml    # Additive AsyncAPI patch — Agent Plane channels
+├── examples/                         # Conforming example payloads (one per type)
+│   └── README.md
 │
-├── semantic/
-│   ├── context.jsonld                 # JSON-LD @context mapping all 54 schema types
-│   └── hydra.jsonld                   # Hydra API documentation overlay
+├── semantic/                         # JSON-LD context + Hydra API documentation
+│   └── README.md
 │
 └── docs/
-    └── adr/                           # Architecture Decision Records
-        ├── 0001-json-schema-draft-2020-12.md
-        ├── 0002-urn-id-scheme.md
-        ├── 0003-generic-event-envelope.md
-        ├── 0004-multi-language-policy-conditions.md
-        └── 0005-additive-patch-pattern.md
+    └── adr/                          # Architecture Decision Records
 ```
-
----
-
-## Architecture overview
-
-```
-┌──────────────────────────────────────────────────────────────────────┐
-│                        SourceOS Platform                             │
-│                                                                      │
-│  ┌─────────────────────────┐   ┌──────────────────────────────────┐  │
-│  │     Metadata Plane      │   │          Agent Plane             │  │
-│  │                         │   │                                  │  │
-│  │  Datasets ──► Fields    │   │  AgentSession                    │  │
-│  │  PhysicalAssets         │   │  ExecutionDecision               │  │
-│  │  Connectors             │   │  SkillManifest                   │  │
-│  │  Schemas ──► EntityField│   │  MemoryEntry                     │  │
-│  │  GlossaryTerms          │   │  SessionReceipt                  │  │
-│  │  Agreements             │   │  TelemetryEvent                  │  │
-│  │  Policies ──► Decisions │   │  FrustrationSignal               │  │
-│  │  CapabilityTokens       │   │                                  │  │
-│  │  MappingSpecs           │   └─────────────┬────────────────────┘  │
-│  │  WorkflowSpecs          │                 │                       │
-│  │  RunRecords             │◄────────────────┘  (agent calls API)    │
-│  │  ProvenanceRecords      │                                         │
-│  │  Comments / Ratings     │                                         │
-│  └───────────┬─────────────┘                                         │
-│              │                                                       │
-│              ▼                                                       │
-│  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │                     Event Spine (Kafka)                         │ │
-│  │  srcos.v2.dataset.events  srcos.v2.session.events  ...          │ │
-│  └─────────────────────────────────────────────────────────────────┘ │
-└──────────────────────────────────────────────────────────────────────┘
-```
-
-All objects share a common envelope:
-
-```json
-{
-  "id":          "urn:srcos:<family>:<id>",
-  "type":        "<SchemaName>",
-  "specVersion": "2.0.0"
-}
-```
-
-IDs are stable URNs. The `specVersion` field follows semver and controls compatibility guarantees (see [Compatibility discipline](#compatibility-discipline)).
 
 ---
 
 ## Schema families
 
-See [`schemas/README.md`](./schemas/README.md) for the full per-family documentation including URN patterns, required fields, and cross-references.
+The 54 schemas are organised into six families that map directly to the Open Metadata Types taxonomy areas:
+
+| # | Family | Key schemas |
+|---|--------|-------------|
+| 1 | **Physical Assets** | `Connector`, `PhysicalAsset` |
+| 2 | **Glossary** | `GlossaryTerm`, `AuthorityLink` |
+| 3 | **Governance** | `Policy`, `Rule`, `PolicyCondition`, `PolicyDecision`, `CapabilityToken`, `Obligation`, `Exception` |
+| 4 | **Collaboration** | `Comment`, `Rating`, `Community` |
+| 5 | **Models / Schemas** | `SchemaDefinition`, `EntityField`, `Field`, `ValidValues`, `TagAssignment`, `QualityMetric`, `ProfileStats` |
+| 6 | **Agreements** | `Agreement`, `Party` |
+| + | **Execution / Provenance** | `Dataset`, `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataSphere`, `ProvenanceRecord`, `EventEnvelope`, `MappingSpec` |
+| + | **Agent Plane** | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
+| + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
 
 ---
 
-## Implementation path
+## Quick start
 
-### 1. Schema validation
+### 1 — Validate a payload against a schema
+
 ```bash
 # Node.js (AJV)
 npm install ajv ajv-formats
 node -e "
-const Ajv = require('ajv');
+const Ajv = require('ajv/dist/2020');
+const addFormats = require('ajv-formats');
 const schema = require('./schemas/Dataset.json');
 const example = require('./examples/dataset.json');
-const ajv = new Ajv({ strict: false });
-const validate = ajv.compile(schema);
-console.log(validate(example) ? 'valid' : validate.errors);
+const ajv = new Ajv(); addFormats(ajv);
+const valid = ajv.validate(schema, example);
+console.log(valid ? 'VALID' : ajv.errorsText());
 "
 
 # Python (jsonschema)
@@ -147,92 +134,42 @@ import json, jsonschema
 schema = json.load(open('schemas/Dataset.json'))
 example = json.load(open('examples/dataset.json'))
 jsonschema.validate(example, schema)
-print('valid')
+print('VALID')
 "
 ```
 
-### 2. Code generation
-```bash
-# TypeScript types (quicktype)
-npx quicktype --src schemas/Dataset.json --lang typescript --out src/types/Dataset.ts
+### 2 — Generate TypeScript types
 
-# Python Pydantic models (datamodel-code-generator)
+```bash
+npm install -g quicktype
+quicktype --src schemas/ --src-lang schema --lang typescript --out src/types/srcos.ts
+```
+
+### 3 — Generate Python Pydantic models
+
+```bash
 pip install datamodel-code-generator
-datamodel-codegen --input schemas/Dataset.json --output models/dataset.py
+datamodel-codegen --input schemas/ --input-file-type jsonschema --output models/
 ```
 
-### 3. API scaffolding
+### 4 — Generate a FastAPI stub from the OpenAPI spec
+
 ```bash
-# FastAPI (openapi-python-client)
-pip install openapi-python-client
-openapi-python-client generate --path openapi.yaml
-
-# Node/Express (openapi-generator)
-npx @openapitools/openapi-generator-cli generate \
-  -i openapi.yaml -g nodejs-express-server -o server/
-```
-
-### 4. Event spine
-```bash
-# Kafka topic setup (one topic per channel)
-# See asyncapi.yaml for the full channel list
-kafka-topics.sh --create --topic srcos.v2.dataset.events --partitions 3
-kafka-topics.sh --create --topic srcos.v2.policy.events --partitions 3
-# ...
-
-# Validate event payloads against EventEnvelope.json at producer/consumer boundaries
+pip install fastapi-code-generator
+fastapi-codegen --input openapi.yaml --output app/
 ```
 
 ---
 
 ## Compatibility discipline
 
-| Change type | Version bump | Notes |
-|---|---|---|
-| Add optional property | Patch (`2.0.x`) | Existing records remain valid |
-| Add required property | Major (`3.0.0`) | Breaking; increment `specVersion` on all records |
-| Add new schema | Minor (`2.x.0`) | Backward compatible |
-| Add enum value | Minor (`2.x.0`) | Consumers must handle unknown enum values |
-| Remove/rename property | Major (`3.0.0`) | Breaking |
-| Remove/rename schema | Major (`3.0.0`) | Breaking |
-
-- All IDs are stable URNs and must never be reused.
-- `specVersion` in each record must match the spec version it was written against.
-- The agent-plane patch files (`*.agent-plane.patch.yaml`) are additive overlays and follow the same semver rules independently.
-
----
-
-## Validation
-
-A GitHub Actions workflow (`.github/workflows/validate.yml`) runs on every pull request and verifies:
-
-1. All JSON schema files are syntactically valid.
-2. All files in `examples/` validate against their corresponding schema.
-3. `openapi.yaml` parses as valid OpenAPI 3.0.x.
-4. `asyncapi.yaml` parses as valid AsyncAPI 2.x.
-
-Run locally with:
-```bash
-# Install dependencies
-npm install -g @stoplight/spectral-cli ajv-cli @asyncapi/cli
-
-# Schema lint
-spectral lint openapi.yaml
-
-# Example validation (all examples against their schemas)
-for f in examples/*.json; do
-  type=$(jq -r '.type // empty' "$f")
-  [ -n "$type" ] && ajv validate -s "schemas/${type}.json" -d "$f" && echo "$f: ok"
-done
-```
+- **IDs** are stable URNs of the form `urn:srcos:<type>:<slug>`.
+- **`specVersion`** follows [Semantic Versioning](https://semver.org/): additive changes are minor bumps; breaking changes increment the major version.
+- All breaking changes are recorded in [CHANGELOG.md](CHANGELOG.md) and accompanied by an ADR in [docs/adr/](docs/adr/).
 
 ---
 
 ## Contributing
 
-See [`CONTRIBUTING.md`](./CONTRIBUTING.md) for:
-- How to propose new schemas or modify existing ones
-- The review and merge process
-- Schema design conventions (naming, URN patterns, `additionalProperties: false`)
-- How to add examples and keep them in sync with schema changes
+See [CONTRIBUTING.md](CONTRIBUTING.md) for schema authoring conventions, the URN naming guide, and the pull-request checklist.
 

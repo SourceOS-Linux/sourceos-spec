@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/GlossaryTerm.json",
   "title": "GlossaryTerm",
+  "description": "A defined business term with synonyms, classification tags, authority links to external vocabularies, and links to related terms.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,44 +16,44 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:glossary:",
-      "description": "Stable URN identifying this glossary term (urn:srcos:glossary:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:glossary:<local-id>"
     },
     "type": {
       "const": "GlossaryTerm",
-      "description": "Discriminator constant \u2014 always 'GlossaryTerm'."
+      "description": "Discriminator constant \u2014 always \"GlossaryTerm\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
       "type": "string",
-      "description": "Canonical display name of the term."
+      "description": "The canonical name of the term (e.g. \"Date of Birth\")."
     },
     "definition": {
       "type": "string",
-      "description": "Authoritative human-readable definition of the term."
+      "description": "The authoritative definition of the term."
     },
     "synonyms": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "Alternative names or abbreviations for this term."
+      "description": "Alternative names or abbreviations for this term (e.g. [\"DOB\", \"birth date\"])."
     },
     "tags": {
       "type": "array",
       "items": {
         "$ref": "TagAssignment.json"
       },
-      "description": "Semantic classification tags (e.g., 'pii', 'financial') applied to this term."
+      "description": "Classification tags (e.g. PII category tags) applied to this term."
     },
     "authorityLinks": {
       "type": "array",
       "items": {
         "$ref": "AuthorityLink.json"
       },
-      "description": "References to external authority systems that recognise this term."
+      "description": "Links to definitions of this term in external authority systems."
     },
     "relatedTerms": {
       "type": "array",
@@ -60,15 +61,14 @@
         "type": "string",
         "pattern": "^urn:srcos:glossary:"
       },
-      "description": "URNs of other GlossaryTerms that are semantically related."
+      "description": "URNs of related GlossaryTerms. Pattern: urn:srcos:glossary:<id>"
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
       },
-      "description": "Optional hypermedia links to further documentation."
+      "description": "Supplementary hyperlinks."
     }
-  },
-  "description": "A canonical business term with its authoritative definition, synonyms, semantic classification tags, external authority links, and cross-references, forming the basis of semantic unification across datasets and fields."
+  }
 }

@@ -1,19 +1,15 @@
 {
-  "id": "urn:srcos:community:data-governance",
+  "id": "urn:srcos:community:data-governance-team",
   "type": "Community",
   "specVersion": "2.0.0",
-  "name": "Data Governance Working Group",
-  "description": "Cross-functional team responsible for data classification, policy authorship, and glossary curation.",
+  "name": "Data Governance Team",
+  "description": "The team responsible for reviewing and curating classification tags, glossary terms, and data agreements.",
   "members": [
     "urn:srcos:subject:user:me",
-    "urn:srcos:subject:user:cdo",
-    "urn:srcos:subject:service:governance-bot"
+    "urn:srcos:subject:user:alice",
+    "urn:srcos:subject:user:bob"
   ],
   "links": [
-    {
-      "rel": "documentation",
-      "href": "https://wiki.internal/dg-wg",
-      "type": "text/html"
-    }
+    {"rel": "self", "href": "https://api.srcos.local/v2/communities/data-governance-team", "type": "application/json"}
   ]
 }

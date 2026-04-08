@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/EntityField.json",
   "title": "EntityField",
+  "description": "A field descriptor inside a SchemaDefinition. Carries the data type, nullability, valid-value constraints, classification tags, and glossary term links.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,27 +12,27 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "Dot-separated field name path within the schema (e.g., 'patient.dateOfBirth')."
+      "description": "Field name or JSONPath within the schema (e.g. \"patient.dateOfBirth\")."
     },
     "dataType": {
       "type": "string",
-      "description": "Primitive data type (e.g., 'string', 'integer', 'date', 'boolean')."
+      "description": "The logical data type (e.g. \"string\", \"integer\", \"date\", \"boolean\")."
     },
     "nullable": {
       "type": "boolean",
       "default": true,
-      "description": "Whether this field permits null values."
+      "description": "Whether this field may contain null values. Defaults to true."
     },
     "validValues": {
       "$ref": "ValidValues.json",
-      "description": "Constraint on acceptable values (enumeration, range, or regex)."
+      "description": "Optional valid-value constraint: enumeration, range, or regex."
     },
     "tags": {
       "type": "array",
       "items": {
         "$ref": "TagAssignment.json"
       },
-      "description": "Semantic classification tags applied to this field."
+      "description": "Classification tags applied to this field (e.g. PII tags)."
     },
     "glossaryTerms": {
       "type": "array",
@@ -39,8 +40,7 @@
         "type": "string",
         "pattern": "^urn:srcos:glossary:"
       },
-      "description": "URNs of GlossaryTerms that define the business meaning of this field."
+      "description": "URNs of GlossaryTerms that this field represents. Pattern: urn:srcos:glossary:<id>"
     }
-  },
-  "description": "A single named field within a SchemaDefinition, specifying its data type, nullability, valid-value constraints, semantic tag assignments, and linked glossary terms."
+  }
 }
