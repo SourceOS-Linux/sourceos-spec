@@ -16,3 +16,6 @@ venv/
 # Build
 dist/
 build/
+
+# GitHub API artifacts accidentally fetched locally
+pulls/
