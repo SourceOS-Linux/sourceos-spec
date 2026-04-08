@@ -1,0 +1,17 @@
+{
+  "id": "urn:srcos:exec-decision:d9e0f1a2",
+  "type": "ExecutionDecision",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:a1b2c3d4",
+  "toolRequestRef": "urn:srcos:tool:tc_001",
+  "decision": "allow",
+  "reason": "Tool call is within the session's approved execution surface and no sensitive paths are affected.",
+  "updatedInput": null,
+  "policyRef": "urn:srcos:policy:agent_execution_default",
+  "obligations": [
+    "log_access"
+  ],
+  "issuedAt": "2026-01-15T10:05:00Z",
+  "expiresAt": "2026-01-15T10:10:00Z",
+  "decisionHash": "sha256:a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+}

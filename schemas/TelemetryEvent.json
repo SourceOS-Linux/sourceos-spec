@@ -4,14 +4,51 @@
   "title": "TelemetryEvent",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id","type","specVersion","sessionRef","eventType","capturedAt"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "eventType",
+    "capturedAt"
+  ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:telemetry:"},
-    "type": {"const": "TelemetryEvent"},
-    "specVersion": {"type": "string"},
-    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
-    "eventType": {"type": "string"},
-    "severity": {"enum": ["debug","info","warn","error"]},
-    "capturedAt": {"type": "string", "format": "date-time"}
-  }
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:telemetry:",
+      "description": "Stable URN identifying this telemetry event (urn:srcos:telemetry:<id>)."
+    },
+    "type": {
+      "const": "TelemetryEvent",
+      "description": "Discriminator constant \u2014 always 'TelemetryEvent'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession that emitted this event."
+    },
+    "eventType": {
+      "type": "string",
+      "description": "Free-form string identifying the category of telemetry (e.g., 'tool.call', 'token.limit')."
+    },
+    "severity": {
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error"
+      ],
+      "description": "Log severity level."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this event was captured."
+    }
+  },
+  "description": "A structured telemetry or diagnostic log event emitted by an agent session, with severity classification and linkage back to the originating session."
 }

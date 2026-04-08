@@ -10,17 +10,21 @@
   ],
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Identifier of the exception (should match a known exception type)."
     },
     "reason": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable justification for granting this exception."
     },
     "expiresAt": {
       "type": [
         "string",
         "null"
       ],
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp after which this exception is no longer valid (null = permanent)."
     }
-  }
+  },
+  "description": "A named exception to a Policy rule that temporarily permits a specific action otherwise denied, with an optional expiry date."
 }

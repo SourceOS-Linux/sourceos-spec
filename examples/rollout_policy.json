@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:rollout:rp_semantic_v2",
+  "type": "RolloutPolicy",
+  "specVersion": "2.0.0",
+  "flagRef": "urn:srcos:flag:semantic_search_v2",
+  "rules": [
+    {
+      "audience": "internal",
+      "state": "on",
+      "percentage": 100
+    },
+    {
+      "audience": "beta-users",
+      "state": "beta",
+      "percentage": 50
+    },
+    {
+      "audience": "all",
+      "state": "off",
+      "percentage": null
+    }
+  ],
+  "notes": "Full rollout to internal team; 50% sampling for beta cohort; off for everyone else."
+}

@@ -1,0 +1,46 @@
+{
+  "id": "urn:srcos:session:a1b2c3d4",
+  "type": "AgentSession",
+  "specVersion": "2.0.0",
+  "parentSessionRef": null,
+  "role": "executor",
+  "status": "completed",
+  "mode": "execute",
+  "workspaceRef": "urn:srcos:workspace:sourceos-spec",
+  "worktreeRef": null,
+  "substrate": "local",
+  "surface": {
+    "pty": true,
+    "workdir": "/home/runner/work/sourceos-spec",
+    "background": false,
+    "reviewOnly": false,
+    "worktreeStrategy": "none",
+    "sandboxMode": "user",
+    "networkMode": "allowlist",
+    "egressAllowlist": [
+      "github.com",
+      "api.openai.com"
+    ],
+    "elevated": false,
+    "protectedPaths": [
+      ".git/config"
+    ],
+    "approvalProfile": null
+  },
+  "provider": "openai",
+  "skillRefs": [
+    "urn:srcos:skill:code-reviewer"
+  ],
+  "memoryRefs": [
+    "urn:srcos:memory:user.preferences:verbosity"
+  ],
+  "transcriptRef": null,
+  "decisionRefs": [
+    "urn:srcos:exec-decision:d9e0f1a2"
+  ],
+  "telemetryRefs": [],
+  "time": {
+    "startedAt": "2026-01-15T10:00:00Z",
+    "endedAt": "2026-01-15T10:45:00Z"
+  }
+}

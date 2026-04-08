@@ -18,24 +18,29 @@
         "kvOverlap",
         "ontologyAnchor",
         "blocking"
-      ]
+      ],
+      "description": "Algorithm or technique used to generate this evidence."
     },
     "score": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Confidence score in the range [0, 1] produced by the detection method."
     },
     "notes": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional human-readable notes explaining the evidence."
     },
     "artifacts": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of artifact types that were examined (e.g., 'labels', 'profileStats')."
     }
-  }
+  },
+  "description": "A single piece of evidence supporting a field-to-field semantic mapping, capturing the detection algorithm, confidence score, descriptive notes, and supporting artifact references."
 }

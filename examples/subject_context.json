@@ -1,0 +1,12 @@
+{
+  "subjectId": "urn:srcos:subject:user:analyst_01",
+  "kind": "user",
+  "roles": [
+    "analyst",
+    "dataset-owner"
+  ],
+  "attributes": {
+    "department": "data-science",
+    "clearance": "internal"
+  }
+}

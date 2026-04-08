@@ -1,0 +1,9 @@
+{
+  "kind": "user",
+  "match": {
+    "roles": [
+      "analyst"
+    ],
+    "department": "data-science"
+  }
+}

@@ -18,11 +18,14 @@
         "schema",
         "agreement",
         "any"
-      ]
+      ],
+      "description": "The resource type this selector matches (use 'any' to match all types)."
     },
     "match": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Attribute predicate map used to filter matching objects."
     }
-  }
+  },
+  "description": "A policy scope selector that matches target objects by their type and attribute predicates, used in Policy.scope to define which resources the policy governs."
 }

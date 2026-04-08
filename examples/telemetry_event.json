@@ -1,0 +1,9 @@
+{
+  "id": "urn:srcos:telemetry:te_001",
+  "type": "TelemetryEvent",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:a1b2c3d4",
+  "eventType": "tool.call",
+  "severity": "info",
+  "capturedAt": "2026-01-15T10:10:00Z"
+}

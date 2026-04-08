@@ -17,13 +17,16 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:mapping:"
+      "pattern": "^urn:srcos:mapping:",
+      "description": "Stable URN identifying this mapping (urn:srcos:mapping:<id>)."
     },
     "type": {
-      "const": "MappingSpec"
+      "const": "MappingSpec",
+      "description": "Discriminator constant \u2014 always 'MappingSpec'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "from": {
       "type": "object",
@@ -40,7 +43,8 @@
         "fieldPath": {
           "type": "string"
         }
-      }
+      },
+      "description": "Source endpoint: datasetId and fieldPath of the source field."
     },
     "to": {
       "type": "object",
@@ -57,25 +61,30 @@
         "fieldPath": {
           "type": "string"
         }
-      }
+      },
+      "description": "Target endpoint: datasetId and fieldPath of the target field."
     },
     "confidence": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Aggregate confidence score in the range [0, 1] across all evidence."
     },
     "evidence": {
       "type": "array",
       "items": {
         "$ref": "MappingEvidence.json"
-      }
+      },
+      "description": "List of MappingEvidence records supporting this mapping."
     },
     "state": {
       "enum": [
         "proposed",
         "curated",
         "rejected"
-      ]
+      ],
+      "description": "Curation lifecycle state of this mapping."
     }
-  }
+  },
+  "description": "A proposed or curated semantic mapping between a source field and a target field in another dataset, backed by one or more evidence records and a composite confidence score."
 }

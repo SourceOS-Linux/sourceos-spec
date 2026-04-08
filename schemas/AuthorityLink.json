@@ -10,17 +10,21 @@
   ],
   "properties": {
     "system": {
-      "type": "string"
+      "type": "string",
+      "description": "Identifier for the authority system (e.g., 'ldap', 'oauth2', 'wikidata')."
     },
     "value": {
-      "type": "string"
+      "type": "string",
+      "description": "Authority-system-specific identifier or code for this entity."
     },
     "url": {
       "type": [
         "string",
         "null"
       ],
-      "format": "uri"
+      "format": "uri",
+      "description": "Optional canonical URL to the authority record."
     }
-  }
+  },
+  "description": "A reference to an external authority or identity system that corroborates the identity, classification, or ontology alignment of an entity (e.g., LDAP DN, OAuth issuer, taxonomy URI)."
 }

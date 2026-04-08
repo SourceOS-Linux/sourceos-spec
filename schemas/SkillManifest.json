@@ -22,25 +22,32 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:skill:"
+      "pattern": "^urn:srcos:skill:",
+      "description": "Stable URN identifying this skill manifest (urn:srcos:skill:<id>)."
     },
     "type": {
-      "const": "SkillManifest"
+      "const": "SkillManifest",
+      "description": "Discriminator constant \u2014 always 'SkillManifest'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Short programmatic name of the skill (e.g., 'code-reviewer')."
     },
     "version": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of this skill manifest."
     },
     "entryDoc": {
-      "type": "string"
+      "type": "string",
+      "description": "Path or URN of the primary instruction document that defines this skill's behaviour."
     },
     "description": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable description of what this skill does."
     },
     "activationRules": {
       "type": "object",
@@ -64,7 +71,8 @@
             "type": "string"
           }
         }
-      }
+      },
+      "description": "Conditions under which this skill should be automatically selected."
     },
     "requires": {
       "type": "object",
@@ -88,38 +96,46 @@
             "type": "string"
           }
         }
-      }
+      },
+      "description": "Tool, permission, and environment requirements the skill depends on."
     },
     "executionSurfaceRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:surface:"
+      "pattern": "^urn:srcos:surface:",
+      "description": "Optional URN of an ExecutionSurface that overrides defaults for this skill."
     },
     "policyBindings": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "URNs of PolicyBindings that govern execution of this skill."
     },
     "artifactOutputs": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Names or path patterns of artifacts this skill is expected to produce."
     },
     "reviewMode": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "When true, the skill operates in read-only review mode."
     },
     "allowShellExecution": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Whether this skill is permitted to run shell commands."
     },
     "protectedPaths": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Filesystem paths this skill must not read or modify."
     }
-  }
+  },
+  "description": "A machine-readable descriptor for an agent skill or reusable capability, specifying its activation rules, tool and permission requirements, policy bindings, execution surface constraints, and expected artifact outputs."
 }

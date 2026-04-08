@@ -17,23 +17,29 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:field:"
+      "pattern": "^urn:srcos:field:",
+      "description": "Stable URN identifying this field record (urn:srcos:field:<id>)."
     },
     "type": {
-      "const": "Field"
+      "const": "Field",
+      "description": "Discriminator constant \u2014 always 'Field'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "datasetId": {
       "type": "string",
-      "pattern": "^urn:srcos:dataset:"
+      "pattern": "^urn:srcos:dataset:",
+      "description": "URN of the Dataset that contains this field."
     },
     "path": {
-      "type": "string"
+      "type": "string",
+      "description": "JSONPath expression locating this field within the dataset's schema (e.g., '$.patient.dateOfBirth')."
     },
     "dataType": {
-      "type": "string"
+      "type": "string",
+      "description": "Primitive data type of this field (e.g., 'string', 'date', 'integer')."
     },
     "semantics": {
       "type": "object",
@@ -61,7 +67,8 @@
             "$ref": "AuthorityLink.json"
           }
         }
-      }
+      },
+      "description": "Semantic annotations: classification tags, glossary term links, and authority links."
     },
     "quality": {
       "type": "object",
@@ -76,13 +83,16 @@
             "$ref": "QualityMetric.json"
           }
         }
-      }
+      },
+      "description": "Statistical profile (ProfileStats) and computed quality metrics (QualityMetric list)."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Optional hypermedia links to related resources."
     }
-  }
+  },
+  "description": "A catalogued column or attribute within a Dataset, identified by its JSONPath address, data type, semantic tag assignments, glossary links, and a statistical quality profile."
 }

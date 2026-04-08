@@ -1,0 +1,12 @@
+{
+  "partyId": "urn:srcos:party:acme-analytics",
+  "name": "ACME Analytics LLC",
+  "kind": "org",
+  "authorityLinks": [
+    {
+      "system": "duns",
+      "value": "123456789",
+      "url": null
+    }
+  ]
+}

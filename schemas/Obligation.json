@@ -17,18 +17,22 @@
         "mask_fields",
         "aggregate_only",
         "attest_container"
-      ]
+      ],
+      "description": "Named obligation to enforce."
     },
     "when": {
       "enum": [
         "pre",
         "post",
         "runtime"
-      ]
+      ],
+      "description": "When the obligation must be fulfilled relative to the access grant."
     },
     "params": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Obligation-specific parameters (e.g., workload URN for obfuscation obligations)."
     }
-  }
+  },
+  "description": "An enforceable action that must be performed before (pre) or after (post) granting access, or continuously at runtime \u2014 such as obfuscation, access logging, or provenance capture."
 }

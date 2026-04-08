@@ -12,19 +12,22 @@
   ],
   "properties": {
     "tag": {
-      "type": "string"
+      "type": "string",
+      "description": "The classification tag string (e.g., 'pii.email', 'financial.revenue')."
     },
     "state": {
       "enum": [
         "inferred",
         "curated",
         "rejected"
-      ]
+      ],
+      "description": "Current curation state of this tag assignment."
     },
     "confidence": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Confidence score in the range [0, 1] from the detection source."
     },
     "source": {
       "enum": [
@@ -32,13 +35,15 @@
         "analyst",
         "rule",
         "import"
-      ]
+      ],
+      "description": "How this tag was assigned."
     },
     "evidence": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of evidence artifact names or descriptions supporting this tag."
     },
     "review": {
       "type": "object",
@@ -63,7 +68,9 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Human review details: reviewer URN, review timestamp, and a comment."
     }
-  }
+  },
+  "description": "A classification tag applied to a field, glossary term, or dataset column, recording the curation state, confidence score, detection source, supporting evidence, and human review details."
 }

@@ -12,28 +12,33 @@
   ],
   "properties": {
     "nodeId": {
-      "type": "string"
+      "type": "string",
+      "description": "Unique identifier for this node within the WorkflowSpec."
     },
     "workload": {
-      "$ref": "WorkloadSpec.json"
+      "$ref": "WorkloadSpec.json",
+      "description": "The WorkloadSpec describing the computation to run at this node."
     },
     "inputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
-      }
+      },
+      "description": "Input DataRefs consumed by this node."
     },
     "outputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
-      }
+      },
+      "description": "Output DataRefs produced by this node."
     },
     "requiredObligations": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Obligation names that must be active before this node may execute."
     },
     "resources": {
       "type": "object",
@@ -57,7 +62,9 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Resource requirements (CPU, memory, GPU) for scheduling this workload."
     }
-  }
+  },
+  "description": "A single computation step within a WorkflowSpec DAG, specifying the workload to execute, input and output data references, required obligations, and compute resource requirements."
 }

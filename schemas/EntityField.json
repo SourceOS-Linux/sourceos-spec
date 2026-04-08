@@ -10,30 +10,37 @@
   ],
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Dot-separated field name path within the schema (e.g., 'patient.dateOfBirth')."
     },
     "dataType": {
-      "type": "string"
+      "type": "string",
+      "description": "Primitive data type (e.g., 'string', 'integer', 'date', 'boolean')."
     },
     "nullable": {
       "type": "boolean",
-      "default": true
+      "default": true,
+      "description": "Whether this field permits null values."
     },
     "validValues": {
-      "$ref": "ValidValues.json"
+      "$ref": "ValidValues.json",
+      "description": "Constraint on acceptable values (enumeration, range, or regex)."
     },
     "tags": {
       "type": "array",
       "items": {
         "$ref": "TagAssignment.json"
-      }
+      },
+      "description": "Semantic classification tags applied to this field."
     },
     "glossaryTerms": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:glossary:"
-      }
+      },
+      "description": "URNs of GlossaryTerms that define the business meaning of this field."
     }
-  }
+  },
+  "description": "A single named field within a SchemaDefinition, specifying its data type, nullability, valid-value constraints, semantic tag assignments, and linked glossary terms."
 }

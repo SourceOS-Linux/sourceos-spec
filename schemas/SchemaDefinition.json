@@ -14,34 +14,42 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:schema:"
+      "pattern": "^urn:srcos:schema:",
+      "description": "Stable URN identifying this schema (urn:srcos:schema:<id>)."
     },
     "type": {
-      "const": "SchemaDefinition"
+      "const": "SchemaDefinition",
+      "description": "Discriminator constant \u2014 always 'SchemaDefinition'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Short identifier name for this schema (e.g., 'health_obs_v1')."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional human-readable description of what data this schema models."
     },
     "fields": {
       "type": "array",
       "items": {
         "$ref": "EntityField.json"
-      }
+      },
+      "description": "Ordered list of EntityField definitions making up this schema."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Optional hypermedia links to further documentation or upstream schemas."
     }
-  }
+  },
+  "description": "A logical schema composed of typed EntityField definitions, serving as the structural and semantic contract for a Dataset, API payload, or storage schema."
 }

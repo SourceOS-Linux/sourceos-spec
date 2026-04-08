@@ -11,11 +11,14 @@
   "properties": {
     "policyId": {
       "type": "string",
-      "pattern": "^urn:srcos:policy:"
+      "pattern": "^urn:srcos:policy:",
+      "description": "URN of the Policy being bound."
     },
     "appliesTo": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Predicate identifying the workflow node(s) or workload(s) this binding covers."
     }
-  }
+  },
+  "description": "An association between a Policy and the specific WorkflowNode or WorkloadSpec to which it is applied at execution time."
 }

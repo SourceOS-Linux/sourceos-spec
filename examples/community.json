@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:community:data-governance",
+  "type": "Community",
+  "specVersion": "2.0.0",
+  "name": "Data Governance Working Group",
+  "description": "Cross-functional team responsible for data classification, policy authorship, and glossary curation.",
+  "members": [
+    "urn:srcos:subject:user:me",
+    "urn:srcos:subject:user:cdo",
+    "urn:srcos:subject:service:governance-bot"
+  ],
+  "links": [
+    {
+      "rel": "documentation",
+      "href": "https://wiki.internal/dg-wg",
+      "type": "text/html"
+    }
+  ]
+}

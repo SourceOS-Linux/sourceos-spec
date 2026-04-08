@@ -18,17 +18,21 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:receipt:session:"
+      "pattern": "^urn:srcos:receipt:session:",
+      "description": "Stable URN identifying this receipt (urn:srcos:receipt:session:<id>)."
     },
     "type": {
-      "const": "SessionReceipt"
+      "const": "SessionReceipt",
+      "description": "Discriminator constant \u2014 always 'SessionReceipt'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "sessionRef": {
       "type": "string",
-      "pattern": "^urn:srcos:session:"
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession this receipt summarises."
     },
     "status": {
       "enum": [
@@ -37,30 +41,36 @@
         "paused",
         "deferred",
         "canceled"
-      ]
+      ],
+      "description": "Overall outcome of the session."
     },
     "artifactRefs": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "URNs of artifacts (files, diffs, reports) produced during the session."
     },
     "decisionRefs": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:exec-decision:"
-      }
+      },
+      "description": "URNs of ExecutionDecision records (urn:srcos:exec-decision:<id>) issued during the session."
     },
     "gateResults": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Names and outcomes of quality or approval gates evaluated at session close."
     },
     "capturedAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this receipt was created."
     }
-  }
+  },
+  "description": "A summary record produced at the close of an agent session, capturing the final outcome status, artifact references produced, execution decision references, and quality gate results."
 }

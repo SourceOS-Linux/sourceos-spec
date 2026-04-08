@@ -15,16 +15,20 @@
         "asset",
         "streamTopic",
         "file"
-      ]
+      ],
+      "description": "The category of the referenced data entity."
     },
     "id": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the referenced data entity."
     },
     "fieldPaths": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Optional JSONPath expressions narrowing the reference to specific fields."
     }
-  }
+  },
+  "description": "A typed reference to a data entity (dataset, asset, stream, or file) with optional field-path scoping for fine-grained lineage tracking."
 }

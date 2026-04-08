@@ -1,0 +1,5 @@
+{
+  "name": "internal_audit_bypass",
+  "reason": "Internal audit team requires direct read access to raw health data under HIPAA audit authority.",
+  "expiresAt": "2026-06-30T23:59:59Z"
+}

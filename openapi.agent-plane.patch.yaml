@@ -1,18 +1,86 @@
-# additive OpenAPI patch fragment for the core agent-plane schema family
+# Additive OpenAPI patch fragment for the agent-plane schema family.
+# Merge with openapi.yaml to obtain the complete API surface.
+# The paths below add the five agent-plane resources to the base spec.
 paths:
   /v2/sessions:
     post:
       operationId: upsertAgentSession
+      summary: Upsert an AgentSession
+      description: >
+        Record the start or update of an agent task-execution session.
+        Keyed on `id`. The session record is updated in-place as status
+        transitions occur.
+      tags: [Agent Plane]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/AgentSession.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: AgentSession upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/AgentSession.json' }
+        '400':
+          description: Invalid request body (schema validation failure).
+        '401':
+          description: Missing or invalid authentication credentials.
+        '403':
+          description: The authenticated subject does not have permission.
+        '500':
+          description: Unexpected server error.
+    get:
+      operationId: listAgentSessions
+      summary: List AgentSessions
+      tags: [Agent Plane]
+      parameters:
+        - name: status
+          in: query
+          schema: { type: string }
+          description: Filter by session status (e.g., running, completed).
+        - name: role
+          in: query
+          schema: { type: string }
+          description: Filter by agent role.
+      responses:
+        '200':
+          description: List of AgentSessions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/AgentSession.json' }
+        '401': { description: Missing or invalid authentication credentials. }
+        '500': { description: Unexpected server error. }
+  /v2/sessions/{id}:
+    get:
+      operationId: getAgentSession
+      summary: Get an AgentSession by ID
+      tags: [Agent Plane]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The AgentSession.
+          content:
+            application/json:
+              schema: { $ref: './schemas/AgentSession.json' }
+        '401': { description: Missing or invalid authentication credentials. }
+        '404': { description: AgentSession not found. }
+        '500': { description: Unexpected server error. }
   /v2/execution/decide:
     post:
       operationId: decideExecution
+      summary: Record an ExecutionDecision
+      description: >
+        Record a real-time agent execution decision (allow, deny, ask,
+        defer, or rewrite) produced by the policy engine for a specific
+        tool call within a session.
+      tags: [Agent Plane]
       requestBody:
         required: true
         content:
@@ -20,37 +88,114 @@ paths:
             schema: { $ref: './schemas/ExecutionDecision.json' }
       responses:
         '200':
-          description: execution decision
+          description: ExecutionDecision recorded and returned.
           content:
             application/json:
               schema: { $ref: './schemas/ExecutionDecision.json' }
+        '400': { description: Invalid request body. }
+        '401': { description: Missing or invalid authentication credentials. }
+        '403': { description: The authenticated subject does not have permission. }
+        '500': { description: Unexpected server error. }
   /v2/skills:
     post:
       operationId: upsertSkillManifest
+      summary: Upsert a SkillManifest
+      description: >
+        Register or update a SkillManifest descriptor for an agent skill
+        or reusable capability. Keyed on `id`.
+      tags: [Agent Plane]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/SkillManifest.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: SkillManifest upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/SkillManifest.json' }
+        '400': { description: Invalid request body. }
+        '401': { description: Missing or invalid authentication credentials. }
+        '403': { description: The authenticated subject does not have permission. }
+        '500': { description: Unexpected server error. }
+    get:
+      operationId: listSkillManifests
+      summary: List SkillManifests
+      tags: [Agent Plane]
+      responses:
+        '200':
+          description: List of SkillManifests.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/SkillManifest.json' }
+        '401': { description: Missing or invalid authentication credentials. }
+        '500': { description: Unexpected server error. }
   /v2/memory:
     post:
       operationId: upsertMemoryEntry
+      summary: Upsert a MemoryEntry
+      description: >
+        Write a durable knowledge entry into the agent memory store.
+        Keyed on `id`; updates replace the existing entry at the
+        same namespace/key.
+      tags: [Agent Plane]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/MemoryEntry.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: MemoryEntry upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/MemoryEntry.json' }
+        '400': { description: Invalid request body. }
+        '401': { description: Missing or invalid authentication credentials. }
+        '403': { description: The authenticated subject does not have permission. }
+        '500': { description: Unexpected server error. }
+  /v2/memory/{id}:
+    get:
+      operationId: getMemoryEntry
+      summary: Get a MemoryEntry by ID
+      tags: [Agent Plane]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The MemoryEntry.
+          content:
+            application/json:
+              schema: { $ref: './schemas/MemoryEntry.json' }
+        '401': { description: Missing or invalid authentication credentials. }
+        '404': { description: MemoryEntry not found. }
+        '500': { description: Unexpected server error. }
   /v2/receipts/session:
     post:
       operationId: recordSessionReceipt
+      summary: Record a SessionReceipt
+      description: >
+        Produce an immutable summary receipt at the close of an agent
+        session, capturing outcome, artifacts, and gate results.
+      tags: [Agent Plane]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/SessionReceipt.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: SessionReceipt recorded successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/SessionReceipt.json' }
+        '400': { description: Invalid request body. }
+        '401': { description: Missing or invalid authentication credentials. }
+        '403': { description: The authenticated subject does not have permission. }
+        '500': { description: Unexpected server error. }

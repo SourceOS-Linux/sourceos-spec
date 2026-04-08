@@ -11,18 +11,21 @@
   "properties": {
     "rowCount": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Total number of rows scanned when computing this profile."
     },
     "nullCount": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 0,
+      "description": "Number of rows where this field is null."
     },
     "distinctCount": {
       "type": [
         "integer",
         "null"
       ],
-      "minimum": 0
+      "minimum": 0,
+      "description": "Optional count of distinct non-null values."
     },
     "topValues": {
       "type": "array",
@@ -42,27 +45,32 @@
             "minimum": 0
           }
         }
-      }
+      },
+      "description": "List of the most frequent {value, count} pairs."
     },
     "min": {
       "type": [
         "string",
         "number",
         "null"
-      ]
+      ],
+      "description": "Minimum observed value (string or number depending on field type)."
     },
     "max": {
       "type": [
         "string",
         "number",
         "null"
-      ]
+      ],
+      "description": "Maximum observed value (string or number depending on field type)."
     },
     "patterns": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of observed value patterns (e.g., regex skeletons for string fields)."
     }
-  }
+  },
+  "description": "A statistical summary of a field's data distribution, including row count, null count, distinct count, top-value frequencies, min/max values, and observed patterns."
 }

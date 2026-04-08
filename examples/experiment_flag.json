@@ -1,0 +1,10 @@
+{
+  "id": "urn:srcos:flag:semantic_search_v2",
+  "type": "ExperimentFlag",
+  "specVersion": "2.0.0",
+  "name": "semantic_search_v2",
+  "state": "beta",
+  "owner": "urn:srcos:subject:user:platform_eng",
+  "description": "Enables the second-generation semantic search index backed by vector embeddings for field discovery.",
+  "killSwitch": true
+}

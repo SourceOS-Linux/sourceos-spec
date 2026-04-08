@@ -10,7 +10,8 @@
   ],
   "properties": {
     "subjectId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the requesting subject."
     },
     "kind": {
       "enum": [
@@ -18,17 +19,21 @@
         "service",
         "app",
         "workload"
-      ]
+      ],
+      "description": "Category of the requesting subject."
     },
     "roles": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of role names currently held by this subject (e.g., 'owner', 'analyst')."
     },
     "attributes": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Additional key/value attributes for fine-grained policy conditions."
     }
-  }
+  },
+  "description": "The subject (requestor) side of a policy evaluation request, identifying the requesting entity by URN, kind, assigned roles, and arbitrary attributes."
 }

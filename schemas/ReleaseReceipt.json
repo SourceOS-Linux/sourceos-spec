@@ -4,16 +4,66 @@
   "title": "ReleaseReceipt",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id","type","specVersion","releaseTarget","verifiedAt","status"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "releaseTarget",
+    "verifiedAt",
+    "status"
+  ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:release-receipt:"},
-    "type": {"const": "ReleaseReceipt"},
-    "specVersion": {"type": "string"},
-    "releaseTarget": {"type": "string"},
-    "sourceRef": {"type": ["string","null"]},
-    "artifactHashes": {"type": "array", "items": {"type": "string"}},
-    "checks": {"type": "array", "items": {"type": "string"}},
-    "status": {"enum": ["verified","failed","partial"]},
-    "verifiedAt": {"type": "string", "format": "date-time"}
-  }
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:release-receipt:",
+      "description": "Stable URN identifying this receipt (urn:srcos:release-receipt:<id>)."
+    },
+    "type": {
+      "const": "ReleaseReceipt",
+      "description": "Discriminator constant \u2014 always 'ReleaseReceipt'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
+    },
+    "releaseTarget": {
+      "type": "string",
+      "description": "Identifier of the release target (e.g., container image tag, dataset version URN)."
+    },
+    "sourceRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional URN of the source artifact or branch used for this release."
+    },
+    "artifactHashes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "SHA-256 hashes of the release artifacts in 'sha256:<hex>' format."
+    },
+    "checks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Names of validation checks that were run (e.g., 'schema-lint', 'security-scan')."
+    },
+    "status": {
+      "enum": [
+        "verified",
+        "failed",
+        "partial"
+      ],
+      "description": "Overall verification result."
+    },
+    "verifiedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when verification completed."
+    }
+  },
+  "description": "A verification record confirming that a release target has been validated, capturing artifact hashes, the results of all quality and security checks, and the overall verification status."
 }

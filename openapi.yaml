@@ -2,102 +2,552 @@ openapi: 3.0.3
 info:
   title: SourceOS/SociOS Metadata Plane API
   version: 2.0.0
+  description: >
+    REST API for the SourceOS/SociOS Metadata Plane. Provides upsert and
+    query endpoints for all first-class objects in the governance,
+    lineage, collaboration, and schema-management areas.
+    IDs are stable URNs; `specVersion` follows semver. All write operations
+    are idempotent upserts keyed on `id`.
+  contact:
+    name: SourceOS Maintainers
+    url: https://github.com/SourceOS-Linux/sourceos-spec
+  license:
+    name: MIT
+    url: https://github.com/SourceOS-Linux/sourceos-spec/blob/main/LICENSE
 servers:
   - url: https://api.srcos.local
+    description: Local development server
+components:
+  responses:
+    BadRequest:
+      description: Invalid request body (schema validation failure).
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error: { type: string }
+              details: { type: array, items: { type: string } }
+    Unauthorized:
+      description: Missing or invalid authentication credentials.
+    Forbidden:
+      description: The authenticated subject does not have permission to perform this operation.
+    NotFound:
+      description: The requested resource does not exist.
+    InternalServerError:
+      description: Unexpected server error.
 paths:
   /v2/connectors:
     post:
       operationId: upsertConnector
+      summary: Upsert a Connector
+      description: >
+        Create or update a Connector descriptor identifying an external
+        storage or compute system. Keyed on `id`.
+      tags: [Physical Assets]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Connector.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Connector upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Connector.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listConnectors
+      summary: List Connectors
+      description: Return all registered Connector descriptors.
+      tags: [Physical Assets]
+      responses:
+        '200':
+          description: List of Connectors.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/Connector.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/connectors/{id}:
+    get:
+      operationId: getConnector
+      summary: Get a Connector by ID
+      tags: [Physical Assets]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+          description: URN of the Connector.
+      responses:
+        '200':
+          description: The Connector.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Connector.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    delete:
+      operationId: deleteConnector
+      summary: Delete a Connector
+      tags: [Physical Assets]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '204': { description: Connector deleted. }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/assets:
     post:
       operationId: upsertPhysicalAsset
+      summary: Upsert a PhysicalAsset
+      description: >
+        Create or update a PhysicalAsset reference (S3 bucket, database
+        table, Kafka topic, etc.). Keyed on `id`.
+      tags: [Physical Assets]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/PhysicalAsset.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: PhysicalAsset upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/PhysicalAsset.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listPhysicalAssets
+      summary: List PhysicalAssets
+      tags: [Physical Assets]
+      responses:
+        '200':
+          description: List of PhysicalAssets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/PhysicalAsset.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/assets/{id}:
+    get:
+      operationId: getPhysicalAsset
+      summary: Get a PhysicalAsset by ID
+      tags: [Physical Assets]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The PhysicalAsset.
+          content:
+            application/json:
+              schema: { $ref: './schemas/PhysicalAsset.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/schemas:
     post:
       operationId: upsertSchemaDefinition
+      summary: Upsert a SchemaDefinition
+      description: >
+        Create or update a logical SchemaDefinition composed of typed
+        EntityFields. Keyed on `id`.
+      tags: [Schemas & Fields]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/SchemaDefinition.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: SchemaDefinition upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/SchemaDefinition.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listSchemaDefinitions
+      summary: List SchemaDefinitions
+      tags: [Schemas & Fields]
+      responses:
+        '200':
+          description: List of SchemaDefinitions.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/SchemaDefinition.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/schemas/{id}:
+    get:
+      operationId: getSchemaDefinition
+      summary: Get a SchemaDefinition by ID
+      tags: [Schemas & Fields]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The SchemaDefinition.
+          content:
+            application/json:
+              schema: { $ref: './schemas/SchemaDefinition.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/agreements:
     post:
       operationId: upsertAgreement
+      summary: Upsert an Agreement
+      description: >
+        Create or update a data usage Agreement. Keyed on `id`.
+      tags: [Governance]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Agreement.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Agreement upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Agreement.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listAgreements
+      summary: List Agreements
+      tags: [Governance]
+      responses:
+        '200':
+          description: List of Agreements.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/Agreement.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/agreements/{id}:
+    get:
+      operationId: getAgreement
+      summary: Get an Agreement by ID
+      tags: [Governance]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The Agreement.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Agreement.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/glossary:
     post:
       operationId: upsertGlossaryTerm
+      summary: Upsert a GlossaryTerm
+      description: >
+        Create or update a canonical business term in the platform glossary.
+        Keyed on `id`.
+      tags: [Glossary]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/GlossaryTerm.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: GlossaryTerm upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/GlossaryTerm.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listGlossaryTerms
+      summary: List GlossaryTerms
+      tags: [Glossary]
+      responses:
+        '200':
+          description: List of GlossaryTerms.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/GlossaryTerm.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/glossary/{id}:
+    get:
+      operationId: getGlossaryTerm
+      summary: Get a GlossaryTerm by ID
+      tags: [Glossary]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The GlossaryTerm.
+          content:
+            application/json:
+              schema: { $ref: './schemas/GlossaryTerm.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/datasets:
     post:
       operationId: upsertDataset
+      summary: Upsert a Dataset
+      description: >
+        Create or update a logical Dataset backed by a PhysicalAsset with
+        governance and lifecycle metadata. Keyed on `id`.
+      tags: [Datasets]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Dataset.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Dataset upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Dataset.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listDatasets
+      summary: List Datasets
+      tags: [Datasets]
+      parameters:
+        - name: zone
+          in: query
+          schema: { type: string }
+          description: Filter by lifecycle zone (e.g., raw, curated, restricted).
+        - name: classification
+          in: query
+          schema: { type: string }
+          description: Filter by classification tag.
+      responses:
+        '200':
+          description: List of Datasets.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/Dataset.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/datasets/{id}:
+    get:
+      operationId: getDataset
+      summary: Get a Dataset by ID
+      tags: [Datasets]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The Dataset.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Dataset.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/fields:
     post:
       operationId: upsertField
+      summary: Upsert a Field
+      description: >
+        Create or update a catalogued Field within a Dataset, including
+        semantic annotations and quality profile. Keyed on `id`.
+      tags: [Schemas & Fields]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Field.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Field upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Field.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/fields/{id}:
+    get:
+      operationId: getField
+      summary: Get a Field by ID
+      tags: [Schemas & Fields]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The Field.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Field.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/mappings:
     post:
       operationId: upsertMapping
+      summary: Upsert a MappingSpec
+      description: >
+        Create or update a semantic field mapping between two datasets.
+        Keyed on `id`.
+      tags: [Mappings]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/MappingSpec.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: MappingSpec upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/MappingSpec.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listMappings
+      summary: List MappingSpecs
+      tags: [Mappings]
+      parameters:
+        - name: state
+          in: query
+          schema: { type: string, enum: [proposed, curated, rejected] }
+          description: Filter by curation state.
+      responses:
+        '200':
+          description: List of MappingSpecs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/MappingSpec.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/policies:
     post:
       operationId: upsertPolicy
+      summary: Upsert a Policy
+      description: >
+        Create or update a governance policy. Keyed on `id`. Changes
+        to existing policies increment the evaluation version tracked
+        by the policy engine.
+      tags: [Governance]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Policy.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Policy upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Policy.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listPolicies
+      summary: List Policies
+      tags: [Governance]
+      responses:
+        '200':
+          description: List of Policies.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/Policy.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/policies/{id}:
+    get:
+      operationId: getPolicy
+      summary: Get a Policy by ID
+      tags: [Governance]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The Policy.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Policy.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/decisions/evaluate:
     post:
       operationId: evaluatePolicy
+      summary: Evaluate a Policy
+      description: >
+        Submit a subject–object–purpose triple for policy evaluation.
+        Returns a signed PolicyDecision with the outcome and any
+        attached obligations.
+      tags: [Governance]
       requestBody:
         required: true
         content:
@@ -108,17 +558,26 @@ paths:
               properties:
                 subject: { $ref: './schemas/SubjectContext.json' }
                 object: { $ref: './schemas/ObjectContext.json' }
-                purpose: { type: string }
-                environment: { type: object }
+                purpose: { type: string, description: 'Declared purpose of access (e.g., export, analysis).' }
+                environment: { type: object, description: 'Optional environmental context (e.g., device, time, IP).' }
       responses:
         '200':
-          description: decision
+          description: Policy evaluation result.
           content:
             application/json:
               schema: { $ref: './schemas/PolicyDecision.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/tokens/issue:
     post:
       operationId: issueToken
+      summary: Issue a CapabilityToken
+      description: >
+        Convert a PolicyDecision into a short-lived, signed CapabilityToken
+        that the caller can present when executing a workload.
+      tags: [Governance]
       requestBody:
         required: true
         content:
@@ -126,57 +585,198 @@ paths:
             schema: { $ref: './schemas/PolicyDecision.json' }
       responses:
         '200':
-          description: token
+          description: Issued CapabilityToken.
           content:
             application/json:
               schema: { $ref: './schemas/CapabilityToken.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/workflows:
     post:
       operationId: upsertWorkflow
+      summary: Upsert a WorkflowSpec
+      description: >
+        Create or update a WorkflowSpec DAG defining a multi-step data
+        processing pipeline. Keyed on `id`.
+      tags: [Workflows]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/WorkflowSpec.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: WorkflowSpec upserted successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/WorkflowSpec.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+    get:
+      operationId: listWorkflows
+      summary: List WorkflowSpecs
+      tags: [Workflows]
+      responses:
+        '200':
+          description: List of WorkflowSpecs.
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: './schemas/WorkflowSpec.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/workflows/{id}:
+    get:
+      operationId: getWorkflow
+      summary: Get a WorkflowSpec by ID
+      tags: [Workflows]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The WorkflowSpec.
+          content:
+            application/json:
+              schema: { $ref: './schemas/WorkflowSpec.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/runs:
     post:
       operationId: recordRun
+      summary: Record a RunRecord
+      description: >
+        Record the execution of a workload within a DataSphere.
+        RunRecords are append-only; use the returned ID for provenance
+        and audit queries.
+      tags: [Lineage]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/RunRecord.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: RunRecord recorded successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/RunRecord.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/runs/{id}:
+    get:
+      operationId: getRun
+      summary: Get a RunRecord by ID
+      tags: [Lineage]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The RunRecord.
+          content:
+            application/json:
+              schema: { $ref: './schemas/RunRecord.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/provenance:
     post:
       operationId: recordProvenance
+      summary: Record a ProvenanceRecord
+      description: >
+        Record a PROV-compatible lineage record linking an activity to
+        its agent and input/output entities.
+      tags: [Lineage]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/ProvenanceRecord.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: ProvenanceRecord recorded successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/ProvenanceRecord.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
+  /v2/provenance/{id}:
+    get:
+      operationId: getProvenanceRecord
+      summary: Get a ProvenanceRecord by ID
+      tags: [Lineage]
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: The ProvenanceRecord.
+          content:
+            application/json:
+              schema: { $ref: './schemas/ProvenanceRecord.json' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '404': { $ref: '#/components/responses/NotFound' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/comments:
     post:
       operationId: createComment
+      summary: Create a Comment
+      description: >
+        Attach a human annotation to any addressable platform object.
+        Comments are append-only (not updateable).
+      tags: [Collaboration]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Comment.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Comment created successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Comment.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }
   /v2/ratings:
     post:
       operationId: createRating
+      summary: Create a Rating
+      description: >
+        Submit a numeric quality or usefulness rating for any
+        addressable platform object. One rating per rater per target.
+      tags: [Collaboration]
       requestBody:
         required: true
         content:
           application/json:
             schema: { $ref: './schemas/Rating.json' }
       responses:
-        '200': { description: ok }
+        '200':
+          description: Rating created successfully.
+          content:
+            application/json:
+              schema: { $ref: './schemas/Rating.json' }
+        '400': { $ref: '#/components/responses/BadRequest' }
+        '401': { $ref: '#/components/responses/Unauthorized' }
+        '403': { $ref: '#/components/responses/Forbidden' }
+        '500': { $ref: '#/components/responses/InternalServerError' }

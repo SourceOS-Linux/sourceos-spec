@@ -1,0 +1,20 @@
+{
+  "rowCount": 10000,
+  "nullCount": 42,
+  "distinctCount": 9831,
+  "topValues": [
+    {
+      "value": "1980-06-15",
+      "count": 7
+    },
+    {
+      "value": "1975-03-22",
+      "count": 5
+    }
+  ],
+  "min": "1930-01-01",
+  "max": "2005-12-31",
+  "patterns": [
+    "\\d{4}-\\d{2}-\\d{2}"
+  ]
+}

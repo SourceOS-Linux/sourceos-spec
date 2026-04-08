@@ -18,24 +18,29 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:decision:"
+      "pattern": "^urn:srcos:decision:",
+      "description": "Stable URN identifying this decision record (urn:srcos:decision:<id>)."
     },
     "type": {
-      "const": "PolicyDecision"
+      "const": "PolicyDecision",
+      "description": "Discriminator constant \u2014 always 'PolicyDecision'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "decision": {
       "enum": [
         "permit",
         "deny",
         "permitWithObligations"
-      ]
+      ],
+      "description": "The decision outcome."
     },
     "policyId": {
       "type": "string",
-      "pattern": "^urn:srcos:policy:"
+      "pattern": "^urn:srcos:policy:",
+      "description": "URN of the Policy that produced this decision."
     },
     "inputs": {
       "type": "object",
@@ -59,25 +64,31 @@
           "type": "object",
           "additionalProperties": true
         }
-      }
+      },
+      "description": "The evaluated subject context, object context, purpose, and environment."
     },
     "obligations": {
       "type": "array",
       "items": {
         "$ref": "Obligation.json"
-      }
+      },
+      "description": "Obligations the accessing subject must fulfil (present when decision is 'permitWithObligations')."
     },
     "issuedAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the decision was issued."
     },
     "expiresAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp after which the decision must not be acted upon."
     },
     "decisionHash": {
       "type": "string",
-      "pattern": "^sha256:"
+      "pattern": "^sha256:",
+      "description": "SHA-256 hash over the canonical JSON of this record for non-repudiation."
     }
-  }
+  },
+  "description": "The immutable, hash-signed result of evaluating a Policy for a specific subject\u2013object\u2013purpose triple, recording the decision outcome and any obligations attached to a permit."
 }

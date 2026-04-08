@@ -16,26 +16,34 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:comment:"
+      "pattern": "^urn:srcos:comment:",
+      "description": "Stable URN identifying this comment (urn:srcos:comment:<id>)."
     },
     "type": {
-      "const": "Comment"
+      "const": "Comment",
+      "description": "Discriminator constant \u2014 always 'Comment'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "targetId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the object this comment is attached to."
     },
     "author": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the subject who authored this comment."
     },
     "createdAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the comment was created."
     },
     "body": {
-      "type": "string"
+      "type": "string",
+      "description": "Free-text body of the comment (Markdown supported)."
     }
-  }
+  },
+  "description": "A human annotation or review note attached to any addressable platform object, supporting collaborative governance and curation workflows."
 }

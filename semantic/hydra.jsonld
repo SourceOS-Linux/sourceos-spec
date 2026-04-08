@@ -3,15 +3,30 @@
     "srcos": "https://schemas.srcos.ai/v2/",
     "hydra": "http://www.w3.org/ns/hydra/core#",
     "prov": "http://www.w3.org/ns/prov#",
+    "schema": "https://schema.org/",
     "id": "@id",
     "type": "@type",
-    "Dataset": "srcos:Dataset",
-    "Field": "srcos:Field",
-    "Policy": "srcos:Policy",
-    "WorkflowSpec": "srcos:WorkflowSpec",
-    "RunRecord": "srcos:RunRecord",
+    "AgentSession": "srcos:AgentSession",
     "Agreement": "srcos:Agreement",
-    "GlossaryTerm": "srcos:GlossaryTerm"
+    "CapabilityToken": "srcos:CapabilityToken",
+    "Comment": "srcos:Comment",
+    "Connector": "srcos:Connector",
+    "Dataset": "srcos:Dataset",
+    "ExecutionDecision": "srcos:ExecutionDecision",
+    "Field": "srcos:Field",
+    "GlossaryTerm": "srcos:GlossaryTerm",
+    "MappingSpec": "srcos:MappingSpec",
+    "MemoryEntry": "srcos:MemoryEntry",
+    "PhysicalAsset": "srcos:PhysicalAsset",
+    "Policy": "srcos:Policy",
+    "PolicyDecision": "srcos:PolicyDecision",
+    "ProvenanceRecord": "prov:Activity",
+    "Rating": "srcos:Rating",
+    "RunRecord": "prov:Activity",
+    "SchemaDefinition": "srcos:SchemaDefinition",
+    "SessionReceipt": "srcos:SessionReceipt",
+    "SkillManifest": "srcos:SkillManifest",
+    "WorkflowSpec": "srcos:WorkflowSpec"
   },
   "@id": "https://api.srcos.local/v2",
   "@type": "hydra:ApiDocumentation",
@@ -19,23 +34,186 @@
   "hydra:entrypoint": "https://api.srcos.local/v2",
   "hydra:supportedClass": [
     {
-      "@id": "srcos:Dataset",
+      "@id": "srcos:Connector",
+      "hydra:title": "Connector",
+      "hydra:description": "A storage or compute connection descriptor.",
       "hydra:supportedOperation": [
-        {
-          "hydra:method": "GET"
-        },
-        {
-          "hydra:method": "POST"
-        }
+        { "hydra:method": "GET", "hydra:title": "listConnectors" },
+        { "hydra:method": "POST", "hydra:title": "upsertConnector" }
+      ]
+    },
+    {
+      "@id": "srcos:PhysicalAsset",
+      "hydra:title": "PhysicalAsset",
+      "hydra:description": "A reference to a physical storage location.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listPhysicalAssets" },
+        { "hydra:method": "POST", "hydra:title": "upsertPhysicalAsset" }
+      ]
+    },
+    {
+      "@id": "srcos:SchemaDefinition",
+      "hydra:title": "SchemaDefinition",
+      "hydra:description": "A logical schema composed of typed EntityFields.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listSchemaDefinitions" },
+        { "hydra:method": "POST", "hydra:title": "upsertSchemaDefinition" }
+      ]
+    },
+    {
+      "@id": "srcos:Agreement",
+      "hydra:title": "Agreement",
+      "hydra:description": "A data usage agreement between parties.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listAgreements" },
+        { "hydra:method": "POST", "hydra:title": "upsertAgreement" }
+      ]
+    },
+    {
+      "@id": "srcos:GlossaryTerm",
+      "hydra:title": "GlossaryTerm",
+      "hydra:description": "A canonical business term in the platform glossary.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listGlossaryTerms" },
+        { "hydra:method": "POST", "hydra:title": "upsertGlossaryTerm" }
+      ]
+    },
+    {
+      "@id": "srcos:Dataset",
+      "hydra:title": "Dataset",
+      "hydra:description": "A logical data collection backed by a PhysicalAsset.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listDatasets" },
+        { "hydra:method": "POST", "hydra:title": "upsertDataset" }
+      ]
+    },
+    {
+      "@id": "srcos:Field",
+      "hydra:title": "Field",
+      "hydra:description": "A catalogued column or attribute within a Dataset.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "getField" },
+        { "hydra:method": "POST", "hydra:title": "upsertField" }
+      ]
+    },
+    {
+      "@id": "srcos:MappingSpec",
+      "hydra:title": "MappingSpec",
+      "hydra:description": "A semantic field mapping between two datasets.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listMappings" },
+        { "hydra:method": "POST", "hydra:title": "upsertMapping" }
       ]
     },
     {
       "@id": "srcos:Policy",
+      "hydra:title": "Policy",
+      "hydra:description": "A governance rule set evaluating subject-object-purpose triples.",
       "hydra:supportedOperation": [
-        {
-          "hydra:method": "POST",
-          "hydra:title": "evaluatePolicy"
-        }
+        { "hydra:method": "GET", "hydra:title": "listPolicies" },
+        { "hydra:method": "POST", "hydra:title": "upsertPolicy" }
+      ]
+    },
+    {
+      "@id": "srcos:PolicyDecision",
+      "hydra:title": "PolicyDecision",
+      "hydra:description": "The signed result of a policy evaluation.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "evaluatePolicy" }
+      ]
+    },
+    {
+      "@id": "srcos:CapabilityToken",
+      "hydra:title": "CapabilityToken",
+      "hydra:description": "A short-lived signed access token issued after a permit decision.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "issueToken" }
+      ]
+    },
+    {
+      "@id": "srcos:WorkflowSpec",
+      "hydra:title": "WorkflowSpec",
+      "hydra:description": "A DAG defining a multi-step data processing pipeline.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listWorkflows" },
+        { "hydra:method": "POST", "hydra:title": "upsertWorkflow" }
+      ]
+    },
+    {
+      "@id": "prov:Activity",
+      "hydra:title": "RunRecord",
+      "hydra:description": "A record of a single workload execution.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "getRun" },
+        { "hydra:method": "POST", "hydra:title": "recordRun" }
+      ]
+    },
+    {
+      "@id": "srcos:ProvenanceRecord",
+      "hydra:title": "ProvenanceRecord",
+      "hydra:description": "A PROV-compatible lineage record.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "getProvenanceRecord" },
+        { "hydra:method": "POST", "hydra:title": "recordProvenance" }
+      ]
+    },
+    {
+      "@id": "srcos:Comment",
+      "hydra:title": "Comment",
+      "hydra:description": "A human annotation attached to a platform object.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "createComment" }
+      ]
+    },
+    {
+      "@id": "srcos:Rating",
+      "hydra:title": "Rating",
+      "hydra:description": "A numeric quality rating for a platform object.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "createRating" }
+      ]
+    },
+    {
+      "@id": "srcos:AgentSession",
+      "hydra:title": "AgentSession",
+      "hydra:description": "A record of an agent task-execution session.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listAgentSessions" },
+        { "hydra:method": "POST", "hydra:title": "upsertAgentSession" }
+      ]
+    },
+    {
+      "@id": "srcos:ExecutionDecision",
+      "hydra:title": "ExecutionDecision",
+      "hydra:description": "A real-time agent execution decision record.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "decideExecution" }
+      ]
+    },
+    {
+      "@id": "srcos:SkillManifest",
+      "hydra:title": "SkillManifest",
+      "hydra:description": "A machine-readable descriptor for an agent skill.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "listSkillManifests" },
+        { "hydra:method": "POST", "hydra:title": "upsertSkillManifest" }
+      ]
+    },
+    {
+      "@id": "srcos:MemoryEntry",
+      "hydra:title": "MemoryEntry",
+      "hydra:description": "A durable knowledge entry in the agent memory store.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "GET", "hydra:title": "getMemoryEntry" },
+        { "hydra:method": "POST", "hydra:title": "upsertMemoryEntry" }
+      ]
+    },
+    {
+      "@id": "srcos:SessionReceipt",
+      "hydra:title": "SessionReceipt",
+      "hydra:description": "A summary record produced at the close of an agent session.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "recordSessionReceipt" }
       ]
     }
   ]

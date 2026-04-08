@@ -16,28 +16,36 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:rating:"
+      "pattern": "^urn:srcos:rating:",
+      "description": "Stable URN identifying this rating (urn:srcos:rating:<id>)."
     },
     "type": {
-      "const": "Rating"
+      "const": "Rating",
+      "description": "Discriminator constant \u2014 always 'Rating'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "targetId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the object being rated."
     },
     "rater": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the subject who submitted this rating."
     },
     "createdAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the rating was submitted."
     },
     "value": {
       "type": "integer",
       "minimum": 1,
-      "maximum": 5
+      "maximum": 5,
+      "description": "Integer score (1 = lowest, 5 = highest)."
     }
-  }
+  },
+  "description": "A numeric quality or usefulness rating applied by a subject to any addressable platform object, supporting collaborative curation and discovery."
 }

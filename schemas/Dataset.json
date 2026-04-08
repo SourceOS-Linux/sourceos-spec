@@ -17,30 +17,37 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:dataset:"
+      "pattern": "^urn:srcos:dataset:",
+      "description": "Stable URN identifying this dataset (urn:srcos:dataset:<id>)."
     },
     "type": {
-      "const": "Dataset"
+      "const": "Dataset",
+      "description": "Discriminator constant \u2014 always 'Dataset'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Dot-separated qualified name of the dataset (e.g., 'Domain.Subdomain.Name')."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional human-readable description of the dataset's content and purpose."
     },
     "assetRef": {
       "type": "string",
-      "pattern": "^urn:srcos:asset:"
+      "pattern": "^urn:srcos:asset:",
+      "description": "URN of the PhysicalAsset that stores the raw data."
     },
     "schemaRef": {
       "type": "string",
-      "pattern": "^urn:srcos:schema:"
+      "pattern": "^urn:srcos:schema:",
+      "description": "URN of the SchemaDefinition describing the dataset's structure."
     },
     "governance": {
       "type": "object",
@@ -80,7 +87,8 @@
             ]
           }
         }
-      }
+      },
+      "description": "Classification tags, agreement references, usage definitions, and zone assignments."
     },
     "lifecycle": {
       "type": "object",
@@ -104,13 +112,16 @@
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "description": "Current lifecycle state and the timestamp of the last state transition."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Optional hypermedia links to related resources."
     }
-  }
+  },
+  "description": "A logical data collection backed by a physical asset, associated with a SchemaDefinition, governance metadata (classifications, agreements, usage definitions), and a lifecycle state."
 }

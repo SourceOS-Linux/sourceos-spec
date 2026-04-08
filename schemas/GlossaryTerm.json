@@ -14,50 +14,61 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:glossary:"
+      "pattern": "^urn:srcos:glossary:",
+      "description": "Stable URN identifying this glossary term (urn:srcos:glossary:<id>)."
     },
     "type": {
-      "const": "GlossaryTerm"
+      "const": "GlossaryTerm",
+      "description": "Discriminator constant \u2014 always 'GlossaryTerm'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Canonical display name of the term."
     },
     "definition": {
-      "type": "string"
+      "type": "string",
+      "description": "Authoritative human-readable definition of the term."
     },
     "synonyms": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Alternative names or abbreviations for this term."
     },
     "tags": {
       "type": "array",
       "items": {
         "$ref": "TagAssignment.json"
-      }
+      },
+      "description": "Semantic classification tags (e.g., 'pii', 'financial') applied to this term."
     },
     "authorityLinks": {
       "type": "array",
       "items": {
         "$ref": "AuthorityLink.json"
-      }
+      },
+      "description": "References to external authority systems that recognise this term."
     },
     "relatedTerms": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:glossary:"
-      }
+      },
+      "description": "URNs of other GlossaryTerms that are semantically related."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Optional hypermedia links to further documentation."
     }
-  }
+  },
+  "description": "A canonical business term with its authoritative definition, synonyms, semantic classification tags, external authority links, and cross-references, forming the basis of semantic unification across datasets and fields."
 }

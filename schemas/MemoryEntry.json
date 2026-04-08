@@ -19,41 +19,50 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:memory:"
+      "pattern": "^urn:srcos:memory:",
+      "description": "Stable URN identifying this memory entry (urn:srcos:memory:<id>)."
     },
     "type": {
-      "const": "MemoryEntry"
+      "const": "MemoryEntry",
+      "description": "Discriminator constant \u2014 always 'MemoryEntry'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "kind": {
       "enum": [
         "rule",
         "learned",
         "recap"
-      ]
+      ],
+      "description": "Category of memory: 'rule' (explicit instruction), 'learned' (inferred pattern), or 'recap' (session summary)."
     },
     "namespace": {
-      "type": "string"
+      "type": "string",
+      "description": "Dot-separated namespace isolating this entry (e.g., 'user.preferences', 'repo.conventions')."
     },
     "key": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable key within the namespace identifying this specific memory."
     },
     "payloadRef": {
-      "type": "string"
+      "type": "string",
+      "description": "URN or path pointing to the full content of this memory entry."
     },
     "authoritativeRef": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional URN of a source document that this memory was derived from."
     },
     "citationRefs": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "URNs of sessions or documents that provide evidence for this memory."
     },
     "scope": {
       "type": "object",
@@ -82,7 +91,8 @@
           ],
           "pattern": "^urn:srcos:session:"
         }
-      }
+      },
+      "description": "Scope restrictions: workspace, pathPrefixes, and optional sessionRef."
     },
     "freshness": {
       "type": "object",
@@ -109,7 +119,9 @@
           ],
           "minimum": 0
         }
-      }
+      },
+      "description": "Freshness tracking: learnedAt (required), reviewedAt, and ttl (seconds)."
     }
-  }
+  },
+  "description": "A durable knowledge entry stored in the agent's persistent memory layer, classified by kind (explicit rule, learned pattern, or session recap), with namespace scoping and freshness tracking."
 }

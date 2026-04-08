@@ -15,17 +15,21 @@
         "cel",
         "rego",
         "cedar"
-      ]
+      ],
+      "description": "The policy language in which the expression is written."
     },
     "expr": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "The condition expression in the specified language (JSON-native for jsonlogic/cedar; string for cel/rego)."
     },
     "notes": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional human-readable explanation of the condition's intent."
     }
-  }
+  },
+  "description": "An expression in a supported policy language that guards a Rule's effect, allowing fine-grained conditional logic beyond simple scope matching."
 }

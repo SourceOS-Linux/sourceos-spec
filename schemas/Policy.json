@@ -16,16 +16,20 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:policy:"
+      "pattern": "^urn:srcos:policy:",
+      "description": "Stable URN identifying this policy (urn:srcos:policy:<id>)."
     },
     "type": {
-      "const": "Policy"
+      "const": "Policy",
+      "description": "Discriminator constant \u2014 always 'Policy'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Short human-readable name of the policy."
     },
     "scope": {
       "type": "object",
@@ -54,25 +58,30 @@
             "type": "string"
           }
         }
-      }
+      },
+      "description": "Defines which subjects, objects, and purposes this policy governs."
     },
     "rules": {
       "type": "array",
       "items": {
         "$ref": "Rule.json"
-      }
+      },
+      "description": "Ordered list of Rule clauses evaluated to produce the policy decision."
     },
     "obligations": {
       "type": "array",
       "items": {
         "$ref": "Obligation.json"
-      }
+      },
+      "description": "Default obligations attached to all permits issued by this policy."
     },
     "exceptions": {
       "type": "array",
       "items": {
         "$ref": "Exception.json"
-      }
+      },
+      "description": "Named exceptions that override deny outcomes for specific circumstances."
     }
-  }
+  },
+  "description": "A governance rule set that evaluates subject\u2013object\u2013purpose triples to produce permit/deny decisions, carrying attached obligations and optional per-exception overrides."
 }

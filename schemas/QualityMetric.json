@@ -16,16 +16,20 @@
         "uniqueness",
         "consistency",
         "timeliness"
-      ]
+      ],
+      "description": "Standard quality dimension being measured."
     },
     "value": {
       "type": "number",
       "minimum": 0,
-      "maximum": 1
+      "maximum": 1,
+      "description": "Normalised score in the range [0, 1] (1.0 = perfect quality)."
     },
     "details": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Optional diagnostic key/value pairs explaining the score (e.g., invalidRows count)."
     }
-  }
+  },
+  "description": "A named data quality measurement computed for a field or dataset, with a normalised numeric score and optional diagnostic detail payload."
 }

@@ -4,14 +4,56 @@
   "title": "FrustrationSignal",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id","type","specVersion","sessionRef","signal","capturedAt"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "signal",
+    "capturedAt"
+  ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:frustration:"},
-    "type": {"const": "FrustrationSignal"},
-    "specVersion": {"type": "string"},
-    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
-    "signal": {"enum": ["strong-negative-language","cancel","repeated-failure","tool-loop","user-interrupt"]},
-    "count": {"type": ["integer","null"], "minimum": 0},
-    "capturedAt": {"type": "string", "format": "date-time"}
-  }
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:frustration:",
+      "description": "Stable URN identifying this signal record (urn:srcos:frustration:<id>)."
+    },
+    "type": {
+      "const": "FrustrationSignal",
+      "description": "Discriminator constant \u2014 always 'FrustrationSignal'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession in which this signal was observed."
+    },
+    "signal": {
+      "enum": [
+        "strong-negative-language",
+        "cancel",
+        "repeated-failure",
+        "tool-loop",
+        "user-interrupt"
+      ],
+      "description": "Category of frustration signal detected."
+    },
+    "count": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Optional occurrence count when the same signal was triggered multiple times."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the signal was captured."
+    }
+  },
+  "description": "A telemetry record capturing a negative user-experience signal observed during an agent session, used for quality monitoring, session review, and model-improvement feedback loops."
 }

@@ -15,16 +15,20 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:connector:"
+      "pattern": "^urn:srcos:connector:",
+      "description": "Stable URN identifying this connector (urn:srcos:connector:<id>)."
     },
     "type": {
-      "const": "Connector"
+      "const": "Connector",
+      "description": "Discriminator constant \u2014 always 'Connector'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable display name for this connector."
     },
     "kind": {
       "enum": [
@@ -36,11 +40,13 @@
         "filesystem",
         "httpApi",
         "lakehouse"
-      ]
+      ],
+      "description": "Category of external system this connector targets."
     },
     "config": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Connector-specific configuration (endpoint, auth strategy, etc.)."
     },
     "status": {
       "enum": [
@@ -48,7 +54,9 @@
         "disabled",
         "deprecated"
       ],
-      "default": "active"
+      "default": "active",
+      "description": "Operational status of this connector."
     }
-  }
+  },
+  "description": "A storage or compute connection descriptor defining the kind, endpoint configuration, and operational status of an external data source or sink."
 }

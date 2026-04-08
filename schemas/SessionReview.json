@@ -14,13 +14,48 @@
     "reviewedAt"
   ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:session-review:"},
-    "type": {"const": "SessionReview"},
-    "specVersion": {"type": "string"},
-    "sessionRef": {"type": "string", "pattern": "^urn:srcos:session:"},
-    "summaryRef": {"type": "string"},
-    "learnedMemoryRefs": {"type": "array", "items": {"type": "string", "pattern": "^urn:srcos:memory:"}},
-    "followupRefs": {"type": "array", "items": {"type": "string"}},
-    "reviewedAt": {"type": "string", "format": "date-time"}
-  }
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:session-review:",
+      "description": "Stable URN identifying this review (urn:srcos:session-review:<id>)."
+    },
+    "type": {
+      "const": "SessionReview",
+      "description": "Discriminator constant \u2014 always 'SessionReview'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession being reviewed."
+    },
+    "summaryRef": {
+      "type": "string",
+      "description": "URN of the artifact containing the human-readable session summary."
+    },
+    "learnedMemoryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:memory:"
+      },
+      "description": "URNs of MemoryEntry records created or updated as a result of this session."
+    },
+    "followupRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URNs of follow-up AgentSessions created to handle deferred work."
+    },
+    "reviewedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this review was completed."
+    }
+  },
+  "description": "A post-session retrospective record linking session outcomes to learned memory entries and identifying follow-up sessions needed for deferred or incomplete work."
 }

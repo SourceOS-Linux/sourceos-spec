@@ -19,40 +19,49 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:run:"
+      "pattern": "^urn:srcos:run:",
+      "description": "Stable URN identifying this run (urn:srcos:run:<id>)."
     },
     "type": {
-      "const": "RunRecord"
+      "const": "RunRecord",
+      "description": "Discriminator constant \u2014 always 'RunRecord'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "workload": {
-      "$ref": "WorkloadSpec.json"
+      "$ref": "WorkloadSpec.json",
+      "description": "The WorkloadSpec that was executed."
     },
     "sphere": {
-      "$ref": "DataSphere.json"
+      "$ref": "DataSphere.json",
+      "description": "The DataSphere boundary in which execution occurred."
     },
     "inputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
-      }
+      },
+      "description": "List of input DataRefs consumed by this run."
     },
     "outputs": {
       "type": "array",
       "items": {
         "$ref": "DataRef.json"
-      }
+      },
+      "description": "List of output DataRefs produced by this run."
     },
     "tokenRef": {
-      "type": "string"
+      "type": "string",
+      "description": "Token ID (from CapabilityToken) that authorised this execution."
     },
     "decisionRef": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional URN of the PolicyDecision that issued the capability token."
     },
     "status": {
       "enum": [
@@ -60,7 +69,8 @@
         "succeeded",
         "failed",
         "aborted"
-      ]
+      ],
+      "description": "Final execution status."
     },
     "time": {
       "type": "object",
@@ -80,14 +90,16 @@
           ],
           "format": "date-time"
         }
-      }
+      },
+      "description": "Execution timing: startedAt and endedAt (ISO 8601)."
     },
     "provenanceRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:prov:"
+      "pattern": "^urn:srcos:prov:",
+      "description": "Optional URN of the ProvenanceRecord created for this run."
     },
     "integrity": {
       "type": "object",
@@ -117,7 +129,9 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Optional hashes of inputs, outputs, and the run record itself, plus a signature."
     }
-  }
+  },
+  "description": "A record of a single workload execution within a DataSphere, capturing the workload specification, input and output data references, the capability token used, execution status, timing, and lineage hook."
 }

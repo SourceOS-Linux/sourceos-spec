@@ -13,7 +13,8 @@
       "enum": [
         "permit",
         "deny"
-      ]
+      ],
+      "description": "The outcome if this rule matches: 'permit' or 'deny'."
     },
     "operations": {
       "type": "array",
@@ -25,10 +26,13 @@
           "transform",
           "share"
         ]
-      }
+      },
+      "description": "List of operation names this rule applies to (e.g., 'read', 'export', 'write')."
     },
     "condition": {
-      "$ref": "PolicyCondition.json"
+      "$ref": "PolicyCondition.json",
+      "description": "Optional PolicyCondition expression that must be satisfied for this rule to fire."
     }
-  }
+  },
+  "description": "A single permit-or-deny clause within a Policy, specifying the effect, the list of operations it applies to, and an optional PolicyCondition expression that must evaluate to true."
 }

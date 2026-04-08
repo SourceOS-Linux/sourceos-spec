@@ -13,7 +13,8 @@
   "properties": {
     "workloadId": {
       "type": "string",
-      "pattern": "^urn:srcos:workload:"
+      "pattern": "^urn:srcos:workload:",
+      "description": "Stable URN identifying this workload specification (urn:srcos:workload:<id>)."
     },
     "kind": {
       "enum": [
@@ -21,17 +22,22 @@
         "container",
         "function",
         "streamProcessor"
-      ]
+      ],
+      "description": "The execution substrate or framework for this workload."
     },
     "image": {
-      "type": "string"
+      "type": "string",
+      "description": "Container image reference, JAR path, function ARN, or equivalent."
     },
     "entrypoint": {
-      "type": "string"
+      "type": "string",
+      "description": "Command, function name, or class to invoke within the image."
     },
     "params": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Workload-specific parameters passed at execution time."
     }
-  }
+  },
+  "description": "The specification of a single executable computational unit \u2014 a container, Spark job, serverless function, or stream processor \u2014 that can be referenced by a RunRecord or WorkflowNode."
 }

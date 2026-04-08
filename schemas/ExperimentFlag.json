@@ -4,15 +4,60 @@
   "title": "ExperimentFlag",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id","type","specVersion","name","state"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "state"
+  ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:flag:"},
-    "type": {"const": "ExperimentFlag"},
-    "specVersion": {"type": "string"},
-    "name": {"type": "string"},
-    "state": {"enum": ["off","shadow","internal","beta","on","retired"]},
-    "owner": {"type": ["string","null"]},
-    "description": {"type": ["string","null"]},
-    "killSwitch": {"type": "boolean"}
-  }
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:flag:",
+      "description": "Stable URN identifying this flag (urn:srcos:flag:<id>)."
+    },
+    "type": {
+      "const": "ExperimentFlag",
+      "description": "Discriminator constant \u2014 always 'ExperimentFlag'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
+    },
+    "name": {
+      "type": "string",
+      "description": "Programmatic name of the flag (used in code and config)."
+    },
+    "state": {
+      "enum": [
+        "off",
+        "shadow",
+        "internal",
+        "beta",
+        "on",
+        "retired"
+      ],
+      "description": "Current rollout stage of the flag."
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional URN of the subject responsible for this flag."
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional human-readable description of what this flag controls."
+    },
+    "killSwitch": {
+      "type": "boolean",
+      "description": "When true, this flag can be disabled globally in an emergency with no further review."
+    }
+  },
+  "description": "A named feature flag controlling the rollout lifecycle of experimental or beta functionality, tracking progression from shadow testing through full enablement to retirement."
 }

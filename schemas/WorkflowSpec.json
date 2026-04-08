@@ -15,40 +15,49 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:workflow:"
+      "pattern": "^urn:srcos:workflow:",
+      "description": "Stable URN identifying this workflow (urn:srcos:workflow:<id>)."
     },
     "type": {
-      "const": "WorkflowSpec"
+      "const": "WorkflowSpec",
+      "description": "Discriminator constant \u2014 always 'WorkflowSpec'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable name of this workflow."
     },
     "nodes": {
       "type": "array",
       "items": {
         "$ref": "WorkflowNode.json"
-      }
+      },
+      "description": "List of WorkflowNode steps that make up the pipeline."
     },
     "edges": {
       "type": "array",
       "items": {
         "$ref": "WorkflowEdge.json"
-      }
+      },
+      "description": "List of WorkflowEdge directed dependencies between nodes."
     },
     "triggers": {
       "type": "array",
       "items": {
         "$ref": "Trigger.json"
-      }
+      },
+      "description": "List of Triggers that initiate this workflow."
     },
     "policyBindings": {
       "type": "array",
       "items": {
         "$ref": "PolicyBinding.json"
-      }
+      },
+      "description": "PolicyBinding associations applied to nodes within this workflow."
     }
-  }
+  },
+  "description": "A directed acyclic graph of WorkflowNodes and WorkflowEdges defining a multi-step data processing pipeline, with scheduling triggers and policy bindings."
 }

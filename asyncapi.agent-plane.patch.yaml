@@ -1,27 +1,94 @@
-# additive AsyncAPI patch fragment for the core agent-plane schema family
+# Additive AsyncAPI patch fragment for the agent-plane schema family.
+# Merge with asyncapi.yaml to obtain the complete event-spine surface.
 channels:
   srcos.v2.session.events:
+    description: >
+      Events related to AgentSession lifecycle.
+      Common eventType values: SessionCreated, SessionStatusChanged,
+      SessionCompleted, SessionFailed.
     publish:
+      summary: Publish a Session event.
+      operationId: publishSessionEvent
+      message:
+        name: SessionEvent
+        title: Session Event
+        summary: An event envelope wrapping an AgentSession state change.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Session events.
+      operationId: subscribeSessionEvents
       message:
         name: SessionEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.execution.events:
+    description: >
+      Events related to ExecutionDecision records within agent sessions.
+      Common eventType values: ExecutionDecisionIssued.
     publish:
+      summary: Publish an Execution event.
+      operationId: publishExecutionEvent
+      message:
+        name: ExecutionEvent
+        title: Execution Event
+        summary: An event envelope wrapping an ExecutionDecision record.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Execution events.
+      operationId: subscribeExecutionEvents
       message:
         name: ExecutionEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.skill.events:
+    description: >
+      Events related to SkillManifest registration and updates.
+      Common eventType values: SkillRegistered, SkillUpdated, SkillDeprecated.
     publish:
+      summary: Publish a Skill event.
+      operationId: publishSkillEvent
+      message:
+        name: SkillEvent
+        title: Skill Event
+        summary: An event envelope wrapping a SkillManifest lifecycle change.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Skill events.
+      operationId: subscribeSkillEvents
       message:
         name: SkillEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.memory.events:
+    description: >
+      Events related to MemoryEntry writes and evictions in the agent
+      memory store. Common eventType values: MemoryWritten, MemoryEvicted.
     publish:
+      summary: Publish a Memory event.
+      operationId: publishMemoryEvent
+      message:
+        name: MemoryEvent
+        title: Memory Event
+        summary: An event envelope wrapping a MemoryEntry write or eviction.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Memory events.
+      operationId: subscribeMemoryEvents
       message:
         name: MemoryEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.receipt.events:
+    description: >
+      Events emitted when session or release receipts are recorded.
+      Common eventType values: SessionReceiptRecorded, ReleaseReceiptRecorded.
     publish:
+      summary: Publish a Receipt event.
+      operationId: publishReceiptEvent
+      message:
+        name: ReceiptEvent
+        title: Receipt Event
+        summary: An event envelope wrapping a SessionReceipt or ReleaseReceipt.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Receipt events.
+      operationId: subscribeReceiptEvents
       message:
         name: ReceiptEvent
         payload: { $ref: './schemas/EventEnvelope.json' }

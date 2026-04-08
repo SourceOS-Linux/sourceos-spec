@@ -1,0 +1,214 @@
+name: Validate Spec
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  validate-schemas:
+    name: Validate JSON Schemas
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install AJV CLI
+        run: npm install -g ajv-cli@5
+
+      - name: Compile all schemas (syntax check)
+        run: |
+          failed=0
+          for schema in schemas/*.json; do
+            echo -n "Compiling $schema ... "
+            if ajv compile -s "$schema" --strict=false 2>&1; then
+              echo "ok"
+            else
+              echo "FAILED"
+              failed=1
+            fi
+          done
+          exit $failed
+
+      - name: Validate examples against schemas
+        run: |
+          python3 - << 'EOF'
+          import json, glob, os, sys
+
+          # Pre-load all schemas into a registry keyed by both $id and local path
+          schema_dir = 'schemas'
+          registry = {}
+          for schema_file in glob.glob(f'{schema_dir}/*.json'):
+              with open(schema_file) as f:
+                  schema = json.load(f)
+              # Register by $id
+              if '$id' in schema:
+                  registry[schema['$id']] = schema
+              # Register by local relative path (used in $ref)
+              base = os.path.basename(schema_file)
+              registry[f'./{base}'] = schema
+              registry[base] = schema
+
+          from jsonschema import RefResolver, validate, ValidationError
+
+          failed = 0
+          skipped = 0
+          passed = 0
+
+          for example_path in sorted(glob.glob('examples/*.json')):
+              with open(example_path) as f:
+                  example = json.load(f)
+
+              etype = example.get('type')
+              if not etype:
+                  print(f"SKIP {example_path} (no top-level type field — sub-schema example)")
+                  skipped += 1
+                  continue
+
+              schema_path = f'{schema_dir}/{etype}.json'
+              if not os.path.exists(schema_path):
+                  print(f"WARN {example_path}: schema '{schema_path}' not found, skipping")
+                  skipped += 1
+                  continue
+
+              with open(schema_path) as f:
+                  schema = json.load(f)
+
+              # Build a resolver that serves refs from the pre-loaded registry
+              base_uri = f'file://{os.path.abspath(schema_dir)}/'
+
+              class LocalRegistry(RefResolver):
+                  def resolve_remote(self, uri):
+                      # Strip fragment
+                      clean = uri.split('#')[0]
+                      # Try registry first
+                      if clean in registry:
+                          return registry[clean]
+                      # Try by basename
+                      name = os.path.basename(clean)
+                      if name in registry:
+                          return registry[name]
+                      # Fall back to file:// resolution
+                      return super().resolve_remote(uri)
+
+              resolver = LocalRegistry(base_uri=base_uri, referrer=schema, store=registry)
+
+              try:
+                  validate(example, schema, resolver=resolver)
+                  print(f"ok  {example_path}")
+                  passed += 1
+              except ValidationError as e:
+                  print(f"FAIL {example_path}: {e.message}", file=sys.stderr)
+                  failed += 1
+              except Exception as e:
+                  print(f"FAIL {example_path}: {type(e).__name__}: {e}", file=sys.stderr)
+                  failed += 1
+
+          print(f"\nResults: {passed} passed, {skipped} skipped, {failed} failed")
+          sys.exit(failed)
+          EOF
+
+  validate-openapi:
+    name: Validate OpenAPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Spectral
+        run: npm install -g @stoplight/spectral-cli
+
+      - name: Lint openapi.yaml
+        run: spectral lint openapi.yaml --ruleset https://unpkg.com/@stoplight/spectral-openapi/dist/ruleset.js || true
+
+      - name: Validate openapi.yaml parses as valid OpenAPI
+        run: |
+          python3 - << 'EOF'
+          import yaml, sys
+          try:
+              with open('openapi.yaml') as f:
+                  doc = yaml.safe_load(f)
+              assert doc.get('openapi', '').startswith('3.'), "Not an OpenAPI 3.x document"
+              assert 'info' in doc
+              assert 'paths' in doc
+              print("openapi.yaml: valid structure")
+          except Exception as e:
+              print(f"openapi.yaml: FAILED - {e}", file=sys.stderr)
+              sys.exit(1)
+          EOF
+
+  validate-asyncapi:
+    name: Validate AsyncAPI
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate asyncapi.yaml parses correctly
+        run: |
+          python3 - << 'EOF'
+          import yaml, sys
+          try:
+              with open('asyncapi.yaml') as f:
+                  doc = yaml.safe_load(f)
+              assert doc.get('asyncapi', '').startswith('2.'), "Not an AsyncAPI 2.x document"
+              assert 'info' in doc
+              assert 'channels' in doc
+              channels = list(doc['channels'].keys())
+              print(f"asyncapi.yaml: valid structure, {len(channels)} channels: {channels}")
+          except Exception as e:
+              print(f"asyncapi.yaml: FAILED - {e}", file=sys.stderr)
+              sys.exit(1)
+          EOF
+
+  validate-jsonld:
+    name: Validate JSON-LD
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check JSON-LD files are valid JSON
+        run: |
+          python3 - << 'EOF'
+          import json, sys, glob
+
+          failed = 0
+          for path in glob.glob('semantic/*.jsonld'):
+              try:
+                  with open(path) as f:
+                      doc = json.load(f)
+                  ctx = doc.get('@context', {})
+                  mapped = [k for k, v in ctx.items() if isinstance(v, str) and (v.startswith('srcos:') or v.startswith('prov:'))]
+                  print(f"{path}: valid JSON, {len(mapped)} type mappings")
+              except Exception as e:
+                  print(f"{path}: FAILED - {e}", file=sys.stderr)
+                  failed = 1
+
+          sys.exit(failed)
+          EOF
+
+      - name: Check all schemas are mapped in context.jsonld
+        run: |
+          python3 - << 'EOF'
+          import json, glob, os, sys
+
+          with open('semantic/context.jsonld') as f:
+              ctx = json.load(f)['@context']
+
+          mapped = set(k for k, v in ctx.items() if isinstance(v, str) and (v.startswith('srcos:') or v.startswith('prov:')))
+          schemas = set(os.path.basename(f).replace('.json', '') for f in glob.glob('schemas/*.json'))
+
+          missing = schemas - mapped
+          if missing:
+              print(f"WARNING: {len(missing)} schema(s) not mapped in context.jsonld: {sorted(missing)}")
+          else:
+              print(f"All {len(schemas)} schemas are mapped in context.jsonld")
+          EOF

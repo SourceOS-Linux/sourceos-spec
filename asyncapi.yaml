@@ -2,29 +2,199 @@ asyncapi: 2.6.0
 info:
   title: SourceOS/SociOS Event Spine
   version: 2.0.0
+  description: >
+    AsyncAPI specification for the SourceOS/SociOS event spine.
+    All events are wrapped in an EventEnvelope and published to
+    topic-per-entity-type channels. Consumers should filter by
+    `eventType` within the envelope to handle specific event subtypes.
+    Channel names follow the pattern `srcos.v2.<entity>.events`.
+  contact:
+    name: SourceOS Maintainers
+    url: https://github.com/SourceOS-Linux/sourceos-spec
+  license:
+    name: MIT
+    url: https://github.com/SourceOS-Linux/sourceos-spec/blob/main/LICENSE
+defaultContentType: application/json
 channels:
   srcos.v2.dataset.events:
+    description: >
+      Events related to Dataset lifecycle changes.
+      Common eventType values: DatasetCreated, DatasetUpdated,
+      DatasetLifecycleChanged, DatasetDeleted.
     publish:
+      summary: Publish a Dataset event.
+      operationId: publishDatasetEvent
+      message:
+        name: DatasetEvent
+        title: Dataset Event
+        summary: An event envelope wrapping a Dataset-related change.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Dataset events.
+      operationId: subscribeDatasetEvents
       message:
         name: DatasetEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.policy.events:
+    description: >
+      Events related to Policy lifecycle and evaluation.
+      Common eventType values: PolicyCreated, PolicyUpdated,
+      PolicyEvaluated, PolicyDeleted.
     publish:
+      summary: Publish a Policy event.
+      operationId: publishPolicyEvent
+      message:
+        name: PolicyEvent
+        title: Policy Event
+        summary: An event envelope wrapping a Policy-related change or evaluation.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Policy events.
+      operationId: subscribePolicyEvents
       message:
         name: PolicyEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.run.events:
+    description: >
+      Events emitted when workload runs are recorded.
+      Common eventType values: RunStarted, RunSucceeded, RunFailed,
+      RunAborted.
     publish:
+      summary: Publish a Run event.
+      operationId: publishRunEvent
+      message:
+        name: RunEvent
+        title: Run Event
+        summary: An event envelope wrapping a RunRecord transition.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Run events.
+      operationId: subscribeRunEvents
       message:
         name: RunEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.mapping.events:
+    description: >
+      Events related to MappingSpec lifecycle.
+      Common eventType values: MappingProposed, MappingCurated,
+      MappingRejected.
     publish:
+      summary: Publish a Mapping event.
+      operationId: publishMappingEvent
+      message:
+        name: MappingEvent
+        title: Mapping Event
+        summary: An event envelope wrapping a MappingSpec curation change.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Mapping events.
+      operationId: subscribeMappingEvents
       message:
         name: MappingEvent
         payload: { $ref: './schemas/EventEnvelope.json' }
   srcos.v2.glossary.events:
+    description: >
+      Events related to GlossaryTerm lifecycle.
+      Common eventType values: GlossaryTermCreated, GlossaryTermUpdated,
+      GlossaryTermDeleted.
     publish:
+      summary: Publish a Glossary event.
+      operationId: publishGlossaryEvent
       message:
         name: GlossaryEvent
+        title: Glossary Event
+        summary: An event envelope wrapping a GlossaryTerm change.
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Glossary events.
+      operationId: subscribeGlossaryEvents
+      message:
+        name: GlossaryEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.agreement.events:
+    description: >
+      Events related to Agreement lifecycle.
+      Common eventType values: AgreementCreated, AgreementUpdated,
+      AgreementExpired.
+    publish:
+      summary: Publish an Agreement event.
+      operationId: publishAgreementEvent
+      message:
+        name: AgreementEvent
+        title: Agreement Event
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Agreement events.
+      operationId: subscribeAgreementEvents
+      message:
+        name: AgreementEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.connector.events:
+    description: >
+      Events related to Connector registration and status changes.
+      Common eventType values: ConnectorRegistered, ConnectorStatusChanged,
+      ConnectorDeprecated.
+    publish:
+      summary: Publish a Connector event.
+      operationId: publishConnectorEvent
+      message:
+        name: ConnectorEvent
+        title: Connector Event
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Connector events.
+      operationId: subscribeConnectorEvents
+      message:
+        name: ConnectorEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.provenance.events:
+    description: >
+      Events emitted when provenance records are created.
+      Common eventType values: ProvenanceRecorded.
+    publish:
+      summary: Publish a Provenance event.
+      operationId: publishProvenanceEvent
+      message:
+        name: ProvenanceEvent
+        title: Provenance Event
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Provenance events.
+      operationId: subscribeProvenanceEvents
+      message:
+        name: ProvenanceEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.schema.events:
+    description: >
+      Events related to SchemaDefinition lifecycle.
+      Common eventType values: SchemaCreated, SchemaUpdated.
+    publish:
+      summary: Publish a Schema event.
+      operationId: publishSchemaEvent
+      message:
+        name: SchemaEvent
+        title: Schema Event
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Schema events.
+      operationId: subscribeSchemaEvents
+      message:
+        name: SchemaEvent
+        payload: { $ref: './schemas/EventEnvelope.json' }
+  srcos.v2.token.events:
+    description: >
+      Events related to CapabilityToken issuance and expiry.
+      Common eventType values: TokenIssued, TokenExpired, TokenRevoked.
+    publish:
+      summary: Publish a Token event.
+      operationId: publishTokenEvent
+      message:
+        name: TokenEvent
+        title: Token Event
+        payload: { $ref: './schemas/EventEnvelope.json' }
+    subscribe:
+      summary: Receive Token events.
+      operationId: subscribeTokenEvents
+      message:
+        name: TokenEvent
         payload: { $ref: './schemas/EventEnvelope.json' }

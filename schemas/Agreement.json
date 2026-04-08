@@ -16,29 +16,35 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:agreement:"
+      "pattern": "^urn:srcos:agreement:",
+      "description": "Stable URN identifying this agreement (urn:srcos:agreement:<id>)."
     },
     "type": {
-      "const": "Agreement"
+      "const": "Agreement",
+      "description": "Discriminator constant \u2014 always 'Agreement'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "title": {
-      "type": "string"
+      "type": "string",
+      "description": "Short human-readable title of the agreement."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Longer narrative description of the agreement's intent and scope."
     },
     "parties": {
       "type": "array",
       "items": {
         "$ref": "Party.json"
       },
-      "minItems": 1
+      "minItems": 1,
+      "description": "Ordered list of parties bound by this agreement."
     },
     "terms": {
       "type": "object",
@@ -74,7 +80,8 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "License, restriction, attribution, retention, and jurisdiction terms."
     },
     "effective": {
       "type": "object",
@@ -94,13 +101,16 @@
           ],
           "format": "date-time"
         }
-      }
+      },
+      "description": "Validity window: start (required) and end (null = indefinite)."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Optional hypermedia links to related resources (e.g., full legal text)."
     }
-  }
+  },
+  "description": "A data usage agreement between two or more parties, specifying license terms, use restrictions, attribution requirements, data-retention period, and jurisdictional scope."
 }

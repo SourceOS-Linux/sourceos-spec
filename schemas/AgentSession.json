@@ -22,20 +22,24 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:session:"
+      "pattern": "^urn:srcos:session:",
+      "description": "Stable URN identifying this session (urn:srcos:session:<id>)."
     },
     "type": {
-      "const": "AgentSession"
+      "const": "AgentSession",
+      "description": "Discriminator constant \u2014 always 'AgentSession'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "parentSessionRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:session:"
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the parent session when this is a sub-session (null for root sessions)."
     },
     "role": {
       "enum": [
@@ -47,7 +51,8 @@
         "auditor",
         "reverser",
         "custom"
-      ]
+      ],
+      "description": "Functional role this agent session plays in the overall task."
     },
     "status": {
       "enum": [
@@ -60,7 +65,8 @@
         "canceled",
         "merged",
         "reversed"
-      ]
+      ],
+      "description": "Lifecycle state of the session."
     },
     "mode": {
       "enum": [
@@ -68,16 +74,19 @@
         "ask",
         "execute",
         "review"
-      ]
+      ],
+      "description": "Interaction mode: plan (propose-only), ask (clarify), execute (take actions), or review (read-only assessment)."
     },
     "workspaceRef": {
-      "type": "string"
+      "type": "string",
+      "description": "URN or path identifying the workspace repository being operated on."
     },
     "worktreeRef": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional URN of the git worktree used for isolated edits."
     },
     "substrate": {
       "enum": [
@@ -87,51 +96,59 @@
         "background",
         "event-pushed",
         "ci"
-      ]
+      ],
+      "description": "Execution substrate the agent is running on."
     },
     "surface": {
-      "$ref": "ExecutionSurface.json"
+      "$ref": "ExecutionSurface.json",
+      "description": "Execution surface constraints (sandbox, network, paths) for this session."
     },
     "provider": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Model or service provider backing the agent (e.g., 'openai', 'anthropic')."
     },
     "skillRefs": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:skill:"
-      }
+      },
+      "description": "Ordered list of SkillManifest URNs active during this session."
     },
     "memoryRefs": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:memory:"
-      }
+      },
+      "description": "URNs of MemoryEntry objects injected into the session context."
     },
     "transcriptRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:transcript:"
+      "pattern": "^urn:srcos:transcript:",
+      "description": "Optional URN pointing to the full conversation transcript artifact."
     },
     "decisionRefs": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:exec-decision:"
-      }
+      },
+      "description": "URNs of ExecutionDecision records (urn:srcos:exec-decision:<id>) produced during this session."
     },
     "telemetryRefs": {
       "type": "array",
       "items": {
         "type": "string",
         "pattern": "^urn:srcos:telemetry:"
-      }
+      },
+      "description": "URNs of TelemetryEvent records emitted during this session."
     },
     "time": {
       "type": "object",
@@ -151,7 +168,9 @@
           ],
           "format": "date-time"
         }
-      }
+      },
+      "description": "Session timing: startedAt and optional endedAt (ISO 8601)."
     }
-  }
+  },
+  "description": "A record of a single agent task-execution session, capturing the role, substrate, execution surface, skill/memory references, and timing for a discrete unit of agentic work."
 }

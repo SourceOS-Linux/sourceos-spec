@@ -13,10 +13,12 @@
   "properties": {
     "sphereId": {
       "type": "string",
-      "pattern": "^urn:srcos:sphere:"
+      "pattern": "^urn:srcos:sphere:",
+      "description": "Stable URN identifying this DataSphere."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable name of this DataSphere."
     },
     "boundary": {
       "type": "object",
@@ -37,7 +39,8 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Zone, network-policy, and storage-policy constraints defining the perimeter."
     },
     "controls": {
       "type": "object",
@@ -60,7 +63,9 @@
             "strict"
           ]
         }
-      }
+      },
+      "description": "Access enforcer, provenance mode, and container attestation settings."
     }
-  }
+  },
+  "description": "A logical isolation boundary within which workloads execute, defined by zone constraints, network policies, storage policies, and access-control settings."
 }

@@ -12,23 +12,28 @@
   "properties": {
     "partyId": {
       "type": "string",
-      "pattern": "^urn:srcos:party:"
+      "pattern": "^urn:srcos:party:",
+      "description": "Stable URN identifying this party (urn:srcos:party:<id>)."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Human-readable display name of the party."
     },
     "kind": {
       "enum": [
         "person",
         "org",
         "service"
-      ]
+      ],
+      "description": "Category of party: person, org (organisation), or service."
     },
     "authorityLinks": {
       "type": "array",
       "items": {
         "$ref": "AuthorityLink.json"
-      }
+      },
+      "description": "External system references that corroborate this party's identity."
     }
-  }
+  },
+  "description": "A named participant in a data usage Agreement \u2014 a person, organisation, or service \u2014 with optional external authority-link references for identity corroboration."
 }

@@ -4,25 +4,73 @@
   "title": "RolloutPolicy",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id","type","specVersion","flagRef","rules"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "flagRef",
+    "rules"
+  ],
   "properties": {
-    "id": {"type": "string", "pattern": "^urn:srcos:rollout:"},
-    "type": {"const": "RolloutPolicy"},
-    "specVersion": {"type": "string"},
-    "flagRef": {"type": "string", "pattern": "^urn:srcos:flag:"},
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:rollout:",
+      "description": "Stable URN identifying this rollout policy (urn:srcos:rollout:<id>)."
+    },
+    "type": {
+      "const": "RolloutPolicy",
+      "description": "Discriminator constant \u2014 always 'RolloutPolicy'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
+    },
+    "flagRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:flag:",
+      "description": "URN of the ExperimentFlag this rollout policy controls."
+    },
     "rules": {
       "type": "array",
       "items": {
         "type": "object",
         "additionalProperties": false,
-        "required": ["audience","state"],
+        "required": [
+          "audience",
+          "state"
+        ],
         "properties": {
-          "audience": {"type": "string"},
-          "state": {"enum": ["off","shadow","internal","beta","on"]},
-          "percentage": {"type": ["number","null"], "minimum": 0, "maximum": 100}
+          "audience": {
+            "type": "string"
+          },
+          "state": {
+            "enum": [
+              "off",
+              "shadow",
+              "internal",
+              "beta",
+              "on"
+            ]
+          },
+          "percentage": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "minimum": 0,
+            "maximum": 100
+          }
         }
-      }
+      },
+      "description": "Ordered list of rollout rule objects; each specifies a cohort selector and an enabled percentage."
     },
-    "notes": {"type": ["string","null"]}
-  }
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional human-readable notes about the rollout strategy."
+    }
+  },
+  "description": "A rule set controlling the incremental rollout of an ExperimentFlag to subjects based on cohort membership, percentage thresholds, or attribute predicates."
 }

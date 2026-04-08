@@ -1,0 +1,12 @@
+{
+  "kind": "enumeration",
+  "values": [
+    "active",
+    "inactive",
+    "pending",
+    "archived"
+  ],
+  "min": null,
+  "max": null,
+  "pattern": null
+}

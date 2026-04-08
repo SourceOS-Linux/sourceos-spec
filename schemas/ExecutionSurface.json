@@ -17,16 +17,20 @@
   ],
   "properties": {
     "pty": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Whether the agent has access to a pseudo-terminal (interactive shell)."
     },
     "workdir": {
-      "type": "string"
+      "type": "string",
+      "description": "Absolute path of the working directory for this session."
     },
     "background": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Whether the agent runs as a background (non-interactive) process."
     },
     "reviewOnly": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "When true, the agent may only read and report; it must not make changes."
     },
     "worktreeStrategy": {
       "enum": [
@@ -34,7 +38,8 @@
         "existing",
         "create-temp",
         "named"
-      ]
+      ],
+      "description": "How git worktrees are managed for isolated edits."
     },
     "sandboxMode": {
       "enum": [
@@ -43,35 +48,42 @@
         "container",
         "vm",
         "browser-sandbox"
-      ]
+      ],
+      "description": "Isolation level applied to the agent process."
     },
     "networkMode": {
       "enum": [
         "none",
         "allowlist",
         "full"
-      ]
+      ],
+      "description": "Egress policy: none (offline), allowlist, or full internet."
     },
     "egressAllowlist": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Hostnames or CIDR blocks permitted when networkMode is 'allowlist'."
     },
     "elevated": {
-      "type": "boolean"
+      "type": "boolean",
+      "description": "Whether the agent has elevated (e.g., sudo) privileges."
     },
     "protectedPaths": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Filesystem paths the agent must not read or modify."
     },
     "approvalProfile": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional URN of a human-approval profile for sensitive operations."
     }
-  }
+  },
+  "description": "The set of execution-environment constraints for an agent session, specifying terminal mode, working directory, sandbox level, network access policy, protected file paths, and approval requirements."
 }

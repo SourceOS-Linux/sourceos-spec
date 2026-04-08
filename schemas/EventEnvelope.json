@@ -16,17 +16,21 @@
   "properties": {
     "eventId": {
       "type": "string",
-      "pattern": "^urn:srcos:event:"
+      "pattern": "^urn:srcos:event:",
+      "description": "Stable URN uniquely identifying this event (urn:srcos:event:<id>)."
     },
     "eventType": {
-      "type": "string"
+      "type": "string",
+      "description": "String discriminator identifying the type of event (e.g., 'RunRecorded', 'PolicyUpdated')."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "occurredAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when the event occurred."
     },
     "actor": {
       "type": "object",
@@ -44,14 +48,17 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Subject and optional network context of the actor that caused the event."
     },
     "objectId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the platform object this event pertains to."
     },
     "payload": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Event-specific payload; structure is determined by eventType."
     },
     "integrity": {
       "type": "object",
@@ -69,7 +76,9 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Optional event hash and signature for tamper-evident delivery."
     }
-  }
+  },
+  "description": "A generic wrapper for all events published to the SourceOS event spine, providing a uniform structure for event identity, actor, timing, target object, and typed payload."
 }

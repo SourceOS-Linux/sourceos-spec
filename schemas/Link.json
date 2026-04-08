@@ -10,16 +10,20 @@
   ],
   "properties": {
     "rel": {
-      "type": "string"
+      "type": "string",
+      "description": "Relationship type (e.g., 'self', 'documentation', 'schema', 'upstream')."
     },
     "href": {
-      "type": "string"
+      "type": "string",
+      "description": "Absolute or relative URL of the linked resource."
     },
     "type": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional MIME type of the linked resource."
     }
-  }
+  },
+  "description": "A typed hyperlink with a relationship qualifier, used to attach related external or internal resources to any top-level object following HATEOAS conventions."
 }

@@ -1,0 +1,8 @@
+{
+  "name": "completeness",
+  "value": 0.9958,
+  "details": {
+    "totalRows": 10000,
+    "nullCount": 42
+  }
+}

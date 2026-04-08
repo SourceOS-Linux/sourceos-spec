@@ -13,19 +13,23 @@
         "schedule",
         "event",
         "manual"
-      ]
+      ],
+      "description": "The type of trigger."
     },
     "schedule": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Cron expression for schedule triggers (e.g., '0 2 * * *')."
     },
     "eventType": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Event type string that activates this trigger when kind is 'event'."
     }
-  }
+  },
+  "description": "A workflow activation specification that causes a WorkflowSpec to execute when a scheduled time fires, a named event type is received, or a manual invocation is made."
 }

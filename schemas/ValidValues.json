@@ -14,31 +14,37 @@
         "enumeration",
         "range",
         "regex"
-      ]
+      ],
+      "description": "The constraint style to apply."
     },
     "values": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Enumeration of allowed string values (used when kind is 'enumeration')."
     },
     "min": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "description": "Minimum allowed numeric value (used when kind is 'range')."
     },
     "max": {
       "type": [
         "number",
         "null"
-      ]
+      ],
+      "description": "Maximum allowed numeric value (used when kind is 'range')."
     },
     "pattern": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Regular expression the field value must match (used when kind is 'regex')."
     }
-  }
+  },
+  "description": "A constraint on the acceptable values for an EntityField, expressed as an enumeration of allowed values, a numeric range (min/max), or a regular expression pattern."
 }

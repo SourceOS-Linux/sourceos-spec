@@ -10,7 +10,8 @@
   ],
   "properties": {
     "objectId": {
-      "type": "string"
+      "type": "string",
+      "description": "URN of the resource being accessed."
     },
     "objectType": {
       "enum": [
@@ -21,23 +22,28 @@
         "provenance",
         "schema",
         "agreement"
-      ]
+      ],
+      "description": "The kind of resource being accessed."
     },
     "tags": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "Classification tags currently applied to this resource (e.g., 'pii', 'health')."
     },
     "zone": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Data zone of the resource (e.g., 'raw', 'curated', 'restricted')."
     },
     "attributes": {
       "type": "object",
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "Additional key/value attributes for fine-grained policy conditions."
     }
-  }
+  },
+  "description": "The object (resource) side of a policy evaluation request, identifying the target resource by URN, type, classification tags, zone, and arbitrary attributes."
 }

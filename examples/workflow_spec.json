@@ -1,0 +1,96 @@
+{
+  "id": "urn:srcos:workflow:health_export_pipeline",
+  "type": "WorkflowSpec",
+  "specVersion": "2.0.0",
+  "name": "Health Data Export Pipeline",
+  "nodes": [
+    {
+      "nodeId": "ingest_raw",
+      "workload": {
+        "workloadId": "urn:srcos:workload:ingester_v1",
+        "kind": "sparkJob",
+        "image": "ghcr.io/srcos/ingester:v1",
+        "entrypoint": "ingest",
+        "params": {
+          "format": "parquet"
+        }
+      },
+      "inputs": [
+        {
+          "refType": "asset",
+          "id": "urn:srcos:asset:lake_raw_health",
+          "fieldPaths": []
+        }
+      ],
+      "outputs": [
+        {
+          "refType": "dataset",
+          "id": "urn:srcos:dataset:health_obs",
+          "fieldPaths": []
+        }
+      ],
+      "requiredObligations": [],
+      "resources": {
+        "cpu": "4",
+        "memory": "8Gi"
+      }
+    },
+    {
+      "nodeId": "obfuscate_pii",
+      "workload": {
+        "workloadId": "urn:srcos:workload:obfuscator_v1",
+        "kind": "container",
+        "image": "ghcr.io/srcos/obfuscator:v1",
+        "entrypoint": "obfuscate",
+        "params": {
+          "mode": "k-anon",
+          "k": 5
+        }
+      },
+      "inputs": [
+        {
+          "refType": "dataset",
+          "id": "urn:srcos:dataset:health_obs",
+          "fieldPaths": [
+            "$.patient.dateOfBirth"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "refType": "dataset",
+          "id": "urn:srcos:dataset:obfuscated_out",
+          "fieldPaths": []
+        }
+      ],
+      "requiredObligations": [
+        "attest_container"
+      ],
+      "resources": {
+        "cpu": "2",
+        "memory": "4Gi"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "from": "ingest_raw",
+      "to": "obfuscate_pii"
+    }
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "schedule": "0 2 * * *",
+      "eventType": null
+    }
+  ],
+  "policyBindings": [
+    {
+      "policyId": "urn:srcos:policy:export_health_restricted",
+      "appliesTo": {
+        "nodeId": "obfuscate_pii"
+      }
+    }
+  ]
+}

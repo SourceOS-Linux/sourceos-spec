@@ -17,24 +17,29 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:exec-decision:"
+      "pattern": "^urn:srcos:exec-decision:",
+      "description": "Stable URN identifying this decision (urn:srcos:exec-decision:<id>)."
     },
     "type": {
-      "const": "ExecutionDecision"
+      "const": "ExecutionDecision",
+      "description": "Discriminator constant \u2014 always 'ExecutionDecision'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "sessionRef": {
       "type": "string",
-      "pattern": "^urn:srcos:session:"
+      "pattern": "^urn:srcos:session:",
+      "description": "URN of the AgentSession that triggered this decision."
     },
     "toolRequestRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:tool:"
+      "pattern": "^urn:srcos:tool:",
+      "description": "Optional URN of the specific tool call or action being evaluated."
     },
     "decision": {
       "enum": [
@@ -43,45 +48,54 @@
         "ask",
         "defer",
         "rewrite"
-      ]
+      ],
+      "description": "The outcome of evaluation: allow, deny, ask (human gate), defer, or rewrite."
     },
     "reason": {
-      "type": "string"
+      "type": "string",
+      "description": "Plain-language explanation of why this decision was made."
     },
     "updatedInput": {
       "type": [
         "object",
         "null"
       ],
-      "additionalProperties": true
+      "additionalProperties": true,
+      "description": "For 'rewrite' decisions: the sanitised/modified input to use instead."
     },
     "policyRef": {
       "type": [
         "string",
         "null"
       ],
-      "pattern": "^urn:srcos:policy:"
+      "pattern": "^urn:srcos:policy:",
+      "description": "Optional URN of the Policy or rule that drove this decision."
     },
     "obligations": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of obligation names the session must fulfil when executing."
     },
     "issuedAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this decision was issued."
     },
     "expiresAt": {
       "type": [
         "string",
         "null"
       ],
-      "format": "date-time"
+      "format": "date-time",
+      "description": "Optional ISO 8601 expiry; the decision should not be replayed after this time."
     },
     "decisionHash": {
       "type": "string",
-      "pattern": "^sha256:"
+      "pattern": "^sha256:",
+      "description": "SHA-256 hash over the canonical JSON of this record for tamper detection."
     }
-  }
+  },
+  "description": "A real-time agent execution decision record capturing whether a requested tool call or action should be allowed, denied, rewritten, or deferred, along with the policy reference, human-readable reasoning, and a tamper-evident hash."
 }

@@ -1,0 +1,18 @@
+{
+  "id": "urn:srcos:release-receipt:rr_001",
+  "type": "ReleaseReceipt",
+  "specVersion": "2.0.0",
+  "releaseTarget": "ghcr.io/srcos/obfuscator:v2.0.0",
+  "sourceRef": "urn:srcos:workspace:obfuscator:refs/heads/main",
+  "artifactHashes": [
+    "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  ],
+  "checks": [
+    "schema-lint",
+    "unit-tests",
+    "security-scan",
+    "license-check"
+  ],
+  "status": "verified",
+  "verifiedAt": "2026-01-10T14:22:00Z"
+}

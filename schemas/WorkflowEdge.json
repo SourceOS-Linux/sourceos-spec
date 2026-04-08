@@ -10,10 +10,13 @@
   ],
   "properties": {
     "from": {
-      "type": "string"
+      "type": "string",
+      "description": "nodeId of the upstream (source) WorkflowNode."
     },
     "to": {
-      "type": "string"
+      "type": "string",
+      "description": "nodeId of the downstream (sink) WorkflowNode."
     }
-  }
+  },
+  "description": "A directed dependency edge between two WorkflowNode identifiers within a WorkflowSpec DAG, establishing execution order and data-flow direction."
 }

@@ -16,21 +16,24 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:prov:"
+      "pattern": "^urn:srcos:prov:",
+      "description": "Stable URN identifying this provenance record (urn:srcos:prov:<id>)."
     },
     "type": {
-      "const": "ProvenanceRecord"
+      "const": "ProvenanceRecord",
+      "description": "Discriminator constant \u2014 always 'ProvenanceRecord'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "activity": {
       "type": "string",
-      "description": "Activity identifier (run/workflow node)"
+      "description": "URN of the activity (RunRecord or WorkflowNode) that generated the lineage."
     },
     "agent": {
       "type": "string",
-      "description": "Agent identifier (subject/workload/service)"
+      "description": "URN of the agent (subject, workload, or service) that performed the activity."
     },
     "entities": {
       "type": "array",
@@ -60,17 +63,21 @@
             "description": "sha256:..."
           }
         }
-      }
+      },
+      "description": "List of input and output data entities with their roles and optional content hashes."
     },
     "createdAt": {
       "type": "string",
-      "format": "date-time"
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this provenance record was created."
     },
     "signature": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional cryptographic signature over this record for tamper detection."
     }
-  }
+  },
+  "description": "A PROV-compatible lineage record linking a data-processing activity (run or workflow node) to the agent that performed it and the input and output data entities it consumed and produced."
 }

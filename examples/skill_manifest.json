@@ -1,0 +1,44 @@
+{
+  "id": "urn:srcos:skill:code-reviewer",
+  "type": "SkillManifest",
+  "specVersion": "2.0.0",
+  "name": "code-reviewer",
+  "version": "1.2.0",
+  "entryDoc": ".github/agents/code-reviewer.md",
+  "description": "Reviews pull request diffs for correctness, style compliance, security issues, and test coverage.",
+  "activationRules": {
+    "filePatterns": [
+      "**/*.ts",
+      "**/*.py",
+      "**/*.json"
+    ],
+    "intentTags": [
+      "code-review",
+      "pr-review"
+    ]
+  },
+  "requires": {
+    "tools": [
+      "read_file",
+      "list_directory",
+      "search_code"
+    ],
+    "binaries": [],
+    "anyBins": []
+  },
+  "executionSurfaceRef": null,
+  "policyBindings": [
+    "urn:srcos:policy:agent_execution_default"
+  ],
+  "artifactOutputs": [
+    "review-comment.md",
+    "summary.md"
+  ],
+  "reviewMode": true,
+  "allowShellExecution": false,
+  "protectedPaths": [
+    ".git/config",
+    ".env",
+    "secrets/"
+  ]
+}

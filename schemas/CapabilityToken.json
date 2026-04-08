@@ -15,10 +15,12 @@
   ],
   "properties": {
     "tokenId": {
-      "type": "string"
+      "type": "string",
+      "description": "Opaque token identifier (used as reference in RunRecord.tokenRef)."
     },
     "subject": {
-      "$ref": "SubjectContext.json"
+      "$ref": "SubjectContext.json",
+      "description": "The subject to whom this token was issued."
     },
     "scope": {
       "type": "object",
@@ -59,29 +61,37 @@
             ]
           }
         }
-      }
+      },
+      "description": "Datasets, field paths, asset IDs, and operations permitted by this token."
     },
     "purpose": {
-      "type": "string"
+      "type": "string",
+      "description": "Declared purpose for which the token was issued (e.g., 'export', 'analysis')."
     },
     "decisionRef": {
       "type": "string",
-      "pattern": "^urn:srcos:decision:"
+      "pattern": "^urn:srcos:decision:",
+      "description": "URN of the PolicyDecision that authorised token issuance."
     },
     "obligations": {
       "type": "array",
       "items": {
         "$ref": "Obligation.json"
-      }
+      },
+      "description": "Obligations the holder must fulfil when exercising this token."
     },
     "iat": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Issued-at time as a Unix epoch integer."
     },
     "exp": {
-      "type": "integer"
+      "type": "integer",
+      "description": "Expiry time as a Unix epoch integer."
     },
     "signature": {
-      "type": "string"
+      "type": "string",
+      "description": "Cryptographic signature over the token contents."
     }
-  }
+  },
+  "description": "A short-lived, signed access token issued after a successful PolicyDecision, granting a specific subject permission to perform scoped operations on one or more datasets or assets, and carrying any associated obligations."
 }

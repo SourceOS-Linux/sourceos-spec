@@ -1,0 +1,7 @@
+{
+  "policyId": "urn:srcos:policy:export_health_restricted",
+  "appliesTo": {
+    "nodeId": "obfuscation_step",
+    "workflowRef": "urn:srcos:workflow:health_export_pipeline"
+  }
+}

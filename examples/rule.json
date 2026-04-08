@@ -1,0 +1,19 @@
+{
+  "effect": "permit",
+  "operations": [
+    "read",
+    "export"
+  ],
+  "condition": {
+    "language": "jsonlogic",
+    "expr": {
+      "==": [
+        {
+          "var": "purpose"
+        },
+        "export"
+      ]
+    },
+    "notes": "Only permits when purpose is explicitly 'export'"
+  }
+}

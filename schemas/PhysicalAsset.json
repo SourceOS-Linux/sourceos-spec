@@ -15,13 +15,16 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:asset:"
+      "pattern": "^urn:srcos:asset:",
+      "description": "Stable URN identifying this asset (urn:srcos:asset:<id>)."
     },
     "type": {
-      "const": "PhysicalAsset"
+      "const": "PhysicalAsset",
+      "description": "Discriminator constant \u2014 always 'PhysicalAsset'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "assetKind": {
       "enum": [
@@ -31,14 +34,17 @@
         "file",
         "api",
         "lakehouse"
-      ]
+      ],
+      "description": "Physical storage category of this asset."
     },
     "connectorId": {
       "type": "string",
-      "pattern": "^urn:srcos:connector:"
+      "pattern": "^urn:srcos:connector:",
+      "description": "URN of the Connector used to reach this asset."
     },
     "location": {
-      "type": "string"
+      "type": "string",
+      "description": "Fully qualified path, URL, table name, or topic name within the connector's system."
     },
     "identification": {
       "type": "object",
@@ -68,7 +74,9 @@
             "null"
           ]
         }
-      }
+      },
+      "description": "Cloud-provider identification details: vendor, account, region, and resourceId."
     }
-  }
+  },
+  "description": "A reference to a physical storage location (object-store bucket, database table, Kafka topic, file path, or API endpoint), connected via a named Connector and representing the actual underlying data container for a Dataset."
 }

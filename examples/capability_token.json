@@ -1,0 +1,40 @@
+{
+  "tokenId": "tok_abc123",
+  "subject": {
+    "subjectId": "urn:srcos:subject:user:analyst_01",
+    "kind": "user",
+    "roles": [
+      "analyst"
+    ],
+    "attributes": {
+      "department": "data-science"
+    }
+  },
+  "scope": {
+    "datasetIds": [
+      "urn:srcos:dataset:health_obs"
+    ],
+    "fieldPaths": [
+      "$.patient.dateOfBirth",
+      "$.patient.id"
+    ],
+    "assetIds": [
+      "urn:srcos:asset:lake_curated_health"
+    ],
+    "operations": [
+      "read"
+    ]
+  },
+  "purpose": "analysis",
+  "decisionRef": "urn:srcos:decision:bb22cc33",
+  "obligations": [
+    {
+      "name": "log_access",
+      "when": "post",
+      "params": {}
+    }
+  ],
+  "iat": 1737036000,
+  "exp": 1737039600,
+  "signature": "sig_eyJhbGciOiJFZERTQSJ9.example"
+}

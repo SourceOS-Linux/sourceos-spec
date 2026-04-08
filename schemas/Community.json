@@ -13,34 +13,42 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^urn:srcos:community:"
+      "pattern": "^urn:srcos:community:",
+      "description": "Stable URN identifying this community (urn:srcos:community:<id>)."
     },
     "type": {
-      "const": "Community"
+      "const": "Community",
+      "description": "Discriminator constant \u2014 always 'Community'."
     },
     "specVersion": {
-      "type": "string"
+      "type": "string",
+      "description": "Semantic version of the SourceOS spec this record conforms to."
     },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "Display name of the community."
     },
     "description": {
       "type": [
         "string",
         "null"
-      ]
+      ],
+      "description": "Optional description of the community's purpose or scope."
     },
     "members": {
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "description": "List of subject URNs who are members of this community."
     },
     "links": {
       "type": "array",
       "items": {
         "$ref": "Link.json"
-      }
+      },
+      "description": "Optional hypermedia links to related resources."
     }
-  }
+  },
+  "description": "A named group of subjects (users, services) that share common data interests or governance scope within the platform."
 }
