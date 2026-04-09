@@ -1,0 +1,33 @@
+{
+  "@context": "../semantic/context.jsonld",
+  "@id": "urn:sourceos:repo:SociOS-Linux:socioslinux-web",
+  "@type": ["RepoDescriptor", "Repository"],
+  "name": "socioslinux-web",
+  "description": "Linux public web and docs surface for the Socios Linux stack.",
+  "repositoryFullName": "SociOS-Linux/socioslinux-web",
+  "repoUrl": "https://github.com/SociOS-Linux/socioslinux-web",
+  "organization": "SociOS-Linux",
+  "defaultBranch": "main",
+  "semanticDescriptorVersion": "0.1.0",
+  "topologyRole": "rolePublicDocsSurface",
+  "connectsTo": [
+    "urn:sourceos:repo:SociOS-Linux:SourceOS",
+    "urn:sourceos:repo:SociOS-Linux:agentos-spine",
+    "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+    "urn:sourceos:repo:SociOS-Linux:socios",
+    "urn:sourceos:repo:SocioProphet:sociosphere",
+    "urn:sourceos:repo:SocioProphet:socioprophet"
+  ],
+  "publicSurfaceFor": [
+    "urn:sourceos:repo:SociOS-Linux:SourceOS",
+    "urn:sourceos:repo:SociOS-Linux:agentos-spine",
+    "urn:sourceos:repo:SociOS-Linux:socios"
+  ],
+  "consumesVocabularyFrom": "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+  "notThisRepo": [
+    "workspace controller",
+    "image builder",
+    "immutable substrate",
+    "canonical typed-contract registry"
+  ]
+}

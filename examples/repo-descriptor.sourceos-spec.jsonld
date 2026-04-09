@@ -1,0 +1,28 @@
+{
+  "@context": "../semantic/context.jsonld",
+  "@id": "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+  "@type": ["RepoDescriptor", "Repository"],
+  "name": "sourceos-spec",
+  "description": "Canonical typed-contract, JSON-LD, and shared vocabulary lane for SourceOS / AgentOS.",
+  "repositoryFullName": "SourceOS-Linux/sourceos-spec",
+  "repoUrl": "https://github.com/SourceOS-Linux/sourceos-spec",
+  "organization": "SourceOS-Linux",
+  "defaultBranch": "main",
+  "semanticDescriptorVersion": "0.1.0",
+  "topologyRole": "roleTypedContractRegistry",
+  "connectsTo": [
+    "urn:sourceos:repo:SociOS-Linux:agentos-spine",
+    "urn:sourceos:repo:SociOS-Linux:workstation-contracts",
+    "urn:sourceos:repo:SociOS-Linux:SourceOS",
+    "urn:sourceos:repo:SociOS-Linux:socios",
+    "urn:sourceos:repo:SocioProphet:sociosphere",
+    "urn:sourceos:repo:SociOS-Linux:socioslinux-web"
+  ],
+  "consumesVocabularyFrom": "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+  "notThisRepo": [
+    "workspace controller",
+    "image builder",
+    "public docs site",
+    "opt-in automation plane"
+  ]
+}

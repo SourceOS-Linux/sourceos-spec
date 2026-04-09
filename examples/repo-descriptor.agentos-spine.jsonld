@@ -1,0 +1,28 @@
+{
+  "@context": "../semantic/context.jsonld",
+  "@id": "urn:sourceos:repo:SociOS-Linux:agentos-spine",
+  "@type": ["RepoDescriptor", "Repository"],
+  "name": "agentos-spine",
+  "description": "Current Linux-side integration/workspace spine for AgentOS / SourceOS.",
+  "repositoryFullName": "SociOS-Linux/agentos-spine",
+  "repoUrl": "https://github.com/SociOS-Linux/agentos-spine",
+  "organization": "SociOS-Linux",
+  "defaultBranch": "main",
+  "semanticDescriptorVersion": "0.1.0",
+  "topologyRole": "roleLinuxIntegrationSpine",
+  "connectsTo": [
+    "urn:sourceos:repo:SociOS-Linux:SourceOS",
+    "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+    "urn:sourceos:repo:SociOS-Linux:workstation-contracts",
+    "urn:sourceos:repo:SociOS-Linux:socios",
+    "urn:sourceos:repo:SocioProphet:sociosphere",
+    "urn:sourceos:repo:SociOS-Linux:socioslinux-web"
+  ],
+  "consumesVocabularyFrom": "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+  "notThisRepo": [
+    "immutable OS substrate",
+    "final typed-contract registry",
+    "public docs site",
+    "opt-in automation plane"
+  ]
+}
