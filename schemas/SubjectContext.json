@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/SubjectContext.json",
   "title": "SubjectContext",
+  "description": "The access-control context for the subject (requester) side of a PolicyDecision request. Carries the subject's type, roles, and arbitrary attributes.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,7 +12,7 @@
   "properties": {
     "subjectId": {
       "type": "string",
-      "description": "URN of the requesting subject."
+      "description": "URN of the requesting subject (user, service, app, or workload)."
     },
     "kind": {
       "enum": [
@@ -20,20 +21,19 @@
         "app",
         "workload"
       ],
-      "description": "Category of the requesting subject."
+      "description": "The subject type: user, service, app, or workload."
     },
     "roles": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of role names currently held by this subject (e.g., 'owner', 'analyst')."
+      "description": "Roles assigned to this subject in the current context."
     },
     "attributes": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Additional key/value attributes for fine-grained policy conditions."
+      "description": "Arbitrary additional attributes for use in policy condition expressions."
     }
-  },
-  "description": "The subject (requestor) side of a policy evaluation request, identifying the requesting entity by URN, kind, assigned roles, and arbitrary attributes."
+  }
 }

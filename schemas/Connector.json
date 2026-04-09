@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Connector.json",
   "title": "Connector",
+  "description": "A named, typed connection configuration for a physical data store (S3, GCS, Azure Blob, RDBMS, Kafka, filesystem, HTTP API, or lakehouse).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,19 +17,19 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:connector:",
-      "description": "Stable URN identifying this connector (urn:srcos:connector:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:connector:<local-id>"
     },
     "type": {
       "const": "Connector",
-      "description": "Discriminator constant \u2014 always 'Connector'."
+      "description": "Discriminator constant \u2014 always \"Connector\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
       "type": "string",
-      "description": "Human-readable display name for this connector."
+      "description": "Human-readable name for this connector."
     },
     "kind": {
       "enum": [
@@ -41,12 +42,12 @@
         "httpApi",
         "lakehouse"
       ],
-      "description": "Category of external system this connector targets."
+      "description": "The storage technology type: s3, gcs, azureBlob, rdbms, kafka, filesystem, httpApi, or lakehouse."
     },
     "config": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Connector-specific configuration (endpoint, auth strategy, etc.)."
+      "description": "Connector-specific configuration object. Structure is defined by the `kind` value."
     },
     "status": {
       "enum": [
@@ -55,8 +56,7 @@
         "deprecated"
       ],
       "default": "active",
-      "description": "Operational status of this connector."
+      "description": "Operational status: active (default), disabled, or deprecated."
     }
-  },
-  "description": "A storage or compute connection descriptor defining the kind, endpoint configuration, and operational status of an external data source or sink."
+  }
 }

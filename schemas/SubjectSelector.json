@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/SubjectSelector.json",
   "title": "SubjectSelector",
+  "description": "A match clause used in a Policy scope to select which subject kinds and attributes the policy applies to.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,13 +17,12 @@
         "workload",
         "any"
       ],
-      "description": "The subject kind this selector matches (use 'any' to match all kinds)."
+      "description": "The subject kind this selector matches: user, service, app, workload, or any."
     },
     "match": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Attribute predicate map used to filter matching subjects."
+      "description": "Attribute match criteria. Keys and values are defined by the policy engine implementation."
     }
-  },
-  "description": "A policy scope selector that matches requesting subjects by their kind and attribute predicates, used in Policy.scope to define who the policy applies to."
+  }
 }

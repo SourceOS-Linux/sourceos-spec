@@ -29,7 +29,11 @@ jobs:
           failed=0
           for schema in schemas/*.json; do
             echo -n "Compiling $schema ... "
-            if ajv compile -s "$schema" --strict=false 2>&1; then
+            cmd=(ajv compile -s "$schema" --strict=false --spec=draft2020)
+            for ref in schemas/*.json; do
+              [ "$ref" != "$schema" ] && cmd+=(-r "$ref")
+            done
+            if "${cmd[@]}" 2>&1; then
               echo "ok"
             else
               echo "FAILED"
@@ -189,6 +193,8 @@ jobs:
                   with open(path) as f:
                       doc = json.load(f)
                   ctx = doc.get('@context', {})
+                  if not isinstance(ctx, dict):
+                      ctx = {}
                   mapped = [k for k, v in ctx.items() if isinstance(v, str) and (v.startswith('srcos:') or v.startswith('prov:'))]
                   print(f"{path}: valid JSON, {len(mapped)} type mappings")
               except Exception as e:

@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ExecutionDecision.json",
   "title": "ExecutionDecision",
+  "description": "An immutable audit record of a single agent execution decision (allow, deny, ask, defer, or rewrite) made during an AgentSession.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -18,20 +19,20 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:exec-decision:",
-      "description": "Stable URN identifying this decision (urn:srcos:exec-decision:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:exec-decision:<local-id>"
     },
     "type": {
       "const": "ExecutionDecision",
-      "description": "Discriminator constant \u2014 always 'ExecutionDecision'."
+      "description": "Discriminator constant \u2014 always \"ExecutionDecision\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "sessionRef": {
       "type": "string",
       "pattern": "^urn:srcos:session:",
-      "description": "URN of the AgentSession that triggered this decision."
+      "description": "URN of the AgentSession in which this decision was made. Pattern: urn:srcos:session:<id>"
     },
     "toolRequestRef": {
       "type": [
@@ -39,7 +40,7 @@
         "null"
       ],
       "pattern": "^urn:srcos:tool:",
-      "description": "Optional URN of the specific tool call or action being evaluated."
+      "description": "Optional URN of the tool call or action request this decision responds to. Pattern: urn:srcos:tool:<id>"
     },
     "decision": {
       "enum": [
@@ -49,11 +50,11 @@
         "defer",
         "rewrite"
       ],
-      "description": "The outcome of evaluation: allow, deny, ask (human gate), defer, or rewrite."
+      "description": "The outcome: allow (proceed as requested), deny (block), ask (prompt user), defer (pause for later), or rewrite (modify input before proceeding)."
     },
     "reason": {
       "type": "string",
-      "description": "Plain-language explanation of why this decision was made."
+      "description": "Human-readable explanation of why this decision was reached."
     },
     "updatedInput": {
       "type": [
@@ -61,7 +62,7 @@
         "null"
       ],
       "additionalProperties": true,
-      "description": "For 'rewrite' decisions: the sanitised/modified input to use instead."
+      "description": "When `decision` is \"rewrite\", the modified input object to use instead of the original."
     },
     "policyRef": {
       "type": [
@@ -69,19 +70,19 @@
         "null"
       ],
       "pattern": "^urn:srcos:policy:",
-      "description": "Optional URN of the Policy or rule that drove this decision."
+      "description": "Optional URN of the Policy that drove this decision. Pattern: urn:srcos:policy:<id>"
     },
     "obligations": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "List of obligation names the session must fulfil when executing."
+      "description": "Obligation identifiers the session must fulfil as a result of this decision."
     },
     "issuedAt": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 timestamp when this decision was issued."
+      "description": "ISO 8601 date-time when this decision was recorded."
     },
     "expiresAt": {
       "type": [
@@ -89,13 +90,12 @@
         "null"
       ],
       "format": "date-time",
-      "description": "Optional ISO 8601 expiry; the decision should not be replayed after this time."
+      "description": "Optional ISO 8601 date-time after which this decision is no longer valid."
     },
     "decisionHash": {
       "type": "string",
       "pattern": "^sha256:",
-      "description": "SHA-256 hash over the canonical JSON of this record for tamper detection."
+      "description": "sha256: prefixed hash of the canonical decision payload for tamper-evidence."
     }
-  },
-  "description": "A real-time agent execution decision record capturing whether a requested tool call or action should be allowed, denied, rewritten, or deferred, along with the policy reference, human-readable reasoning, and a tamper-evident hash."
+  }
 }

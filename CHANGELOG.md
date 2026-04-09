@@ -1,66 +1,69 @@
 # Changelog
 
-All notable changes to the SourceOS/SociOS Typed Contracts Specification are documented here.
+All notable changes to the SourceOS/SociOS Typed Contracts specification are documented here.
 
-This file follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) conventions. The project uses [semantic versioning](https://semver.org/).
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ---
 
 ## [Unreleased]
 
 ### Added
-- `description` fields on all 54 schemas (top-level and all properties).
-- 41 new example files covering every schema type (`examples/agent_session.json`, `examples/workflow_spec.json`, etc.).
-- Comprehensive `README.md` with architecture diagram, repository layout, implementation guide, and validation instructions.
-- Rewrote `schemas/README.md` to document all 54 schemas with URN patterns, required fields, and enum values.
-- `CONTRIBUTING.md` with schema design conventions, URN naming rules, PR process, and versioning policy.
-- `CHANGELOG.md` (this file).
-- `docs/adr/` directory with five Architecture Decision Records:
-  - ADR-0001: Use JSON Schema draft 2020-12
-  - ADR-0002: Stable URN identifier scheme
-  - ADR-0003: Generic EventEnvelope for all channels
-  - ADR-0004: Multi-language policy conditions
-  - ADR-0005: Additive patch pattern for the agent plane
-- `.github/workflows/validate.yml` CI workflow for schema lint and example validation.
-- `.github/PULL_REQUEST_TEMPLATE.md` proper PR template.
+- `description` fields on all 54 schemas and all properties (non-breaking documentation improvement)
+- `ARCHITECTURE.md` — two-plane architecture, schema families, governance lifecycle, URN table
+- `CONTRIBUTING.md` — schema authoring conventions, URN naming guide, PR checklist
+- `docs/adr/` — Architecture Decision Records for key design choices
+- `examples/README.md` — guide to the example payloads
+- `semantic/README.md` — guide to the JSON-LD and Hydra overlays
+- Expanded `semantic/context.jsonld` to cover all 54 schema types
+- Expanded `semantic/hydra.jsonld` to cover all API resource classes
+- OpenAPI: `summary`, `description`, `tags`, security scheme, and error responses (`400`, `401`, `403`, `422`) on every operation
+- AsyncAPI: channel and message `description` fields; Kafka `bindings` on every channel
+- Missing `examples/` files for all agent-plane and supporting schemas
 
 ### Changed
-- Reconciled long-lived branch drift across documentation, API contracts, examples, and schema artifacts to unblock merge-to-`main` conflict resolution (no contract-level semantic changes).
-- `openapi.yaml` — added `info.description`, `info.contact`, `info.license`, `components/responses` (BadRequest, Unauthorized, Forbidden, NotFound, InternalServerError), `GET` and `DELETE` operations for all resources, operation `summary` and `description` strings, and 4xx/5xx responses on all endpoints.
-- `openapi.agent-plane.patch.yaml` — added operation summaries, descriptions, `GET` operations for sessions, skills, and memory, and error responses.
-- `asyncapi.yaml` — added `info.description`, `info.contact`, `info.license`, `subscribe` directions for all channels, channel `description` and `operationId` values, and five new channels for `agreement`, `connector`, `provenance`, `schema`, and `token` events.
-- `asyncapi.agent-plane.patch.yaml` — added channel descriptions, `subscribe` directions, and `operationId` values.
-- `semantic/context.jsonld` — expanded from 7 to 54 type mappings.
-- `semantic/hydra.jsonld` — expanded from 2 to 21 `hydra:supportedClass` entries covering all API-accessible resources.
+- `README.md` rewritten as a proper project introduction with repo layout, schema family table, quick-start commands, and contribution links
+- `schemas/README.md` corrected: URN patterns now match actual schema `pattern` constraints; example JSON replaced with accurate, AJV-validated payloads; all six schema families documented
+- `.github/PULL_REQUEST_TEMPLATE.md` expanded to a full structured PR checklist
 
-### Removed
-- `.IMPORT_SOURCE.txt` — internal import artifact removed from the repository.
-- `pulls/1.json` — test fixture artifact removed from the repository.
+### Fixed
+- `schemas/README.md` used `urn:sourceos:` prefix — corrected to `urn:srcos:` throughout
+- Resolved cross-branch merge conflicts across core docs/specs/examples and agent-plane schemas to restore a clean, mergeable branch state
 
 ---
 
 ## [2.0.0] — 2025-12-24
 
 ### Added
-- Full v2 schema set: `Agreement`, `GlossaryTerm`, `Connector`, `PhysicalAsset`, `SchemaDefinition`, `ProvenanceRecord`, `Comment`, `Rating`, `Community`.
-- `PolicyCondition` with declared language (`jsonlogic`, `cel`, `rego`, `cedar`) replacing untyped condition objects.
-- Agent Plane schema family: `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal`.
-- Feature-flag schemas: `ExperimentFlag`, `RolloutPolicy`.
-- Release tracking: `ReleaseReceipt`.
-- Semantic overlay: `semantic/context.jsonld` and `semantic/hydra.jsonld`.
-- Additive patch pattern: `openapi.agent-plane.patch.yaml` and `asyncapi.agent-plane.patch.yaml`.
-- `Dataset` now explicitly references `assetRef`, `schemaRef`, and `governance.agreements` (no implicit physical fields).
+- `Agreement` and `Party` schemas (Area 6: Agreements)
+- `GlossaryTerm` and `AuthorityLink` schemas (Area 2: Glossary)
+- `Connector` and `PhysicalAsset` schemas (Area 1: Physical Assets)
+- `SchemaDefinition`, `EntityField`, `ValidValues` schemas (Area 5: Models/Schemas)
+- `ProvenanceRecord` schema with W3C PROV-compatible entity roles
+- `Comment`, `Rating`, `Community` schemas (Area 4: Collaboration)
+- `PolicyCondition` with typed expression language (`jsonlogic`, `cel`, `rego`, `cedar`)
+- `MappingSpec` and `MappingEvidence` schemas for field-to-field lineage
+- `TagAssignment` with confidence, source provenance, and review record
+- Agent-plane schemas: `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal`
+- Release/experiment schemas: `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt`
+- Hydra/JSON-LD semantic overlay (`semantic/context.jsonld`, `semantic/hydra.jsonld`)
+- Agent-plane OpenAPI patch (`openapi.agent-plane.patch.yaml`)
+- Agent-plane AsyncAPI patch (`asyncapi.agent-plane.patch.yaml`)
 
 ### Changed
-- `Dataset.governance` upgraded to include `agreements` and `usageDefinitions` arrays.
-- All schemas enforce `additionalProperties: false`.
-- IDs standardised to `urn:srcos:…` URN scheme.
+- `Dataset` now requires explicit `assetRef` and `schemaRef` URN references (previously physical storage was implicit)
+- `Policy` rules upgraded from a flat structure to `Rule` + `PolicyCondition` with a declared `language` field
+- All IDs changed from opaque strings to `urn:srcos:` URNs with enforced `pattern` constraints
+
+### Removed
+- Implicit physical fields from `Dataset` (replaced by `PhysicalAsset` + `Connector` references)
 
 ---
 
-## [1.0.0] — 2025-06-01 _(initial)_
+## [1.0.0] — (initial, pre-repository)
 
-### Added
-- Initial schema set: `Dataset`, `Field`, `Policy`, `PolicyDecision`, `CapabilityToken`, `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataRef`, `DataSphere`.
-- `openapi.yaml` with metadata plane endpoints.
-- `asyncapi.yaml` with dataset, policy, run, mapping, and glossary channels.
+Initial typed contract set covering:
+- `Dataset`, `Field`, `Policy`, `PolicyDecision`, `CapabilityToken`
+- `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`
+- `DataSphere`, `DataRef`, `Obligation`, `SubjectContext`, `ObjectContext`
+- `EventEnvelope`, `Link`

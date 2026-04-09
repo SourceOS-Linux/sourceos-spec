@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/FrustrationSignal.json",
   "title": "FrustrationSignal",
+  "description": "A behavioural telemetry signal indicating that an agent or user is experiencing difficulty (e.g. repeated failure, tool loop, user interrupt).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,20 +17,20 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:frustration:",
-      "description": "Stable URN identifying this signal record (urn:srcos:frustration:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:frustration:<local-id>"
     },
     "type": {
       "const": "FrustrationSignal",
-      "description": "Discriminator constant \u2014 always 'FrustrationSignal'."
+      "description": "Discriminator constant \u2014 always \"FrustrationSignal\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "sessionRef": {
       "type": "string",
       "pattern": "^urn:srcos:session:",
-      "description": "URN of the AgentSession in which this signal was observed."
+      "description": "URN of the AgentSession in which this signal was observed. Pattern: urn:srcos:session:<id>"
     },
     "signal": {
       "enum": [
@@ -39,7 +40,7 @@
         "tool-loop",
         "user-interrupt"
       ],
-      "description": "Category of frustration signal detected."
+      "description": "The observed signal type: strong-negative-language, cancel, repeated-failure, tool-loop, or user-interrupt."
     },
     "count": {
       "type": [
@@ -47,13 +48,12 @@
         "null"
       ],
       "minimum": 0,
-      "description": "Optional occurrence count when the same signal was triggered multiple times."
+      "description": "Number of times this signal was observed in the session (null if not counted)."
     },
     "capturedAt": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 timestamp when the signal was captured."
+      "description": "ISO 8601 date-time when this signal was first captured."
     }
-  },
-  "description": "A telemetry record capturing a negative user-experience signal observed during an agent session, used for quality monitoring, session review, and model-improvement feedback loops."
+  }
 }

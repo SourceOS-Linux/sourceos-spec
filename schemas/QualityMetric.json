@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/QualityMetric.json",
   "title": "QualityMetric",
+  "description": "A single named data quality dimension (completeness, validity, uniqueness, consistency, or timeliness) measured on a 0\u20131 scale.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,19 +18,18 @@
         "consistency",
         "timeliness"
       ],
-      "description": "Standard quality dimension being measured."
+      "description": "The quality dimension: completeness, validity, uniqueness, consistency, or timeliness."
     },
     "value": {
       "type": "number",
       "minimum": 0,
       "maximum": 1,
-      "description": "Normalised score in the range [0, 1] (1.0 = perfect quality)."
+      "description": "The measured score for this dimension, in the range [0, 1] (1 = perfect quality)."
     },
     "details": {
       "type": "object",
       "additionalProperties": true,
-      "description": "Optional diagnostic key/value pairs explaining the score (e.g., invalidRows count)."
+      "description": "Optional dimension-specific detail object (e.g. invalidRows count for validity)."
     }
-  },
-  "description": "A named data quality measurement computed for a field or dataset, with a normalised numeric score and optional diagnostic detail payload."
+  }
 }

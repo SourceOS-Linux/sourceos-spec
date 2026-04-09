@@ -1,56 +1,47 @@
-# ADR-0005: Additive patch pattern for the agent plane
+# ADR-0005: Additive patch files for the agent plane
 
-**Status:** Accepted  
 **Date:** 2025-12-24  
-**Deciders:** SourceOS core team
+**Status:** Accepted
 
 ---
 
 ## Context
 
-The SourceOS platform has two distinct deployment surfaces:
-
-1. **Metadata Plane** — always deployed; governs data assets, policies, lineage, and collaboration.
-2. **Agent Plane** — optionally deployed; adds AI agent session management, skill orchestration, memory persistence, and real-time execution decisions.
-
-The Agent Plane depends on the Metadata Plane (agents consume datasets, trigger policies, record runs) but the Metadata Plane does not depend on the Agent Plane.
-
-Three options were considered for representing this in the spec:
-
-| Option | Description |
-|---|---|
-| **Single file** | Merge all schemas and API endpoints into one `openapi.yaml` and one `asyncapi.yaml` |
-| **Separate repositories** | Maintain agent-plane as an entirely separate spec repo |
-| **Additive patch files** | Core spec in `openapi.yaml` / `asyncapi.yaml`; agent-plane additions in `*.agent-plane.patch.yaml` files |
+The SourceOS agent plane (agent sessions, execution decisions, skill manifests, memory) is a distinct concern from the metadata governance plane (datasets, policies, provenance).  Not all deployments require the agent plane.  Folding agent-plane endpoints into the single `openapi.yaml` and `asyncapi.yaml` would:
+- Force all consumers to deal with agent-plane types even if they only use the metadata plane.
+- Make the base spec harder to read and maintain.
+- Couple the release cycle of both planes.
 
 ## Decision
 
-Use **additive patch files** (`openapi.agent-plane.patch.yaml`, `asyncapi.agent-plane.patch.yaml`) that extend the core specification.
+The agent-plane OpenAPI endpoints are defined in a separate file, `openapi.agent-plane.patch.yaml`, and the agent-plane AsyncAPI channels in `asyncapi.agent-plane.patch.yaml`.
 
-## Rationale
+Both patch files are **additive only** — they add new `paths` / `channels` without modifying or removing anything in the base spec.
 
-1. **Deployment flexibility** — teams deploying only the Metadata Plane do not need to process or implement agent-plane endpoints.
-2. **Single-repo governance** — keeping both planes in one repo simplifies cross-cutting concerns (versioning, CI, shared schemas).
-3. **Additive-only** — patch files add paths/channels; they never modify existing ones. This preserves backward compatibility of the core spec independently of the agent-plane additions.
-4. **Clear seam** — the patch boundary documents the exact contract surface of the agent plane, making it easy to audit what an agent-plane deployment requires.
+Consumers merge the patches at build time using standard tooling (`openapi-merge-cli`, `@asyncapi/bundler`).
 
-## Merge strategy
+## Alternatives considered
 
-To obtain the full combined API spec, merge the patch files with the base using either:
-
-```bash
-# With yq (recommended)
-yq eval-all 'select(fi == 0) *+ select(fi == 1)' openapi.yaml openapi.agent-plane.patch.yaml > openapi.combined.yaml
-
-# With OpenAPI Overlay tooling
-# The patch files are structured to be compatible with the OpenAPI Overlay specification.
-```
-
-The `paths` and `channels` objects are deep-merged (not replaced). The patch files do not include `info`, `servers`, or `components` keys — these are defined only in the base files.
+| Alternative | Reason not chosen |
+|-------------|------------------|
+| Separate standalone specs | Duplicates shared component schemas; two separate server surfaces to maintain |
+| Single unified spec | Couples agent-plane and metadata-plane release cycles; harder to deploy metadata-only |
+| OpenAPI overlays (v1 spec) | Standard not finalised at time of design; tooling immature |
 
 ## Consequences
 
-- The patch files are not standalone valid OpenAPI/AsyncAPI documents; they are fragments.
-- CI must validate each patch file in the context of the merged spec (done in `.github/workflows/validate.yml`).
-- Any new plane or extension (e.g., a federated-governance plane) should follow the same pattern with a new `*.patch.yaml` pair.
-- Consumer tooling must apply the appropriate patches before generating client stubs.
+**Positive:**
+- Metadata-plane-only implementations carry zero agent-plane surface area.
+- Each plane can evolve independently.
+- The patch model is explicit and auditable — diffs are small and focused.
+
+**Negative:**
+- Build pipelines must include a merge step.
+- Tooling for patch merging is not yet standardised across all OpenAPI/AsyncAPI tools.
+- Ordering matters — the base spec must be loaded before the patch.
+
+## References
+
+- `openapi.agent-plane.patch.yaml`
+- `asyncapi.agent-plane.patch.yaml`
+- `CONTRIBUTING.md` §Updating the API specs

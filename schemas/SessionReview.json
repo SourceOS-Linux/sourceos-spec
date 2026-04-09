@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/SessionReview.json",
   "title": "SessionReview",
+  "description": "A post-session learning review that summarises an AgentSession and links to the MemoryEntries extracted from it.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -17,24 +18,24 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:session-review:",
-      "description": "Stable URN identifying this review (urn:srcos:session-review:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:session-review:<local-id>"
     },
     "type": {
       "const": "SessionReview",
-      "description": "Discriminator constant \u2014 always 'SessionReview'."
+      "description": "Discriminator constant \u2014 always \"SessionReview\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "sessionRef": {
       "type": "string",
       "pattern": "^urn:srcos:session:",
-      "description": "URN of the AgentSession being reviewed."
+      "description": "URN of the AgentSession being reviewed. Pattern: urn:srcos:session:<id>"
     },
     "summaryRef": {
       "type": "string",
-      "description": "URN of the artifact containing the human-readable session summary."
+      "description": "Reference to the summary artifact produced by this review."
     },
     "learnedMemoryRefs": {
       "type": "array",
@@ -42,20 +43,19 @@
         "type": "string",
         "pattern": "^urn:srcos:memory:"
       },
-      "description": "URNs of MemoryEntry records created or updated as a result of this session."
+      "description": "URNs of MemoryEntries extracted and persisted from this session. Pattern: urn:srcos:memory:<id>"
     },
     "followupRefs": {
       "type": "array",
       "items": {
         "type": "string"
       },
-      "description": "URNs of follow-up AgentSessions created to handle deferred work."
+      "description": "References to follow-up tasks or sessions spawned by this review."
     },
     "reviewedAt": {
       "type": "string",
       "format": "date-time",
-      "description": "ISO 8601 timestamp when this review was completed."
+      "description": "ISO 8601 date-time when this review was conducted."
     }
-  },
-  "description": "A post-session retrospective record linking session outcomes to learned memory entries and identifying follow-up sessions needed for deferred or incomplete work."
+  }
 }

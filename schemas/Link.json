@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Link.json",
   "title": "Link",
+  "description": "A typed hyperlink in the HAL/JSON+HAL style, carrying a relation type (`rel`) and an absolute URI (`href`).",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,19 +12,18 @@
   "properties": {
     "rel": {
       "type": "string",
-      "description": "Relationship type (e.g., 'self', 'documentation', 'schema', 'upstream')."
+      "description": "The link relation type (e.g. \"self\", \"documentation\", \"related\"). Should be an IANA-registered relation or a custom URI."
     },
     "href": {
       "type": "string",
-      "description": "Absolute or relative URL of the linked resource."
+      "description": "The absolute URI of the linked resource."
     },
     "type": {
       "type": [
         "string",
         "null"
       ],
-      "description": "Optional MIME type of the linked resource."
+      "description": "Optional MIME type of the linked resource (e.g. \"application/json\")."
     }
-  },
-  "description": "A typed hyperlink with a relationship qualifier, used to attach related external or internal resources to any top-level object following HATEOAS conventions."
+  }
 }

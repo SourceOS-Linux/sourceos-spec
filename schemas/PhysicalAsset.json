@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/PhysicalAsset.json",
   "title": "PhysicalAsset",
+  "description": "A specific physical resource reachable through a Connector: a table, bucket prefix, Kafka topic, or API endpoint.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,15 +17,15 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:asset:",
-      "description": "Stable URN identifying this asset (urn:srcos:asset:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:asset:<local-id>"
     },
     "type": {
       "const": "PhysicalAsset",
-      "description": "Discriminator constant \u2014 always 'PhysicalAsset'."
+      "description": "Discriminator constant \u2014 always \"PhysicalAsset\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "assetKind": {
       "enum": [
@@ -35,16 +36,16 @@
         "api",
         "lakehouse"
       ],
-      "description": "Physical storage category of this asset."
+      "description": "The type of physical resource: objectStore, rdbms, stream, file, api, or lakehouse."
     },
     "connectorId": {
       "type": "string",
       "pattern": "^urn:srcos:connector:",
-      "description": "URN of the Connector used to reach this asset."
+      "description": "URN of the Connector used to reach this asset. Pattern: urn:srcos:connector:<id>"
     },
     "location": {
       "type": "string",
-      "description": "Fully qualified path, URL, table name, or topic name within the connector's system."
+      "description": "The resource locator within the connector (e.g. S3 URI, table name, Kafka topic)."
     },
     "identification": {
       "type": "object",
@@ -75,8 +76,7 @@
           ]
         }
       },
-      "description": "Cloud-provider identification details: vendor, account, region, and resourceId."
+      "description": "Cloud-vendor identification metadata: vendor, account, region, and resource ID."
     }
-  },
-  "description": "A reference to a physical storage location (object-store bucket, database table, Kafka topic, file path, or API endpoint), connected via a named Connector and representing the actual underlying data container for a Dataset."
+  }
 }

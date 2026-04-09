@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/WorkflowEdge.json",
   "title": "WorkflowEdge",
+  "description": "A directed dependency edge between two WorkflowNode IDs in a WorkflowSpec DAG.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,12 +12,11 @@
   "properties": {
     "from": {
       "type": "string",
-      "description": "nodeId of the upstream (source) WorkflowNode."
+      "description": "The `nodeId` of the upstream (source) WorkflowNode."
     },
     "to": {
       "type": "string",
-      "description": "nodeId of the downstream (sink) WorkflowNode."
+      "description": "The `nodeId` of the downstream (target) WorkflowNode."
     }
-  },
-  "description": "A directed dependency edge between two WorkflowNode identifiers within a WorkflowSpec DAG, establishing execution order and data-flow direction."
+  }
 }

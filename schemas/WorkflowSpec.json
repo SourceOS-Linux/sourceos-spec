@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/WorkflowSpec.json",
   "title": "WorkflowSpec",
+  "description": "A directed acyclic graph (DAG) of WorkflowNodes connected by WorkflowEdges, with triggers and policy bindings.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -16,15 +17,15 @@
     "id": {
       "type": "string",
       "pattern": "^urn:srcos:workflow:",
-      "description": "Stable URN identifying this workflow (urn:srcos:workflow:<id>)."
+      "description": "Stable URN identifier. Pattern: urn:srcos:workflow:<local-id>"
     },
     "type": {
       "const": "WorkflowSpec",
-      "description": "Discriminator constant \u2014 always 'WorkflowSpec'."
+      "description": "Discriminator constant \u2014 always \"WorkflowSpec\"."
     },
     "specVersion": {
       "type": "string",
-      "description": "Semantic version of the SourceOS spec this record conforms to."
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
     },
     "name": {
       "type": "string",
@@ -35,29 +36,28 @@
       "items": {
         "$ref": "WorkflowNode.json"
       },
-      "description": "List of WorkflowNode steps that make up the pipeline."
+      "description": "The processing nodes of the DAG."
     },
     "edges": {
       "type": "array",
       "items": {
         "$ref": "WorkflowEdge.json"
       },
-      "description": "List of WorkflowEdge directed dependencies between nodes."
+      "description": "The directed dependency edges connecting nodes in the DAG."
     },
     "triggers": {
       "type": "array",
       "items": {
         "$ref": "Trigger.json"
       },
-      "description": "List of Triggers that initiate this workflow."
+      "description": "How this workflow is activated (schedule, event, or manual)."
     },
     "policyBindings": {
       "type": "array",
       "items": {
         "$ref": "PolicyBinding.json"
       },
-      "description": "PolicyBinding associations applied to nodes within this workflow."
+      "description": "Policies that must be satisfied before this workflow may execute."
     }
-  },
-  "description": "A directed acyclic graph of WorkflowNodes and WorkflowEdges defining a multi-step data processing pipeline, with scheduling triggers and policy bindings."
+  }
 }

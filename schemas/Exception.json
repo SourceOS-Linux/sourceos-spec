@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Exception.json",
   "title": "Exception",
+  "description": "A time-limited exemption from a Policy rule. Attached to a Policy to allow specific cases that would otherwise be denied.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,11 +12,11 @@
   "properties": {
     "name": {
       "type": "string",
-      "description": "Identifier of the exception (should match a known exception type)."
+      "description": "Machine-readable identifier for this exception (e.g. \"approved-research-exemption\")."
     },
     "reason": {
       "type": "string",
-      "description": "Human-readable justification for granting this exception."
+      "description": "Human-readable explanation of why this exception is permitted."
     },
     "expiresAt": {
       "type": [
@@ -23,8 +24,7 @@
         "null"
       ],
       "format": "date-time",
-      "description": "ISO 8601 timestamp after which this exception is no longer valid (null = permanent)."
+      "description": "Optional ISO 8601 date-time after which this exception is no longer valid."
     }
-  },
-  "description": "A named exception to a Policy rule that temporarily permits a specific action otherwise denied, with an optional expiry date."
+  }
 }

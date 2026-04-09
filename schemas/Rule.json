@@ -2,6 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/Rule.json",
   "title": "Rule",
+  "description": "A single permit or deny rule inside a Policy. Specifies the allowed operations and an optional typed PolicyCondition expression.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -14,7 +15,7 @@
         "permit",
         "deny"
       ],
-      "description": "The outcome if this rule matches: 'permit' or 'deny'."
+      "description": "Whether this rule permits or denies the specified operations."
     },
     "operations": {
       "type": "array",
@@ -27,12 +28,11 @@
           "share"
         ]
       },
-      "description": "List of operation names this rule applies to (e.g., 'read', 'export', 'write')."
+      "description": "The operations this rule applies to: read, write, export, transform, or share."
     },
     "condition": {
       "$ref": "PolicyCondition.json",
-      "description": "Optional PolicyCondition expression that must be satisfied for this rule to fire."
+      "description": "Optional typed condition expression. If absent, the rule applies unconditionally."
     }
-  },
-  "description": "A single permit-or-deny clause within a Policy, specifying the effect, the list of operations it applies to, and an optional PolicyCondition expression that must evaluate to true."
+  }
 }
