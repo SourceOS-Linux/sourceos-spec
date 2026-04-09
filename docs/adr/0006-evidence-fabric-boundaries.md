@@ -1,8 +1,10 @@
-# ADR: Evidence Fabric Boundaries and Contract Ownership (v0.1)
+# ADR-0006: Evidence Fabric Boundaries and Contract Ownership
 
-## Status
+**Status:** Proposed  
+**Date:** 2026-04-09  
+**Deciders:** SourceOS core team
 
-Proposed.
+---
 
 ## Context
 
