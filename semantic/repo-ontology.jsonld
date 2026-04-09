@@ -1,0 +1,53 @@
+{
+  "@context": "./context.jsonld",
+  "@graph": [
+    {
+      "@id": "rolePlatformWorkspaceController",
+      "@type": "TopologyRole",
+      "name": "Platform Workspace Controller",
+      "description": "Meta-workspace controller responsible for manifest, lock, runner semantics, protocol fixtures, and deterministic multi-repo materialization across the broader platform."
+    },
+    {
+      "@id": "roleLinuxIntegrationSpine",
+      "@type": "TopologyRole",
+      "name": "Linux Integration Spine",
+      "description": "Linux-side integration and workspace spine that ties substrate, contracts, execution layers, automation, and public surfaces together without collapsing them into one repo."
+    },
+    {
+      "@id": "roleTypedContractRegistry",
+      "@type": "TopologyRole",
+      "name": "Typed Contract Registry",
+      "description": "Canonical home for typed contracts, JSON-LD contexts, vocabulary definitions, and machine-readable schemas consumed by adjacent repos."
+    },
+    {
+      "@id": "roleWorkstationConformanceLane",
+      "@type": "TopologyRole",
+      "name": "Workstation Conformance Lane",
+      "description": "Contract and conformance lane for workstation and CI execution paths. Defines validation gates but does not implement the runner/controller."
+    },
+    {
+      "@id": "roleAutomationCommons",
+      "@type": "TopologyRole",
+      "name": "Automation Commons",
+      "description": "Opt-in automation layer for CI/CD, update automation, training workflows, catalogs, signatures, and community build workflows."
+    },
+    {
+      "@id": "roleOSSubstrate",
+      "@type": "TopologyRole",
+      "name": "OS Substrate",
+      "description": "Immutable local-first operating-system substrate providing the base workstation and edge environment."
+    },
+    {
+      "@id": "rolePublicDocsSurface",
+      "@type": "TopologyRole",
+      "name": "Public Docs Surface",
+      "description": "Human-facing public website and documentation surface that explains adjacent substrate, controller, spec, and automation layers downstream."
+    },
+    {
+      "@id": "roleStarterScaffold",
+      "@type": "TopologyRole",
+      "name": "Starter Scaffold",
+      "description": "Bootstrap or starter repository for interfaces, policy, integration, or registry scaffolding. Not the canonical controller or spec lane."
+    }
+  ]
+}
