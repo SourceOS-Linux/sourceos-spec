@@ -27,14 +27,10 @@ jobs:
       - name: Compile all schemas (syntax check)
         run: |
           failed=0
-          schemas_arr=()
           for schema in schemas/*.json; do
-            schemas_arr+=("$schema")
-          done
-          for schema in "${schemas_arr[@]}"; do
             echo -n "Compiling $schema ... "
             cmd=(ajv compile -s "$schema" --strict=false --spec=draft2020)
-            for ref in "${schemas_arr[@]}"; do
+            for ref in schemas/*.json; do
               [ "$ref" != "$schema" ] && cmd+=(-r "$ref")
             done
             if "${cmd[@]}" 2>&1; then
