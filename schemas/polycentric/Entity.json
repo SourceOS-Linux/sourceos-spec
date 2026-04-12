@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Entity",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "entity_id",
+    "entity_type",
+    "logical_identity",
+    "boundary",
+    "capabilities",
+    "policies",
+    "trust",
+    "resources"
+  ],
+  "properties": {
+    "schema_version": { "const": "0.3" },
+    "entity_id": { "type": "string", "pattern": "^ent:[A-Za-z0-9._-]+$" },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "person","agent","browser_session","terminal_session","ide_workspace","repo","pipeline","host","service","model_provider","cache","artifact_store","policy_engine","search_index","chart","queue","database","cluster","ci_runner","filesystem","other"
+      ]
+    },
+    "logical_identity": { "type": "string" },
+    "execution_instance_id": { "type": ["string", "null"] },
+    "aliases": { "type": "array", "items": { "type": "string" } },
+    "owner_ref": { "type": ["string", "null"], "pattern": "^ent:[A-Za-z0-9._-]+$" },
+    "parent_ref": { "type": ["string", "null"], "pattern": "^ent:[A-Za-z0-9._-]+$" },
+    "tenant_ref": { "type": ["string", "null"] },
+    "boundary": {
+      "type": "object",
+      "required": ["senses","effectors","reachable_surfaces","ingress_modes","egress_modes"],
+      "properties": {
+        "senses": { "type": "array", "items": { "type": "string" } },
+        "effectors": { "type": "array", "items": { "type": "string" } },
+        "reachable_surfaces": { "type": "array", "items": { "type": "string" } },
+        "ingress_modes": { "type": "array", "items": { "type": "string" } },
+        "egress_modes": { "type": "array", "items": { "type": "string" } },
+        "touchpoints": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": false
+    },
+    "capabilities": { "type": "array", "items": { "type": "string" } },
+    "policies": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$"
+      }
+    },
+    "trust": {
+      "type": "object",
+      "required": ["authn","authz","attestation_refs","delegation_chain"],
+      "properties": {
+        "authn": { "type": ["string", "null"] },
+        "authz": { "type": "array", "items": { "type": "string" } },
+        "attestation_refs": { "type": "array", "items": { "type": "string", "pattern": "^att:[A-Za-z0-9._-]+$" } },
+        "delegation_chain": { "type": "array", "items": { "type": "string", "pattern": "^ent:[A-Za-z0-9._-]+$" } },
+        "label_refs": { "type": "array", "items": { "type": "string", "pattern": "^lbl:[A-Za-z0-9._-]+$" } }
+      },
+      "additionalProperties": false
+    },
+    "resources": {
+      "type": "object",
+      "required": ["latency_budget_ms","compute_budget","storage_budget_bytes","spend_budget","capacity","health","blast_radius"],
+      "properties": {
+        "latency_budget_ms": { "type": ["number", "null"] },
+        "compute_budget": { "type": ["number", "null"] },
+        "storage_budget_bytes": { "type": ["integer", "null"] },
+        "spend_budget": { "type": ["number", "null"] },
+        "capacity": { "type": ["string", "number", "null"] },
+        "health": { "type": "string", "enum": ["healthy","degraded","failed","unknown"] },
+        "blast_radius": { "type": ["string", "null"] }
+      },
+      "additionalProperties": false
+    },
+    "hot_state_ref": { "type": ["string", "null"], "pattern": "^state:[A-Za-z0-9._-]+$" },
+    "memory_ref": { "type": ["string", "null"], "pattern": "^state:[A-Za-z0-9._-]+$" },
+    "artifact_refs": { "type": "array", "items": { "type": "string", "pattern": "^art:[A-Za-z0-9._-]+$" } },
+    "status": { "type": ["string", "null"], "enum": ["active","inactive","quarantined","deleted","unknown"] }
+  },
+  "additionalProperties": false
+}
