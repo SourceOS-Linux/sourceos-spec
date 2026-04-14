@@ -1,0 +1,26 @@
+{
+  "specVersion": "1.0.0",
+  "triuneId": "urn:srcos:triune:example-surface-build",
+  "origin": {
+    "space": "agent",
+    "issuer": "lrk-surface-builder",
+    "role": "service",
+    "deviceId": "dev:example-01",
+    "sessionId": "sess-123"
+  },
+  "action": {
+    "verb": "surface:build",
+    "target": "b11:user",
+    "params": {"source": "delta_surface"}
+  },
+  "context": {
+    "timestamp": "2026-04-15T12:00:00Z",
+    "surfaceRoot": "sha256:example-surface-root",
+    "policyHash": "sha256:example-policy-hash",
+    "closureHash": "sha256:example-closure",
+    "quorumToken": "sha256:example-quorum-token",
+    "witnesses": ["creator", "twin"],
+    "proofs": ["proof-of-life", "transparency-root"]
+  },
+  "signature": "ed25519:example-signature"
+}
