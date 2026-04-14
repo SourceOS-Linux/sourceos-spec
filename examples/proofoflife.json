@@ -1,0 +1,13 @@
+{
+  "specVersion": "1.0.0",
+  "polId": "urn:srcos:pol:heartbeat-example",
+  "deviceNonce": "nonce-123456",
+  "timeWindow": "2026-04-15T12:00:00Z/2026-04-15T12:05:00Z",
+  "policyHash": "sha256:example-policy-hash",
+  "slotId": "slot-a",
+  "creatorSignature": "ed25519:creator-example-signature",
+  "twinWitness": "ed25519:twin-example-signature",
+  "tpmCounter": 42,
+  "state": "NORMAL",
+  "signature": "ed25519:device-example-signature"
+}
