@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.sourceos.linux/schemas/ProofOfLife.json",
+  "title": "ProofOfLife",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["specVersion", "polId", "deviceNonce", "timeWindow", "policyHash", "slotId", "signature"],
+  "properties": {
+    "specVersion": {"type": "string", "const": "1.0.0"},
+    "polId": {"type": "string", "pattern": "^urn:srcos:pol:[a-zA-Z0-9._:-]+$"},
+    "deviceNonce": {"type": "string"},
+    "timeWindow": {"type": "string"},
+    "policyHash": {"type": "string"},
+    "slotId": {"type": "string"},
+    "creatorSignature": {"type": "string"},
+    "twinWitness": {"type": "string"},
+    "tpmCounter": {"type": "integer", "minimum": 0},
+    "state": {"type": "string", "enum": ["NORMAL", "WATCHFUL", "SAFE_HALT", "QUARANTINE", "FIRMWARE_DECAY"]},
+    "signature": {"type": "string"}
+  }
+}
