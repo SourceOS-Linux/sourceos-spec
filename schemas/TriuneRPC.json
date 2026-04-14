@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.sourceos.linux/schemas/TriuneRPC.json",
+  "title": "TriuneRPC",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["specVersion", "triuneId", "origin", "action", "context"],
+  "properties": {
+    "specVersion": {"type": "string", "const": "1.0.0"},
+    "triuneId": {"type": "string", "pattern": "^urn:srcos:triune:[a-zA-Z0-9._:-]+$"},
+    "origin": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["space", "issuer", "role"],
+      "properties": {
+        "space": {"type": "string", "enum": ["system", "user", "agent", "twin_bridge", "model"]},
+        "issuer": {"type": "string"},
+        "role": {"type": "string", "enum": ["creator", "twin", "agent", "service", "operator"]},
+        "deviceId": {"type": "string"},
+        "sessionId": {"type": "string"}
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["verb", "target"],
+      "properties": {
+        "verb": {"type": "string"},
+        "target": {"type": "string"},
+        "params": {"type": "object"}
+      }
+    },
+    "context": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timestamp", "surfaceRoot", "policyHash"],
+      "properties": {
+        "timestamp": {"type": "string", "format": "date-time"},
+        "surfaceRoot": {"type": "string"},
+        "policyHash": {"type": "string"},
+        "closureHash": {"type": "string"},
+        "quorumToken": {"type": "string"},
+        "witnesses": {"type": "array", "items": {"type": "string"}},
+        "proofs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "signature": {"type": "string"}
+  }
+}
