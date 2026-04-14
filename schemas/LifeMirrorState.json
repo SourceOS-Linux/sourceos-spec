@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.sourceos.linux/schemas/LifeMirrorState.json",
+  "title": "LifeMirrorState",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["specVersion", "stateId", "deviceId", "currentState", "missedHeartbeats", "tamperSeverity"],
+  "properties": {
+    "specVersion": {"type": "string", "const": "1.0.0"},
+    "stateId": {"type": "string", "pattern": "^urn:srcos:lifemirror:[a-zA-Z0-9._:-]+$"},
+    "deviceId": {"type": "string"},
+    "currentState": {"type": "string", "enum": ["NULL", "NORMAL", "WATCHFUL", "SAFE_HALT", "QUARANTINE", "FIRMWARE_DECAY"]},
+    "missedHeartbeats": {"type": "integer", "minimum": 0},
+    "tamperSeverity": {"type": "number", "minimum": 0, "maximum": 1},
+    "trigger": {"type": "string"},
+    "nextAction": {"type": "string"},
+    "attestations": {"type": "array", "items": {"type": "string"}},
+    "updatedAt": {"type": "string", "format": "date-time"}
+  }
+}
