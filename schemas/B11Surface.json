@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://spec.sourceos.linux/schemas/B11Surface.json",
+  "title": "B11Surface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["specVersion", "surfaceId", "identity", "projections", "invariants", "attestation"],
+  "properties": {
+    "specVersion": {"type": "string", "const": "1.0.0"},
+    "surfaceId": {"type": "string", "pattern": "^urn:srcos:b11:[a-zA-Z0-9._:-]+$"},
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["space", "regime", "signed"],
+      "properties": {
+        "space": {"type": "string", "enum": ["system", "user", "agent", "twin_bridge", "model"]},
+        "regime": {"type": "string", "enum": ["sealed_lsa", "controlled_lsi", "open_lda"]},
+        "policyHashes": {"type": "object"},
+        "signed": {"type": "boolean"}
+      }
+    },
+    "projections": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "features": {"type": "string"},
+        "topics": {"type": "string"},
+        "mixtures": {"type": "string"},
+        "evidence": {"type": "string"},
+        "glossary": {"type": "string"}
+      }
+    },
+    "invariants": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "featureJaccard": {"type": "number", "minimum": 0, "maximum": 1},
+        "topicAlignmentCosine": {"type": "number", "minimum": 0, "maximum": 1},
+        "mixtureJsMean": {"type": "number", "minimum": 0, "maximum": 1},
+        "mixtureJsP95": {"type": "number", "minimum": 0, "maximum": 1},
+        "coherence": {"type": "number", "minimum": 0, "maximum": 1},
+        "stability": {"type": "number", "minimum": 0, "maximum": 1},
+        "anchorAffinityDelta": {"type": "number"}
+      }
+    },
+    "flowPanel": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "reynoldsS": {"type": "number"},
+        "slippage": {"type": "number"},
+        "pathEfficiency": {"type": "number"},
+        "maxflowMincutScore": {"type": "number"}
+      }
+    },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifacts", "signatures"],
+      "properties": {
+        "artifacts": {"type": "array", "items": {"type": "string"}},
+        "signatures": {"type": "array", "items": {"type": "string"}},
+        "witness": {"type": "string"}
+      }
+    }
+  }
+}
