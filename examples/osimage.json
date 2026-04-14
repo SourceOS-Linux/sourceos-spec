@@ -1,0 +1,42 @@
+{
+  "id": "urn:srcos:osimage:so1-edge-appliance",
+  "type": "OSImage",
+  "specVersion": "2.1.0",
+  "shortId": "so1-edge-appliance",
+  "family": "sourceos",
+  "epoch": 1,
+  "hostProfile": "edge-appliance",
+  "artifact": "oci",
+  "architecture": "aarch64",
+  "osRelease": {
+    "ID": "sourceos",
+    "ID_LIKE": [
+      "fedora"
+    ],
+    "VERSION_ID": "1",
+    "IMAGE_ID": "so1-edge-appliance",
+    "IMAGE_VERSION": "2026.04.14.1"
+  },
+  "ociAnnotations": {
+    "org.opencontainers.image.version": "2026.04.14.1",
+    "org.opencontainers.image.revision": "fcea8a4bf4cb4f06b63e090fd9cf89fcdb24194c",
+    "org.opencontainers.image.source": "https://github.com/SourceOS-Linux/sourceos-spec",
+    "com.socioprophet.os.channel": "stable",
+    "com.socioprophet.os.capabilities": [
+      "bootc",
+      "secureboot",
+      "tpm2"
+    ]
+  },
+  "substrateCapabilities": [
+    "bootc",
+    "secureboot",
+    "tpm2",
+    "measured-boot"
+  ],
+  "provenance": {
+    "statementRef": "urn:srcos:attestation:osimage:so1-edge-appliance:2026.04.14.1",
+    "slsaPredicateRef": "urn:srcos:slsa:osimage:so1-edge-appliance:2026.04.14.1",
+    "sbomRef": "urn:srcos:sbom:osimage:so1-edge-appliance:2026.04.14.1"
+  }
+}
