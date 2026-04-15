@@ -1,0 +1,83 @@
+{
+  "id": "urn:srcos:diag-bundle:example_001",
+  "type": "DiagnosticBundle",
+  "specVersion": "2.0.0",
+  "profile": "silverblue-baseline",
+  "capturedAt": "2026-04-14T14:00:00Z",
+  "host": {
+    "hostname": "silverblue-host",
+    "machineId": "c1a2b3c4d5e6f7g8h9i0",
+    "bootId": "b3b2b1b0-a0a1-a2a3-a4a5-a6a7a8a9aaab",
+    "osRelease": "Fedora Linux",
+    "kernel": "6.8.0-0",
+    "arch": "x86_64",
+    "immutable": true,
+    "ostree": {
+      "bootedDeployment": "fedora:fedora/41/x86_64/silverblue",
+      "origin": "fedora:fedora/41/x86_64/silverblue",
+      "commit": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+    }
+  },
+  "policy": {
+    "enablePerf": false,
+    "enablePcap": false,
+    "deepUserJournal": false
+  },
+  "bundle": {
+    "format": "directory",
+    "rootRef": {
+      "refType": "file",
+      "id": "/var/tmp/IN_PROGRESS_sysdiagnose_2026.04.14_14-00-00_silverblue/"
+    },
+    "manifestRef": {
+      "refType": "file",
+      "id": "/var/tmp/IN_PROGRESS_sysdiagnose_2026.04.14_14-00-00_silverblue/manifest.json"
+    },
+    "ledgerRef": {
+      "refType": "file",
+      "id": "/var/tmp/IN_PROGRESS_sysdiagnose_2026.04.14_14-00-00_silverblue/manifest.tsv"
+    },
+    "policyRef": {
+      "refType": "file",
+      "id": "/var/tmp/IN_PROGRESS_sysdiagnose_2026.04.14_14-00-00_silverblue/policy.json"
+    }
+  },
+  "probes": [
+    {
+      "name": "uptime",
+      "group": "proc_mem",
+      "command": "uptime",
+      "exit": 0,
+      "elapsedSeconds": 0.012,
+      "timeoutSeconds": 2,
+      "maxRssKb": 2048,
+      "startedAt": "2026-04-14T14:00:00Z",
+      "endedAt": "2026-04-14T14:00:00Z",
+      "risk": "safe",
+      "stdoutPath": "cmd/uptime.out",
+      "stderrPath": "cmd/uptime.err",
+      "metaPath": "cmd/uptime.meta"
+    },
+    {
+      "name": "rpmostree_status",
+      "group": "silverblue",
+      "command": "rpm-ostree status",
+      "exit": 0,
+      "elapsedSeconds": 0.091,
+      "timeoutSeconds": 10,
+      "maxRssKb": 8192,
+      "startedAt": "2026-04-14T14:00:01Z",
+      "endedAt": "2026-04-14T14:00:01Z",
+      "risk": "safe",
+      "stdoutPath": "cmd/rpmostree_status.out",
+      "stderrPath": "cmd/rpmostree_status.err",
+      "metaPath": "cmd/rpmostree_status.meta"
+    }
+  ],
+  "artifactHashes": [
+    "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ],
+  "runRef": "urn:srcos:run:diag_example_001",
+  "telemetryRef": "urn:srcos:telemetry:diag_bundle_created_001"
+}
