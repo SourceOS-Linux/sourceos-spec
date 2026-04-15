@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ValidatorPacket.json",
+  "title": "ValidatorPacket",
+  "description": "Validator signing request for genesis or renewal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "requestedAt",
+    "expiresAt",
+    "aad",
+    "payloadHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:validator-packet:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "ValidatorPacket"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectRef": {
+      "type": "string"
+    },
+    "requestedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "aad": {
+      "type": "string"
+    },
+    "payloadHash": {
+      "type": "string"
+    },
+    "sigStructureHash": {
+      "type": ["string", "null"]
+    },
+    "alg": {
+      "type": "string",
+      "enum": [
+        "EdDSA",
+        "ES256",
+        "RS256",
+        "PS256"
+      ]
+    },
+    "quorumPolicyRef": {
+      "type": ["string", "null"]
+    },
+    "attestationSummary": {
+      "type": "object"
+    },
+    "livenessSummary": {
+      "type": "object"
+    }
+  }
+}
