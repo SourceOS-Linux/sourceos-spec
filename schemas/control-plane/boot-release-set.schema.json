@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/control-plane/boot-release-set.schema.json",
+  "title": "BootReleaseSet",
+  "description": "Boot/install or recovery artifacts associated with a local-first release assignment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "boot_release_set_id",
+    "base_release_set_ref",
+    "boot_mode",
+    "status",
+    "artifacts",
+    "created_at"
+  ],
+  "properties": {
+    "boot_release_set_id": { "type": "string", "minLength": 1 },
+    "base_release_set_ref": { "type": "string", "minLength": 1 },
+    "boot_mode": {
+      "type": "string",
+      "enum": ["installer", "recovery", "ephemeral", "bootstrap"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "ready", "retired"]
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kernel_ref", "initrd_ref", "rootfs_ref"],
+      "properties": {
+        "kernel_ref": { "type": "string", "minLength": 1 },
+        "initrd_ref": { "type": "string", "minLength": 1 },
+        "rootfs_ref": { "type": "string", "minLength": 1 }
+      }
+    },
+    "created_at": { "type": "string", "format": "date-time" },
+    "notes": { "type": ["string", "null"] }
+  }
+}

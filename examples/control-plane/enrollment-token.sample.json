@@ -1,0 +1,15 @@
+{
+  "token_id": "tok_local_0001",
+  "purpose": "boot",
+  "audience": {
+    "subject_kind": "device",
+    "subject_id": "m2-control-node-01"
+  },
+  "release_set_ref": "rs_local_0001",
+  "boot_release_set_ref": "brs_local_0001",
+  "one_time_use": true,
+  "issued_at": "2026-04-15T22:06:00Z",
+  "expires_at": "2026-04-15T23:06:00Z",
+  "status": "issued",
+  "notes": "One-time local recovery boot token."
+}

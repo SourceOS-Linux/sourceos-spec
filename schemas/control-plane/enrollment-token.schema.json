@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/control-plane/enrollment-token.schema.json",
+  "title": "EnrollmentToken",
+  "description": "One-time or short-lived token used to enroll or authorize a local-first boot or recovery flow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "token_id",
+    "purpose",
+    "audience",
+    "issued_at",
+    "expires_at",
+    "one_time_use",
+    "status"
+  ],
+  "properties": {
+    "token_id": { "type": "string", "minLength": 1 },
+    "purpose": {
+      "type": "string",
+      "enum": ["enroll", "boot", "repair", "recovery"]
+    },
+    "audience": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject_kind"],
+      "properties": {
+        "subject_kind": {
+          "type": "string",
+          "enum": ["device", "user", "operator", "session"]
+        },
+        "subject_id": { "type": ["string", "null"] }
+      }
+    },
+    "release_set_ref": { "type": ["string", "null"] },
+    "boot_release_set_ref": { "type": ["string", "null"] },
+    "one_time_use": { "type": "boolean" },
+    "issued_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "status": {
+      "type": "string",
+      "enum": ["issued", "redeemed", "expired", "revoked"]
+    },
+    "notes": { "type": ["string", "null"] }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "fingerprint_id": "fp_local_0001",
+  "subject": {
+    "kind": "device",
+    "id": "m2-control-node-01"
+  },
+  "release_set_ref": "rs_local_0001",
+  "experience_profile_ref": "xp_local_0001",
+  "isolation_profile_ref": "iso_local_0001",
+  "observed_at": "2026-04-15T22:10:00Z",
+  "integrity": {
+    "boot_release_set_ref": "brs_local_0001",
+    "image_ref": "oci://registry.example/sourceos/node-commander:2026.04.15-rc1",
+    "store_closure_hash": "sha256:example-closure-hash",
+    "boot_entry_label": "SourceOS Recovery"
+  },
+  "compliance": {
+    "status": "compliant",
+    "notes": "Observed state matches the assigned local release."
+  },
+  "evidence_refs": [
+    "artifact://evidence/fingerprint/fp_local_0001"
+  ]
+}
