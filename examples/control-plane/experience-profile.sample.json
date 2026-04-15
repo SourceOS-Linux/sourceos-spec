@@ -1,0 +1,13 @@
+{
+  "experience_profile_id": "xp_local_0001",
+  "profile_name": "Local desktop profile",
+  "shell": "zsh",
+  "desktop": "gnome",
+  "surfaces": ["cli", "gui", "browser"],
+  "defaults": {
+    "editor": "nvim",
+    "theme": "dark",
+    "accessibility_profile": null,
+    "workspace_layout": "default"
+  }
+}
