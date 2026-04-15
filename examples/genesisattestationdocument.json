@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:genesis-attestation:demo-001",
+  "type": "GenesisAttestationDocument",
+  "specVersion": "2.1.0",
+  "subjectRef": "urn:srcos:subject:demo",
+  "issuedAt": "2026-04-14T12:00:00Z",
+  "aad": "pos-validator",
+  "nonce": "nonce-demo",
+  "bundleHash": "abc123",
+  "status": "complete",
+  "attestationEvidenceRefs": [],
+  "livenessProfileRef": null,
+  "validatorPacketRefs": [],
+  "validatorReceiptRefs": [],
+  "quorumPolicyRef": null
+}
