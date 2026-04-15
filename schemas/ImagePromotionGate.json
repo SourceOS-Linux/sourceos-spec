@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ImagePromotionGate.json",
+  "title": "ImagePromotionGate",
+  "description": "Promotion decision envelope for whether a candidate image may update a Git repository and mark a task complete.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "candidateBuildRef", "profileRef", "requiredArtifacts", "requiredChecks", "decision", "gitUpdate", "taskCompletion"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:image-gate:" },
+    "type": { "const": "ImagePromotionGate" },
+    "specVersion": { "type": "string" },
+    "candidateBuildRef": { "type": "string" },
+    "profileRef": { "type": "string", "pattern": "^urn:srcos:control-node:" },
+    "requiredArtifacts": { "type": "array", "items": { "type": "string" } },
+    "requiredChecks": { "type": "array", "items": { "type": "string" } },
+    "decision": { "enum": ["pending", "approved", "denied", "waived"] },
+    "reasonCodes": { "type": "array", "items": { "type": "string" } },
+    "gitUpdate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed"],
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "targetRepo": { "type": ["string", "null"] },
+        "targetRef": { "type": ["string", "null"] }
+      }
+    },
+    "taskCompletion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allowed"],
+      "properties": {
+        "allowed": { "type": "boolean" },
+        "issueRef": { "type": ["string", "null"] }
+      }
+    }
+  }
+}
