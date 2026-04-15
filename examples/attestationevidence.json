@@ -1,0 +1,11 @@
+{
+  "id": "urn:srcos:attestation:demo-001",
+  "type": "AttestationEvidence",
+  "specVersion": "2.1.0",
+  "capturedAt": "2026-04-14T12:00:00Z",
+  "deviceRef": "urn:srcos:device:demo",
+  "nonce": "nonce-demo",
+  "evidenceKind": "bundle",
+  "status": "captured",
+  "pcrs": {}
+}
