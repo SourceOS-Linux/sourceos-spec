@@ -1,0 +1,34 @@
+{
+  "event_id": "evt_01JQ3INCIDENTFREEZE0001",
+  "event_name": "incident.freeze",
+  "occurred_at": "2026-04-14T21:37:00Z",
+  "actor": {
+    "kind": "service",
+    "id": "sourceos-incident"
+  },
+  "run": {
+    "run_id": "run_01JQ3INCIDENT0001",
+    "trace_id": "trace_freeze_0001",
+    "span_id": "span_freeze_0001",
+    "attempt": 1
+  },
+  "coordinates": {
+    "env": "local",
+    "topology_scope": "host",
+    "trust_class": "sealed",
+    "tenant_scope": "default",
+    "data_sensitivity": "redacted"
+  },
+  "status": "succeeded",
+  "refs": {
+    "truth_surface_ref": "urn:srcos:truth-surface:ts_0001",
+    "delta_surface_ref": "urn:srcos:delta-surface:ds_0001",
+    "evidence_bundle_ref": "artifact://evidence/incident/run_01JQ3INCIDENT0001",
+    "cairn_before_ref": "cairn://incident/freeze/before/0001",
+    "cairn_after_ref": "cairn://incident/freeze/after/0001"
+  },
+  "payload": {
+    "actions": ["block_frontier_egress", "snapshot_runtime_truth", "pause_high_risk_units"],
+    "notes": "Freeze phase succeeded; mutation halted; snapshots captured."
+  }
+}
