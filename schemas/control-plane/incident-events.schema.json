@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/events/incident-events.schema.json",
+  "title": "IncidentEvent",
+  "description": "Control-plane incident lifecycle events (Freeze/Fork/Kill). Uses the same actor/run/refs/payload conventions as other control-plane lifecycle events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "event_name", "occurred_at", "actor", "status"],
+  "properties": {
+    "event_id": { "type": "string", "minLength": 1 },
+    "event_name": {
+      "type": "string",
+      "enum": ["incident.freeze", "incident.fork", "incident.kill"]
+    },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "actor": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["human", "agent", "service", "scheduler"] },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "run": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "trace_id": { "type": "string" },
+        "span_id": { "type": "string" },
+        "attempt": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "coordinates": { "type": "object", "additionalProperties": true },
+    "status": {
+      "type": "string",
+      "enum": ["requested", "running", "succeeded", "failed", "denied", "archived"],
+      "description": "Status progression for the incident action."
+    },
+    "refs": { "type": "object", "additionalProperties": true },
+    "payload": { "type": "object", "additionalProperties": true }
+  }
+}
