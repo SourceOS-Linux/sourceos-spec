@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TruthSurface.json",
+  "title": "TruthSurface",
+  "description": "A signed, Merkle-addressed truth summary emitted by a plane (system/user/agent/witness). This is an interoperability artifact: it references existing governance/provenance objects, it does not replace them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "plane", "createdAt", "merkleRoot", "signature"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:truth-surface:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:truth-surface:<local-id>"
+    },
+    "type": {
+      "const": "TruthSurface",
+      "description": "Discriminator constant — always \"TruthSurface\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document (e.g., \"2.0.0\")."
+    },
+    "plane": {
+      "type": "string",
+      "enum": ["system.sealed", "user.controlled", "agent.open", "witness.twin"],
+      "description": "Which plane emitted this surface."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this surface was produced."
+    },
+    "merkleRoot": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Merkle root over referenced artifacts (format is producer-defined; commonly sha256:<hex>)."
+    },
+    "signer": {
+      "type": "string",
+      "description": "Logical signer identity (key or service name)."
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Cryptographic signature over the canonicalized surface payload."
+    },
+
+    "refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Pointers to existing governance/provenance objects and evidence bundles.",
+      "properties": {
+        "policyDecisionRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^urn:srcos:decision:" }
+        },
+        "capabilityTokenIds": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "runRecordRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^urn:srcos:run:" }
+        },
+        "provenanceRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^urn:srcos:prov:" }
+        },
+        "telemetryRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^urn:srcos:telemetry:" }
+        },
+        "evidenceBundleRefs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "cairnBeforeRef": { "type": "string" },
+        "cairnAfterRef": { "type": "string" }
+      }
+    },
+
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Evidence completeness panel. Producers should keep this summary aligned with the policy pack expectations.",
+      "properties": {
+        "required": { "type": "array", "items": { "type": "string" } },
+        "present": { "type": "array", "items": { "type": "string" } },
+        "missing": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "semantics": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Governed meaning summary: anchors/topics/glossary bindings. Shape may evolve; keep stable keys where possible."
+    },
+
+    "runtime": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Runtime truth summary (process/thread/namespace/capability posture). Shape may evolve; keep stable keys where possible."
+    },
+
+    "governance": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Governance posture summary (approvals, risk score, obligations satisfied, policy pack digest)."
+    }
+  }
+}
