@@ -1,0 +1,24 @@
+{
+  "release_set_id": "rs_local_0001",
+  "release_version": "2026.04.15-rc1",
+  "status": "assigned",
+  "source": {
+    "git_ref": "refs/heads/main",
+    "git_commit": "8945f21"
+  },
+  "targets": [
+    {
+      "target_kind": "device",
+      "target_id": "m2-control-node-01"
+    }
+  ],
+  "experience_profile_ref": "xp_local_0001",
+  "isolation_profile_ref": "iso_local_0001",
+  "artifacts": {
+    "store_closure_hash": "sha256:example-closure-hash",
+    "image_ref": "oci://registry.example/sourceos/node-commander:2026.04.15-rc1",
+    "boot_release_set_ref": "brs_local_0001"
+  },
+  "created_at": "2026-04-15T22:00:00Z",
+  "notes": "First local-first release assignment sample."
+}
