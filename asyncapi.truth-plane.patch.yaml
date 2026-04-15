@@ -1,0 +1,93 @@
+# Additive AsyncAPI patch fragment for the Truth Plane.
+# Merge this file into asyncapi.yaml at build time using @asyncapi/bundler.
+# All channels use Kafka with the same broker configuration as the base spec.
+
+channels:
+  srcos.v2.truth.events:
+    description: Events emitted when a TruthSurface is recorded or updated.
+    bindings:
+      kafka:
+        topic: srcos.v2.truth.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishTruthSurfaceEvent
+      summary: Publish a truth surface domain event
+      description: Publishes an event whenever a TruthSurface is upserted.
+      message:
+        name: TruthSurfaceEvent
+        title: Truth Surface Domain Event
+        summary: A change event for a TruthSurface.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `TruthSurfaceUpserted` — a TruthSurface was created or updated
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the TruthSurface.
+
+  srcos.v2.delta.events:
+    description: Events emitted when a DeltaSurface is recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.delta.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishDeltaSurfaceEvent
+      summary: Publish a delta surface domain event
+      description: Publishes an event whenever a DeltaSurface is recorded.
+      message:
+        name: DeltaSurfaceEvent
+        title: Delta Surface Domain Event
+        summary: A record event for a DeltaSurface.
+        description: |
+          The `eventType` in the payload envelope is `DeltaSurfaceRecorded`.
+          The payload contains the full DeltaSurface object.
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the DeltaSurface.
+
+  srcos.v2.incident.events:
+    description: Events emitted when an incident lifecycle event (freeze/fork/kill) is recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.incident.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishIncidentEvent
+      summary: Publish an incident domain event
+      description: Publishes an event whenever an incident lifecycle event is recorded.
+      message:
+        name: IncidentEvent
+        title: Incident Domain Event
+        summary: A lifecycle event for an incident phase.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `IncidentFreezeRecorded`
+          - `IncidentForkRecorded`
+          - `IncidentKillRecorded`
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the incident event.
