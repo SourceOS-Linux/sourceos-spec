@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DeltaSurface.json",
+  "title": "DeltaSurface",
+  "description": "A signed diff between two TruthSurfaces. Records drift metrics + gate results + recommendation. This is an interoperability artifact and should reference existing evidence/provenance objects, not duplicate them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "fromRef", "toRef", "createdAt", "merkleRoot", "signature", "gate"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:delta-surface:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:delta-surface:<local-id>"
+    },
+    "type": {
+      "const": "DeltaSurface",
+      "description": "Discriminator constant — always \"DeltaSurface\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document (e.g., \"2.0.0\")."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp when this delta surface was produced."
+    },
+    "merkleRoot": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Merkle root over referenced artifacts (format is producer-defined; commonly sha256:<hex>)."
+    },
+    "signer": {
+      "type": "string",
+      "description": "Logical signer identity (key or service name)."
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Cryptographic signature over the canonicalized delta payload."
+    },
+
+    "fromRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:truth-surface:",
+      "description": "URN of the prior TruthSurface."
+    },
+    "toRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:truth-surface:",
+      "description": "URN of the new TruthSurface."
+    },
+
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional drift metrics. Keep metrics stable and documented to avoid metric sprawl.",
+      "properties": {
+        "semantic": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Semantic drift summary (topic/anchor/glossary drift)."
+        },
+        "runtime": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Runtime drift summary (process/thread/namespace posture changes)."
+        },
+        "governance": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Governance drift summary (approvals, obligations, policy pack changes)."
+        }
+      }
+    },
+
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Gate evaluation result block (reuse the posture expressed in the default policy pack).",
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["permit", "deny", "needs_more_evidence"],
+          "description": "Overall gate outcome."
+        },
+        "riskScore": { "type": "integer", "minimum": 0 },
+        "riskThreshold": { "type": "integer", "minimum": 0 },
+        "humanApprovalRequired": { "type": "boolean" },
+        "humanApproved": { "type": "boolean" },
+        "evidenceRequired": { "type": "array", "items": { "type": "string" } },
+        "evidencePresent": { "type": "array", "items": { "type": "string" } },
+        "evidenceMissing": { "type": "array", "items": { "type": "string" } },
+        "reasons": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+
+    "refs": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Pointers to evidence bundles, policy decisions, and Cairn anchors relevant to this delta."
+    }
+  }
+}
