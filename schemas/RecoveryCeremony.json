@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RecoveryCeremony.json",
+  "title": "RecoveryCeremony",
+  "description": "Structured record of a Proof-of-Self recovery flow.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "method",
+    "startedAt",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:recovery:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "RecoveryCeremony"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectRef": {
+      "type": "string"
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "human_hsm",
+        "shamir_2of3"
+      ]
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "completedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "started",
+        "validated",
+        "completed",
+        "failed",
+        "revoked_old_token"
+      ]
+    },
+    "oldTokenRef": {
+      "type": ["string", "null"]
+    },
+    "newTokenRef": {
+      "type": ["string", "null"]
+    },
+    "validatorReceiptRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "hsmEvidence": {
+      "type": "object"
+    },
+    "attestationEvidenceRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}
