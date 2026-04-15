@@ -1,0 +1,10 @@
+{
+  "isolation_profile_id": "iso_local_0001",
+  "profile_name": "Local mediated profile",
+  "execution_mode": "container",
+  "network_mode": "filtered",
+  "filesystem_mode": "mediated",
+  "secret_mode": "brokered",
+  "allowed_connector_classes": ["localfs", "git", "oci-registry"],
+  "notes": "Default isolation posture for local release application."
+}
