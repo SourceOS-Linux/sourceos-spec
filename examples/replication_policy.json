@@ -1,0 +1,14 @@
+{
+  "replicas": 3,
+  "minAcks": 1,
+  "neighborhoods": ["lan", "household", "region"],
+  "retention": {
+    "hotDays": 14,
+    "coldDays": 90,
+    "maxBytes": 53687091200
+  },
+  "compaction": {
+    "mode": "snapshot",
+    "intervalEntries": 50000
+  }
+}
