@@ -1,0 +1,217 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DiagnosticsBundle.json",
+  "title": "DiagnosticsBundle",
+  "description": "A governed host diagnostics evidence bundle capturing timed probes, artifact hashes, redaction posture, and bundle-level integrity metadata.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "generatedAt",
+    "hostTag",
+    "bootSelector",
+    "sinceWindow",
+    "tiersEnabled",
+    "capturedBy",
+    "probeRecords",
+    "summary",
+    "redactionPolicy"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:diag-bundle:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:diag-bundle:<local-id>"
+    },
+    "type": {
+      "const": "DiagnosticsBundle",
+      "description": "Discriminator constant — always \"DiagnosticsBundle\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the diagnostics bundle was finalized."
+    },
+    "hostTag": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable but privacy-preserving host label used to correlate bundles from the same node without disclosing the raw hostname."
+    },
+    "bootSelector": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Boot selector or boot-relative capture target used when exporting journald and kernel context, such as \"-0\" for the current boot."
+    },
+    "sinceWindow": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable time window used for log-oriented capture surfaces, such as \"24 hours ago\"."
+    },
+    "tiersEnabled": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "Ordered list of capture tiers enabled when this bundle was collected."
+    },
+    "capturedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "toolName",
+        "toolVersion"
+      ],
+      "properties": {
+        "toolName": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Name of the collector or orchestration capability that produced the bundle."
+        },
+        "toolVersion": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Collector or orchestration capability version used to produce the bundle."
+        }
+      },
+      "description": "Collector identity and version metadata for this bundle."
+    },
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "osRelease": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Human-readable operating-system release identifier captured at bundle time, if recorded."
+        },
+        "kernel": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Kernel release string captured at bundle time, if recorded."
+        }
+      },
+      "description": "Optional host platform summary duplicated from the raw capture to support quick indexing and filtering."
+    },
+    "probeRecords": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "DiagnosticsProbeRecord.json"
+      },
+      "description": "Manifest records for each timed probe or command executed while assembling the bundle."
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "probeCount",
+        "failedCount",
+        "timeoutCount"
+      ],
+      "properties": {
+        "probeCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Total number of probe records in this bundle."
+        },
+        "failedCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of probes that returned a non-zero exit code."
+        },
+        "timeoutCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of probes that hit their timeout budget."
+        }
+      },
+      "description": "Derived bundle-level counts useful for quick health checks and indexing."
+    },
+    "artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rawTreeSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 digest summarizing the retained raw artifact tree, if computed."
+        },
+        "sharedTreeSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 digest summarizing the redacted share-safe artifact tree, if generated."
+        },
+        "tarballSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 digest of a packaged diagnostics tarball, if produced."
+        }
+      },
+      "description": "Optional bundle-level artifact digests for raw, shared, and packaged outputs."
+    },
+    "redactionPolicy": {
+      "$ref": "DiagnosticsRedactionPolicy.json",
+      "description": "Declared redaction posture used when preparing raw and share-safe forms of this bundle."
+    },
+    "relatedRunRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:run:"
+      },
+      "description": "Optional RunRecord URNs associated with the production, transfer, or analysis of this diagnostics bundle."
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "manifestSha256": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 digest of the bundle manifest itself, if separately computed."
+        },
+        "bundleHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "Top-level digest representing the full bundle payload, if computed."
+        },
+        "signature": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional cryptographic signature covering the bundle or its top-level manifest."
+        }
+      },
+      "description": "Optional integrity envelope for the bundle-level manifest and packaged artifacts."
+    }
+  }
+}
