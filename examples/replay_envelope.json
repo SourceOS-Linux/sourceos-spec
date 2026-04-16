@@ -1,0 +1,20 @@
+{
+  "id": "urn:srcos:replay:aa11bb22",
+  "type": "ReplayEnvelope",
+  "specVersion": "2.0.0",
+  "callId": "call_aa11bb22",
+  "policyDecisionId": "urn:srcos:decision:aa11bb22",
+  "capabilityTokenId": "tok_123",
+  "determinismMode": "bounded",
+  "inputsDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "environmentDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "dependenciesDigest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "seedDigest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "bounds": {
+    "clockSkewMs": 250,
+    "networkMode": "allowlist",
+    "notes": "Replay may access only the audited allowlist and must remain within bounded timing drift."
+  },
+  "issuedAt": "2025-12-24T05:00:05Z",
+  "envelopeHash": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+}
