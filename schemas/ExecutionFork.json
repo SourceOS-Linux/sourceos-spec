@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExecutionFork.json",
+  "title": "ExecutionFork",
+  "description": "A delta execution environment that overlays changed workloads, local mappings, and isolation adapters onto a shared baseline. This is the canonical contract for lightweight forked runtime surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "substrate", "baselineRef", "workloads", "routingContractRef", "cleanupPolicy"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:execution-fork:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:execution-fork:<local-id>."
+    },
+    "type": {
+      "const": "ExecutionFork",
+      "description": "Discriminator constant — always \"ExecutionFork\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable execution fork name."
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional explanation of why the fork exists."
+    },
+    "substrate": {
+      "type": "string",
+      "enum": ["kubernetes", "local", "hybrid", "container", "vm"],
+      "description": "Primary substrate used to realize this fork."
+    },
+    "baselineRef": {
+      "type": "string",
+      "description": "Reference to the inherited baseline environment, release, or surface."
+    },
+    "baselineDigest": {
+      "type": "string",
+      "description": "Optional digest of the resolved baseline state."
+    },
+    "routingContractRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:routing-contract:",
+      "description": "Routing contract that selects and steers traffic into this fork."
+    },
+    "runnerGroupRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:runner-group:",
+      "description": "Optional default runner group for validations executed against this fork."
+    },
+    "capabilityPolicyRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:capability-policy:",
+      "description": "Optional governing capability policy for actions inside this fork."
+    },
+    "quotaPolicyRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:quota:",
+      "description": "Optional quota policy applied to this fork."
+    },
+    "isolationRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to isolation adapters or data partitioning resources used by the fork."
+    },
+    "workloads": {
+      "type": "array",
+      "description": "Changed workloads or local overlays attached to the fork.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "targetRef"],
+        "properties": {
+          "name": { "type": "string" },
+          "targetRef": { "type": "string", "description": "Target workload or service being forked." },
+          "imageRef": { "type": ["string", "null"] },
+          "localPath": { "type": ["string", "null"] },
+          "writePolicy": {
+            "type": "string",
+            "enum": ["inherit", "isolated_only", "blocked"],
+            "description": "Whether writes inherit baseline behavior, remain isolated, or are blocked."
+          },
+          "envOverrides": {
+            "type": "object",
+            "additionalProperties": { "type": "string" },
+            "description": "Environment overrides to apply for this workload."
+          }
+        }
+      }
+    },
+    "ttl": {
+      "type": ["string", "null"],
+      "description": "Advisory lifetime for this fork, e.g. \"8h\"."
+    },
+    "cleanupPolicy": {
+      "type": "string",
+      "enum": ["destroy_with_evidence_retained", "destroy_all", "retain_for_debug"],
+      "description": "Cleanup behavior once the fork expires or is explicitly removed."
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Classification tags for actor, mission, trust class, or workflow."
+    }
+  }
+}
