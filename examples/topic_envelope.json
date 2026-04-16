@@ -1,0 +1,33 @@
+{
+  "entryId": "urn:srcos:topic-entry:fog-cache-health:000001",
+  "topicId": "urn:srcos:topic:fog-cache-health",
+  "specVersion": "2.0.0",
+  "occurredAt": "2026-04-16T02:15:00Z",
+  "author": {
+    "subjectId": "urn:srcos:subject:fog-worker-node-17",
+    "nodeId": "node-17"
+  },
+  "payloadType": "PutBlob",
+  "payload": {
+    "path": "/cache/health/worker-17.json",
+    "contentRef": {
+      "digest": "sha256:3d62e3b4c5dd6d04e3d1a2c765a809f0f76ad6f870d13dbb4d4ef7f77e4d2d10",
+      "sizeBytes": 1048576,
+      "mediaType": "application/json"
+    }
+  },
+  "integrity": {
+    "content": {
+      "digest": "sha256:3d62e3b4c5dd6d04e3d1a2c765a809f0f76ad6f870d13dbb4d4ef7f77e4d2d10",
+      "sizeBytes": 1048576,
+      "mediaType": "application/json"
+    },
+    "payloadHash": "sha256:9cd8d6d35b07be7db0d8904b5bd808c95bd1ef674353abce6ebf58c480644e12",
+    "signature": "ed25519:example-signature-topic-entry"
+  },
+  "encryption": {
+    "cipherSuite": "xchacha20poly1305",
+    "keyEpoch": 4,
+    "aad": "topic=fog.cache.health"
+  }
+}

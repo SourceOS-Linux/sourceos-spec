@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReplicationPolicy.json",
+  "title": "ReplicationPolicy",
+  "description": "Replication and retention policy for a Fog topic. This is a v0 scaffold; fields will evolve via ADRs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["replicas"],
+  "properties": {
+    "replicas": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Target replica count across distinct peers/neighborhoods."
+    },
+    "minAcks": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Minimum acknowledgements required for a write to be considered accepted (0 = fire-and-forget)."
+    },
+    "neighborhoods": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional locality buckets (e.g. lan, household, region, friend-mesh) used for placement diversity."
+    },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hotDays": {"type": "integer", "minimum": 0},
+        "coldDays": {"type": "integer", "minimum": 0},
+        "maxBytes": {"type": "integer", "minimum": 0}
+      },
+      "description": "Retention hints for hot/cold storage and maximum topic size."
+    },
+    "compaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {"enum": ["none", "checkpoint", "snapshot"]},
+        "intervalEntries": {"type": "integer", "minimum": 0}
+      },
+      "description": "Compaction/checkpoint strategy for append-only growth."
+    }
+  }
+}

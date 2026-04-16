@@ -1,0 +1,37 @@
+{
+  "id": "urn:srcos:workorder:index-qdrant-shard-20260416-01",
+  "type": "WorkOrder",
+  "specVersion": "2.0.0",
+  "requestor": {
+    "subjectId": "urn:srcos:subject:mesh-broker-1"
+  },
+  "workload": {
+    "image": "ghcr.io/socioprophet/fog-indexer@sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "command": ["/app/index", "--topic", "fog.cache.health", "--shard", "17"],
+    "env": {
+      "QDRANT_URL": "http://qdrant.service.local:6333",
+      "TOPIC_ID": "urn:srcos:topic:fog-cache-health"
+    }
+  },
+  "inputs": [
+    {
+      "digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "sizeBytes": 52428800,
+      "mediaType": "application/x-ndjson"
+    }
+  ],
+  "outputs": [
+    {
+      "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "mediaType": "application/vnd.qdrant.snapshot"
+    }
+  ],
+  "verification": {
+    "mode": "replicate",
+    "replicas": 2
+  },
+  "placement": {
+    "requireGpu": false,
+    "neighborhood": "lan"
+  }
+}

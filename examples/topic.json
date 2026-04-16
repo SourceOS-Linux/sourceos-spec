@@ -1,0 +1,31 @@
+{
+  "id": "urn:srcos:topic:fog-cache-health",
+  "type": "Topic",
+  "specVersion": "2.0.0",
+  "name": "fog.cache.health",
+  "description": "Health/cache topic for edge-local fog state with append-only Merkle-log replication.",
+  "replication": {
+    "replicas": 3,
+    "minAcks": 1,
+    "neighborhoods": ["lan", "region"],
+    "retention": {
+      "hotDays": 7,
+      "coldDays": 30,
+      "maxBytes": 10737418240
+    },
+    "compaction": {
+      "mode": "checkpoint",
+      "intervalEntries": 10000
+    }
+  },
+  "encryption": {
+    "cipherSuite": "xchacha20poly1305",
+    "keyEpoch": 4,
+    "keyRef": "urn:srcos:key:topic:fog-cache-health:epoch:4"
+  },
+  "members": [
+    "urn:srcos:community:fog-workers",
+    "urn:srcos:community:fog-observers"
+  ],
+  "labels": ["fog", "cache", "ephemeral"]
+}
