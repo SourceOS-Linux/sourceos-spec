@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "BootSurface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "specVersion",
+    "hostRef",
+    "platform",
+    "bootChain",
+    "recovery"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:boot-surface:[A-Za-z0-9._:-]+$"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "hostRef": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "apple-silicon-asahi",
+        "generic-uefi",
+        "generic-bios"
+      ]
+    },
+    "esp": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "device": { "type": "string" },
+        "mountPoint": { "type": "string" },
+        "label": { "type": "string" },
+        "pairedInstanceId": { "type": "string" }
+      }
+    },
+    "bootChain": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "m1n1",
+          "u-boot",
+          "efi-bootaa64",
+          "grub",
+          "systemd-boot",
+          "linux-kernel"
+        ]
+      }
+    },
+    "entries": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "role", "path"],
+        "properties": {
+          "name": { "type": "string" },
+          "role": {
+            "type": "string",
+            "enum": ["main", "recovery", "staging", "other"]
+          },
+          "path": { "type": "string" },
+          "active": { "type": "boolean" }
+        }
+      }
+    },
+    "recovery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["knownGoodRef"],
+      "properties": {
+        "knownGoodRef": { "type": "string" },
+        "lastVerifiedAt": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}
