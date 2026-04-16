@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StorageSurface",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "specVersion",
+    "hostRef",
+    "filesystem",
+    "volumes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:storage-surface:[A-Za-z0-9._:-]+$"
+    },
+    "specVersion": { "type": "string" },
+    "hostRef": { "type": "string" },
+    "filesystem": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rootFs", "snapshotCapable"],
+      "properties": {
+        "rootFs": { "type": "string" },
+        "snapshotCapable": { "type": "boolean" },
+        "subvolumeModel": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "volumes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "class", "mountPoint", "readOnly", "snapshotPolicy"],
+        "properties": {
+          "name": { "type": "string" },
+          "class": {
+            "type": "string",
+            "enum": [
+              "immutable_input",
+              "mutable_state",
+              "audit_evidence",
+              "substrate_sensitive"
+            ]
+          },
+          "mountPoint": { "type": "string" },
+          "readOnly": { "type": "boolean" },
+          "snapshotPolicy": {
+            "type": "string",
+            "enum": [
+              "none",
+              "manual",
+              "pre_post_promotion",
+              "pre_post_host_upgrade"
+            ]
+          },
+          "backingStore": { "type": "string" }
+        }
+      }
+    },
+    "containerPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rootlessRequired": { "type": "boolean" },
+        "selinuxRelabelRequired": { "type": "boolean" },
+        "allowHostSensitiveMounts": { "type": "boolean" }
+      }
+    }
+  }
+}
