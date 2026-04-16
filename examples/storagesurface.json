@@ -1,0 +1,50 @@
+{
+  "id": "urn:srcos:storage-surface:fedora-asahi-m2-main",
+  "specVersion": "2.1.0-alpha.1",
+  "hostRef": "urn:srcos:asset:fedora-asahi-m2",
+  "filesystem": {
+    "rootFs": "btrfs",
+    "snapshotCapable": true,
+    "subvolumeModel": "@root,@home,@state,@logs",
+    "notes": "Host upgrade snapshots and stage/promotion snapshots are supported."
+  },
+  "volumes": [
+    {
+      "name": "rendered-config",
+      "class": "immutable_input",
+      "mountPoint": "/srv/sourceos/config",
+      "readOnly": true,
+      "snapshotPolicy": "none",
+      "backingStore": "host-path"
+    },
+    {
+      "name": "hn-tick-state",
+      "class": "mutable_state",
+      "mountPoint": "/srv/sourceos/state/hn-tick",
+      "readOnly": false,
+      "snapshotPolicy": "manual",
+      "backingStore": "btrfs-subvolume"
+    },
+    {
+      "name": "evidence-artifacts",
+      "class": "audit_evidence",
+      "mountPoint": "/srv/sourceos/evidence",
+      "readOnly": false,
+      "snapshotPolicy": "pre_post_promotion",
+      "backingStore": "btrfs-subvolume"
+    },
+    {
+      "name": "substrate-sensitive",
+      "class": "substrate_sensitive",
+      "mountPoint": "/srv/sourceos/substrate",
+      "readOnly": false,
+      "snapshotPolicy": "pre_post_host_upgrade",
+      "backingStore": "btrfs-subvolume"
+    }
+  ],
+  "containerPolicy": {
+    "rootlessRequired": true,
+    "selinuxRelabelRequired": true,
+    "allowHostSensitiveMounts": false
+  }
+}
