@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ValidatorDecision.json",
+  "title": "ValidatorDecision",
+  "description": "An immutable validator or watcher verdict over a replay, quarantine, or session outcome, suitable for quorum aggregation and receipt linkage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "callId",
+    "verdict",
+    "signer",
+    "roles",
+    "evidenceRefs",
+    "decidedAt",
+    "decisionHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:validator-decision:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:validator-decision:<local-id>"
+    },
+    "type": {
+      "const": "ValidatorDecision",
+      "description": "Discriminator constant — always \"ValidatorDecision\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "callId": {
+      "type": "string",
+      "description": "Identifier of the call or transition being judged by this validator."
+    },
+    "sessionId": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:session:",
+      "description": "Optional URN of the agent session associated with this decision."
+    },
+    "receiptId": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:receipt:session:",
+      "description": "Optional URN of the session receipt this decision contributes to."
+    },
+    "quorumGroup": {
+      "type": ["string", "null"],
+      "description": "Optional identifier of the quorum group or validator set used to interpret this verdict."
+    },
+    "verdict": {
+      "enum": ["allow", "deny", "reseal_resume", "terminate", "defer", "ask"],
+      "description": "Validator outcome over the replay, quarantine, or execution state."
+    },
+    "signer": {
+      "type": "string",
+      "description": "Stable identifier for the validator or watcher that produced the decision."
+    },
+    "roles": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Roles held by the signer when making this decision, e.g. validator, watchdog, witness."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "References to replay envelopes, audit anchors, quarantine receipts, logs, or other evidence consulted."
+    },
+    "rationale": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable explanation of the decision."
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this decision was issued."
+    },
+    "decisionHash": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed hash of the canonical decision payload for tamper evidence."
+    }
+  }
+}
