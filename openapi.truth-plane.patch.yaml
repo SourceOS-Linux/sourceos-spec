@@ -1,0 +1,77 @@
+# Additive OpenAPI patch fragment for the Truth Plane (truth surfaces + delta surfaces + incident events).
+# Merge this file into openapi.yaml at build time.
+# All operations require bearerAuth (inherited from the base spec security requirement).
+
+tags:
+  - name: Truth Plane
+    description: Signed truth surfaces, delta surfaces, and incident lifecycle events
+
+paths:
+  /v2/truth/surfaces:
+    post:
+      operationId: upsertTruthSurface
+      summary: Upsert a TruthSurface
+      description: Creates or updates a signed TruthSurface emitted by a plane (system/user/agent/witness). Idempotent on `id`.
+      tags: [Truth Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/TruthSurface.json' }
+      responses:
+        '200':
+          description: TruthSurface created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to upsert truth surfaces.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/truth/deltas:
+    post:
+      operationId: recordDeltaSurface
+      summary: Record a DeltaSurface
+      description: Records a signed DeltaSurface comparing two TruthSurfaces. Idempotent on `id`.
+      tags: [Truth Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/DeltaSurface.json' }
+      responses:
+        '200':
+          description: DeltaSurface recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record delta surfaces.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/incidents:
+    post:
+      operationId: recordIncidentEvent
+      summary: Record an IncidentEvent
+      description: Records an incident lifecycle event (freeze/fork/kill) with evidence refs. Idempotent on `event_id`.
+      tags: [Truth Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/control-plane/incident-events.schema.json' }
+      responses:
+        '200':
+          description: IncidentEvent recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record incident events.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
