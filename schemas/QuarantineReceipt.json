@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/QuarantineReceipt.json",
+  "title": "QuarantineReceipt",
+  "description": "An immutable record of an isolation action applied to a session, process set, unit, or host surface in response to policy drift or observed risk.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectId",
+    "triggerType",
+    "isolationMode",
+    "startedAt",
+    "outcome",
+    "receiptHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:quarantine:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:quarantine:<local-id>"
+    },
+    "type": {
+      "const": "QuarantineReceipt",
+      "description": "Discriminator constant — always \"QuarantineReceipt\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "subjectId": {
+      "type": "string",
+      "description": "URN or stable identifier of the session, process, unit, or host surface that was isolated."
+    },
+    "triggerType": {
+      "type": "string",
+      "description": "Machine-readable trigger reason, e.g. egress_policy_violation, attest_fail, policy_drift."
+    },
+    "isolationMode": {
+      "enum": ["overlay-restart", "cgroup-ebpf", "network-gateway", "manual"],
+      "description": "Isolation mechanism used to enforce the quarantine."
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "pids": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1},
+          "description": "Optional process identifiers placed under quarantine control."
+        },
+        "cgroup": {
+          "type": ["string", "null"],
+          "description": "Optional cgroup path associated with the quarantine scope."
+        },
+        "unit": {
+          "type": ["string", "null"],
+          "description": "Optional systemd unit or service identifier associated with the scope."
+        },
+        "hostRefs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Optional hostnames or device identifiers implicated in the quarantine scope."
+        }
+      },
+      "description": "Optional structured description of what exactly was isolated."
+    },
+    "triggerEvidenceRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "References to evidence that caused the quarantine to trigger."
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when isolation began."
+    },
+    "releasedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional ISO 8601 date-time when isolation ended or the subject was released."
+    },
+    "outcome": {
+      "enum": ["active", "released", "terminated", "failed"],
+      "description": "Final or current outcome of the quarantine action."
+    },
+    "restorationDecisionId": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:validator-decision:",
+      "description": "Optional URN of the validator decision that authorized release or termination."
+    },
+    "receiptHash": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed hash of the canonical receipt payload for tamper evidence."
+    }
+  }
+}
