@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AuditAnchorRecord.json",
+  "title": "AuditAnchorRecord",
+  "description": "An append-only audit anchoring record that binds an entry digest into a rolling root together with witness and media references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "targetId",
+    "recordType",
+    "entryHash",
+    "root",
+    "anchoredAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:audit-anchor:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:audit-anchor:<local-id>"
+    },
+    "type": {
+      "const": "AuditAnchorRecord",
+      "description": "Discriminator constant — always \"AuditAnchorRecord\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "targetId": {
+      "type": "string",
+      "description": "URN or stable identifier of the object being anchored."
+    },
+    "recordType": {
+      "enum": ["telemetry", "policy-decision", "validator-decision", "quarantine", "allowlist-mutation", "replay-envelope", "generic"],
+      "description": "Classification of the anchored entry."
+    },
+    "entryHash": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed digest of the exact anchored entry payload."
+    },
+    "previousRoot": {
+      "type": ["string", "null"],
+      "pattern": "^sha256:",
+      "description": "Optional sha256: prefixed digest of the previous rolling root."
+    },
+    "root": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed digest of the current rolling root after inclusion of this record."
+    },
+    "witnessSet": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional set of witness identities that observed or countersigned the anchored state."
+    },
+    "signerSet": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional set of signers whose signatures attest to this anchored record."
+    },
+    "mediaRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional references to the storage locations that carry this record or its enclosing log segment."
+    },
+    "anchoredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the entry was committed into the rolling root."
+    }
+  }
+}
