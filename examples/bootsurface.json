@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:boot-surface:fedora-asahi-m2-main",
+  "specVersion": "2.1.0-alpha.1",
+  "hostRef": "urn:srcos:asset:fedora-asahi-m2",
+  "platform": "apple-silicon-asahi",
+  "esp": {
+    "device": "/dev/nvme0n1p1",
+    "mountPoint": "/boot/efi",
+    "label": "EFI-SOURCEOS",
+    "pairedInstanceId": "asahi-fedora-instance-a"
+  },
+  "bootChain": ["m1n1", "u-boot", "efi-bootaa64", "grub", "linux-kernel"],
+  "entries": [
+    {
+      "name": "fedora-asahi-main",
+      "role": "main",
+      "path": "EFI/BOOT/BOOTAA64.EFI",
+      "active": true
+    },
+    {
+      "name": "fedora-asahi-recovery",
+      "role": "recovery",
+      "path": "EFI/BOOT/BOOTAA64-RECOVERY.EFI",
+      "active": false
+    }
+  ],
+  "recovery": {
+    "knownGoodRef": "sha256:known-good-boot-assets-001",
+    "lastVerifiedAt": "2026-04-15T16:00:00Z",
+    "notes": "Boot-critical assets verified before staged substrate promotion."
+  }
+}
