@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RoutingContract.json",
+  "title": "RoutingContract",
+  "description": "A typed routing and propagation contract that selects requests, tool calls, or sessions and directs them toward an execution fork or baseline target under explicit write and fallback semantics.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "targets"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:routing-contract:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:routing-contract:<local-id>."
+    },
+    "type": {
+      "const": "RoutingContract",
+      "description": "Discriminator constant — always \"RoutingContract\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable routing contract name."
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional explanation of the routing contract intent."
+    },
+    "selectors": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Selectors that identify traffic or sessions governed by this contract.",
+      "properties": {
+        "headers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "op", "value"],
+            "properties": {
+              "name": { "type": "string" },
+              "op": { "type": "string", "enum": ["equals", "contains", "prefix"] },
+              "value": { "type": "string" }
+            }
+          }
+        },
+        "baggage": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "op", "value"],
+            "properties": {
+              "name": { "type": "string" },
+              "op": { "type": "string", "enum": ["equals", "contains", "prefix"] },
+              "value": { "type": "string" }
+            }
+          }
+        },
+        "actorRef": { "type": ["string", "null"] },
+        "branchRef": { "type": ["string", "null"] },
+        "missionRef": { "type": ["string", "null"] },
+        "trustClass": { "type": ["string", "null"] }
+      }
+    },
+    "targets": {
+      "type": "array",
+      "description": "Concrete named routing targets governed by this contract.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "targetRef", "fallback", "writePolicy"],
+        "properties": {
+          "name": { "type": "string" },
+          "targetRef": { "type": "string", "description": "Workload, service, or endpoint reference." },
+          "port": { "type": ["integer", "null"], "minimum": 1, "maximum": 65535 },
+          "fallback": {
+            "type": "string",
+            "enum": ["baseline", "deny"],
+            "description": "Fallback behavior when the target is unavailable or the selector does not match."
+          },
+          "writePolicy": {
+            "type": "string",
+            "enum": ["inherit", "isolated_only", "blocked"],
+            "description": "How writes are handled for traffic routed through this target."
+          }
+        }
+      }
+    },
+    "propagation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Context propagation rules applied when traffic is routed under this contract.",
+      "properties": {
+        "traceContext": { "type": "string", "enum": ["w3c", "b3", "none"] },
+        "extraHeaders": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "defaultDeny": {
+      "type": "boolean",
+      "description": "Whether unmatched traffic should be denied by default."
+    },
+    "requireCapabilityToken": {
+      "type": "boolean",
+      "description": "Whether traffic or session entry under this contract requires a governing capability token."
+    },
+    "readOnlySurface": {
+      "type": "boolean",
+      "description": "Whether this routing contract exposes a read-only interaction surface."
+    }
+  }
+}
