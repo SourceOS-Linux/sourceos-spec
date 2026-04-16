@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:validator-decision:vd001",
+  "type": "ValidatorDecision",
+  "specVersion": "2.0.0",
+  "callId": "call_aa11bb22",
+  "sessionId": "urn:srcos:session:s001",
+  "receiptId": "urn:srcos:receipt:session:r001",
+  "quorumGroup": "triune-default",
+  "verdict": "reseal_resume",
+  "signer": "validator@v1",
+  "roles": [
+    "validator"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:audit-anchor:001",
+    "urn:srcos:quarantine:q001"
+  ],
+  "rationale": "Replay envelope matched bounded determinism constraints and no further egress was observed.",
+  "decidedAt": "2025-12-24T05:00:07Z",
+  "decisionHash": "sha256:8888888888888888888888888888888888888888888888888888888888888888"
+}
