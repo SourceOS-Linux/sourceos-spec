@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:upstream-watch:socioprophet-agentplane-main",
+  "type": "UpstreamWatchItem",
+  "specVersion": "2.0.0",
+  "subjectType": "github_repository",
+  "subjectKey": "SocioProphet/agentplane",
+  "displayName": "SocioProphet agentplane",
+  "owner": "SocioProphet",
+  "defaultBranch": "main",
+  "currentVersion": "docs-alignment-pr-35",
+  "observedAt": "2026-04-15T22:45:00Z",
+  "riskState": "watch",
+  "signals": [
+    {
+      "signalType": "open_pr_count",
+      "value": 35,
+      "unit": "pull_requests",
+      "note": "Illustrative signal placeholder for schema consumers."
+    },
+    {
+      "signalType": "branch_divergence",
+      "value": 0,
+      "unit": "commits",
+      "note": "Measured relative to the current base during capture."
+    }
+  ],
+  "sourceRefs": [
+    {
+      "kind": "github",
+      "uri": "https://github.com/SocioProphet/agentplane",
+      "note": "Illustrative example for repository watch items."
+    }
+  ],
+  "tags": [
+    "github",
+    "execution-plane",
+    "upstream-drift"
+  ]
+}
