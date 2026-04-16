@@ -1,0 +1,31 @@
+# Additive OpenAPI patch fragment for diagnostics bundles.
+# Merge this file into openapi.yaml at build time.
+# All operations require bearerAuth (inherited from the base spec security requirement).
+
+tags:
+  - name: Diagnostics
+    description: Governed host diagnostics evidence bundles and their supporting metadata
+
+paths:
+  /v2/diagnostics/bundles:
+    post:
+      operationId: recordDiagnosticsBundle
+      summary: Record a DiagnosticsBundle
+      description: Records a governed host diagnostics evidence bundle containing timed probe metadata, artifact hashes, and declared redaction posture. Idempotent on `id`.
+      tags: [Diagnostics]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/DiagnosticsBundle.json' }
+      responses:
+        '200':
+          description: DiagnosticsBundle recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record diagnostics bundles.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
