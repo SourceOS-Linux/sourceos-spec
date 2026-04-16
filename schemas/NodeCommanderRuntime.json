@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/NodeCommanderRuntime.json",
+  "title": "NodeCommanderRuntime",
+  "description": "Typed runtime descriptor for a Node Commander deployment envelope.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "runtimeMode", "packaging", "execution", "config"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:node-commander:" },
+    "type": { "const": "NodeCommanderRuntime" },
+    "specVersion": { "type": "string" },
+    "runtimeMode": { "enum": ["bootstrap", "service"] },
+    "packaging": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["oci-image", "local-binary"] },
+        "imageRef": { "type": ["string", "null"] },
+        "entrypoint": { "type": ["string", "null"] }
+      }
+    },
+    "execution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scope", "serviceManager", "rootless"],
+      "properties": {
+        "scope": { "enum": ["user", "system"] },
+        "serviceManager": { "enum": ["launchd", "systemd"] },
+        "rootless": { "type": "boolean" }
+      }
+    },
+    "config": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["configDir", "stateDir", "logDestination"],
+      "properties": {
+        "configDir": { "type": "string" },
+        "stateDir": { "type": "string" },
+        "logDestination": { "type": "string" }
+      }
+    }
+  }
+}

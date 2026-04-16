@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:node-commander:runtime:macbook-air-operator-01",
+  "type": "NodeCommanderRuntime",
+  "specVersion": "2.0.0",
+  "runtimeMode": "bootstrap",
+  "packaging": {
+    "kind": "oci-image",
+    "imageRef": "us-central1-docker.pkg.dev/socioprophet-web/node-commander/node-commander:dev-boot",
+    "entrypoint": "podman --connection podman-machine-default run --pull=never --rm --replace --name node-commander <image>"
+  },
+  "execution": {
+    "scope": "user",
+    "serviceManager": "launchd",
+    "rootless": true
+  },
+  "config": {
+    "configDir": "/etc/node-commander",
+    "stateDir": "/var/lib/node-commander",
+    "logDestination": "/tmp/node-commander.log"
+  }
+}

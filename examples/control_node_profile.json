@@ -1,0 +1,20 @@
+{
+  "id": "urn:srcos:control-node:macbook-air-operator-01",
+  "type": "ControlNodeProfile",
+  "specVersion": "2.0.0",
+  "hostRole": "operator-control-node",
+  "hostPlatform": "aarch64-darwin",
+  "containerRuntime": "podman",
+  "nodeCommanderRuntimeRef": "urn:srcos:node-commander:runtime:macbook-air-operator-01",
+  "placementOrder": [
+    "local",
+    "trusted-private",
+    "attested-fog",
+    "burst-cloud"
+  ],
+  "workspace": {
+    "configDir": "/etc/node-commander",
+    "stateDir": "/var/lib/node-commander",
+    "evidenceDir": "/var/lib/node-commander/evidence"
+  }
+}
