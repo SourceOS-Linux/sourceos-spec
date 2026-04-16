@@ -1,0 +1,12 @@
+{
+  "id": "urn:srcos:settlement:index-qdrant-shard-20260416-01",
+  "type": "SettlementEvent",
+  "specVersion": "2.0.0",
+  "receiptId": "urn:srcos:receipt:usage:index-qdrant-shard-20260416-01",
+  "amount": {
+    "unit": "fog-credits",
+    "value": 12.84
+  },
+  "backend": "internal-ledger",
+  "txRef": "ledger://fog-credits/2026/04/16/txn-000001"
+}
