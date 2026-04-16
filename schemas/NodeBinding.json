@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/NodeBinding.json",
+  "title": "NodeBinding",
+  "description": "Install-time or enrollment-time mutable assignment for a node booting a shared OS image.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "imageRef",
+    "nodeProfile",
+    "topology",
+    "fleet",
+    "updateRing"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:nodebinding:[a-z0-9][a-z0-9._-]*$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:nodebinding:<local-id>."
+    },
+    "type": {
+      "const": "NodeBinding",
+      "description": "Discriminator constant — always \"NodeBinding\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "imageRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:osimage:[a-z0-9][a-z0-9._-]*$",
+      "description": "URN reference to the immutable OSImage applied to the node."
+    },
+    "nodeProfile": {
+      "type": "string",
+      "description": "Install-time node persona or profile selected for this node."
+    },
+    "topology": {
+      "type": "string",
+      "description": "Topology identifier such as a region, site, or cell code."
+    },
+    "fleet": {
+      "type": "string",
+      "description": "Fleet or rollout group name to which the node belongs."
+    },
+    "updateRing": {
+      "type": "string",
+      "enum": [
+        "canary",
+        "preview",
+        "stable",
+        "lts"
+      ],
+      "description": "Update ring used for image selection and promotion."
+    },
+    "targetImgref": {
+      "type": "string",
+      "description": "Optional explicit runtime image reference overriding the source install image reference."
+    },
+    "hostnameTemplate": {
+      "type": "string",
+      "description": "Optional hostname template used during install or first boot."
+    },
+    "registries": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Registry or mirror endpoint string."
+      },
+      "description": "Optional list of registry mirrors or pull sources."
+    },
+    "bootstrapTrustRootRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Trust root reference string."
+      },
+      "description": "Optional list of trust-root references used during bootstrap or enrollment."
+    },
+    "installerProfile": {
+      "type": "string",
+      "description": "Optional installer profile or preset selected by the operator."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Free-form operational notes for the binding."
+    }
+  }
+}

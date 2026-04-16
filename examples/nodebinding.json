@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:nodebinding:edge-gateway-na-use1-001",
+  "type": "NodeBinding",
+  "specVersion": "2.1.0",
+  "imageRef": "urn:srcos:osimage:so1-edge-appliance",
+  "nodeProfile": "field-gateway",
+  "topology": "na-use1",
+  "fleet": "edge-prod",
+  "updateRing": "stable",
+  "targetImgref": "quay.io/sourceos/edge-appliance:2026.04.14.1",
+  "hostnameTemplate": "edge-gateway-%03d",
+  "registries": [
+    "registry-use1.internal"
+  ],
+  "bootstrapTrustRootRefs": [
+    "urn:srcos:trustroot:global-platform-root"
+  ],
+  "installerProfile": "edge-default"
+}
