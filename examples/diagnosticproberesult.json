@@ -1,0 +1,15 @@
+{
+  "name": "uptime",
+  "group": "proc_mem",
+  "command": "uptime",
+  "exit": 0,
+  "elapsedSeconds": 0.012,
+  "timeoutSeconds": 2,
+  "maxRssKb": 2048,
+  "startedAt": "2026-04-15T14:00:00Z",
+  "endedAt": "2026-04-15T14:00:00Z",
+  "risk": "safe",
+  "stdoutPath": "cmd/uptime.out",
+  "stderrPath": "cmd/uptime.err",
+  "metaPath": "cmd/uptime.meta"
+}
