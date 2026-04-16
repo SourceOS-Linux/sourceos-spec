@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:audit-anchor:001",
+  "type": "AuditAnchorRecord",
+  "specVersion": "2.0.0",
+  "targetId": "urn:srcos:replay:aa11bb22",
+  "recordType": "replay-envelope",
+  "entryHash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+  "previousRoot": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "root": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+  "witnessSet": [
+    "validator@v1",
+    "watchdog@w1"
+  ],
+  "signerSet": [
+    "validator@v1"
+  ],
+  "mediaRefs": [
+    "file:///var/log/triune/audit.ndjson#L42"
+  ],
+  "anchoredAt": "2025-12-24T05:00:06Z"
+}
