@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:image-gate:sourceos-workstation-v0-dev",
+  "type": "ImagePromotionGate",
+  "specVersion": "2.0.0",
+  "candidateBuildRef": "urn:srcos:build:sourceos-workstation-v0-2026-04-15",
+  "profileRef": "urn:srcos:control-node:macbook-air-operator-01",
+  "requiredArtifacts": [
+    "validation-artifact.json",
+    "run-artifact.json",
+    "replay-artifact.json"
+  ],
+  "requiredChecks": [
+    "static-validation",
+    "scenario-pass",
+    "promotion-evidence-complete"
+  ],
+  "decision": "approved",
+  "reasonCodes": [
+    "all-required-checks-passed"
+  ],
+  "gitUpdate": {
+    "allowed": true,
+    "targetRepo": "SociOS-Linux/source-os",
+    "targetRef": "main"
+  },
+  "taskCompletion": {
+    "allowed": true,
+    "issueRef": "issue://source-os/workstation-v0-bootstrap"
+  }
+}
