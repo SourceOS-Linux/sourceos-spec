@@ -1,0 +1,12 @@
+{
+  "artifactId": "demo-report",
+  "validatedAt": "2026-04-16T22:05:00Z",
+  "pdfcpu": {
+    "ok": true,
+    "checks": ["xref", "metadata", "page-tree"]
+  },
+  "verapdf": {
+    "ok": true,
+    "flavour": "PDF/A-2b"
+  }
+}
