@@ -1,0 +1,123 @@
+# Additive OpenAPI patch fragment for the Fog Layer (FogVault + FogCompute).
+# Merge this file into openapi.yaml at build time.
+# All operations require bearerAuth (inherited from the base spec security requirement).
+
+tags:
+  - name: Fog Layer
+    description: FogVault topic/storage contracts and FogCompute offers, work orders, and receipts
+
+paths:
+  /v2/fog/topics:
+    post:
+      operationId: upsertFogTopic
+      summary: Upsert a Fog topic definition
+      description: Creates or updates a FogVault Topic contract. Idempotent on `id`.
+      tags: [Fog Layer]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Topic.json' }
+      responses:
+        '200':
+          description: Topic created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to upsert fog topics.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/fog/offers:
+    post:
+      operationId: upsertFogOffer
+      summary: Upsert a Fog compute offer
+      description: Creates or updates a FogCompute Offer. Idempotent on `id`.
+      tags: [Fog Layer]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/Offer.json' }
+      responses:
+        '200':
+          description: Offer created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to upsert fog offers.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/fog/workorders:
+    post:
+      operationId: submitFogWorkOrder
+      summary: Submit a Fog work order
+      description: Records a FogCompute WorkOrder. Idempotent on `id`.
+      tags: [Fog Layer]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/WorkOrder.json' }
+      responses:
+        '200':
+          description: WorkOrder recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to submit fog work orders.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/fog/receipts:
+    post:
+      operationId: recordFogUsageReceipt
+      summary: Record a Fog usage receipt
+      description: Records a FogCompute UsageReceipt. Idempotent on `id`.
+      tags: [Fog Layer]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/UsageReceipt.json' }
+      responses:
+        '200':
+          description: UsageReceipt recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record fog receipts.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+
+  /v2/fog/settlements:
+    post:
+      operationId: recordFogSettlementEvent
+      summary: Record a Fog settlement event
+      description: Records an optional SettlementEvent that maps a usage receipt to a settlement backend.
+      tags: [Fog Layer]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SettlementEvent.json' }
+      responses:
+        '200':
+          description: SettlementEvent recorded successfully.
+        '400':
+          description: Request body is malformed JSON.
+        '401':
+          description: Missing or invalid authentication token.
+        '403':
+          description: Authenticated subject is not permitted to record fog settlements.
+        '422':
+          description: Request body is valid JSON but fails schema validation.
