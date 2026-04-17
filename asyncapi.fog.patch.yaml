@@ -1,0 +1,146 @@
+# Additive AsyncAPI patch fragment for the Fog Layer.
+# Merge this file into asyncapi.yaml at build time using @asyncapi/bundler.
+# All channels use Kafka with the same broker configuration as the base spec.
+
+channels:
+  srcos.v2.fog.topic.events:
+    description: Events emitted when a FogVault topic is recorded or updated.
+    bindings:
+      kafka:
+        topic: srcos.v2.fog.topic.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishFogTopicEvent
+      summary: Publish a fog topic domain event
+      description: Publishes an event whenever a FogVault Topic is upserted.
+      message:
+        name: FogTopicEvent
+        title: Fog Topic Domain Event
+        summary: A change event for a FogVault Topic.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `FogTopicUpserted`
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the Topic.
+
+  srcos.v2.fog.offer.events:
+    description: Events emitted when a FogCompute offer is recorded or updated.
+    bindings:
+      kafka:
+        topic: srcos.v2.fog.offer.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishFogOfferEvent
+      summary: Publish a fog offer domain event
+      description: Publishes an event whenever a FogCompute Offer is upserted.
+      message:
+        name: FogOfferEvent
+        title: Fog Offer Domain Event
+        summary: A change event for a FogCompute Offer.
+        description: |
+          The `eventType` in the payload envelope identifies the specific change:
+          - `FogOfferUpserted`
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the Offer.
+
+  srcos.v2.fog.workorder.events:
+    description: Events emitted when a FogCompute work order is submitted.
+    bindings:
+      kafka:
+        topic: srcos.v2.fog.workorder.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishFogWorkOrderEvent
+      summary: Publish a fog work order domain event
+      description: Publishes an event whenever a FogCompute WorkOrder is recorded.
+      message:
+        name: FogWorkOrderEvent
+        title: Fog WorkOrder Domain Event
+        summary: A record event for a FogCompute WorkOrder.
+        description: |
+          The `eventType` in the payload envelope is `FogWorkOrderRecorded`.
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the WorkOrder.
+
+  srcos.v2.fog.receipt.events:
+    description: Events emitted when a FogCompute usage receipt is recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.fog.receipt.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishFogUsageReceiptEvent
+      summary: Publish a fog usage receipt domain event
+      description: Publishes an event whenever a FogCompute UsageReceipt is recorded.
+      message:
+        name: FogUsageReceiptEvent
+        title: Fog Usage Receipt Domain Event
+        summary: A record event for a FogCompute UsageReceipt.
+        description: |
+          The `eventType` in the payload envelope is `FogUsageReceiptRecorded`.
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the UsageReceipt.
+
+  srcos.v2.fog.settlement.events:
+    description: Events emitted when a Fog settlement mapping is recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.fog.settlement.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishFogSettlementEvent
+      summary: Publish a fog settlement domain event
+      description: Publishes an event whenever a SettlementEvent is recorded.
+      message:
+        name: FogSettlementEvent
+        title: Fog Settlement Domain Event
+        summary: A record event for a Fog settlement mapping.
+        description: |
+          The `eventType` in the payload envelope is `FogSettlementRecorded`.
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the SettlementEvent.
