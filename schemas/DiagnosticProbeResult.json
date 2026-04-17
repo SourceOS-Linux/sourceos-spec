@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DiagnosticProbeResult.json",
+  "title": "DiagnosticProbeResult",
+  "description": "One command/probe execution record within a DiagnosticBundle. Mirrors sysdiagnose-style ledgers (exit, elapsed, timeout, max RSS) and binds the row to any captured stdout/stderr artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "command",
+    "exit",
+    "elapsedSeconds",
+    "timeoutSeconds",
+    "maxRssKb",
+    "startedAt",
+    "endedAt",
+    "risk"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable probe identifier within the bundle (e.g. uptime, rpm_ostree_status)."
+    },
+    "group": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional concurrent group identifier (sysdiagnose-style)."
+    },
+    "command": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The exact shell command executed (after any templating)."
+    },
+    "exit": {
+      "type": "integer",
+      "description": "Process exit code (or timeout/kill code if the runner preserves it)."
+    },
+    "elapsedSeconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Wall-clock elapsed seconds for the probe run."
+    },
+    "timeoutSeconds": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Runner-enforced timeout seconds for this probe."
+    },
+    "maxRssKb": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum resident set size in KB measured for the probe process."
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 start timestamp."
+    },
+    "endedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time",
+      "description": "ISO 8601 end timestamp (null if unknown)."
+    },
+    "risk": {
+      "type": "string",
+      "enum": [
+        "safe",
+        "sensitive",
+        "high-risk"
+      ],
+      "description": "Risk classification for the probe output. High-risk probes are opt-in by policy."
+    },
+    "stdoutPath": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Relative path (inside the bundle) to captured stdout, if any."
+    },
+    "stderrPath": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Relative path (inside the bundle) to captured stderr, if any."
+    },
+    "metaPath": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Relative path (inside the bundle) to runner metadata (e.g. GNU time output), if any."
+    }
+  }
+}
