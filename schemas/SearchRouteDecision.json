@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:SearchRouteDecision",
+  "title": "SearchRouteDecision",
+  "type": "object",
+  "required": ["scope", "provider", "query"],
+  "properties": {
+    "scope": {"type": "string", "enum": ["apps", "files", "web"]},
+    "provider": {"type": "string"},
+    "query": {"type": "string"},
+    "routedAt": {"type": ["string", "null"], "format": "date-time"},
+    "redundantSearchPrevented": {"type": ["boolean", "null"]}
+  },
+  "additionalProperties": false
+}
