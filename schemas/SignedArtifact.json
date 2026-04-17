@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:SignedArtifact",
+  "title": "SignedArtifact",
+  "type": "object",
+  "required": ["artifactId", "signer", "algorithm", "timestamp"],
+  "properties": {
+    "artifactId": {"type": "string"},
+    "signer": {"type": "string"},
+    "algorithm": {"type": "string"},
+    "timestamp": {"type": "string", "format": "date-time"},
+    "issuer": {"type": ["string", "null"]},
+    "signatureRef": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}
