@@ -1,0 +1,17 @@
+{
+  "artifactId": "demo-report",
+  "source": {
+    "path": "content/draft/demo-report.md",
+    "commit": "deadbeef"
+  },
+  "unsignedPdf": "content/derived/pdf/demo-report.pdf",
+  "signedPdf": "content/derived/pdf_signed/demo-report.signed.pdf",
+  "sha256": "0123cafe0123cafe0123cafe0123cafe",
+  "signed": true,
+  "pdfa": true,
+  "signer": "CN=Docs PSigner",
+  "signature": {
+    "type": "PKCS#7",
+    "issuer": "CN=Docs PSigner"
+  }
+}

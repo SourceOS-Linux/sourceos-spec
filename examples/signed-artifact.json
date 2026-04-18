@@ -1,0 +1,8 @@
+{
+  "artifactId": "demo-report",
+  "signer": "CN=Docs PSigner",
+  "algorithm": "PKCS#7",
+  "timestamp": "2026-04-16T22:00:00Z",
+  "issuer": "CN=Docs PSigner",
+  "signatureRef": "content/derived/pdf_signed/demo-report.signed.pdf"
+}

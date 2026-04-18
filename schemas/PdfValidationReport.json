@@ -1,0 +1,30 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:PdfValidationReport",
+  "title": "PdfValidationReport",
+  "type": "object",
+  "required": ["artifactId", "validatedAt", "pdfcpu", "verapdf"],
+  "properties": {
+    "artifactId": {"type": "string"},
+    "validatedAt": {"type": "string", "format": "date-time"},
+    "pdfcpu": {
+      "type": "object",
+      "required": ["ok"],
+      "properties": {
+        "ok": {"type": "boolean"},
+        "checks": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "verapdf": {
+      "type": "object",
+      "required": ["ok"],
+      "properties": {
+        "ok": {"type": "boolean"},
+        "flavour": {"type": ["string", "null"]}
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}
