@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:NoetherDiagnostic",
+  "title": "NoetherDiagnostic",
+  "type": "object",
+  "required": ["diagnosticId", "layer", "charge", "value", "measuredAt"],
+  "properties": {
+    "diagnosticId": {"type": "string"},
+    "layer": {"type": "string"},
+    "charge": {"type": "string"},
+    "value": {"type": "number"},
+    "measuredAt": {"type": "string", "format": "date-time"},
+    "tolerance": {"type": ["number", "null"]},
+    "pass": {"type": ["boolean", "null"]}
+  },
+  "additionalProperties": false
+}
