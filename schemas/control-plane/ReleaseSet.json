@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/ReleaseSet.json",
+  "title": "ReleaseSet",
+  "description": "Canonical ReleaseSet schema. Wrapper that preserves legacy identifier while providing a stable srcos namespace for new references.",
+  "allOf": [
+    { "$ref": "./release-set.schema.json" }
+  ]
+}

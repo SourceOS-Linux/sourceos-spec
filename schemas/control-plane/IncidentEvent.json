@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/IncidentEvent.json",
+  "title": "IncidentEvent",
+  "description": "Canonical IncidentEvent schema. Wrapper retained for consistency (the underlying incident-events.schema.json is already normalized into srcos namespace).",
+  "allOf": [
+    { "$ref": "./incident-events.schema.json" }
+  ]
+}

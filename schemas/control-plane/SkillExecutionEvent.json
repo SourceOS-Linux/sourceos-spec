@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/SkillExecutionEvent.json",
+  "title": "SkillExecutionEvent",
+  "description": "Canonical SkillExecutionEvent schema. This is a wrapper that preserves legacy identifiers while providing a stable srcos namespace for new references.",
+  "allOf": [
+    { "$ref": "./skill-execution-events.schema.json" }
+  ]
+}
