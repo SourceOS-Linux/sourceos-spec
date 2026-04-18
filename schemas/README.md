@@ -42,6 +42,7 @@ These types support:
 | `DataRef.json` | DataRef | _(sub-object, no top-level id)_ |
 | `DataSphere.json` | DataSphere | `urn:srcos:sphere:` |
 | `Dataset.json` | Dataset | `urn:srcos:dataset:` |
+| `DeltaSurface.json` | DeltaSurface | `urn:srcos:delta-surface:` |
 | `EntityField.json` | EntityField | _(sub-object inside SchemaDefinition)_ |
 | `EventEnvelope.json` | EventEnvelope | `urn:srcos:event:` |
 | `Exception.json` | Exception | _(sub-object inside Policy)_ |
@@ -86,6 +87,7 @@ These types support:
 | `Topic.json` | Topic | `urn:srcos:topic:` |
 | `TopicEnvelope.json` | TopicEnvelope | `urn:srcos:topic-entry:` |
 | `Trigger.json` | Trigger | _(sub-object inside WorkflowSpec)_ |
+| `TruthSurface.json` | TruthSurface | `urn:srcos:truth-surface:` |
 | `UsageReceipt.json` | UsageReceipt | `urn:srcos:receipt:usage:` |
 | `ValidValues.json` | ValidValues | _(sub-object inside EntityField)_ |
 | `WorkflowEdge.json` | WorkflowEdge | _(sub-object inside WorkflowSpec)_ |
@@ -142,7 +144,7 @@ These types support:
 | `SchemaDefinition` | A named, versioned logical schema composed of `EntityField`s |
 | `EntityField` | A field descriptor inside a `SchemaDefinition` |
 | `Field` | A fully annotated, quality-profiled field attached to a live `Dataset` |
-| `TagAssignment` | A classification tag with confidence score, source, and review record |
+| `TagAssignment` | A classification tag with confidence score, source provenance, and review record |
 | `ValidValues` | Enumeration, numeric range, or regex constraint on a field |
 | `QualityMetric` | A named quality dimension (completeness, validity, …) scored 0–1 |
 | `ProfileStats` | Statistical profile of a column: row count, nulls, distinct values, top-N values |
@@ -171,6 +173,8 @@ These types support:
 | `MappingSpec` | A field-to-field semantic mapping with multi-method confidence evidence |
 | `MappingEvidence` | A single evidence item for a `MappingSpec` (label similarity, value overlap, …) |
 | `EventEnvelope` | The universal wrapper for all AsyncAPI channel messages |
+| `TruthSurface` | Signed truth summary emitted by a plane (system/user/agent/witness) |
+| `DeltaSurface` | Signed diff between two TruthSurfaces with gate results |
 
 ### Agent Plane
 
