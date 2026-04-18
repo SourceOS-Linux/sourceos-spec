@@ -1,6 +1,29 @@
 # Schema Catalog
 
-This directory contains all 54 JSON Schema (draft 2020-12) files that make up the SourceOS/SociOS Typed Contracts specification.
+This directory contains the JSON Schema (draft 2020-12) files that make up the SourceOS/SociOS Typed Contracts specification.
+
+---
+
+## Recent additions — Fog Layer
+
+The FogVault / FogCompute contract family adds the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `ContentRef.json` | ContentRef | _(digest-based content reference)_ |
+| `Offer.json` | Offer | `urn:srcos:offer:` |
+| `ReplicationPolicy.json` | ReplicationPolicy | _(top-level policy object)_ |
+| `SettlementEvent.json` | SettlementEvent | `urn:srcos:settlement:` |
+| `Topic.json` | Topic | `urn:srcos:topic:` |
+| `TopicEnvelope.json` | TopicEnvelope | `urn:srcos:topic-entry:` |
+| `UsageReceipt.json` | UsageReceipt | `urn:srcos:receipt:usage:` |
+| `WorkOrder.json` | WorkOrder | `urn:srcos:workorder:` |
+
+These types support:
+- append-only Merkle-log topics
+- explicit replication/retention policy
+- content-addressed storage references
+- compute offers, work orders, receipts, and optional settlement mappings
 
 ---
 
@@ -15,6 +38,7 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `Comment.json` | Comment | `urn:srcos:comment:` |
 | `Community.json` | Community | `urn:srcos:community:` |
 | `Connector.json` | Connector | `urn:srcos:connector:` |
+| `ContentRef.json` | ContentRef | _(digest-based content reference)_ |
 | `DataRef.json` | DataRef | _(sub-object, no top-level id)_ |
 | `DataSphere.json` | DataSphere | `urn:srcos:sphere:` |
 | `Dataset.json` | Dataset | `urn:srcos:dataset:` |
@@ -34,6 +58,7 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `ObjectContext.json` | ObjectContext | _(sub-object, no id)_ |
 | `ObjectSelector.json` | ObjectSelector | _(sub-object inside Policy scope)_ |
 | `Obligation.json` | Obligation | _(sub-object, no id)_ |
+| `Offer.json` | Offer | `urn:srcos:offer:` |
 | `Party.json` | Party | `urn:srcos:party:` |
 | `PhysicalAsset.json` | PhysicalAsset | `urn:srcos:asset:` |
 | `Policy.json` | Policy | `urn:srcos:policy:` |
@@ -45,23 +70,29 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `QualityMetric.json` | QualityMetric | _(sub-object inside Field.quality)_ |
 | `Rating.json` | Rating | `urn:srcos:rating:` |
 | `ReleaseReceipt.json` | ReleaseReceipt | `urn:srcos:release-receipt:` |
+| `ReplicationPolicy.json` | ReplicationPolicy | _(top-level policy object)_ |
 | `RolloutPolicy.json` | RolloutPolicy | `urn:srcos:rollout:` |
 | `Rule.json` | Rule | _(sub-object inside Policy)_ |
 | `RunRecord.json` | RunRecord | `urn:srcos:run:` |
 | `SchemaDefinition.json` | SchemaDefinition | `urn:srcos:schema:` |
 | `SessionReceipt.json` | SessionReceipt | `urn:srcos:receipt:session:` |
 | `SessionReview.json` | SessionReview | `urn:srcos:session-review:` |
+| `SettlementEvent.json` | SettlementEvent | `urn:srcos:settlement:` |
 | `SkillManifest.json` | SkillManifest | `urn:srcos:skill:` |
 | `SubjectContext.json` | SubjectContext | _(sub-object, no id)_ |
 | `SubjectSelector.json` | SubjectSelector | _(sub-object inside Policy scope)_ |
 | `TagAssignment.json` | TagAssignment | _(sub-object inside Field/GlossaryTerm)_ |
 | `TelemetryEvent.json` | TelemetryEvent | `urn:srcos:telemetry:` |
+| `Topic.json` | Topic | `urn:srcos:topic:` |
+| `TopicEnvelope.json` | TopicEnvelope | `urn:srcos:topic-entry:` |
 | `Trigger.json` | Trigger | _(sub-object inside WorkflowSpec)_ |
+| `UsageReceipt.json` | UsageReceipt | `urn:srcos:receipt:usage:` |
 | `ValidValues.json` | ValidValues | _(sub-object inside EntityField)_ |
 | `WorkflowEdge.json` | WorkflowEdge | _(sub-object inside WorkflowSpec)_ |
 | `WorkflowNode.json` | WorkflowNode | _(sub-object inside WorkflowSpec)_ |
 | `WorkflowSpec.json` | WorkflowSpec | `urn:srcos:workflow:` |
 | `WorkloadSpec.json` | WorkloadSpec | `urn:srcos:workload:` |
+| `WorkOrder.json` | WorkOrder | `urn:srcos:workorder:` |
 
 ---
 
@@ -163,6 +194,19 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `RolloutPolicy` | Audience-based percentage rollout rules for an `ExperimentFlag` |
 | `ReleaseReceipt` | A verified release record with artifact hashes and gate check results |
 
+### Fog Layer
+
+| Schema | Description |
+|--------|-------------|
+| `Topic` | An append-only topic contract for FogVault channels |
+| `TopicEnvelope` | A typed append-only entry envelope for topic events and payloads |
+| `ReplicationPolicy` | Replication, retention, and compaction policy for a fog topic |
+| `ContentRef` | A content-addressed reference to blobs, chunks, or manifests |
+| `Offer` | A FogCompute provider offer advertising resources and constraints |
+| `WorkOrder` | A FogCompute request describing workload, inputs, outputs, and verification mode |
+| `UsageReceipt` | A worker-emitted usage and output receipt for a completed work order |
+| `SettlementEvent` | An optional settlement mapping from receipt to credits/tokens/backend |
+
 ---
 
 ## Validation
@@ -183,4 +227,4 @@ done
 
 ## Versioning
 
-Schema evolution follows [Semantic Versioning](https://semver.org/).  See [CONTRIBUTING.md](../CONTRIBUTING.md#breaking-vs-additive-changes) for the full policy and [CHANGELOG.md](../CHANGELOG.md) for the history.
+Schema evolution follows [Semantic Versioning](https://semver.org/). See [CONTRIBUTING.md](../CONTRIBUTING.md#breaking-vs-additive-changes) for the full policy and [CHANGELOG.md](../CHANGELOG.md) for the history.
