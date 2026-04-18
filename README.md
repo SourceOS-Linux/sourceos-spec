@@ -1,6 +1,6 @@
 # SourceOS/SociOS Typed Contracts
 
-**SourceOS/SociOS Typed Contracts** is the canonical, machine-readable specification for the SourceOS metadata governance platform and the SociOS agent plane. It defines the full set of JSON Schemas, an OpenAPI REST surface, an AsyncAPI event spine, and a JSON-LD / Hydra semantic overlay that together make up the "contract layer" every implementation component must satisfy.
+**SourceOS/SociOS Typed Contracts** is the canonical, machine-readable specification for the SourceOS metadata governance platform and the SociOS agent plane. It defines the full set of JSON Schemas, additive OpenAPI / AsyncAPI patch fragments, and a JSON-LD / Hydra semantic overlay that together make up the "contract layer" every implementation component must satisfy.
 
 > **Spec version:** `2.0.0` &nbsp;|&nbsp; **License:** see [LICENSE](LICENSE)
 
@@ -8,19 +8,19 @@
 
 ## Why this repository exists
 
-A metadata governance platform can only unify data meaning, policy, provenance, and agent execution if every component agrees on the *shape* of the objects it exchanges.  This repository is that shared agreement.  Downstream consumers include:
+A metadata governance platform can only unify data meaning, policy, provenance, and agent execution if every component agrees on the *shape* of the objects it exchanges. This repository is that shared agreement. Downstream consumers include:
 
-- **API services** — scaffolded from `openapi.yaml` (metadata plane) and `openapi.agent-plane.patch.yaml` (agent plane).
-- **Event consumers** — Kafka topics declared in `asyncapi.yaml` + `asyncapi.agent-plane.patch.yaml`.
+- **API services** — scaffolded from `openapi.yaml` plus additive patch fragments such as `openapi.agent-plane.patch.yaml` and `openapi.fog.patch.yaml`.
+- **Event consumers** — Kafka topics declared in `asyncapi.yaml` plus additive channel fragments such as `asyncapi.agent-plane.patch.yaml` and `asyncapi.fog.patch.yaml`.
 - **Validators** — AJV (Node.js) or `jsonschema` (Python) loaded from `schemas/`.
 - **Code generators** — TypeScript types via [quicktype](https://quicktype.io); Python models via [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
-- **Semantic tooling** — JSON-LD context + Hydra API documentation in `semantic/`.
+- **Semantic tooling** — JSON-LD context + Hydra API documentation in `semantic/`, including additive vocabulary seeds such as `semantic/fog-vocabulary.jsonld`.
 
 ---
 
 ## Repository layout
 
-```
+```text
 sourceos-spec/
 ├── README.md                         # This file
 ├── ARCHITECTURE.md                   # Two-plane architecture, schema families, lifecycle
@@ -30,27 +30,31 @@ sourceos-spec/
 │
 ├── openapi.yaml                      # Metadata-plane REST API (v2)
 ├── openapi.agent-plane.patch.yaml    # Additive agent-plane REST endpoints
+├── openapi.fog.patch.yaml            # Additive fog-layer REST endpoints
 ├── asyncapi.yaml                     # Metadata-plane event channels
 ├── asyncapi.agent-plane.patch.yaml   # Agent-plane event channels
+├── asyncapi.fog.patch.yaml           # Fog-layer event channels
 │
-├── schemas/                          # 54 JSON Schema (draft 2020-12) files
+├── schemas/                          # Top-level JSON Schema files (draft 2020-12)
 │   └── README.md                     # Schema catalog and URN patterns
 │
 ├── examples/                         # Conforming example payloads (one per type)
 │   └── README.md
 │
 ├── semantic/                         # JSON-LD context + Hydra API documentation
-│   └── README.md
+│   ├── README.md
+│   └── fog-vocabulary.jsonld         # Additive fog vocabulary seed
 │
 └── docs/
-    └── adr/                          # Architecture Decision Records
+    ├── adr/                          # Architecture Decision Records
+    └── contract-additions/           # Discoverability notes for additive families
 ```
 
 ---
 
 ## Schema families
 
-The 54 schemas are organised into six families that map directly to the Open Metadata Types taxonomy areas:
+The schemas are organised into domain-oriented families that map to the SourceOS / SociOS contract surface:
 
 | # | Family | Key schemas |
 |---|--------|-------------|
@@ -63,6 +67,7 @@ The 54 schemas are organised into six families that map directly to the Open Met
 | + | **Execution / Provenance** | `Dataset`, `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataSphere`, `ProvenanceRecord`, `EventEnvelope`, `MappingSpec` |
 | + | **Agent Plane** | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
+| + | **Fog Layer** | `Topic`, `TopicEnvelope`, `ReplicationPolicy`, `ContentRef`, `Offer`, `WorkOrder`, `UsageReceipt`, `SettlementEvent` |
 
 ---
 
@@ -128,4 +133,3 @@ fastapi-codegen --input openapi.yaml --output app/
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for schema authoring conventions, the URN naming guide, and the pull-request checklist.
-
