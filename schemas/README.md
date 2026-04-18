@@ -232,3 +232,13 @@ done
 ## Versioning
 
 Schema evolution follows [Semantic Versioning](https://semver.org/). See [CONTRIBUTING.md](../CONTRIBUTING.md#breaking-vs-additive-changes) for the full policy and [CHANGELOG.md](../CHANGELOG.md) for the history.
+
+---
+
+## Control-plane schema identity
+
+The control-plane tranche under `schemas/control-plane/` contains legacy schemas imported with `$id` values under `socioprophet.org`.
+
+Canonical wrappers with `schemas.srcos.ai/v2/...` `$id` values are provided as `schemas/control-plane/*.json` files that `allOf`-wrap the legacy `*.schema.json` files.
+
+See `schemas/control-plane/README.md` for the definitive list.
