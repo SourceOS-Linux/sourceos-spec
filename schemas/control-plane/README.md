@@ -2,7 +2,22 @@
 
 This directory contains the first machine-readable contract family for the local-first SourceOS lifecycle slice.
 
+## Canonical schema identity
+
+This tranche was originally imported with `$id` values under the `socioprophet.org` namespace (legacy).
+
+Canonical SourceOS contract IDs use the `schemas.srcos.ai/v2/...` namespace.
+
+To avoid breaking legacy `$id` consumers, this directory now supports a **two-layer identity model**:
+
+- **Legacy schemas**: `*.schema.json` files preserve the original `$id` values.
+- **Canonical wrappers**: `*.json` files provide canonical `$id` values in the `schemas.srcos.ai` namespace and `allOf`-wrap the legacy schema.
+
+New work should reference the canonical wrapper filenames.
+
 ## Included schemas
+
+Legacy (original import, legacy `$id`):
 
 - `experience-profile.schema.json`
 - `isolation-profile.schema.json`
@@ -10,7 +25,24 @@ This directory contains the first machine-readable contract family for the local
 - `boot-release-set.schema.json`
 - `enrollment-token.schema.json`
 - `fingerprint.schema.json`
-- `incident-events.schema.json` (existing)
+- `mesh-skill.schema.json`
+- `skill-execution-events.schema.json`
+
+Canonical wrappers (preferred for new references):
+
+- `ExperienceProfile.json`
+- `IsolationProfile.json`
+- `ReleaseSet.json`
+- `BootReleaseSet.json`
+- `EnrollmentToken.json`
+- `Fingerprint.json`
+- `MeshSkill.json`
+- `SkillExecutionEvent.json`
+- `IncidentEvent.json`
+
+Incident schema:
+
+- `incident-events.schema.json` (normalized to `schemas.srcos.ai` by PR #35)
 
 ## Intent
 
