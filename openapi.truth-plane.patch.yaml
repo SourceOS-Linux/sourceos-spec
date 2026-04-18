@@ -63,7 +63,7 @@ paths:
         required: true
         content:
           application/json:
-            schema: { $ref: './schemas/control-plane/incident-events.schema.json' }
+            schema: { $ref: './schemas/control-plane/IncidentEvent.json' }
       responses:
         '200':
           description: IncidentEvent recorded successfully.
