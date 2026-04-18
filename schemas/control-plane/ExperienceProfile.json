@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/ExperienceProfile.json",
+  "title": "ExperienceProfile",
+  "description": "Canonical ExperienceProfile schema. Wrapper that preserves legacy identifier while providing a stable srcos namespace for new references.",
+  "allOf": [
+    { "$ref": "./experience-profile.schema.json" }
+  ]
+}
