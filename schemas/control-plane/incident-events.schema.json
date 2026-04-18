@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://socioprophet.org/schemas/events/incident-events.schema.json",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/IncidentEvent.json",
   "title": "IncidentEvent",
   "description": "Control-plane incident lifecycle events (Freeze/Fork/Kill). Uses the same actor/run/refs/payload conventions as other control-plane lifecycle events.",
   "type": "object",

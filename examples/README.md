@@ -41,6 +41,17 @@ agent_session.json  ──►  execution_decision.json  ──►  session_recei
 
 ---
 
+## Truth Plane examples
+
+These examples illustrate the Truth Plane contract additions:
+
+| File | Schema type | Description |
+|------|------------|-------------|
+| `truth_surface.json` | TruthSurface | Signed truth summary emitted by a plane (system/user/agent/witness) |
+| `delta_surface.json` | DeltaSurface | Signed diff between two TruthSurfaces with gate results |
+
+---
+
 ## Recent additions — Fog Layer examples
 
 The fog example set illustrates the new FogVault / FogCompute contract family:
@@ -72,6 +83,7 @@ The fog example set illustrates the new FogVault / FogCompute contract family:
 | `content_ref.json` | ContentRef | Content-addressed reference for fog blobs / manifests |
 | `dataset.json` | Dataset | Personal health observations dataset |
 | `data_sphere.json` | DataSphere | The personal-curated execution environment |
+| `delta_surface.json` | DeltaSurface | Truth Plane delta surface example |
 | `execution_decision.json` | ExecutionDecision | Agent allow-decision for a tool invocation |
 | `event_envelope.json` | EventEnvelope | Event published when the run completes |
 | `experiment_flag.json` | ExperimentFlag | A feature flag for the new obfuscation algorithm |
@@ -97,6 +109,7 @@ The fog example set illustrates the new FogVault / FogCompute contract family:
 | `telemetry_event.json` | TelemetryEvent | An informational telemetry event from the agent session |
 | `topic.json` | Topic | FogVault topic definition |
 | `topic_envelope.json` | TopicEnvelope | FogVault append-only entry envelope |
+| `truth_surface.json` | TruthSurface | Truth Plane truth surface example |
 | `workflow_spec.json` | WorkflowSpec | The health-data obfuscation workflow |
 | `workorder.json` | WorkOrder | FogCompute work order |
 | `usage_receipt.json` | UsageReceipt | FogCompute execution receipt |
