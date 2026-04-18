@@ -1,0 +1,41 @@
+{
+  "id": "urn:srcos:delta-surface:ds_0001",
+  "type": "DeltaSurface",
+  "specVersion": "2.0.0",
+  "fromRef": "urn:srcos:truth-surface:ts_0000",
+  "toRef": "urn:srcos:truth-surface:ts_0001",
+  "createdAt": "2026-04-14T21:36:00Z",
+  "merkleRoot": "sha256:REPLACE_ME",
+  "signer": "sourceos-delta-surface",
+  "signature": "sig:REPLACE_ME",
+  "metrics": {
+    "semantic": {
+      "topic_alignment_cosine": 0.91,
+      "feature_jaccard": 0.84
+    },
+    "runtime": {
+      "new_processes": 2,
+      "namespace_transitions": 0
+    },
+    "governance": {
+      "new_policy_decisions": 1
+    }
+  },
+  "gate": {
+    "status": "needs_more_evidence",
+    "riskScore": 12,
+    "riskThreshold": 30,
+    "humanApprovalRequired": false,
+    "humanApproved": false,
+    "evidenceRequired": ["logs", "traces", "metrics", "policy_decision"],
+    "evidencePresent": ["logs", "policy_decision"],
+    "evidenceMissing": ["traces", "metrics"],
+    "reasons": ["missing required evidence: traces", "missing required evidence: metrics"]
+  },
+  "refs": {
+    "policyDecisionRefs": ["urn:srcos:decision:aa11bb22"],
+    "evidenceBundleRef": "artifact://evidence/run_77cc88dd",
+    "cairnBeforeRef": "cairn://system/sealed/before/ts_0000",
+    "cairnAfterRef": "cairn://system/sealed/after/ts_0001"
+  }
+}
