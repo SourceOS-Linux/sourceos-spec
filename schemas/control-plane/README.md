@@ -8,7 +8,7 @@ This tranche was originally imported with `$id` values under the `socioprophet.o
 
 Canonical SourceOS contract IDs use the `schemas.srcos.ai/v2/...` namespace.
 
-To avoid breaking legacy `$id` consumers, this directory now supports a **two-layer identity model**:
+To avoid breaking legacy `$id` consumers, this directory supports a **two-layer identity model**:
 
 - **Legacy schemas**: `*.schema.json` files preserve the original `$id` values.
 - **Canonical wrappers**: `*.json` files provide canonical `$id` values in the `schemas.srcos.ai` namespace and `allOf`-wrap the legacy schema.
@@ -27,6 +27,7 @@ Legacy (original import, legacy `$id`):
 - `fingerprint.schema.json`
 - `mesh-skill.schema.json`
 - `skill-execution-events.schema.json`
+- `incident-events.schema.json` (legacy incident lifecycle schema identity; canonical wrapper is `IncidentEvent.json`)
 
 Canonical wrappers (preferred for new references):
 
@@ -40,10 +41,6 @@ Canonical wrappers (preferred for new references):
 - `SkillExecutionEvent.json`
 - `IncidentEvent.json`
 
-Incident schema:
-
-- `incident-events.schema.json` (normalized to `schemas.srcos.ai` by PR #35)
-
 ## Intent
 
 These schemas define the minimum typed seam for:
@@ -54,6 +51,7 @@ These schemas define the minimum typed seam for:
 4. authorizing boot/recovery/install flows where required
 5. redeeming one-time enrollment tokens
 6. emitting post-apply fingerprints for compliance and rollback decisions
+7. emitting incident lifecycle events (freeze/fork/kill)
 
 ## Downstream consumers
 
