@@ -46,6 +46,10 @@ jobs:
         run: |
           python3 scripts/check_duplicate_schema_ids.py
 
+      - name: Guardrail: control-plane canonical wrapper $id resolution
+        run: |
+          python3 scripts/validate_control_plane_wrapper_ids.py
+
       - name: Validate examples against schemas
         run: |
           python3 - << 'EOF'
@@ -54,16 +58,23 @@ jobs:
           # Pre-load all schemas into a registry keyed by both $id and local path
           schema_dir = 'schemas'
           registry = {}
-          for schema_file in glob.glob(f'{schema_dir}/*.json'):
+
+          def add_schema(schema_file: str):
               with open(schema_file) as f:
                   schema = json.load(f)
-              # Register by $id
               if '$id' in schema:
                   registry[schema['$id']] = schema
-              # Register by local relative path (used in $ref)
               base = os.path.basename(schema_file)
               registry[f'./{base}'] = schema
               registry[base] = schema
+
+          # Top-level schemas
+          for schema_file in glob.glob(f'{schema_dir}/*.json'):
+              add_schema(schema_file)
+
+          # Control-plane wrappers + legacy schemas
+          for schema_file in glob.glob(f'{schema_dir}/control-plane/*.json') + glob.glob(f'{schema_dir}/control-plane/*.schema.json'):
+              add_schema(schema_file)
 
           from jsonschema import RefResolver, validate, ValidationError
 
@@ -95,16 +106,12 @@ jobs:
 
               class LocalRegistry(RefResolver):
                   def resolve_remote(self, uri):
-                      # Strip fragment
                       clean = uri.split('#')[0]
-                      # Try registry first
                       if clean in registry:
                           return registry[clean]
-                      # Try by basename
                       name = os.path.basename(clean)
                       if name in registry:
                           return registry[name]
-                      # Fall back to file:// resolution
                       return super().resolve_remote(uri)
 
               resolver = LocalRegistry(base_uri=base_uri, referrer=schema, store=registry)
