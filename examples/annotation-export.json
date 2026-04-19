@@ -1,0 +1,9 @@
+{
+  "exportId": "ann-export-001",
+  "target": "demo-report",
+  "format": "w3c-web-annotation",
+  "annotations": [
+    {"id": "ann-1", "type": "Annotation", "body": {"type": "TextualBody", "value": "needs evidence"}}
+  ],
+  "exportedAt": "2026-04-18T01:30:00Z"
+}
