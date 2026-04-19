@@ -42,6 +42,10 @@ jobs:
           done
           exit $failed
 
+      - name: Guardrail: detect duplicate schema $id values
+        run: |
+          python3 scripts/check_duplicate_schema_ids.py
+
       - name: Validate examples against schemas
         run: |
           python3 - << 'EOF'
