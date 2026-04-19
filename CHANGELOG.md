@@ -11,7 +11,9 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ### Added
 - Truth Plane: `TruthSurface` and `DeltaSurface` schemas + canonical examples (`examples/truth_surface.json`, `examples/delta_surface.json`)
 - Control-plane: `IncidentEvent` schema for incident lifecycle events
+- Control-plane: canonical wrapper `$id` model for legacy schemas (`schemas/control-plane/*.json` wrappers)
 - Truth Plane: OpenAPI/AsyncAPI patch fragments (`openapi.truth-plane.patch.yaml`, `asyncapi.truth-plane.patch.yaml`)
+- CI/spec integrity: schema identity guardrails (duplicate `$id` detection + control-plane wrapper `$id` resolution tests)
 - `description` fields on all 54 schemas and all properties (non-breaking documentation improvement)
 - `ARCHITECTURE.md` — two-plane architecture, schema families, governance lifecycle, URN table
 - `CONTRIBUTING.md` — schema authoring conventions, URN naming guide, PR checklist
