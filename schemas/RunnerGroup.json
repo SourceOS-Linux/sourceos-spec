@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RunnerGroup.json",
+  "title": "RunnerGroup",
+  "description": "A versioned runtime bundle that supplies pinned images, built-in primitives, custom primitive extensions, and execution defaults for validations or protocol workbenches.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "version", "runtime", "imageRef", "imageDigestPinned"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:runner-group:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:runner-group:<local-id>."
+    },
+    "type": {
+      "const": "RunnerGroup",
+      "description": "Discriminator constant — always \"RunnerGroup\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable runner group name."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version of this runner group."
+    },
+    "runtime": {
+      "type": "string",
+      "enum": ["container", "wasm", "local", "hybrid"],
+      "description": "Primary execution runtime used by the runner group."
+    },
+    "imageRef": {
+      "type": "string",
+      "description": "Pinned image or runtime artifact reference used by this runner group."
+    },
+    "imageDigestPinned": {
+      "type": "boolean",
+      "description": "Whether the image or artifact reference is digest-pinned."
+    },
+    "builtInPrimitives": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Primitive names bundled with this runner group."
+    },
+    "customPrimitiveRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "References to custom primitive definitions or external bundles."
+    },
+    "dependencyProfiles": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Dependency profile names loaded by the runner group."
+    },
+    "networkPolicyRef": {
+      "type": ["string", "null"],
+      "description": "Optional network policy applied to the runner environment."
+    },
+    "filesystemPolicy": {
+      "type": "string",
+      "enum": ["ephemeral", "retained", "read_only_base"],
+      "description": "Filesystem semantics for runner execution."
+    },
+    "cachePolicy": {
+      "type": "string",
+      "enum": ["none", "ephemeral", "shared_read_only"],
+      "description": "Cache behavior for repeated executions."
+    }
+  }
+}
