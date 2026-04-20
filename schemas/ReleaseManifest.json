@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReleaseManifest.json",
+  "title": "ReleaseManifest",
+  "description": "An immutable manifest describing the outputs, digests, labels, and evidence refs for a promoted or publishable release cut.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "status"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:release:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:release:<local-id>"
+    },
+    "type": {
+      "const": "ReleaseManifest",
+      "description": "Discriminator constant — always \"ReleaseManifest\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "sourceBuildRequestRef": {
+      "type": ["string", "null"],
+      "description": "Optional ref back to the BuildRequest that produced this release."
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Refs or URLs for release artifacts or bundle outputs."
+    },
+    "artifactHashes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Digest values for the artifacts included in this release."
+    },
+    "sbomRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional SBOM refs linked to the release outputs."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Evidence bundles or receipts associated with the release."
+    },
+    "labels": {
+      "type": "object",
+      "additionalProperties": {"type": "string"},
+      "description": "Human or machine labels for channeling, customer rings, or support metadata."
+    },
+    "channel": {
+      "type": ["string", "null"],
+      "description": "Optional release channel such as dev, qa, or prod."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["draft", "published", "superseded", "revoked"],
+      "description": "Lifecycle state of the release manifest."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the release manifest was created."
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OverlayBundle.json",
+  "title": "OverlayBundle",
+  "description": "A frozen additive bundle that can be combined with a ContentSpec during build, install, publish, or runtime activation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "overlayKind", "embedMode"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:overlay:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:overlay:<local-id>"
+    },
+    "type": {
+      "const": "OverlayBundle",
+      "description": "Discriminator constant — always \"OverlayBundle\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable overlay bundle name."
+    },
+    "overlayKind": {
+      "type": "string",
+      "enum": ["branding", "ignition", "butane", "network", "certificate", "package", "script", "content", "mixed"],
+      "description": "Primary overlay category."
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Frozen refs or digests that define the overlay source."
+    },
+    "checksums": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Checksums or digests associated with the overlay material."
+    },
+    "allowedContentRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional allowlist of ContentSpec refs this overlay may be applied to."
+    },
+    "embedMode": {
+      "type": "string",
+      "enum": ["embed", "fetch_at_install", "runtime_only"],
+      "description": "When and how the overlay is introduced."
+    },
+    "policyTags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Policy and governance tags relevant to this overlay."
+    }
+  }
+}
