@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ToolExposurePolicy.json",
+  "title": "ToolExposurePolicy",
+  "description": "A policy describing which tools or toolsets are exposed on a given interaction surface. This policy can only reduce or reshape visibility relative to an underlying CapabilityPolicy; it cannot grant new authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "version", "transport", "exposureMode"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:tool-exposure:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:tool-exposure:<local-id>."
+    },
+    "type": {
+      "const": "ToolExposurePolicy",
+      "description": "Discriminator constant — always \"ToolExposurePolicy\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable policy name."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version of this exposure policy."
+    },
+    "transport": {
+      "type": "string",
+      "enum": ["mcp", "tritrpc", "cli", "api"],
+      "description": "Transport or invocation surface this policy governs."
+    },
+    "exposureMode": {
+      "type": "string",
+      "enum": ["full", "read_only", "allow_list", "deny_list", "consent_gated"],
+      "description": "How tool visibility is reduced or curated."
+    },
+    "capabilityPolicyRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:capability-policy:",
+      "description": "Optional governing capability policy this visibility policy reduces against."
+    },
+    "defaultToolsets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["sandboxes", "routegroups", "clusters", "workloads", "resources", "devboxes", "plans", "runs", "artifacts", "help"]
+      },
+      "description": "Named default toolsets enabled before explicit include/exclude reduction."
+    },
+    "includeTools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicit tool allow-list applied after toolset resolution."
+    },
+    "excludeTools": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Explicit tool deny-list applied after include resolution."
+    },
+    "requireMutationConsent": {
+      "type": "boolean",
+      "description": "Whether mutating tools require explicit runtime consent."
+    },
+    "sensitiveDataMode": {
+      "type": "string",
+      "enum": ["blocked", "redacted", "allowed"],
+      "description": "Whether sensitive tool outputs are blocked, redacted, or fully allowed."
+    },
+    "lockdownMode": {
+      "type": "boolean",
+      "description": "Whether tool results should be constrained to trusted or locally governed sources."
+    }
+  }
+}
