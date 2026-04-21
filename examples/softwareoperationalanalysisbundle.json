@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:oprisk-analysis-bundle:devtools-agent-2026-q2",
+  "type": "SoftwareOperationalAnalysisBundle",
+  "specVersion": "2.0.0",
+  "generatedAt": "2026-04-20T23:30:00Z",
+  "subjectRef": "urn:srcos:service-portfolio:devtools-agent-stack",
+  "scenarioRunRef": "urn:srcos:oprisk-scenario-run:devtools-agent-baseline-2026-q2",
+  "reportRefs": [
+    "urn:srcos:oprisk-reserve-report:devtools-agent-2026-q2"
+  ],
+  "tags": [
+    "analysis-bundle",
+    "oprisk",
+    "baseline"
+  ]
+}
