@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SoftwareOperationalAnalysisBundle.json",
+  "title": "SoftwareOperationalAnalysisBundle",
+  "description": "A typed linkage envelope that binds software operational-risk scenario runs to one or more reserve/report outputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "generatedAt",
+    "subjectRef",
+    "scenarioRunRef",
+    "reportRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:oprisk-analysis-bundle:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:oprisk-analysis-bundle:<local-id>"
+    },
+    "type": {
+      "const": "SoftwareOperationalAnalysisBundle",
+      "description": "Discriminator constant — always \"SoftwareOperationalAnalysisBundle\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this bundle was assembled."
+    },
+    "subjectRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to the assessed company, service, or environment."
+    },
+    "scenarioRunRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:oprisk-scenario-run:",
+      "description": "Typed scenario-run input to this analysis bundle."
+    },
+    "reportRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:oprisk-reserve-report:"
+      },
+      "description": "One or more reserve/report outputs associated with the scenario run."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional normalized tags for filtering and clustering."
+    }
+  }
+}

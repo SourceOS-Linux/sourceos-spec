@@ -1,0 +1,65 @@
+{
+  "id": "urn:srcos:oprisk-reserve-report:devtools-agent-2026-q2",
+  "type": "ReserveScenarioReport",
+  "specVersion": "2.0.0",
+  "generatedAt": "2026-04-20T22:45:00Z",
+  "subjectRef": "urn:srcos:service-portfolio:devtools-agent-stack",
+  "reportingWindow": {
+    "startAt": "2026-01-01T00:00:00Z",
+    "endAt": "2026-03-31T23:59:59Z",
+    "horizonDays": 365
+  },
+  "currency": "USD",
+  "bindingBasis": "transparent_benchmark",
+  "method": "hybrid",
+  "tailConfidence": 0.99,
+  "transparentBenchmarkReserve": 24056000,
+  "scenarioReserve": 10205000,
+  "suggestedReserve": 24056000,
+  "expectedAnnualLoss": 786000,
+  "controlDelta": {
+    "targetExpectedAnnualLoss": 505000,
+    "expectedAnnualLossReduction": 281000,
+    "targetSuggestedReserve": 23720000,
+    "reserveRelease": 336000
+  },
+  "scenarioSet": [
+    {
+      "scenarioId": "SCN-001",
+      "scenarioName": "Cloud control plane outage",
+      "eventFamily": "system_platform_disruption",
+      "frequency": 0.18,
+      "severity": 1200000,
+      "expectedLoss": 216000,
+      "reserveContribution": 1800000,
+      "controlState": "current"
+    },
+    {
+      "scenarioId": "SCN-011",
+      "scenarioName": "Upstream release and integration drift",
+      "eventFamily": "upstream_drift_integration_misalignment",
+      "frequency": 0.22,
+      "severity": 165000,
+      "expectedLoss": 36300,
+      "reserveContribution": 240000,
+      "controlState": "current"
+    }
+  ],
+  "sourceRefs": [
+    {
+      "kind": "corpus",
+      "uri": "https://status.openai.com/history",
+      "note": "Illustrative corpus input source."
+    },
+    {
+      "kind": "benchmark",
+      "uri": "https://www.bis.org/bcbs/publ/d515.pdf",
+      "note": "Illustrative benchmark and governance reference."
+    }
+  ],
+  "tags": [
+    "oprisk",
+    "reserve",
+    "scenario-report"
+  ]
+}
