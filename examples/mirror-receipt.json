@@ -1,0 +1,8 @@
+{
+  "receiptId": "mirror-001",
+  "artifactId": "demo-report",
+  "channel": "urbit",
+  "status": "mirrored",
+  "mirroredAt": "2026-04-18T01:34:00Z",
+  "detail": "Mirrored to ship-local Clay cache."
+}
