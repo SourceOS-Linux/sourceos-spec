@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkstationFixFishReport.json",
+  "title": "WorkstationFixFishReport",
+  "description": "Typed report envelope emitted by the SourceOS fish config fix helper.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "mode",
+    "ok",
+    "result"
+  ],
+  "properties": {
+    "kind": {
+      "const": "sourceos.fix.fish",
+      "description": "Compatibility discriminator emitted by the fish fix surface."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["apply", "dry-run", "revert"]
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["file", "action"],
+      "properties": {
+        "file": { "type": "string", "minLength": 1 },
+        "action": {
+          "type": "string",
+          "enum": ["patched", "would_patch", "reverted", "already_patched", "no_patch", "missing_file"]
+        }
+      }
+    }
+  }
+}
