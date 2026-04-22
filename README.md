@@ -8,7 +8,7 @@
 
 ## Why this repository exists
 
-A metadata governance platform can only unify data meaning, policy, provenance, and agent execution if every component agrees on the *shape* of the objects it exchanges.  This repository is that shared agreement.  Downstream consumers include:
+A metadata governance platform can only unify data meaning, policy, provenance, and agent execution if every component agrees on the *shape* of the objects it exchanges. This repository is that shared agreement. Downstream consumers include:
 
 - **API services** — scaffolded from `openapi.yaml` (metadata plane) and `openapi.agent-plane.patch.yaml` (agent plane).
 - **Event consumers** — Kafka topics declared in `asyncapi.yaml` + `asyncapi.agent-plane.patch.yaml`.
@@ -20,7 +20,7 @@ A metadata governance platform can only unify data meaning, policy, provenance, 
 
 ## Repository layout
 
-```
+```text
 sourceos-spec/
 ├── README.md                         # This file
 ├── ARCHITECTURE.md                   # Two-plane architecture, schema families, lifecycle
@@ -33,7 +33,7 @@ sourceos-spec/
 ├── asyncapi.yaml                     # Metadata-plane event channels
 ├── asyncapi.agent-plane.patch.yaml   # Agent-plane event channels
 │
-├── schemas/                          # 54 JSON Schema (draft 2020-12) files
+├── schemas/                          # 64 JSON Schema (draft 2020-12) files
 │   └── README.md                     # Schema catalog and URN patterns
 │
 ├── examples/                         # Conforming example payloads (one per type)
@@ -50,19 +50,20 @@ sourceos-spec/
 
 ## Schema families
 
-The 54 schemas are organised into six families that map directly to the Open Metadata Types taxonomy areas:
+The current schema set is organised into families that map directly to the platform layers and exchange surfaces:
 
 | # | Family | Key schemas |
 |---|--------|-------------|
 | 1 | **Physical Assets** | `Connector`, `PhysicalAsset` |
 | 2 | **Glossary** | `GlossaryTerm`, `AuthorityLink` |
 | 3 | **Governance** | `Policy`, `Rule`, `PolicyCondition`, `PolicyDecision`, `CapabilityToken`, `Obligation`, `Exception` |
-| 4 | **Collaboration** | `Comment`, `Rating`, `Community` |
+| 4 | **Collaboration** | `Comment`, `Rating`, `Community`, `CommentSignal` |
 | 5 | **Models / Schemas** | `SchemaDefinition`, `EntityField`, `Field`, `ValidValues`, `TagAssignment`, `QualityMetric`, `ProfileStats` |
 | 6 | **Agreements** | `Agreement`, `Party` |
 | + | **Execution / Provenance** | `Dataset`, `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataSphere`, `ProvenanceRecord`, `EventEnvelope`, `MappingSpec` |
 | + | **Agent Plane** | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
+| + | **Shell / Document / Publication** | `ArtifactManifest`, `SignedArtifact`, `PdfValidationReport`, `AnnotationExport`, `RunReport`, `NoetherDiagnostic`, `PublishDecision`, `MirrorReceipt`, `SearchRouteDecision` |
 
 ---
 
@@ -128,4 +129,3 @@ fastapi-codegen --input openapi.yaml --output app/
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for schema authoring conventions, the URN naming guide, and the pull-request checklist.
-
