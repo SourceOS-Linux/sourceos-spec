@@ -1,0 +1,33 @@
+{
+  "kind": "sourceos.doctor",
+  "profile": "linux-dev/workstation-v0",
+  "ok": false,
+  "summary": {
+    "ok": 8,
+    "warn": 3,
+    "error": 1,
+    "info": 4
+  },
+  "results": [
+    {
+      "level": "ok",
+      "name": "sourceos-binding",
+      "message": "profile bound"
+    },
+    {
+      "level": "ok",
+      "name": "launcher",
+      "message": "present (fuzzel/wofi/rofi)"
+    },
+    {
+      "level": "warn",
+      "name": "fusuma-service",
+      "message": "missing"
+    },
+    {
+      "level": "error",
+      "name": "brew",
+      "message": "missing"
+    }
+  ]
+}

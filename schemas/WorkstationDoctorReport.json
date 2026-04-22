@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkstationDoctorReport.json",
+  "title": "WorkstationDoctorReport",
+  "description": "Typed health-report envelope emitted by the SourceOS workstation doctor surface.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "profile",
+    "ok",
+    "summary",
+    "results"
+  ],
+  "properties": {
+    "kind": {
+      "const": "sourceos.doctor",
+      "description": "Compatibility discriminator emitted by the workstation doctor surface."
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Workstation profile identifier, such as linux-dev/workstation-v0."
+    },
+    "ok": {
+      "type": "boolean",
+      "description": "Overall doctor outcome."
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ok", "warn", "error", "info"],
+      "properties": {
+        "ok": { "type": "integer", "minimum": 0 },
+        "warn": { "type": "integer", "minimum": 0 },
+        "error": { "type": "integer", "minimum": 0 },
+        "info": { "type": "integer", "minimum": 0 }
+      },
+      "description": "Level counts across doctor checks."
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["level", "name", "message"],
+        "properties": {
+          "level": {
+            "type": "string",
+            "enum": ["ok", "warn", "error", "info"]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Per-check doctor results."
+    }
+  }
+}

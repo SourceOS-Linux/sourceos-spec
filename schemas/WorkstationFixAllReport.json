@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkstationFixAllReport.json",
+  "title": "WorkstationFixAllReport",
+  "description": "Typed composite report envelope emitted by the SourceOS workstation fix-all surface.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "mode",
+    "ok",
+    "results"
+  ],
+  "properties": {
+    "kind": {
+      "const": "sourceos.fix.all",
+      "description": "Compatibility discriminator emitted by the fix-all surface."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["apply", "dry-run", "revert"]
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "results": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shell", "fish"],
+      "properties": {
+        "shell": { "$ref": "WorkstationFixShellReport.json" },
+        "fish": { "$ref": "WorkstationFixFishReport.json" }
+      }
+    }
+  }
+}
