@@ -1,0 +1,9 @@
+{
+  "diagnosticId": "diag-001",
+  "layer": "h_block_1",
+  "charge": "angular_momentum",
+  "value": 0.998,
+  "measuredAt": "2026-04-18T01:32:00Z",
+  "tolerance": 0.01,
+  "pass": true
+}
