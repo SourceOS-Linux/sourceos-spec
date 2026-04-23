@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:MirrorReceipt",
+  "title": "MirrorReceipt",
+  "type": "object",
+  "required": ["receiptId", "artifactId", "channel", "status"],
+  "properties": {
+    "receiptId": {"type": "string"},
+    "artifactId": {"type": "string"},
+    "channel": {"type": "string"},
+    "status": {"type": "string"},
+    "mirroredAt": {"type": ["string", "null"], "format": "date-time"},
+    "detail": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}

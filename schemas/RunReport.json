@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:RunReport",
+  "title": "RunReport",
+  "type": "object",
+  "required": ["runId", "workflowId", "artifacts", "generatedAt"],
+  "properties": {
+    "runId": {"type": "string"},
+    "workflowId": {"type": "string"},
+    "artifacts": {"type": "array", "items": {"type": "string"}},
+    "generatedAt": {"type": "string", "format": "date-time"},
+    "summary": {"type": ["string", "null"]}
+  },
+  "additionalProperties": false
+}
