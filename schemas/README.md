@@ -1,6 +1,6 @@
 # Schema Catalog
 
-This directory contains all 54 JSON Schema (draft 2020-12) files that make up the SourceOS/SociOS Typed Contracts specification.
+This directory contains all 64 JSON Schema (draft 2020-12) files that make up the SourceOS/SociOS Typed Contracts specification.
 
 ---
 
@@ -10,9 +10,12 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 |------|------|-----------|
 | `AgentSession.json` | AgentSession | `urn:srcos:session:` |
 | `Agreement.json` | Agreement | `urn:srcos:agreement:` |
+| `AnnotationExport.json` | AnnotationExport | `urn:srcos:schema:AnnotationExport` |
+| `ArtifactManifest.json` | ArtifactManifest | `urn:srcos:schema:ArtifactManifest` |
 | `AuthorityLink.json` | AuthorityLink | _(sub-object, no top-level id)_ |
 | `CapabilityToken.json` | CapabilityToken | _(plain `tokenId` string)_ |
 | `Comment.json` | Comment | `urn:srcos:comment:` |
+| `CommentSignal.json` | CommentSignal | `urn:srcos:schema:CommentSignal` |
 | `Community.json` | Community | `urn:srcos:community:` |
 | `Connector.json` | Connector | `urn:srcos:connector:` |
 | `DataRef.json` | DataRef | _(sub-object, no top-level id)_ |
@@ -31,10 +34,13 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `MappingEvidence.json` | MappingEvidence | _(sub-object inside MappingSpec)_ |
 | `MappingSpec.json` | MappingSpec | `urn:srcos:mapping:` |
 | `MemoryEntry.json` | MemoryEntry | `urn:srcos:memory:` |
+| `MirrorReceipt.json` | MirrorReceipt | `urn:srcos:schema:MirrorReceipt` |
+| `NoetherDiagnostic.json` | NoetherDiagnostic | `urn:srcos:schema:NoetherDiagnostic` |
 | `ObjectContext.json` | ObjectContext | _(sub-object, no id)_ |
 | `ObjectSelector.json` | ObjectSelector | _(sub-object inside Policy scope)_ |
 | `Obligation.json` | Obligation | _(sub-object, no id)_ |
 | `Party.json` | Party | `urn:srcos:party:` |
+| `PdfValidationReport.json` | PdfValidationReport | `urn:srcos:schema:PdfValidationReport` |
 | `PhysicalAsset.json` | PhysicalAsset | `urn:srcos:asset:` |
 | `Policy.json` | Policy | `urn:srcos:policy:` |
 | `PolicyBinding.json` | PolicyBinding | _(sub-object inside WorkflowSpec)_ |
@@ -42,15 +48,19 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `PolicyDecision.json` | PolicyDecision | `urn:srcos:decision:` |
 | `ProfileStats.json` | ProfileStats | _(sub-object inside Field.quality)_ |
 | `ProvenanceRecord.json` | ProvenanceRecord | `urn:srcos:prov:` |
+| `PublishDecision.json` | PublishDecision | `urn:srcos:schema:PublishDecision` |
 | `QualityMetric.json` | QualityMetric | _(sub-object inside Field.quality)_ |
 | `Rating.json` | Rating | `urn:srcos:rating:` |
 | `ReleaseReceipt.json` | ReleaseReceipt | `urn:srcos:release-receipt:` |
 | `RolloutPolicy.json` | RolloutPolicy | `urn:srcos:rollout:` |
 | `Rule.json` | Rule | _(sub-object inside Policy)_ |
 | `RunRecord.json` | RunRecord | `urn:srcos:run:` |
+| `RunReport.json` | RunReport | `urn:srcos:schema:RunReport` |
 | `SchemaDefinition.json` | SchemaDefinition | `urn:srcos:schema:` |
+| `SearchRouteDecision.json` | SearchRouteDecision | `urn:srcos:schema:SearchRouteDecision` |
 | `SessionReceipt.json` | SessionReceipt | `urn:srcos:receipt:session:` |
 | `SessionReview.json` | SessionReview | `urn:srcos:session-review:` |
+| `SignedArtifact.json` | SignedArtifact | `urn:srcos:schema:SignedArtifact` |
 | `SkillManifest.json` | SkillManifest | `urn:srcos:skill:` |
 | `SubjectContext.json` | SubjectContext | _(sub-object, no id)_ |
 | `SubjectSelector.json` | SubjectSelector | _(sub-object inside Policy scope)_ |
@@ -101,6 +111,7 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | Schema | Description |
 |--------|-------------|
 | `Comment` | A free-text annotation on any addressable object |
+| `CommentSignal` | A reviewer or author signal payload exposing genuine/sarcasm/experience state |
 | `Rating` | A 1–5 star rating on any addressable object |
 | `Community` | A named group of subject URNs |
 
@@ -163,6 +174,20 @@ This directory contains all 54 JSON Schema (draft 2020-12) files that make up th
 | `RolloutPolicy` | Audience-based percentage rollout rules for an `ExperimentFlag` |
 | `ReleaseReceipt` | A verified release record with artifact hashes and gate check results |
 
+### Shell / Document / Publication
+
+| Schema | Description |
+|--------|-------------|
+| `ArtifactManifest` | Canonical manifest for a derived shell/document artifact |
+| `SignedArtifact` | Signature metadata associated with a signed artifact |
+| `PdfValidationReport` | Validation report produced for a derived PDF artifact |
+| `AnnotationExport` | Export bundle for PDF/HTML review annotations |
+| `RunReport` | Publication-ready summary of a workflow or execution run |
+| `NoetherDiagnostic` | Measured conservation or invariance reading for a declared model charge |
+| `PublishDecision` | Publish-lane decision across knowledge/value/ecosystem openness |
+| `MirrorReceipt` | Receipt showing artifact mirroring outcome for a downstream channel |
+| `SearchRouteDecision` | Routing decision for scope-based shell search dispatch |
+
 ---
 
 ## Validation
@@ -183,4 +208,4 @@ done
 
 ## Versioning
 
-Schema evolution follows [Semantic Versioning](https://semver.org/).  See [CONTRIBUTING.md](../CONTRIBUTING.md#breaking-vs-additive-changes) for the full policy and [CHANGELOG.md](../CHANGELOG.md) for the history.
+Schema evolution follows [Semantic Versioning](https://semver.org/). See [CONTRIBUTING.md](../CONTRIBUTING.md#breaking-vs-additive-changes) for the full policy and [CHANGELOG.md](../CHANGELOG.md) for the history.
