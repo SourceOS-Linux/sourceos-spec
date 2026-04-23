@@ -4,6 +4,27 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — Workstation Contract Family
+
+The workstation contract family adds the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `LauncherAction.json` | LauncherAction | `urn:srcos:launcher-action:` |
+| `LauncherProvider.json` | LauncherProvider | `urn:srcos:launcher-provider:` |
+| `PackageManifest.json` | PackageManifest | `urn:srcos:package-manifest:` |
+| `DesktopProfile.json` | DesktopProfile | `urn:srcos:desktop-profile:` |
+| `WorkstationProfile.json` | WorkstationProfile | `urn:srcos:workstation-profile:` |
+
+These types support:
+- reproducible workstation profile descriptions
+- typed launcher / command-bus surfaces
+- layered package manifests for system, user, and toolbox lanes
+- desktop posture capture for GNOME and adjacent shells
+- alignment between Linux realization and the canonical contract layer
+
+---
+
 ## Recent additions — Fog Layer
 
 The FogVault / FogCompute contract family adds the following top-level schemas:
@@ -43,6 +64,7 @@ These types support:
 | `DataSphere.json` | DataSphere | `urn:srcos:sphere:` |
 | `Dataset.json` | Dataset | `urn:srcos:dataset:` |
 | `DeltaSurface.json` | DeltaSurface | `urn:srcos:delta-surface:` |
+| `DesktopProfile.json` | DesktopProfile | `urn:srcos:desktop-profile:` |
 | `EntityField.json` | EntityField | _(sub-object inside SchemaDefinition)_ |
 | `EventEnvelope.json` | EventEnvelope | `urn:srcos:event:` |
 | `Exception.json` | Exception | _(sub-object inside Policy)_ |
@@ -52,6 +74,8 @@ These types support:
 | `Field.json` | Field | `urn:srcos:field:` |
 | `FrustrationSignal.json` | FrustrationSignal | `urn:srcos:frustration:` |
 | `GlossaryTerm.json` | GlossaryTerm | `urn:srcos:glossary:` |
+| `LauncherAction.json` | LauncherAction | `urn:srcos:launcher-action:` |
+| `LauncherProvider.json` | LauncherProvider | `urn:srcos:launcher-provider:` |
 | `Link.json` | Link | _(sub-object, no id)_ |
 | `MappingEvidence.json` | MappingEvidence | _(sub-object inside MappingSpec)_ |
 | `MappingSpec.json` | MappingSpec | `urn:srcos:mapping:` |
@@ -60,6 +84,7 @@ These types support:
 | `ObjectSelector.json` | ObjectSelector | _(sub-object inside Policy scope)_ |
 | `Obligation.json` | Obligation | _(sub-object, no id)_ |
 | `Offer.json` | Offer | `urn:srcos:offer:` |
+| `PackageManifest.json` | PackageManifest | `urn:srcos:package-manifest:` |
 | `Party.json` | Party | `urn:srcos:party:` |
 | `PhysicalAsset.json` | PhysicalAsset | `urn:srcos:asset:` |
 | `Policy.json` | Policy | `urn:srcos:policy:` |
@@ -95,6 +120,7 @@ These types support:
 | `WorkflowSpec.json` | WorkflowSpec | `urn:srcos:workflow:` |
 | `WorkloadSpec.json` | WorkloadSpec | `urn:srcos:workload:` |
 | `WorkOrder.json` | WorkOrder | `urn:srcos:workorder:` |
+| `WorkstationProfile.json` | WorkstationProfile | `urn:srcos:workstation-profile:` |
 
 ---
 
@@ -155,6 +181,16 @@ These types support:
 |--------|-------------|
 | `Agreement` | A data-sharing agreement between one or more parties with terms and effective dates |
 | `Party` | A named signatory (person, org, or service) with optional authority links |
+
+### Workstation / Desktop
+
+| Schema | Description |
+|--------|-------------|
+| `LauncherAction` | A typed launcher or command-bus action surfaced to workstation users/operators |
+| `LauncherProvider` | A typed launcher or command-bus provider with routing scopes and invariants |
+| `PackageManifest` | A layered workstation package manifest covering system, user, and toolbox layers |
+| `DesktopProfile` | A typed desktop-environment posture including extensions, keybindings, and input/gesture lanes |
+| `WorkstationProfile` | A top-level workstation profile tying package, desktop, launcher, and validation surfaces together |
 
 ### Execution / Provenance
 
