@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LauncherProvider.json",
+  "title": "LauncherProvider",
+  "description": "A typed description of a workstation launcher or command-bus frontend/provider.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "providerKind"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:launcher-provider:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:launcher-provider:<local-id>."
+    },
+    "type": {
+      "const": "LauncherProvider",
+      "description": "Discriminator constant — always \"LauncherProvider\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable provider name."
+    },
+    "providerKind": {
+      "type": "string",
+      "enum": ["palette", "desktop-launcher", "search-provider", "command-bus"],
+      "description": "Primary provider role."
+    },
+    "trigger": {
+      "type": ["string", "null"],
+      "description": "Optional shortcut or textual trigger such as <Super>space or 'sourceos '."
+    },
+    "binary": {
+      "type": ["string", "null"],
+      "description": "Optional frontend binary or command name."
+    },
+    "scopes": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "apps": { "type": "string" },
+        "files": { "type": "string" },
+        "web": { "type": "string" }
+      },
+      "description": "Routing policy for launcher scopes."
+    },
+    "invariants": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Operational invariants this provider must preserve."
+    }
+  }
+}
