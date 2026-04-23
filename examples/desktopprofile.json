@@ -1,0 +1,28 @@
+{
+  "id": "urn:srcos:desktop-profile:gnome-workstation-v0",
+  "type": "DesktopProfile",
+  "specVersion": "2.1.0",
+  "desktopEnvironment": "gnome",
+  "extensionSet": [
+    "dash-to-dock@micxgx.gmail.com",
+    "appindicatorsupport@rgcjonas.gmail.com"
+  ],
+  "keybindings": [
+    {
+      "name": "SourceOS Files",
+      "binding": "<Super>e",
+      "command": "nautilus --new-window"
+    },
+    {
+      "name": "SourceOS Terminal",
+      "binding": "<Super>Return",
+      "command": "gnome-terminal"
+    }
+  ],
+  "input": {
+    "primaryBackend": "input-remapper",
+    "compatibilityBackends": ["xremap", "kinto"],
+    "gestures": "fusuma"
+  },
+  "launcherProviderRef": "urn:srcos:launcher-provider:sourceos-palette"
+}

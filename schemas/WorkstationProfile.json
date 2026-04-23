@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkstationProfile.json",
+  "title": "WorkstationProfile",
+  "description": "A typed SourceOS workstation profile tying together package layers, desktop posture, launcher surfaces, and validation entrypoints.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "channel"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:workstation-profile:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:workstation-profile:<local-id>."
+    },
+    "type": {
+      "const": "WorkstationProfile",
+      "description": "Discriminator constant — always \"WorkstationProfile\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable workstation profile name."
+    },
+    "channel": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Realization channel such as linux-dev or linux-stable."
+    },
+    "packageManifestRef": {
+      "type": ["string", "null"],
+      "description": "Optional reference to the PackageManifest defining layered package sets."
+    },
+    "desktopProfileRef": {
+      "type": ["string", "null"],
+      "description": "Optional reference to the DesktopProfile defining desktop posture."
+    },
+    "launcherProviderRef": {
+      "type": ["string", "null"],
+      "description": "Optional reference to the primary LauncherProvider."
+    },
+    "launcherActionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional references to LauncherAction objects surfaced by this workstation profile."
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "doctorCommand": { "type": ["string", "null"] },
+        "statusCommand": { "type": ["string", "null"] },
+        "searchCommand": { "type": ["string", "null"] }
+      },
+      "description": "Operator-facing validation and inspection entrypoints."
+    }
+  }
+}

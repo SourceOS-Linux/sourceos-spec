@@ -1,0 +1,18 @@
+{
+  "id": "urn:srcos:workstation-profile:workstation-v0",
+  "type": "WorkstationProfile",
+  "specVersion": "2.1.0",
+  "name": "workstation-v0",
+  "channel": "linux-dev",
+  "packageManifestRef": "urn:srcos:package-manifest:workstation-v0",
+  "desktopProfileRef": "urn:srcos:desktop-profile:gnome-workstation-v0",
+  "launcherProviderRef": "urn:srcos:launcher-provider:sourceos-palette",
+  "launcherActionRefs": [
+    "urn:srcos:launcher-action:search-files"
+  ],
+  "validation": {
+    "doctorCommand": "sourceos doctor --json",
+    "statusCommand": "sourceos status --json",
+    "searchCommand": "sourceos search --snippet"
+  }
+}
