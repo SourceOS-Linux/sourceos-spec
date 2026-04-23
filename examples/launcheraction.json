@@ -1,0 +1,14 @@
+{
+  "id": "urn:srcos:launcher-action:search-files",
+  "type": "LauncherAction",
+  "specVersion": "2.1.0",
+  "title": "Search files (Lampstand)",
+  "subtitle": "Prompt for a local file search and open the report artifact",
+  "scope": "files",
+  "command": ["sourceos", "search", "--prompt", "--snippet", "--open"],
+  "opensArtifact": true,
+  "capabilityRefs": [
+    "urn:srcos:launcher-provider:sourceos-palette",
+    "urn:srcos:workstation-profile:workstation-v0"
+  ]
+}
