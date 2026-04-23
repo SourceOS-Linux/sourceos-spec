@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DesktopProfile.json",
+  "title": "DesktopProfile",
+  "description": "A typed desktop-environment profile for workstation realization, including extensions, input posture, and launcher defaults.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "desktopEnvironment"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:desktop-profile:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:desktop-profile:<local-id>."
+    },
+    "type": {
+      "const": "DesktopProfile",
+      "description": "Discriminator constant — always \"DesktopProfile\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "desktopEnvironment": {
+      "type": "string",
+      "enum": ["gnome", "kde", "cosmic", "sway", "other"],
+      "description": "Desktop environment or shell family."
+    },
+    "extensionSet": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Pinned shell extension identifiers or package names."
+    },
+    "keybindings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "binding", "command"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "binding": { "type": "string", "minLength": 1 },
+          "command": { "type": "string", "minLength": 1 }
+        }
+      },
+      "description": "Declarative desktop keybindings."
+    },
+    "input": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "primaryBackend": { "type": "string" },
+        "compatibilityBackends": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "gestures": { "type": "string" }
+      },
+      "description": "Keyboard remap and gesture posture."
+    },
+    "launcherProviderRef": {
+      "type": ["string", "null"],
+      "description": "Optional reference to the primary LauncherProvider."
+    }
+  }
+}
