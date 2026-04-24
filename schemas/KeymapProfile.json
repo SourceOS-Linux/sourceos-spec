@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/KeymapProfile.json",
+  "title": "KeymapProfile",
+  "description": "A typed keyboard mapping profile for SourceOS / SociOS host, browser, shell, terminal, and editor surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "platform",
+    "primaryModifierStrategy",
+    "guiProfile",
+    "terminalProfile",
+    "protectedNamespaces"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:keymap-profile:"
+    },
+    "name": {
+      "type": "string"
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "sourceos",
+        "socios-linux",
+        "linux",
+        "cross-platform"
+      ]
+    },
+    "primaryModifierStrategy": {
+      "type": "string",
+      "enum": [
+        "mac-linux-primary",
+        "linux-native-primary",
+        "app-local-only"
+      ]
+    },
+    "guiProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "physicalCtrl",
+        "physicalAlt",
+        "physicalSuper"
+      ],
+      "properties": {
+        "physicalCtrl": {"type": "string"},
+        "physicalAlt": {"type": "string"},
+        "physicalSuper": {"type": "string"}
+      }
+    },
+    "terminalProfile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "physicalCtrl",
+        "physicalAlt",
+        "physicalSuper"
+      ],
+      "properties": {
+        "physicalCtrl": {"type": "string"},
+        "physicalAlt": {"type": "string"},
+        "physicalSuper": {"type": "string"}
+      }
+    },
+    "launcherRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "overlayRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "remapEngineRef": {
+      "type": ["string", "null"]
+    },
+    "protectedNamespaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

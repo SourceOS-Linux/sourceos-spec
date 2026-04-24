@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:focus-state:emvi-shell-input",
+  "surfaceRef": "urn:srcos:interaction-surface:emvi-shell",
+  "owner": "shell-overlay",
+  "mode": "input",
+  "printableInputOwner": "shell-overlay",
+  "escapeBehavior": "layered-unwind",
+  "tabBehavior": "completion-first",
+  "arrowKeyPolicy": "local-region-navigation",
+  "multilineBoundaryHistory": true,
+  "completionActive": false,
+  "selectionActive": false,
+  "evidenceRefs": [
+    "urn:srcos:session:emvi-proof-slice"
+  ]
+}
