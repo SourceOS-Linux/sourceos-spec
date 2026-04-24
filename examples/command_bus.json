@@ -1,0 +1,38 @@
+{
+  "id": "urn:srcos:command-bus:emvi",
+  "name": "EMVI Command Bus",
+  "description": "Cross-surface command routing for SourceOS / SociOS keyboard-first interaction across launcher, browser, shell, terminal, editor, and overlay contexts.",
+  "defaultInterpretation": "search",
+  "scopePrefix": "/",
+  "explicitCommandPrefix": ">",
+  "dispatchMode": "focus-owner-first",
+  "surfaces": [
+    "urn:srcos:interaction-surface:emvi-shell",
+    "urn:srcos:interaction-surface:shortcut-overlay",
+    "urn:srcos:interaction-surface:browser-surface",
+    "urn:srcos:interaction-surface:terminal-surface"
+  ],
+  "deictics": [
+    "current",
+    "selection",
+    "recent",
+    "here"
+  ],
+  "commandNamespaces": [
+    "browser",
+    "shell",
+    "terminal",
+    "collection",
+    "workspace"
+  ],
+  "protectedNamespaces": [
+    "terminal.pass-through",
+    "editor.insert",
+    "browser.text-field",
+    "accessibility"
+  ],
+  "handoffPolicy": "preserve-host-boundary",
+  "evidenceRefs": [
+    "urn:srcos:session:emvi-proof-slice"
+  ]
+}
