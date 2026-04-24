@@ -1,0 +1,29 @@
+{
+  "id": "urn:srcos:access-profile:sourceos-workstation-dev-builders",
+  "type": "AccessProfile",
+  "specVersion": "2.0.0",
+  "name": "SourceOS workstation dev builders",
+  "subjects": [
+    "urn:srcos:community:sourceos-build-operators",
+    "agentplane://executor/sourceos-builder"
+  ],
+  "purposes": [
+    "build",
+    "publish",
+    "smoke-test"
+  ],
+  "allowedContentRefs": [
+    "urn:srcos:content-spec:sourceos-workstation",
+    "urn:srcos:release:sourceos-workstation-dev-0001"
+  ],
+  "allowedEnvironments": [
+    "dev"
+  ],
+  "obligations": [
+    "emit:ValidationArtifact",
+    "emit:RunArtifact",
+    "emit:ReplayArtifact",
+    "emit:EvidenceBundle"
+  ],
+  "expiresAt": null
+}
