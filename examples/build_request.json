@@ -1,0 +1,25 @@
+{
+  "id": "urn:srcos:build-request:sourceos-workstation-dev-0001",
+  "type": "BuildRequest",
+  "specVersion": "2.0.0",
+  "contentSpecRef": "urn:srcos:content-spec:sourceos-workstation",
+  "overlayRefs": [
+    "urn:srcos:overlay:customer-branding-acme"
+  ],
+  "outputs": [
+    "iso",
+    "pxe"
+  ],
+  "channel": "dev",
+  "architecture": "x86_64",
+  "enrollmentProfileRef": "urn:srcos:enrollment-profile:default-workstation",
+  "parameters": {
+    "agentplaneBundleRef": "github://SocioProphet/agentplane/examples/sourceos/sourceos-build-release-bindings.example.json@main",
+    "localExecutionProtocolRef": "urn:srcos:contract:workstation-contracts:m2-ipc:v1.0",
+    "remoteExecutionProtocolRef": "urn:srcos:protocol:tritrpc:v1",
+    "katelloProduct": "SourceOS Files",
+    "katelloRepository": "sourceos-live-iso"
+  },
+  "requestedBy": "urn:srcos:party:sourceos-build-operator",
+  "requestedAt": "2026-04-24T00:00:00Z"
+}
