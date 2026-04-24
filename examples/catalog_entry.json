@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:catalog-entry:sourceos-workstation-dev-0001",
+  "type": "CatalogEntry",
+  "specVersion": "2.0.0",
+  "objectRef": "urn:srcos:release:sourceos-workstation-dev-0001",
+  "objectType": "ReleaseManifest",
+  "title": "SourceOS Workstation dev live installer release 0001",
+  "labels": {
+    "flavor": "sourceos-workstation",
+    "channel": "dev",
+    "surface": "live-usb",
+    "executionPlane": "agentplane",
+    "contentPlane": "katello"
+  },
+  "status": "draft",
+  "evidenceBundleRef": "urn:srcos:evidence-bundle:sourceos-workstation-dev-0001",
+  "authorityRef": "github://SociOS-Linux/SourceOS/manifests/release-manifest.example.json@main",
+  "updatedAt": "2026-04-24T00:20:00Z"
+}
