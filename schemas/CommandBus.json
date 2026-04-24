@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CommandBus.json",
+  "title": "CommandBus",
+  "description": "A typed command-routing surface for keyboard-first interaction across launcher, browser, shell, terminal, editor, overlay, and workspace contexts in SourceOS / SociOS.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "defaultInterpretation",
+    "scopePrefix",
+    "explicitCommandPrefix",
+    "dispatchMode",
+    "surfaces"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:command-bus:"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "defaultInterpretation": {
+      "type": "string",
+      "enum": [
+        "search",
+        "literal-input",
+        "local-action"
+      ]
+    },
+    "scopePrefix": {
+      "type": "string"
+    },
+    "explicitCommandPrefix": {
+      "type": "string"
+    },
+    "dispatchMode": {
+      "type": "string",
+      "enum": [
+        "focus-owner-first",
+        "shell-overlay-first",
+        "local-surface-first"
+      ]
+    },
+    "surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:interaction-surface:"
+      }
+    },
+    "deictics": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "current",
+          "selection",
+          "recent",
+          "here"
+        ]
+      }
+    },
+    "commandNamespaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "protectedNamespaces": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "handoffPolicy": {
+      "type": "string",
+      "enum": [
+        "preserve-host-boundary",
+        "prompt-before-handoff",
+        "policy-gated"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}
