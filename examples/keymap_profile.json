@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:keymap-profile:mac-linux-primary",
+  "name": "Mac/Linux Primary Profile",
+  "platform": "socios-linux",
+  "primaryModifierStrategy": "mac-linux-primary",
+  "guiProfile": {
+    "physicalCtrl": "Super",
+    "physicalAlt": "Alt",
+    "physicalSuper": "Ctrl"
+  },
+  "terminalProfile": {
+    "physicalCtrl": "Ctrl",
+    "physicalAlt": "Alt",
+    "physicalSuper": "RightCtrl"
+  },
+  "launcherRefs": [],
+  "overlayRefs": [
+    "urn:srcos:interaction-surface:shortcut-overlay"
+  ],
+  "remapEngineRef": "urn:srcos:remap-engine:kinto",
+  "protectedNamespaces": [
+    "terminal.pass-through",
+    "editor.insert",
+    "browser.text-field",
+    "accessibility"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:session:emvi-proof-slice"
+  ]
+}
