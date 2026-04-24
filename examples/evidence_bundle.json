@@ -1,0 +1,23 @@
+{
+  "id": "urn:srcos:evidence-bundle:sourceos-workstation-dev-0001",
+  "type": "EvidenceBundle",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:release:sourceos-workstation-dev-0001",
+  "artifactRefs": [
+    "katello://SourceOS/SourceOS%20Files/sourceos-live-iso/sourceos-workstation-dev-0001.iso"
+  ],
+  "receiptRefs": [
+    "agentplane://validation-artifact/sourceos-workstation-dev-0001",
+    "agentplane://run-artifact/sourceos-workstation-dev-0001",
+    "agentplane://replay-artifact/sourceos-workstation-dev-0001"
+  ],
+  "logRefs": [
+    "agentplane://logs/sourceos-workstation-dev-0001/stdout",
+    "agentplane://logs/sourceos-workstation-dev-0001/stderr"
+  ],
+  "decisionRefs": [
+    "urn:srcos:decision:sourceos-workstation-dev-0001-policy-allow"
+  ],
+  "generatedBy": "agentplane://bundle/sourceos-workstation-dev-0001",
+  "generatedAt": "2026-04-24T00:15:00Z"
+}

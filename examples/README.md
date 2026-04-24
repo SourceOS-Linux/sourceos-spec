@@ -6,7 +6,7 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
-The examples are designed to tell a coherent end-to-end story: a personal health dataset is catalogued, governed, transformed by an obfuscation workload, and released — all within an agent session. They share cross-reference URNs so you can trace the full lifecycle:
+The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile.
 
 ```text
 connector.json       ──► asset.json
@@ -37,6 +37,17 @@ agent_session.json  ──►  execution_decision.json  ──►  session_recei
                                                           │
                                                           ▼
                                                    session_review.json
+
+content_spec.json ──► overlay_bundle.json ──► build_request.json ──► release_manifest.json
+                                                               │               │
+                                                               │               ▼
+                                                       enrollment_profile.json evidence_bundle.json
+                                                                               │
+                                                                               ▼
+                                                                       catalog_entry.json
+                                                                               │
+                                                                               ▼
+                                                                       access_profile.json
 ```
 
 ---
@@ -69,21 +80,44 @@ The fog example set illustrates the new FogVault / FogCompute contract family:
 
 ---
 
+## Recent additions — Shared content / build / release examples
+
+These examples illustrate the shared object family used by SourceOS artifact builds, socios automation, agentplane execution evidence, and catalog surfaces.
+
+| File | Schema type | Description |
+|------|------------|-------------|
+| `content_spec.json` | ContentSpec | SourceOS Workstation content intent / flavor reference |
+| `overlay_bundle.json` | OverlayBundle | Customer branding overlay applied to the workstation flavor |
+| `build_request.json` | BuildRequest | Build request referencing SourceOS content, overlays, enrollment, and agentplane execution refs |
+| `enrollment_profile.json` | EnrollmentProfile | Katello/Foreman enrollment profile for dev workstation installs |
+| `release_manifest.json` | ReleaseManifest | Draft release manifest with Katello artifact refs and agentplane evidence refs |
+| `evidence_bundle.json` | EvidenceBundle | Evidence bundle pointing at agentplane validation/run/replay artifacts |
+| `catalog_entry.json` | CatalogEntry | Searchable catalog entry for the SourceOS Workstation dev release |
+| `access_profile.json` | AccessProfile | Access profile for SourceOS build operators and agentplane executor obligations |
+
+---
+
 ## File index
 
 | File | Schema type | Description |
 |------|------------|-------------|
+| `access_profile.json` | AccessProfile | Access profile for SourceOS build operators and agentplane executor obligations |
 | `agreement.json` | Agreement | Default personal-data agreement |
 | `agent_session.json` | AgentSession | An executor session running the obfuscation workflow |
 | `asset.json` | PhysicalAsset | Lakehouse asset for curated health observations |
+| `build_request.json` | BuildRequest | SourceOS Workstation build request with agentplane and Katello refs |
 | `capability_token.json` | CapabilityToken | Access token scoped to the health dataset export operation |
+| `catalog_entry.json` | CatalogEntry | Catalog entry for the SourceOS Workstation dev release |
 | `comment.json` | Comment | A review note on a field mapping |
 | `community.json` | Community | The data-governance team community |
 | `connector.json` | Connector | A local S3 connector |
 | `content_ref.json` | ContentRef | Content-addressed reference for fog blobs / manifests |
+| `content_spec.json` | ContentSpec | SourceOS Workstation content intent / flavor reference |
 | `dataset.json` | Dataset | Personal health observations dataset |
 | `data_sphere.json` | DataSphere | The personal-curated execution environment |
 | `delta_surface.json` | DeltaSurface | Truth Plane delta surface example |
+| `enrollment_profile.json` | EnrollmentProfile | Katello/Foreman enrollment profile for dev workstation installs |
+| `evidence_bundle.json` | EvidenceBundle | Evidence bundle pointing at agentplane validation/run/replay artifacts |
 | `execution_decision.json` | ExecutionDecision | Agent allow-decision for a tool invocation |
 | `event_envelope.json` | EventEnvelope | Event published when the run completes |
 | `experiment_flag.json` | ExperimentFlag | A feature flag for the new obfuscation algorithm |
@@ -93,10 +127,12 @@ The fog example set illustrates the new FogVault / FogCompute contract family:
 | `mapping.json` | MappingSpec | A field mapping between two dataset fields |
 | `memory_entry.json` | MemoryEntry | A learned memory entry from an agent session |
 | `offer.json` | Offer | FogCompute provider offer |
+| `overlay_bundle.json` | OverlayBundle | Customer branding overlay applied to the workstation flavor |
 | `policy.json` | Policy | Health export must be obfuscated |
 | `policy_decision.json` | PolicyDecision | An `export` permit decision with an obfuscation obligation |
 | `provenance.json` | ProvenanceRecord | Provenance record for the obfuscation run |
 | `rating.json` | Rating | A 5-star rating on the health observations dataset |
+| `release_manifest.json` | ReleaseManifest | Draft release manifest with Katello artifact refs and agentplane evidence refs |
 | `release_receipt.json` | ReleaseReceipt | Release receipt for spec version 2.0.0 |
 | `replication_policy.json` | ReplicationPolicy | Fog topic replication/retention policy example |
 | `rollout_policy.json` | RolloutPolicy | Rollout rules for the obfuscation experiment flag |
