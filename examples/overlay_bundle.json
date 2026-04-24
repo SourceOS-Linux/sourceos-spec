@@ -1,0 +1,22 @@
+{
+  "id": "urn:srcos:overlay:customer-branding-acme",
+  "type": "OverlayBundle",
+  "specVersion": "2.0.0",
+  "name": "ACME workstation branding overlay",
+  "overlayKind": "branding",
+  "sourceRefs": [
+    "github://SociOS-Linux/SourceOS/overlays/acme-branding@main"
+  ],
+  "checksums": [
+    "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  ],
+  "allowedContentRefs": [
+    "urn:srcos:content-spec:sourceos-workstation"
+  ],
+  "embedMode": "embed",
+  "policyTags": [
+    "overlay.branding",
+    "customer.acme",
+    "sourceos.install-media"
+  ]
+}
