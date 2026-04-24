@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:focus-transition:example-1",
+  "fromStateRef": "urn:srcos:focus-state:emvi-shell-input",
+  "toStateRef": "urn:srcos:focus-state:emvi-shell-input",
+  "trigger": "escape",
+  "priority": 1,
+  "allowed": true,
+  "conditions": [
+    "completionInactive"
+  ],
+  "ownershipEffect": "retain-owner",
+  "evidenceRefs": [
+    "urn:srcos:session:emvi-proof-slice"
+  ]
+}
