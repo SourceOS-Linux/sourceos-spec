@@ -24,3 +24,4 @@ This directory contains Architecture Decision Records for the SourceOS/SociOS ty
 - `ADR-0007-local-first-control-node-and-image-promotion-seam.md`
 - `ADR-0008-local-first-release-and-enrollment-contract-family.md`
 - `0009-truth-surfaces-b11-delta.md`
+- `0010-runtime-content-composition-over-new-umbrella-schema.md`
