@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import sys
 from pathlib import Path
 
 import jsonschema
@@ -11,22 +10,25 @@ ROOT = Path(__file__).resolve().parents[1]
 PAIRS = [
     (ROOT / "schemas" / "control-plane" / "ReleaseSet.json", ROOT / "examples" / "release_set.json"),
     (ROOT / "schemas" / "control-plane" / "Fingerprint.json", ROOT / "examples" / "fingerprint.json"),
+    (ROOT / "schemas" / "control-plane" / "BootReleaseSet.json", ROOT / "examples" / "boot_release_set.json"),
+    (ROOT / "schemas" / "control-plane" / "EnrollmentToken.json", ROOT / "examples" / "enrollment_token.json"),
 ]
+
+
+def validate_pair(schema_path: Path, example_path: Path) -> None:
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    jsonschema.validators.validator_for(schema).check_schema(schema)
+    legacy_ref = schema.get("allOf", [{}])[0].get("$ref")
+    validation_schema_path = schema_path.with_name(legacy_ref) if legacy_ref else schema_path
+    validation_schema = json.loads(validation_schema_path.read_text(encoding="utf-8"))
+    example = json.loads(example_path.read_text(encoding="utf-8"))
+    jsonschema.validate(example, validation_schema)
 
 
 def main() -> int:
     checks: dict[str, bool] = {}
     for schema_path, example_path in PAIRS:
-        schema = json.loads(schema_path.read_text(encoding="utf-8"))
-        example = json.loads(example_path.read_text(encoding="utf-8"))
-        resolver = jsonschema.validators.validator_for(schema)
-        resolver.check_schema(schema)
-        validator = resolver(schema, registry=jsonschema.validators.SPECIFICATIONS)
-        # Resolve local legacy refs by changing cwd-like base through a RefResolver fallback for older jsonschema behavior.
-        # jsonschema 4.x resolves relative refs against the schema id; these wrapper schemas reference local legacy files.
-        legacy_schema_path = schema_path.with_name(schema["allOf"][0]["$ref"])
-        legacy_schema = json.loads(legacy_schema_path.read_text(encoding="utf-8"))
-        jsonschema.validate(example, legacy_schema)
+        validate_pair(schema_path, example_path)
         checks[example_path.name] = True
     print(json.dumps({"ok": all(checks.values()), "checks": checks}, indent=2, sort_keys=True))
     return 0
