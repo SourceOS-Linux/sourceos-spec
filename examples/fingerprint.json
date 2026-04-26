@@ -1,0 +1,25 @@
+{
+  "fingerprint_id": "urn:srcos:fingerprint:m2-local-demo-2026-04-26T1418Z",
+  "subject": {
+    "kind": "device",
+    "id": "urn:srcos:device:m2-local-demo"
+  },
+  "release_set_ref": "urn:srcos:release-set:m2-demo-2026-04-26",
+  "experience_profile_ref": "urn:srcos:experience-profile:mac-like-gnome-demo",
+  "isolation_profile_ref": "urn:srcos:isolation-profile:standard-container-demo",
+  "observed_at": "2026-04-26T14:18:00Z",
+  "integrity": {
+    "boot_release_set_ref": "urn:srcos:boot-release-set:m2-demo-recovery-2026-04-26",
+    "image_ref": "oci://registry.example.invalid/sourceos/m2-system@sha256:8b3f06c9090ccf926fe6ddc6f3b4f49a13d4b8bb4cb4f5cf78e2d12e31b55aa1",
+    "store_closure_hash": "sha256-4e2b2e2c6a843f8b8cf38f7b47c8f875f1f9e4c4206e1f8e9c9f0ec9a0f7a001",
+    "boot_entry_label": "SourceOS Recovery Demo"
+  },
+  "compliance": {
+    "status": "compliant",
+    "notes": "Observed state matches assigned release set, closure hash, and boot recovery reference."
+  },
+  "evidence_refs": [
+    "urn:srcos:prov:m2-demo-apply-2026-04-26",
+    "urn:srcos:release-receipt:m2-demo-2026-04-26"
+  ]
+}
