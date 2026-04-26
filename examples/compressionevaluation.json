@@ -1,0 +1,53 @@
+{
+  "id": "urn:srcos:compression-eval:ce_0001",
+  "type": "CompressionEvaluation",
+  "specVersion": "2.0.0",
+  "artifact": {
+    "contentRef": {
+      "digest": "sha256:artifact_example_digest",
+      "sizeBytes": 2048,
+      "mediaType": "application/json",
+      "uris": ["file:///var/lib/srcos/artifacts/ce_0001.json"]
+    }
+  },
+  "baseline": {
+    "dataRef": {
+      "refType": "dataset",
+      "id": "urn:srcos:dataset:health_obs"
+    }
+  },
+  "purpose": "promotion-review",
+  "estimatorSet": {
+    "name": "compression-commons-basic",
+    "version": "0.1.0",
+    "family": "compression",
+    "params": {
+      "window": 4096,
+      "normalization": "token"
+    }
+  },
+  "metrics": {
+    "novelty": 0.82,
+    "redundancy": 0.14,
+    "supportingMetrics": {
+      "support": 0.73,
+      "stability": 0.91
+    },
+    "confidence": 0.88,
+    "warnings": [],
+    "normalizationVersion": "0.1.0"
+  },
+  "policyDecisionRef": "urn:srcos:decision:aa11bb22",
+  "runRecordRef": "urn:srcos:run:77cc88dd",
+  "provenanceRef": "urn:srcos:prov:001",
+  "truthSurfaceRef": "urn:srcos:truth-surface:ts_0001",
+  "deltaSurfaceRef": "urn:srcos:delta-surface:ds_0001",
+  "integrity": {
+    "evaluationHash": "sha256:evaluation_example_digest",
+    "signer": "sourceos-compression-evaluator",
+    "signature": "sig:example_signature",
+    "signedAt": "2026-04-25T16:00:00Z"
+  },
+  "notes": "Example CompressionEvaluation composed from existing governance, execution, provenance, and reference objects.",
+  "createdAt": "2026-04-25T16:00:00Z"
+}
