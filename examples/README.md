@@ -6,7 +6,7 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
-The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state.
+The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state. Compression Commons examples add an artifact-versus-baseline evaluation record that references existing governance, execution, provenance, and content-reference contracts.
 
 ```text
 connector.json       ──► asset.json
@@ -50,6 +50,8 @@ content_spec.json ──► overlay_bundle.json ──► build_request.json ─
                                                                        access_profile.json
 
 release_set.json ──► boot_release_set.json ──► enrollment_token.json ──► fingerprint.json
+
+compressionevaluation.json ──► policy_decision.json / run.json / provenance.json / truth_surface.json / delta_surface.json
 ```
 
 ---
@@ -62,6 +64,16 @@ These examples illustrate the Truth Plane contract additions:
 |------|------------|-------------|
 | `truth_surface.json` | TruthSurface | Signed truth summary emitted by a plane (system/user/agent/witness) |
 | `delta_surface.json` | DeltaSurface | Signed diff between two TruthSurfaces with gate results |
+
+---
+
+## Recent additions — Compression Commons examples
+
+These examples illustrate artifact-versus-baseline evaluation using existing SourceOS/SociOS governance, execution, provenance, and reference contracts.
+
+| File | Schema type | Description |
+|------|------------|-------------|
+| `compressionevaluation.json` | CompressionEvaluation | Artifact-versus-baseline evaluation composed from ContentRef/DataRef, PolicyDecision, RunRecord, ProvenanceRecord, TruthSurface, and DeltaSurface references |
 
 ---
 
@@ -126,6 +138,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `catalog_entry.json` | CatalogEntry | Catalog entry for the SourceOS Workstation dev release |
 | `comment.json` | Comment | A review note on a field mapping |
 | `community.json` | Community | The data-governance team community |
+| `compressionevaluation.json` | CompressionEvaluation | Artifact-versus-baseline evaluation record |
 | `connector.json` | Connector | A local S3 connector |
 | `content_ref.json` | ContentRef | Content-addressed reference for fog blobs / manifests |
 | `content_spec.json` | ContentSpec | SourceOS Workstation content intent / flavor reference |
