@@ -9,6 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ## [Unreleased]
 
 ### Added
+- Compression Commons: `CompressionEvaluation` schema and canonical example (`examples/compressionevaluation.json`)
 - Truth Plane: `TruthSurface` and `DeltaSurface` schemas + canonical examples (`examples/truth_surface.json`, `examples/delta_surface.json`)
 - Control-plane: `IncidentEvent` schema for incident lifecycle events
 - Control-plane: canonical wrapper `$id` model for legacy schemas (`schemas/control-plane/*.json` wrappers)
