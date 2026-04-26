@@ -6,7 +6,7 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
-The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile.
+The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device and a `Fingerprint` reporting the realized post-apply state.
 
 ```text
 connector.json       ──► asset.json
@@ -48,6 +48,8 @@ content_spec.json ──► overlay_bundle.json ──► build_request.json ─
                                                                                │
                                                                                ▼
                                                                        access_profile.json
+
+release_set.json ──► fingerprint.json
 ```
 
 ---
@@ -60,6 +62,17 @@ These examples illustrate the Truth Plane contract additions:
 |------|------------|-------------|
 | `truth_surface.json` | TruthSurface | Signed truth summary emitted by a plane (system/user/agent/witness) |
 | `delta_surface.json` | DeltaSurface | Signed diff between two TruthSurfaces with gate results |
+
+---
+
+## Recent additions — Control-plane lifecycle examples
+
+These examples illustrate the local-first control-plane lifecycle family:
+
+| File | Schema type | Description |
+|------|------------|-------------|
+| `release_set.json` | ReleaseSet | Assigned M2 demo release set with source Git ref, target, profile refs, and boot artifact refs |
+| `fingerprint.json` | Fingerprint | Post-apply device observation proving the realized state matches the assigned release set |
 
 ---
 
@@ -122,6 +135,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `event_envelope.json` | EventEnvelope | Event published when the run completes |
 | `experiment_flag.json` | ExperimentFlag | A feature flag for the new obfuscation algorithm |
 | `field.json` | Field | The `patient.dateOfBirth` field with PII tags and quality metrics |
+| `fingerprint.json` | Fingerprint | Post-apply device observation for a local-first release assignment |
 | `frustration_signal.json` | FrustrationSignal | A frustration signal from a repeated-failure condition |
 | `glossary.json` | GlossaryTerm | Glossary term for "Date of Birth" |
 | `mapping.json` | MappingSpec | A field mapping between two dataset fields |
@@ -134,6 +148,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `rating.json` | Rating | A 5-star rating on the health observations dataset |
 | `release_manifest.json` | ReleaseManifest | Draft release manifest with Katello artifact refs and agentplane evidence refs |
 | `release_receipt.json` | ReleaseReceipt | Release receipt for spec version 2.0.0 |
+| `release_set.json` | ReleaseSet | Assigned M2 demo release set with source, targets, profile refs, and artifact refs |
 | `replication_policy.json` | ReplicationPolicy | Fog topic replication/retention policy example |
 | `rollout_policy.json` | RolloutPolicy | Rollout rules for the obfuscation experiment flag |
 | `run.json` | RunRecord | The obfuscation workload run record |
@@ -148,7 +163,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `truth_surface.json` | TruthSurface | Truth Plane truth surface example |
 | `workflow_spec.json` | WorkflowSpec | The health-data obfuscation workflow |
 | `workorder.json` | WorkOrder | FogCompute work order |
-| `usage_receipt.json` | UsageReceipt | FogCompute execution receipt |
+| `usage_receipt.json` | FogCompute execution receipt |
 
 ---
 
@@ -161,18 +176,8 @@ npm install -g ajv-cli
 # Validate a single example
 ajv validate -s ../schemas/Dataset.json -d dataset.json
 
-# Validate all examples
-cd ..
-for example in examples/*.json; do
-  name=$(basename "$example" .json)
-  python3 - <<EOF
-import json
-ex = json.load(open("$example"))
-t = ex.get("type") or ex.get("title")
-if t:
-    print(f"schemas/{t}.json")
-EOF
-done
+# Validate control-plane lifecycle examples
+make validate-control-plane-examples
 ```
 
 ---
