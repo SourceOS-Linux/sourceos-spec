@@ -1,0 +1,13 @@
+{
+  "boot_release_set_id": "urn:srcos:boot-release-set:m2-demo-recovery-2026-04-26",
+  "base_release_set_ref": "urn:srcos:release-set:m2-demo-2026-04-26",
+  "boot_mode": "recovery",
+  "status": "ready",
+  "artifacts": {
+    "kernel_ref": "urn:srcos:artifact:m2-demo-recovery-kernel-sha256-0f3b6d7f",
+    "initrd_ref": "urn:srcos:artifact:m2-demo-recovery-initrd-sha256-08f4c82e",
+    "rootfs_ref": "urn:srcos:artifact:m2-demo-recovery-rootfs-sha256-5f4dcc3b"
+  },
+  "created_at": "2026-04-26T14:30:00Z",
+  "notes": "SourceOS Recovery Environment for the M2 local-first demo. This models the nlboot-evolved recovery path: minimal boot artifacts, signed content-addressed refs, and linkage back to the assigned ReleaseSet."
+}
