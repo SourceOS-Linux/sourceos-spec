@@ -6,7 +6,7 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
-The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device and a `Fingerprint` reporting the realized post-apply state.
+The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state.
 
 ```text
 connector.json       ──► asset.json
@@ -49,7 +49,7 @@ content_spec.json ──► overlay_bundle.json ──► build_request.json ─
                                                                                ▼
                                                                        access_profile.json
 
-release_set.json ──► fingerprint.json
+release_set.json ──► boot_release_set.json ──► enrollment_token.json ──► fingerprint.json
 ```
 
 ---
@@ -65,13 +65,15 @@ These examples illustrate the Truth Plane contract additions:
 
 ---
 
-## Recent additions — Control-plane lifecycle examples
+## Recent additions — Control-plane lifecycle and boot provisioning examples
 
-These examples illustrate the local-first control-plane lifecycle family:
+These examples illustrate the local-first control-plane lifecycle and secure boot/recovery family:
 
 | File | Schema type | Description |
 |------|------------|-------------|
 | `release_set.json` | ReleaseSet | Assigned M2 demo release set with source Git ref, target, profile refs, and boot artifact refs |
+| `boot_release_set.json` | BootReleaseSet | SourceOS Recovery Environment boot artifact set linked to the assigned ReleaseSet |
+| `enrollment_token.json` | EnrollmentToken | One-time recovery authorization token scoped to the M2 demo device and BootReleaseSet |
 | `fingerprint.json` | Fingerprint | Post-apply device observation proving the realized state matches the assigned release set |
 
 ---
@@ -118,6 +120,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `agreement.json` | Agreement | Default personal-data agreement |
 | `agent_session.json` | AgentSession | An executor session running the obfuscation workflow |
 | `asset.json` | PhysicalAsset | Lakehouse asset for curated health observations |
+| `boot_release_set.json` | BootReleaseSet | SourceOS Recovery Environment boot artifact set for secure recovery/provisioning |
 | `build_request.json` | BuildRequest | SourceOS Workstation build request with agentplane and Katello refs |
 | `capability_token.json` | CapabilityToken | Access token scoped to the health dataset export operation |
 | `catalog_entry.json` | CatalogEntry | Catalog entry for the SourceOS Workstation dev release |
@@ -130,6 +133,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `data_sphere.json` | DataSphere | The personal-curated execution environment |
 | `delta_surface.json` | DeltaSurface | Truth Plane delta surface example |
 | `enrollment_profile.json` | EnrollmentProfile | Katello/Foreman enrollment profile for dev workstation installs |
+| `enrollment_token.json` | EnrollmentToken | One-time recovery authorization token for the M2 local-first demo |
 | `evidence_bundle.json` | EvidenceBundle | Evidence bundle pointing at agentplane validation/run/replay artifacts |
 | `execution_decision.json` | ExecutionDecision | Agent allow-decision for a tool invocation |
 | `event_envelope.json` | EventEnvelope | Event published when the run completes |
@@ -176,7 +180,7 @@ npm install -g ajv-cli
 # Validate a single example
 ajv validate -s ../schemas/Dataset.json -d dataset.json
 
-# Validate control-plane lifecycle examples
+# Validate control-plane lifecycle and boot provisioning examples
 make validate-control-plane-examples
 ```
 
