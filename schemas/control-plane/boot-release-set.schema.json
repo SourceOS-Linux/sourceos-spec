@@ -2,15 +2,22 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://socioprophet.org/schemas/control-plane/boot-release-set.schema.json",
   "title": "BootReleaseSet",
-  "description": "Boot/install or recovery artifacts associated with a local-first release assignment.",
+  "description": "Boot, install, live, or recovery artifact set associated with a local-first release assignment. A BootReleaseSet extends a ReleaseSet with signed boot artifacts, platform entrypoints, policy linkage, proof reporting, and offline fallback semantics.",
   "type": "object",
   "additionalProperties": false,
   "required": [
     "boot_release_set_id",
     "base_release_set_ref",
     "boot_mode",
+    "boot_channel",
     "status",
+    "platform_entrypoints",
     "artifacts",
+    "policy_ref",
+    "signing",
+    "boot_capabilities",
+    "proof_reporting",
+    "offline_fallback",
     "created_at"
   ],
   "properties": {
@@ -20,18 +27,120 @@
       "type": "string",
       "enum": ["installer", "recovery", "ephemeral", "bootstrap"]
     },
+    "boot_channel": {
+      "type": "string",
+      "enum": ["live", "installer", "rescue", "rollback", "bootstrap"]
+    },
     "status": {
       "type": "string",
       "enum": ["draft", "ready", "retired"]
     },
+    "platform_entrypoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["platform", "entrypoint_kind", "entrypoint_ref"],
+        "properties": {
+          "platform": {
+            "type": "string",
+            "enum": ["apple-silicon", "uefi-ipxe", "uefi-httpboot", "generic-linux", "unknown"]
+          },
+          "entrypoint_kind": {
+            "type": "string",
+            "enum": ["asahi-installer-entry", "apple-boot-picker-entry", "ipxe-menu-entry", "uefi-httpboot-entry", "local-bootstrap-media", "manual"]
+          },
+          "entrypoint_ref": { "type": "string", "minLength": 1 },
+          "requires_network": { "type": ["boolean", "null"] },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
     "artifacts": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["kernel_ref", "initrd_ref", "rootfs_ref"],
+      "required": ["manifest_ref", "kernel_ref", "initrd_ref", "rootfs_ref"],
       "properties": {
+        "manifest_ref": { "type": "string", "minLength": 1 },
         "kernel_ref": { "type": "string", "minLength": 1 },
         "initrd_ref": { "type": "string", "minLength": 1 },
-        "rootfs_ref": { "type": "string", "minLength": 1 }
+        "rootfs_ref": { "type": "string", "minLength": 1 },
+        "bootloader_ref": { "type": ["string", "null"] },
+        "installer_metadata_ref": { "type": ["string", "null"] }
+      }
+    },
+    "policy_ref": { "type": "string", "minLength": 1 },
+    "signing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["signature_ref", "signer_ref", "signature_algorithm", "manifest_digest"],
+      "properties": {
+        "signature_ref": { "type": "string", "minLength": 1 },
+        "signer_ref": { "type": "string", "minLength": 1 },
+        "signature_algorithm": {
+          "type": "string",
+          "enum": ["rsa-pss-sha256", "ed25519", "ecdsa-p256-sha256"]
+        },
+        "manifest_digest": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["algorithm", "value"],
+          "properties": {
+            "algorithm": { "type": "string", "enum": ["sha256", "sha384", "sha512"] },
+            "value": { "type": "string", "minLength": 1 }
+          }
+        }
+      }
+    },
+    "boot_capabilities": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["disk_write", "network_required", "kexec_allowed", "recovery_actions"],
+      "properties": {
+        "disk_write": {
+          "type": "string",
+          "enum": ["denied", "installer-scoped", "recovery-scoped"]
+        },
+        "network_required": { "type": "boolean" },
+        "kexec_allowed": { "type": "boolean" },
+        "recovery_actions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["fetch-release-set", "install", "rollback-system", "repair-user-plane", "repair-agent-plane", "rotate-keys", "report-proof"]
+          }
+        }
+      }
+    },
+    "proof_reporting": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required", "reports"],
+      "properties": {
+        "required": { "type": "boolean" },
+        "reports": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["device-claim", "environment-fingerprint", "manifest-digest", "artifact-hash-manifest", "policy-decision", "rollback-result", "install-result"]
+          }
+        },
+        "endpoint_ref": { "type": ["string", "null"] }
+      }
+    },
+    "offline_fallback": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["enabled", "strategy", "requires_signature_verification", "allows_unsigned_artifacts"],
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "strategy": {
+          "type": "string",
+          "enum": ["none", "last-known-good-boot-release-set", "last-known-good-signed-boot-release-set"]
+        },
+        "requires_signature_verification": { "type": "boolean" },
+        "allows_unsigned_artifacts": { "type": "boolean" }
       }
     },
     "created_at": { "type": "string", "format": "date-time" },
