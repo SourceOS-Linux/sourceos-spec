@@ -29,6 +29,7 @@
     "roleAutomationCommons": "srcos:role/AutomationCommons",
     "roleOSSubstrate": "srcos:role/OSSubstrate",
     "rolePublicDocsSurface": "srcos:role/PublicDocsSurface",
-    "roleStarterScaffold": "srcos:role/StarterScaffold"
+    "roleStarterScaffold": "srcos:role/StarterScaffold",
+    "roleDeveloperToolchain": "srcos:role/DeveloperToolchain"
   }
 }
