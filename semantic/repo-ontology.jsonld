@@ -48,6 +48,12 @@
       "@type": "TopologyRole",
       "name": "Starter Scaffold",
       "description": "Bootstrap or starter repository for interfaces, policy, integration, or registry scaffolding. Not the canonical controller or spec lane."
+    },
+    {
+      "@id": "roleDeveloperToolchain",
+      "@type": "TopologyRole",
+      "name": "Developer Toolchain",
+      "description": "Linux-native developer tooling home: Nix/devshell orchestration, NLBoot/operator tooling, lab profile selection, release tooling, local AI governance utilities, and SourceOS workstation bootstrap."
     }
   ]
 }
