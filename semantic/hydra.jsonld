@@ -61,6 +61,10 @@
     "WorkflowNode": "srcos:WorkflowNode",
     "WorkflowSpec": "srcos:WorkflowSpec",
     "WorkloadSpec": "srcos:WorkloadSpec",
+    "NLBootPlan": "srcos:NLBootPlan",
+    "ArtifactCacheRecord": "srcos:ArtifactCacheRecord",
+    "BootProofRecord": "srcos:BootProofRecord",
+    "AppleSiliconAdapterEvidence": "srcos:AppleSiliconAdapterEvidence",
 
     "wasGeneratedBy":    { "@id": "prov:wasGeneratedBy",    "@type": "@id" },
     "used":              { "@id": "prov:used",              "@type": "@id" },
@@ -241,6 +245,38 @@
       "hydra:description": "The final outcome record for a completed AgentSession.",
       "hydra:supportedOperation": [
         { "hydra:method": "POST", "hydra:title": "recordSessionReceipt", "hydra:description": "Records a SessionReceipt." }
+      ]
+    },
+    {
+      "@id": "srcos:NLBootPlan",
+      "hydra:title": "NLBootPlan",
+      "hydra:description": "An NLBoot boot plan describing ordered boot stages, artifact refs, and verification policy for a target device.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "upsertNLBootPlan", "hydra:description": "Creates or updates an NLBootPlan." }
+      ]
+    },
+    {
+      "@id": "srcos:ArtifactCacheRecord",
+      "hydra:title": "ArtifactCacheRecord",
+      "hydra:description": "A content-addressed cache entry for a locally-stored NLBoot artifact.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "upsertArtifactCacheRecord", "hydra:description": "Creates or updates an ArtifactCacheRecord." }
+      ]
+    },
+    {
+      "@id": "srcos:BootProofRecord",
+      "hydra:title": "BootProofRecord",
+      "hydra:description": "An immutable record proving boot integrity with per-stage verdicts and attestation evidence refs.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "recordBootProof", "hydra:description": "Persists a BootProofRecord." }
+      ]
+    },
+    {
+      "@id": "srcos:AppleSiliconAdapterEvidence",
+      "hydra:title": "AppleSiliconAdapterEvidence",
+      "hydra:description": "Evidence from the Asahi-compatible Apple Silicon boot adapter capturing chip identity, security policy, and boot-chain hashes.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "recordAppleSiliconAdapterEvidence", "hydra:description": "Persists an AppleSiliconAdapterEvidence record." }
       ]
     }
   ]

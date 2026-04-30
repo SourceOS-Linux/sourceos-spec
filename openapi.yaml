@@ -32,6 +32,8 @@ tags:
     description: Workflows, runs, and provenance records
   - name: Collaboration
     description: Comments and ratings
+  - name: Boot
+    description: NLBoot plans, artifact cache, proof records, and Apple Silicon adapter evidence
 
 components:
   securitySchemes:
@@ -524,3 +526,111 @@ paths:
           description: Request body is valid JSON but fails schema validation.
           content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
 
+
+  /v2/nlboot-plans:
+    post:
+      operationId: upsertNLBootPlan
+      summary: Upsert an NLBootPlan
+      description: Creates or updates an NLBoot boot plan describing ordered boot stages, artifact refs, and verification policy for a target device. Idempotent on `id`.
+      tags: [Boot]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/NLBootPlan.json' }
+      responses:
+        '200':
+          description: NLBootPlan created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: Missing or invalid authentication token.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: Authenticated subject is not permitted to upsert boot plans.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+  /v2/artifact-cache-records:
+    post:
+      operationId: upsertArtifactCacheRecord
+      summary: Upsert an ArtifactCacheRecord
+      description: Creates or updates a content-addressed cache entry for a locally-stored NLBoot artifact. Idempotent on `id`.
+      tags: [Boot]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/ArtifactCacheRecord.json' }
+      responses:
+        '200':
+          description: ArtifactCacheRecord created or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: Missing or invalid authentication token.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: Authenticated subject is not permitted to upsert artifact cache records.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+  /v2/boot-proof-records:
+    post:
+      operationId: recordBootProof
+      summary: Record a BootProofRecord
+      description: Persists an immutable boot integrity proof record with per-stage verdicts and attestation evidence refs. Idempotent on `id`.
+      tags: [Boot]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/BootProofRecord.json' }
+      responses:
+        '200':
+          description: BootProofRecord persisted successfully.
+        '400':
+          description: Request body is malformed JSON.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: Missing or invalid authentication token.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: Authenticated subject is not permitted to record boot proofs.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
+  /v2/apple-silicon-adapter-evidence:
+    post:
+      operationId: recordAppleSiliconAdapterEvidence
+      summary: Record AppleSiliconAdapterEvidence
+      description: Persists evidence collected by the Asahi-compatible Apple Silicon boot adapter, capturing chip identity, security policy, and boot-chain hashes. Idempotent on `id`.
+      tags: [Boot]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/AppleSiliconAdapterEvidence.json' }
+      responses:
+        '200':
+          description: AppleSiliconAdapterEvidence persisted successfully.
+        '400':
+          description: Request body is malformed JSON.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: Missing or invalid authentication token.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: Authenticated subject is not permitted to record Apple Silicon adapter evidence.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AppleSiliconAdapterEvidence.json",
+  "title": "AppleSiliconAdapterEvidence",
+  "description": "Evidence collected by the Apple Silicon boot adapter (Asahi-compatible) recording chip identity, security policy, boot-chain stage hashes, and boot-picker state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "deviceRef",
+    "capturedAt",
+    "chipModel",
+    "securityPolicy",
+    "localBootStatus"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:as-adapter-evidence:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:as-adapter-evidence:<local-id>"
+    },
+    "type": {
+      "const": "AppleSiliconAdapterEvidence",
+      "description": "Discriminator constant — always \"AppleSiliconAdapterEvidence\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "deviceRef": {
+      "type": "string",
+      "description": "URN reference to the physical Apple Silicon device."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this evidence was collected."
+    },
+    "chipModel": {
+      "type": "string",
+      "description": "Apple Silicon chip identifier, e.g. \"M1\", \"M2\", \"M2 Pro\", \"M3\"."
+    },
+    "boardId": {
+      "type": ["string", "null"],
+      "description": "Optional hardware board identifier as reported by the firmware."
+    },
+    "securityPolicy": {
+      "type": "string",
+      "enum": [
+        "full-security",
+        "reduced-security",
+        "permissive-security"
+      ],
+      "description": "Apple Secure Boot security policy active on the device at collection time."
+    },
+    "localBootStatus": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "degraded",
+        "uninitialized",
+        "recovery"
+      ],
+      "description": "Overall local boot status reported by the adapter."
+    },
+    "adapterVersion": {
+      "type": ["string", "null"],
+      "description": "Version of the NLBoot Apple Silicon adapter that collected this evidence."
+    },
+    "m1n1Version": {
+      "type": ["string", "null"],
+      "description": "Version of m1n1 present in the boot chain, if known."
+    },
+    "uBootVersion": {
+      "type": ["string", "null"],
+      "description": "Version of U-Boot present in the boot chain, if known."
+    },
+    "bootChainHashes": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "description": "Content digest for the named boot-chain stage, e.g. \"sha256:...\"."
+      },
+      "description": "Map of boot-chain stage name to content digest observed at collection time."
+    },
+    "bootPickerEntryRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the Asahi-compatible boot-picker entry for the target OS install."
+    },
+    "installerDataRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the Asahi installer metadata artifact associated with this device."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this evidence record."
+    }
+  }
+}

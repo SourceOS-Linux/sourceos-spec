@@ -1,0 +1,43 @@
+{
+  "id": "urn:srcos:nlboot-plan:m2-sourceos-main-2026-04-30",
+  "type": "NLBootPlan",
+  "specVersion": "2.0.0",
+  "targetDeviceRef": "urn:srcos:asset:fedora-asahi-m2",
+  "platform": "apple-silicon-asahi",
+  "status": "active",
+  "stages": [
+    {
+      "name": "m1n1",
+      "artifactRef": "urn:srcos:artifact-cache:m1n1-sha256-7a38f2d1",
+      "contentHash": "sha256:7a38f2d1e4b9c3a5d6e8f0b2c4a6d8e0f2b4c6a8d0e2f4b6c8a0d2e4f6b8c0a2",
+      "verificationRequired": true,
+      "notes": "Primary Apple Silicon stage-1 bootloader"
+    },
+    {
+      "name": "u-boot",
+      "artifactRef": "urn:srcos:artifact-cache:uboot-sha256-2b4d6f8a",
+      "contentHash": "sha256:2b4d6f8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f",
+      "verificationRequired": true,
+      "notes": "U-Boot stage for EFI handoff"
+    },
+    {
+      "name": "kernel",
+      "artifactRef": "urn:srcos:artifact-cache:kernel-sha256-0f3b6d7f",
+      "contentHash": "sha256:0f3b6d7f1e2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c",
+      "verificationRequired": true,
+      "notes": "Linux kernel with Apple Silicon patches"
+    },
+    {
+      "name": "initrd",
+      "artifactRef": "urn:srcos:artifact-cache:initrd-sha256-08f4c82e",
+      "contentHash": "sha256:08f4c82e9d0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+      "verificationRequired": true,
+      "notes": "Initial ramdisk for early userspace"
+    }
+  ],
+  "bootReleaseSetRef": "urn:srcos:boot-release-set:m2-demo-recovery-2026-04-26",
+  "policyRef": "urn:srcos:policy:boot-recovery-m2-demo-v1",
+  "activatedAt": "2026-04-30T10:00:00Z",
+  "createdAt": "2026-04-30T09:00:00Z",
+  "notes": "Main boot plan for SourceOS M2 demo device using Asahi Linux path."
+}
