@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ArtifactCacheRecord.json",
+  "title": "ArtifactCacheRecord",
+  "description": "A content-addressed cache entry recording a locally-stored NLBoot artifact with its origin, digest, status, and platform binding.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "artifactKind",
+    "contentHash",
+    "status",
+    "cachedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:artifact-cache:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:artifact-cache:<local-id>"
+    },
+    "type": {
+      "const": "ArtifactCacheRecord",
+      "description": "Discriminator constant — always \"ArtifactCacheRecord\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "artifactKind": {
+      "type": "string",
+      "enum": [
+        "kernel",
+        "initrd",
+        "bootloader",
+        "rootfs",
+        "m1n1",
+        "u-boot",
+        "installer-data",
+        "device-tree",
+        "other"
+      ],
+      "description": "Semantic role of the cached artifact in the boot chain."
+    },
+    "contentHash": {
+      "type": "string",
+      "description": "Content-addressed digest of the artifact, e.g. \"sha256:abc123...\"."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "cached",
+        "evicted",
+        "corrupted"
+      ],
+      "description": "Current status of the cache entry."
+    },
+    "cachedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the artifact was written to the local cache."
+    },
+    "platform": {
+      "type": ["string", "null"],
+      "enum": [
+        "apple-silicon-asahi",
+        "generic-uefi",
+        "generic-bios",
+        null
+      ],
+      "description": "Target platform this artifact is intended for, or null if platform-agnostic."
+    },
+    "sourceUrl": {
+      "type": ["string", "null"],
+      "description": "URL from which the artifact was originally fetched, if applicable."
+    },
+    "sourceRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the release set or manifest that produced this artifact."
+    },
+    "sizeBytes": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Size of the cached artifact in bytes."
+    },
+    "expiresAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional ISO 8601 date-time after which this cache entry may be evicted."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this cache entry."
+    }
+  }
+}

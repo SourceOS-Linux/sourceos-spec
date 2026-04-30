@@ -131,7 +131,10 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `access_profile.json` | AccessProfile | Access profile for SourceOS build operators and agentplane executor obligations |
 | `agreement.json` | Agreement | Default personal-data agreement |
 | `agent_session.json` | AgentSession | An executor session running the obfuscation workflow |
+| `apple_silicon_adapter_evidence.json` | AppleSiliconAdapterEvidence | Apple Silicon adapter evidence for an M2 device running SourceOS via Asahi |
+| `artifact_cache_record.json` | ArtifactCacheRecord | Cached Linux kernel artifact for the M2 demo device |
 | `asset.json` | PhysicalAsset | Lakehouse asset for curated health observations |
+| `boot_proof_record.json` | BootProofRecord | Verified boot proof for SourceOS M2 device via NLBoot Asahi path |
 | `boot_release_set.json` | BootReleaseSet | SourceOS Recovery Environment boot artifact set for secure recovery/provisioning |
 | `build_request.json` | BuildRequest | SourceOS Workstation build request with agentplane and Katello refs |
 | `capability_token.json` | CapabilityToken | Access token scoped to the health dataset export operation |
@@ -157,6 +160,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `glossary.json` | GlossaryTerm | Glossary term for "Date of Birth" |
 | `mapping.json` | MappingSpec | A field mapping between two dataset fields |
 | `memory_entry.json` | MemoryEntry | A learned memory entry from an agent session |
+| `nlboot_plan.json` | NLBootPlan | NLBoot boot plan for SourceOS M2 demo device via Asahi path |
 | `offer.json` | Offer | FogCompute provider offer |
 | `overlay_bundle.json` | OverlayBundle | Customer branding overlay applied to the workstation flavor |
 | `policy.json` | Policy | Health export must be obfuscated |

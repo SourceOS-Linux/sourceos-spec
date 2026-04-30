@@ -54,7 +54,10 @@ These types support:
 |------|------|-----------|
 | `AgentSession.json` | AgentSession | `urn:srcos:session:` |
 | `Agreement.json` | Agreement | `urn:srcos:agreement:` |
+| `AppleSiliconAdapterEvidence.json` | AppleSiliconAdapterEvidence | `urn:srcos:as-adapter-evidence:` |
+| `ArtifactCacheRecord.json` | ArtifactCacheRecord | `urn:srcos:artifact-cache:` |
 | `AuthorityLink.json` | AuthorityLink | _(sub-object, no top-level id)_ |
+| `BootProofRecord.json` | BootProofRecord | `urn:srcos:boot-proof:` |
 | `CapabilityToken.json` | CapabilityToken | _(plain `tokenId` string)_ |
 | `Comment.json` | Comment | `urn:srcos:comment:` |
 | `Community.json` | Community | `urn:srcos:community:` |
@@ -80,6 +83,7 @@ These types support:
 | `MappingEvidence.json` | MappingEvidence | _(sub-object inside MappingSpec)_ |
 | `MappingSpec.json` | MappingSpec | `urn:srcos:mapping:` |
 | `MemoryEntry.json` | MemoryEntry | `urn:srcos:memory:` |
+| `NLBootPlan.json` | NLBootPlan | `urn:srcos:nlboot-plan:` |
 | `ObjectContext.json` | ObjectContext | _(sub-object, no id)_ |
 | `ObjectSelector.json` | ObjectSelector | _(sub-object inside Policy scope)_ |
 | `Obligation.json` | Obligation | _(sub-object, no id)_ |
@@ -233,6 +237,15 @@ These types support:
 | `ExperimentFlag` | A feature flag with lifecycle: off → shadow → internal → beta → on → retired |
 | `RolloutPolicy` | Audience-based percentage rollout rules for an `ExperimentFlag` |
 | `ReleaseReceipt` | A verified release record with artifact hashes and gate check results |
+
+### Boot / NLBoot
+
+| Schema | Description |
+|--------|-------------|
+| `NLBootPlan` | An NLBoot boot plan describing ordered stages, artifact refs, and verification policy for a device |
+| `ArtifactCacheRecord` | A content-addressed cache entry for a locally-stored NLBoot artifact with origin, digest, and status |
+| `BootProofRecord` | An immutable record proving boot integrity: plan ref, per-stage verdicts, and attestation evidence refs |
+| `AppleSiliconAdapterEvidence` | Evidence from the Asahi-compatible Apple Silicon boot adapter: chip identity, security policy, and boot-chain hashes |
 
 ### Fog Layer
 
