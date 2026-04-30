@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TokenDoor.json",
+  "title": "TokenDoor",
+  "description": "A token-gated access control gate that authorises a subject to cross a named boundary (e.g. a boot phase, provisioning step, or control-plane surface) when it presents a valid CapabilityToken.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "doorName",
+    "requiredTokenKind",
+    "status",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:token-door:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:token-door:<local-id>"
+    },
+    "type": {
+      "const": "TokenDoor",
+      "description": "Discriminator constant — always \"TokenDoor\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "doorName": {
+      "type": "string",
+      "description": "Human-readable name of the gate, e.g. \"boot-recovery-entry\" or \"provisioning-write\"."
+    },
+    "requiredTokenKind": {
+      "type": "string",
+      "description": "The CapabilityToken kind or scope string that a presenter must carry, e.g. \"recovery-access\" or \"provisioning-write\"."
+    },
+    "boundDeviceRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the device or fleet this door is bound to. Null means any subject may present."
+    },
+    "boundReleaseSetRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the ReleaseSet that gates passage; the presenter's token must have been issued for this release."
+    },
+    "policyRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to a Policy that further constrains access."
+    },
+    "maxPresentations": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Maximum number of times a valid token may be presented before the door is closed. Null means unlimited."
+    },
+    "presentationCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of times a valid token has been successfully presented so far.",
+      "default": 0
+    },
+    "expiresAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional ISO 8601 date-time after which the door closes regardless of token validity."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "closed",
+        "revoked",
+        "expired"
+      ],
+      "description": "Current state of the door: open (accepting presentations), closed (quota met or manually closed), revoked, or expired."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this token door was created."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this token door."
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReleaseSet.json",
+  "title": "ReleaseSet",
+  "description": "An assigned release set describing the canonical software and boot artifacts that should be realized on one or more target devices at a given release version.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "releaseVersion",
+    "status",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:release-set:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:release-set:<local-id>"
+    },
+    "type": {
+      "const": "ReleaseSet",
+      "description": "Discriminator constant — always \"ReleaseSet\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "releaseVersion": {
+      "type": "string",
+      "description": "Human-readable release version string, e.g. \"2026.04.26-demo.1\"."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "assigned",
+        "active",
+        "superseded",
+        "revoked"
+      ],
+      "description": "Lifecycle state of the release set."
+    },
+    "source": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "gitRef": {
+          "type": "string",
+          "description": "Git ref from which this release was built, e.g. \"refs/heads/main\"."
+        },
+        "gitCommit": {
+          "type": "string",
+          "description": "Full SHA-1 or SHA-256 Git commit hash that produced this release."
+        },
+        "gitRefBuildRef": {
+          "type": ["string", "null"],
+          "description": "Optional URN reference to the GitRefBuild record for this release."
+        }
+      },
+      "description": "Source Git provenance for this release set."
+    },
+    "targets": {
+      "type": "array",
+      "description": "List of target devices or device groups this release set is assigned to.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["targetKind", "targetRef"],
+        "properties": {
+          "targetKind": {
+            "type": "string",
+            "enum": ["device", "device-group", "fleet"],
+            "description": "Kind of the target: a single device, a named device group, or a fleet."
+          },
+          "targetRef": {
+            "type": "string",
+            "description": "URN reference to the target device, group, or fleet."
+          }
+        }
+      }
+    },
+    "experienceProfileRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the ExperienceProfile defining the desktop/UX posture for this release."
+    },
+    "isolationProfileRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the IsolationProfile defining the container and namespace boundaries for this release."
+    },
+    "artifacts": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "storeClosureHash": {
+          "type": ["string", "null"],
+          "description": "Content-addressed hash of the Nix/ostree store closure, e.g. \"sha256-...\"."
+        },
+        "imageRef": {
+          "type": ["string", "null"],
+          "description": "OCI image reference for the system image, e.g. \"oci://registry.example/sourceos/system@sha256:...\"."
+        },
+        "bootReleaseSetRef": {
+          "type": ["string", "null"],
+          "description": "Optional URN reference to the BootReleaseSet containing boot artifacts for this release."
+        }
+      },
+      "description": "Key artifact references for the release set."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this release set was created."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this release set."
+    }
+  }
+}

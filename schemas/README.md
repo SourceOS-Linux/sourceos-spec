@@ -4,6 +4,27 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — Release and build lifecycle
+
+The release/build lifecycle slice adds the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `ReleaseSet.json` | ReleaseSet | `urn:srcos:release-set:` |
+| `Fingerprint.json` | Fingerprint | `urn:srcos:fingerprint:` |
+| `ConfigSource.json` | ConfigSource | `urn:srcos:config-source:` |
+| `TokenDoor.json` | TokenDoor | `urn:srcos:token-door:` |
+| `GitRefBuild.json` | GitRefBuild | `urn:srcos:git-ref-build:` |
+
+These types support:
+- canonical assignment of software + boot artifacts to target devices (`ReleaseSet`)
+- point-in-time device state observation and compliance reporting (`Fingerprint`)
+- typed configuration source references consumed by NLBoot and sourceos-boot (`ConfigSource`)
+- token-gated access control gates for boot/provisioning phases (`TokenDoor`)
+- build provenance records linking Git commits to release artifacts (`GitRefBuild`)
+
+---
+
 ## Recent additions — Workstation Contract Family
 
 The workstation contract family adds the following top-level schemas:
@@ -61,6 +82,7 @@ These types support:
 | `CapabilityToken.json` | CapabilityToken | _(plain `tokenId` string)_ |
 | `Comment.json` | Comment | `urn:srcos:comment:` |
 | `Community.json` | Community | `urn:srcos:community:` |
+| `ConfigSource.json` | ConfigSource | `urn:srcos:config-source:` |
 | `Connector.json` | Connector | `urn:srcos:connector:` |
 | `ContentRef.json` | ContentRef | _(digest-based content reference)_ |
 | `DataRef.json` | DataRef | _(sub-object, no top-level id)_ |
@@ -75,7 +97,9 @@ These types support:
 | `ExecutionSurface.json` | ExecutionSurface | _(sub-object inside AgentSession)_ |
 | `ExperimentFlag.json` | ExperimentFlag | `urn:srcos:flag:` |
 | `Field.json` | Field | `urn:srcos:field:` |
+| `Fingerprint.json` | Fingerprint | `urn:srcos:fingerprint:` |
 | `FrustrationSignal.json` | FrustrationSignal | `urn:srcos:frustration:` |
+| `GitRefBuild.json` | GitRefBuild | `urn:srcos:git-ref-build:` |
 | `GlossaryTerm.json` | GlossaryTerm | `urn:srcos:glossary:` |
 | `LauncherAction.json` | LauncherAction | `urn:srcos:launcher-action:` |
 | `LauncherProvider.json` | LauncherProvider | `urn:srcos:launcher-provider:` |
@@ -99,7 +123,9 @@ These types support:
 | `ProvenanceRecord.json` | ProvenanceRecord | `urn:srcos:prov:` |
 | `QualityMetric.json` | QualityMetric | _(sub-object inside Field.quality)_ |
 | `Rating.json` | Rating | `urn:srcos:rating:` |
+| `ReleaseManifest.json` | ReleaseManifest | `urn:srcos:release:` |
 | `ReleaseReceipt.json` | ReleaseReceipt | `urn:srcos:release-receipt:` |
+| `ReleaseSet.json` | ReleaseSet | `urn:srcos:release-set:` |
 | `ReplicationPolicy.json` | ReplicationPolicy | _(top-level policy object)_ |
 | `RolloutPolicy.json` | RolloutPolicy | `urn:srcos:rollout:` |
 | `Rule.json` | Rule | _(sub-object inside Policy)_ |
@@ -115,6 +141,7 @@ These types support:
 | `TelemetryEvent.json` | TelemetryEvent | `urn:srcos:telemetry:` |
 | `Topic.json` | Topic | `urn:srcos:topic:` |
 | `TopicEnvelope.json` | TopicEnvelope | `urn:srcos:topic-entry:` |
+| `TokenDoor.json` | TokenDoor | `urn:srcos:token-door:` |
 | `Trigger.json` | Trigger | _(sub-object inside WorkflowSpec)_ |
 | `TruthSurface.json` | TruthSurface | `urn:srcos:truth-surface:` |
 | `UsageReceipt.json` | UsageReceipt | `urn:srcos:receipt:usage:` |

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate NLBoot schema/example pairs."""
+"""Validate NLBoot and release/build lifecycle schema/example pairs."""
 from __future__ import annotations
 
 import json
@@ -13,6 +13,12 @@ PAIRS = [
     (ROOT / "schemas" / "ArtifactCacheRecord.json", ROOT / "examples" / "artifact_cache_record.json"),
     (ROOT / "schemas" / "BootProofRecord.json", ROOT / "examples" / "boot_proof_record.json"),
     (ROOT / "schemas" / "AppleSiliconAdapterEvidence.json", ROOT / "examples" / "apple_silicon_adapter_evidence.json"),
+    # Release and build lifecycle objects
+    (ROOT / "schemas" / "ReleaseSet.json", ROOT / "examples" / "release_set.json"),
+    (ROOT / "schemas" / "Fingerprint.json", ROOT / "examples" / "fingerprint.json"),
+    (ROOT / "schemas" / "ConfigSource.json", ROOT / "examples" / "config_source.json"),
+    (ROOT / "schemas" / "TokenDoor.json", ROOT / "examples" / "token_door.json"),
+    (ROOT / "schemas" / "GitRefBuild.json", ROOT / "examples" / "git_ref_build.json"),
 ]
 
 

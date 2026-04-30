@@ -77,16 +77,28 @@ These examples illustrate artifact-versus-baseline evaluation using existing Sou
 
 ---
 
+## Recent additions — Release and build lifecycle examples
+
+These examples illustrate the release/build lifecycle schemas added in this slice:
+
+| File | Schema type | Description |
+|------|------------|-------------|
+| `release_set.json` | ReleaseSet | Assigned M2 demo release set with source Git ref, target, profile refs, and boot artifact refs |
+| `fingerprint.json` | Fingerprint | Post-apply device observation proving the realized state matches the assigned release set |
+| `config_source.json` | ConfigSource | Git-backed configuration source pinned to a specific commit, consumed by NLBoot/sourceos-boot |
+| `token_door.json` | TokenDoor | One-time recovery-access token door bound to the M2 demo device and release set |
+| `git_ref_build.json` | GitRefBuild | Build record linking the main-branch Git commit to OCI and ostree output artifacts |
+
+---
+
 ## Recent additions — Control-plane lifecycle and boot provisioning examples
 
 These examples illustrate the local-first control-plane lifecycle and secure boot/recovery family:
 
 | File | Schema type | Description |
 |------|------------|-------------|
-| `release_set.json` | ReleaseSet | Assigned M2 demo release set with source Git ref, target, profile refs, and boot artifact refs |
 | `boot_release_set.json` | BootReleaseSet | SourceOS Recovery Environment boot artifact set linked to the assigned ReleaseSet |
 | `enrollment_token.json` | EnrollmentToken | One-time recovery authorization token scoped to the M2 demo device and BootReleaseSet |
-| `fingerprint.json` | Fingerprint | Post-apply device observation proving the realized state matches the assigned release set |
 
 ---
 

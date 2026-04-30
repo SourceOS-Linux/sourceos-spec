@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:token-door:m2-demo-recovery-entry-2026-04-26",
+  "type": "TokenDoor",
+  "specVersion": "2.0.0",
+  "doorName": "boot-recovery-entry",
+  "requiredTokenKind": "recovery-access",
+  "boundDeviceRef": "urn:srcos:asset:m2-local-demo",
+  "boundReleaseSetRef": "urn:srcos:release-set:m2-demo-2026-04-26",
+  "policyRef": "urn:srcos:policy:boot-recovery-m2-demo-v1",
+  "maxPresentations": 1,
+  "presentationCount": 0,
+  "expiresAt": "2026-04-27T14:15:00Z",
+  "status": "open",
+  "createdAt": "2026-04-26T14:15:00Z",
+  "notes": "One-time recovery access door for the M2 demo device, valid for 24 hours. Issued alongside the EnrollmentToken."
+}

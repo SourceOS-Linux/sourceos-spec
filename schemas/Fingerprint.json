@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Fingerprint.json",
+  "title": "Fingerprint",
+  "description": "A point-in-time observation of a device's realized state, capturing integrity evidence and compliance status relative to an assigned ReleaseSet.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subject",
+    "observedAt",
+    "complianceStatus"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:fingerprint:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:fingerprint:<local-id>"
+    },
+    "type": {
+      "const": "Fingerprint",
+      "description": "Discriminator constant — always \"Fingerprint\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subjectKind", "subjectRef"],
+      "properties": {
+        "subjectKind": {
+          "type": "string",
+          "enum": ["device", "vm", "container"],
+          "description": "Kind of the entity whose state was fingerprinted."
+        },
+        "subjectRef": {
+          "type": "string",
+          "description": "URN reference to the device, VM, or container that was fingerprinted."
+        }
+      },
+      "description": "The entity whose realized state this fingerprint captures."
+    },
+    "releaseSetRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the ReleaseSet against which compliance was evaluated."
+    },
+    "experienceProfileRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the ExperienceProfile observed on the device."
+    },
+    "isolationProfileRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the IsolationProfile observed on the device."
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the observation was taken."
+    },
+    "integrity": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "bootReleaseSetRef": {
+          "type": ["string", "null"],
+          "description": "URN reference to the BootReleaseSet whose artifacts were observed as active."
+        },
+        "imageRef": {
+          "type": ["string", "null"],
+          "description": "OCI image reference observed as the running system image."
+        },
+        "storeClosureHash": {
+          "type": ["string", "null"],
+          "description": "Content-addressed hash of the Nix/ostree store closure observed on the device."
+        },
+        "bootEntryLabel": {
+          "type": ["string", "null"],
+          "description": "Human-readable label of the active boot entry observed in the boot loader."
+        }
+      },
+      "description": "Integrity evidence collected during the observation."
+    },
+    "complianceStatus": {
+      "type": "string",
+      "enum": ["compliant", "non-compliant", "unknown"],
+      "description": "Overall compliance verdict: compliant if the observed state matches the assigned release set, non-compliant if drift was detected, or unknown if evaluation was incomplete."
+    },
+    "complianceNotes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable explanation of the compliance verdict."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "URN references to ProvenanceRecord, ReleaseReceipt, or other evidence objects supporting this fingerprint."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this fingerprint."
+    }
+  }
+}
