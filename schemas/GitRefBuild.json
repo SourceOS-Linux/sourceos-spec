@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GitRefBuild.json",
+  "title": "GitRefBuild",
+  "description": "A build record produced from a specific Git ref, capturing the resolved commit, output artifacts, and status. Consumed by release tooling, Homebrew taps, and the SourceOS control plane to link release sets back to their source provenance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "repoUri",
+    "gitRef",
+    "gitCommit",
+    "status",
+    "triggeredAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:git-ref-build:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:git-ref-build:<local-id>"
+    },
+    "type": {
+      "const": "GitRefBuild",
+      "description": "Discriminator constant — always \"GitRefBuild\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "repoUri": {
+      "type": "string",
+      "description": "URI of the source Git repository, e.g. \"https://github.com/SourceOS-Linux/sourceos\"."
+    },
+    "gitRef": {
+      "type": "string",
+      "description": "Git ref that triggered the build, e.g. \"refs/heads/main\" or \"refs/tags/v2026.04.26\"."
+    },
+    "gitCommit": {
+      "type": "string",
+      "description": "Full SHA-1 or SHA-256 Git commit hash resolved from gitRef at build time."
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["outputKind", "artifactRef"],
+        "properties": {
+          "outputKind": {
+            "type": "string",
+            "enum": [
+              "iso",
+              "pxe",
+              "raw",
+              "qcow2",
+              "ami",
+              "bootc",
+              "ostree",
+              "oci",
+              "bundle",
+              "homebrew-bottle",
+              "other"
+            ],
+            "description": "Kind of build output artifact."
+          },
+          "artifactRef": {
+            "type": "string",
+            "description": "URN or URL reference to the produced artifact."
+          },
+          "contentHash": {
+            "type": ["string", "null"],
+            "description": "Content-addressed digest of the artifact, e.g. \"sha256:...\"."
+          }
+        }
+      },
+      "description": "List of artifacts produced by this build."
+    },
+    "releaseSetRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the ReleaseSet created from this build."
+    },
+    "configSourceRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to the ConfigSource that provided build configuration."
+    },
+    "triggeredBy": {
+      "type": ["string", "null"],
+      "description": "Optional subject or actor ref (URN or email) that triggered the build."
+    },
+    "triggeredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the build was triggered."
+    },
+    "completedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the build completed, or null if still in progress."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "running",
+        "succeeded",
+        "failed",
+        "cancelled"
+      ],
+      "description": "Current status of the build."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this build."
+    }
+  }
+}

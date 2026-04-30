@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ConfigSource.json",
+  "title": "ConfigSource",
+  "description": "A typed reference to an external or inline configuration source consumed by NLBoot, sourceos-boot, or the control plane, specifying its kind, location, and optional integrity binding.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sourceKind",
+    "status",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:config-source:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:config-source:<local-id>"
+    },
+    "type": {
+      "const": "ConfigSource",
+      "description": "Discriminator constant — always \"ConfigSource\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "sourceKind": {
+      "type": "string",
+      "enum": [
+        "git",
+        "http",
+        "oci",
+        "inline",
+        "bundle"
+      ],
+      "description": "Transport mechanism or storage format: git repository, HTTP/HTTPS URL, OCI artifact, inline JSON/YAML, or an opaque bundle ref."
+    },
+    "uri": {
+      "type": ["string", "null"],
+      "description": "URI of the configuration source. Required for git, http, and oci kinds."
+    },
+    "gitRef": {
+      "type": ["string", "null"],
+      "description": "Git ref to check out when sourceKind is \"git\", e.g. \"refs/heads/main\" or \"refs/tags/v1.2.3\"."
+    },
+    "gitCommit": {
+      "type": ["string", "null"],
+      "description": "Pinned Git commit SHA. When present, the consumer must check out this exact commit."
+    },
+    "contentHash": {
+      "type": ["string", "null"],
+      "description": "Content-addressed digest of the config payload, e.g. \"sha256:...\". Used for integrity verification."
+    },
+    "inlineContent": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "Inline configuration payload when sourceKind is \"inline\". Must be a valid JSON object."
+    },
+    "authRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN reference to a CapabilityToken or credential object required to fetch this source."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "deprecated",
+        "revoked"
+      ],
+      "description": "Lifecycle state of the config source."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this config source record was created."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes about this config source."
+    }
+  }
+}
