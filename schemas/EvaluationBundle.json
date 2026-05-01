@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EvaluationBundle.json",
+  "title": "EvaluationBundle",
+  "description": "A governed evaluation record for data products, notebooks, models, prompts, RAG pipelines, agents, or publications.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "subjectRef", "evaluationKind", "metrics", "verdict", "evaluatedAt", "evidenceRefs"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:evaluation-bundle:" },
+    "type": { "const": "EvaluationBundle" },
+    "specVersion": { "type": "string" },
+    "subjectRef": { "type": "string", "minLength": 1 },
+    "evaluationKind": { "enum": ["data-quality", "model", "prompt", "rag", "agent", "publication", "runtime", "notebook"] },
+    "inputRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "runtimeRef": { "type": ["string", "null"] },
+    "metrics": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "value", "status"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "value": { "type": ["number", "string", "boolean"] },
+          "status": { "enum": ["pass", "warn", "fail", "unknown"] },
+          "threshold": { "type": ["number", "string", "null"] },
+          "evidenceRef": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "verdict": { "enum": ["approved", "rejected", "needs-review", "blocked", "informational"] },
+    "riskTier": { "enum": ["low", "medium", "high", "critical", "unknown"] },
+    "evaluatedAt": { "type": "string", "format": "date-time" },
+    "evaluatorRef": { "type": ["string", "null"] },
+    "policyRef": { "type": ["string", "null"] },
+    "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}
