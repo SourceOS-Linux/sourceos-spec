@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:publication-artifact:community_truth_demo_report",
+  "type": "PublicationArtifact",
+  "specVersion": "2.0.0",
+  "title": "Community Truth Demo Reproducible Report",
+  "abstract": "Synthetic reproducible report package for the Lattice Studio/Data/GovernAI vertical slice.",
+  "authorRefs": ["urn:srcos:user:demo-author"],
+  "artifactRefs": {
+    "dataProductRefs": ["urn:srcos:data-product:community_truth_demo"],
+    "runtimeRefs": ["urn:srcos:runtime:lattice-python-ml-demo"],
+    "notebookRefs": ["urn:srcos:notebook-session:community_truth_demo"],
+    "modelRefs": ["urn:srcos:model:community_truth_demo_candidate"],
+    "promptRefs": []
+  },
+  "reproduction": {
+    "recipeRef": "urn:srcos:recipe:community_truth_demo_report",
+    "attemptRefs": ["urn:srcos:reproduction-attempt:community_truth_demo_report_001"],
+    "score": 0.74
+  },
+  "review": {
+    "state": "under-review",
+    "reviewThreadRefs": ["urn:srcos:review-thread:community_truth_demo_report"],
+    "decisionRef": null
+  },
+  "policyRefs": ["urn:srcos:policy:publication-review-demo"],
+  "evidenceRefs": ["urn:srcos:evidence:community_truth_demo_report"]
+}

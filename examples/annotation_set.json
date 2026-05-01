@@ -1,0 +1,40 @@
+{
+  "id": "urn:srcos:annotation-set:community_truth_demo_labels",
+  "type": "AnnotationSet",
+  "specVersion": "2.0.0",
+  "name": "Community Truth Demo Labels",
+  "description": "Synthetic factuality and fallacy labels for a governed training/evaluation path.",
+  "subjectRefs": ["urn:srcos:data-product:community_truth_demo"],
+  "labelingProjectRef": "urn:srcos:labeling-project:community_truth_demo",
+  "annotations": [
+    {
+      "annotationId": "ann-001",
+      "targetRef": "urn:srcos:content:demo-article-001",
+      "label": "factuality",
+      "value": "supported",
+      "span": null,
+      "sourceRef": "urn:srcos:user:demo-reviewer",
+      "confidence": 0.88,
+      "createdAt": "2026-05-01T19:00:00Z"
+    },
+    {
+      "annotationId": "ann-002",
+      "targetRef": "urn:srcos:content:demo-article-001",
+      "label": "fallacy",
+      "value": "none-observed",
+      "span": { "start": 0, "end": 120 },
+      "sourceRef": "urn:srcos:user:demo-reviewer",
+      "confidence": 0.73,
+      "createdAt": "2026-05-01T19:01:00Z"
+    }
+  ],
+  "governance": {
+    "trainingAllowed": true,
+    "evaluationAllowed": true,
+    "policyRef": "urn:srcos:policy:annotation-training-demo",
+    "licensePolicyRef": "urn:srcos:license-policy:demo-open-review",
+    "annotationReliabilityScore": 0.81
+  },
+  "derivedDatasetRefs": ["urn:srcos:dataset:community_truth_demo_training"],
+  "evidenceRef": "urn:srcos:evidence:community_truth_demo_annotations"
+}

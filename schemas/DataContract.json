@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DataContract.json",
+  "title": "DataContract",
+  "description": "A governed contract for a DataProduct covering schema, semantics, freshness, quality, privacy, retention, and allowed use.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "schemaRefs", "ownerRef", "allowedUses", "sensitivity", "freshness", "qualityRef", "policyRef"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:data-contract:" },
+    "type": { "const": "DataContract" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": ["string", "null"] },
+    "ownerRef": { "type": "string", "minLength": 1 },
+    "schemaRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "semanticRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "allowedUses": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["query", "export", "training", "publication"],
+      "properties": {
+        "query": { "type": "boolean" },
+        "export": { "type": "boolean" },
+        "training": { "type": "boolean" },
+        "publication": { "type": "boolean" },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "sensitivity": { "enum": ["public", "internal", "restricted", "sensitive", "regulated"] },
+    "freshness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expectedInterval", "staleAfter"],
+      "properties": {
+        "expectedInterval": { "type": "string" },
+        "staleAfter": { "type": "string" }
+      }
+    },
+    "qualityRef": { "type": "string", "pattern": "^urn:srcos:quality-profile:" },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "policyRef": { "type": "string" },
+        "minimumDays": { "type": "integer", "minimum": 0 },
+        "maximumDays": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "policyRef": { "type": "string", "minLength": 1 },
+    "evidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}

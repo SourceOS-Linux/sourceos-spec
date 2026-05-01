@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:evaluation-bundle:community_truth_demo_model_eval",
+  "type": "EvaluationBundle",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:model:community_truth_demo_candidate",
+  "evaluationKind": "model",
+  "inputRefs": [
+    "urn:srcos:data-product:community_truth_demo",
+    "urn:srcos:dataset:community_truth_demo_evaluation"
+  ],
+  "runtimeRef": "urn:srcos:runtime:lattice-python-ml-demo",
+  "metrics": [
+    {
+      "name": "factuality_f1",
+      "value": 0.84,
+      "status": "pass",
+      "threshold": 0.8,
+      "evidenceRef": "urn:srcos:evidence:eval-factuality-f1"
+    },
+    {
+      "name": "grounding_precision",
+      "value": 0.78,
+      "status": "warn",
+      "threshold": 0.8,
+      "evidenceRef": "urn:srcos:evidence:eval-grounding-precision"
+    }
+  ],
+  "verdict": "needs-review",
+  "riskTier": "medium",
+  "evaluatedAt": "2026-05-01T19:05:00Z",
+  "evaluatorRef": "urn:srcos:agent:lattice-eval-demo",
+  "policyRef": "urn:srcos:policy:model-eval-demo",
+  "evidenceRefs": ["urn:srcos:evidence:community_truth_demo_model_eval"]
+}
