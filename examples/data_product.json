@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:data-product:community_truth_demo",
+  "type": "DataProduct",
+  "specVersion": "2.0.0",
+  "name": "Community Truth Demo Data Product",
+  "description": "Demo data product for Lattice Studio/Data/GovernAI vertical slice.",
+  "ownerRef": "urn:srcos:community:lattice-demo",
+  "stewardRefs": ["urn:srcos:user:demo-steward"],
+  "resourceRefs": ["urn:srcos:asset:community_truth_demo_object_prefix"],
+  "datasetRefs": ["urn:srcos:dataset:health_obs"],
+  "contractRef": "urn:srcos:data-contract:community_truth_demo",
+  "qualityProfileRef": "urn:srcos:quality-profile:community_truth_demo",
+  "policyRef": "urn:srcos:policy:lattice-data-product-demo",
+  "licensePolicyRef": "urn:srcos:license-policy:demo-open-review",
+  "lineageRefs": ["urn:srcos:prov:community_truth_demo_ingest"],
+  "trust": {
+    "datasetTrustScore": 0.82,
+    "provenanceDepth": 3,
+    "reproducibilityScore": 0.77,
+    "scoreEvidenceRefs": ["urn:srcos:evidence:community_truth_demo_trust"]
+  },
+  "lifecycle": {
+    "state": "candidate",
+    "stateSince": "2026-05-01T19:00:00Z",
+    "deprecationNoticeRef": null
+  },
+  "consumerImpactRefs": [],
+  "evidenceRef": "urn:srcos:evidence:community_truth_demo_data_product",
+  "links": []
+}
