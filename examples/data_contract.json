@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:data-contract:community_truth_demo",
+  "type": "DataContract",
+  "specVersion": "2.0.0",
+  "name": "Community Truth Demo Contract",
+  "description": "Contract for demo factuality and annotation-derived data product.",
+  "ownerRef": "urn:srcos:community:lattice-demo",
+  "schemaRefs": ["urn:srcos:schema:community_truth_demo_v1"],
+  "semanticRefs": ["urn:srcos:glossary:factuality", "urn:srcos:glossary:information-density"],
+  "allowedUses": {
+    "query": true,
+    "export": false,
+    "training": true,
+    "publication": true,
+    "notes": "Training use allowed only for governed demo models."
+  },
+  "sensitivity": "internal",
+  "freshness": {
+    "expectedInterval": "P1D",
+    "staleAfter": "P7D"
+  },
+  "qualityRef": "urn:srcos:quality-profile:community_truth_demo",
+  "retention": {
+    "policyRef": "urn:srcos:policy:demo-retention",
+    "minimumDays": 30,
+    "maximumDays": 365
+  },
+  "policyRef": "urn:srcos:policy:lattice-data-contract-demo",
+  "evidenceRefs": ["urn:srcos:evidence:community_truth_demo_contract"]
+}
