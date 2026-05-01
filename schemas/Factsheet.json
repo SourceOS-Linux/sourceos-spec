@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Factsheet.json",
+  "title": "Factsheet",
+  "description": "A GovernAI factsheet for model, prompt, agent, data, runtime, notebook, or publication assets.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "subjectRef", "factsheetKind", "summary", "lineageRefs", "evaluationRefs", "approval", "evidenceRefs"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:factsheet:" },
+    "type": { "const": "Factsheet" },
+    "specVersion": { "type": "string" },
+    "subjectRef": { "type": "string", "minLength": 1 },
+    "factsheetKind": { "enum": ["data", "model", "prompt", "agent", "runtime", "notebook", "publication"] },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "purpose", "ownerRef"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "purpose": { "type": "string", "minLength": 1 },
+        "ownerRef": { "type": "string", "minLength": 1 },
+        "limitations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "lineageRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evaluationRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^urn:srcos:evaluation-bundle:" }, "uniqueItems": true },
+    "risk": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "riskTier": { "enum": ["low", "medium", "high", "critical", "unknown"] },
+        "riskRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "decidedAt"],
+      "properties": {
+        "state": { "enum": ["draft", "needs-review", "approved", "rejected", "blocked", "deprecated"] },
+        "workflowRef": { "type": ["string", "null"] },
+        "decidedAt": { "type": "string", "format": "date-time" },
+        "decisionRef": { "type": ["string", "null"] }
+      }
+    },
+    "policyRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  }
+}
