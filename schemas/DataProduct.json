@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DataProduct.json",
+  "title": "DataProduct",
+  "description": "A governed, consumable data product with ownership, contract, lineage, quality, access, trust, and lifecycle posture for Lattice Studio/Data/GovernAI.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "ownerRef",
+    "resourceRefs",
+    "contractRef",
+    "qualityProfileRef",
+    "policyRef",
+    "lifecycle",
+    "evidenceRef"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:data-product:" },
+    "type": { "const": "DataProduct" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": ["string", "null"] },
+    "ownerRef": { "type": "string", "minLength": 1 },
+    "stewardRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "resourceRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "datasetRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:dataset:" }, "uniqueItems": true },
+    "contractRef": { "type": "string", "pattern": "^urn:srcos:data-contract:" },
+    "qualityProfileRef": { "type": "string", "pattern": "^urn:srcos:quality-profile:" },
+    "policyRef": { "type": "string", "minLength": 1 },
+    "licensePolicyRef": { "type": ["string", "null"] },
+    "lineageRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "trust": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["datasetTrustScore", "provenanceDepth", "reproducibilityScore"],
+      "properties": {
+        "datasetTrustScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "provenanceDepth": { "type": "integer", "minimum": 0 },
+        "reproducibilityScore": { "type": "number", "minimum": 0, "maximum": 1 },
+        "scoreEvidenceRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+      }
+    },
+    "lifecycle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "stateSince"],
+      "properties": {
+        "state": { "enum": ["draft", "candidate", "published", "restricted", "deprecated", "retired"] },
+        "stateSince": { "type": "string", "format": "date-time" },
+        "deprecationNoticeRef": { "type": ["string", "null"] }
+      }
+    },
+    "consumerImpactRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evidenceRef": { "type": "string", "minLength": 1 },
+    "links": { "type": "array", "items": { "type": "string" } }
+  }
+}
