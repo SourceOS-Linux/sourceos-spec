@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TopoLVMPlacementProfile.json",
+  "title": "TopoLVMPlacementProfile",
+  "description": "A SourceOS placement profile mapping Agent Machine local data-plane semantics to TopoLVM-backed topology-aware local persistent volumes in Linux cluster mode.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "localDataPlaneRef",
+    "storageClassName",
+    "volumeClaims"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:topolvm-placement-profile:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:topolvm-placement-profile:<local-id>."
+    },
+    "type": {
+      "const": "TopoLVMPlacementProfile"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "localDataPlaneRef": {
+      "type": "string",
+      "description": "Reference to the AgentMachineLocalDataPlane whose logical mounts this cluster profile realizes."
+    },
+    "storageClassName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sharedStorageSemantics": {
+      "type": "string",
+      "enum": ["node-local", "replicated-by-higher-layer", "external-shared-storage"],
+      "default": "node-local",
+      "description": "TopoLVM is node-local/topology-aware storage. Cross-node sharing requires a higher layer or external backend."
+    },
+    "nodeTopology": {
+      "$ref": "#/$defs/nodeTopology"
+    },
+    "volumeClaims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/volumeClaim" }
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "nodeTopology": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requiredNodeLabels": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "preferredNodeLabels": {
+          "type": "object",
+          "additionalProperties": { "type": "string" }
+        },
+        "allowRescheduleAcrossNodes": {
+          "type": "boolean",
+          "default": false,
+          "description": "When false, workloads using node-local volumes must stay on nodes where their local volumes exist."
+        }
+      }
+    },
+    "volumeClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["claimName", "pathClass", "agentPath", "accessMode", "sizeGiB"],
+      "properties": {
+        "claimName": { "type": "string", "minLength": 1 },
+        "pathClass": {
+          "type": "string",
+          "enum": ["code", "documents", "downloads", "cache", "artifacts", "media", "app-bridge"]
+        },
+        "agentPath": { "type": "string", "minLength": 1 },
+        "accessMode": {
+          "type": "string",
+          "enum": ["ReadWriteOnce", "ReadOnlyMany", "ReadWriteMany"]
+        },
+        "sizeGiB": { "type": "integer", "minimum": 1 },
+        "volumeMode": { "type": "string", "enum": ["Filesystem", "Block"], "default": "Filesystem" },
+        "filesystem": { "type": "string", "enum": ["xfs", "ext4", "other"], "default": "xfs" },
+        "expansionAllowed": { "type": "boolean", "default": true },
+        "snapshotAllowed": { "type": "boolean", "default": false },
+        "sourceMountId": { "type": ["string", "null"] },
+        "description": { "type": "string" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean", "default": true },
+        "recordStorageClass": { "type": "boolean", "default": true },
+        "recordNodePlacement": { "type": "boolean", "default": true },
+        "recordPVC": { "type": "boolean", "default": true },
+        "recordPV": { "type": "boolean", "default": true },
+        "recordMountPolicyHash": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}
