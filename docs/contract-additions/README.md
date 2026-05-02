@@ -5,6 +5,7 @@ This directory contains discoverability notes for additive SourceOS/SociOS contr
 | Addition | Purpose | Key schemas |
 |---|---|---|
 | [Agent Machine Local Data Plane and TopoLVM Mount Contracts](agent-machine-local-data-plane.md) | Defines safe local workspace mounts for Agent Machine and maps the same logical contract to TopoLVM-backed node-local persistent volumes in cluster mode. | `AgentMachineLocalDataPlane`, `AgentMachineMountPolicy`, `TopoLVMPlacementProfile` |
+| [Network, Mesh, BYOM, and Native Assistant Door Contracts](network-assistant-model-doors.md) | Defines enterprise/user network profiles, firewall bindings, service-mesh bindings, BYOM model endpoints, and native assistant bridges such as Apple App Intents/Siri/Shortcuts-style integrations. | `NetworkAccessProfile`, `FirewallBindingProfile`, `MeshBindingProfile`, `ExternalModelProviderProfile`, `NativeAssistantBridgeProfile` |
 
 ## Rules for additions
 

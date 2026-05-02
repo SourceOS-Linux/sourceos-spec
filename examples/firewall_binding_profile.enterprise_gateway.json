@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:firewall-binding-profile:enterprise-gateway-default",
+  "type": "FirewallBindingProfile",
+  "specVersion": "2.2.0",
+  "name": "Enterprise gateway firewall binding for SourceOS workloads",
+  "bindingClass": "enterprise-gateway",
+  "mode": "import-only",
+  "owner": "enterprise",
+  "precedence": 0,
+  "conflictPolicy": "enterprise-wins",
+  "rules": [
+    {
+      "ruleId": "allow-enterprise-model-endpoint",
+      "direction": "egress",
+      "decision": "allow",
+      "subject": "sourceos-agent-machine-workloads",
+      "destination": "models.enterprise.example",
+      "ports": [443],
+      "protocols": ["tcp", "https"],
+      "reason": "Enterprise-approved private model endpoint."
+    },
+    {
+      "ruleId": "deny-unapproved-model-egress",
+      "direction": "egress",
+      "decision": "deny",
+      "subject": "sourceos-agent-machine-workloads",
+      "destination": "unapproved-external-model-providers",
+      "ports": [443],
+      "protocols": ["tcp", "https"],
+      "reason": "Corporate firewall owns external model egress approval."
+    }
+  ],
+  "evidence": {
+    "emitRulePlan": true,
+    "emitAppliedRuleReceipt": true,
+    "emitDeniedConnectionReceipt": true,
+    "redactDestinations": true
+  }
+}

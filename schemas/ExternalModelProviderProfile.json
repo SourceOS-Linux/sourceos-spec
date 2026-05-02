@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExternalModelProviderProfile.json",
+  "title": "ExternalModelProviderProfile",
+  "description": "SourceOS profile for enterprise, user, and BYOM model endpoints routed through Network Door, Firewall Door, Mesh Door, and model-router policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "providerClass", "owner", "endpoint", "routing", "policy", "evidence"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:external-model-provider-profile:" },
+    "type": { "const": "ExternalModelProviderProfile" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "providerClass": { "type": "string", "enum": ["openai-compatible", "ollama-remote", "vllm", "tgi", "llama.cpp-server", "mlx-server", "azure-openai", "aws-bedrock", "google-vertex", "anthropic", "enterprise-private", "user-private", "other"] },
+    "owner": { "type": "string", "enum": ["user", "enterprise", "workspace", "tenant", "device"] },
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["baseUrlRef", "authRef"],
+      "properties": {
+        "baseUrlRef": { "type": "string", "description": "Endpoint URI or secret/config reference. Do not inline credentials." },
+        "authRef": { "type": ["string", "null"], "description": "Token Door / secret reference, never an inline token." },
+        "tlsPolicyRef": { "type": ["string", "null"] },
+        "networkAccessProfileRef": { "type": ["string", "null"] },
+        "firewallBindingRef": { "type": ["string", "null"] },
+        "meshBindingRef": { "type": ["string", "null"] }
+      }
+    },
+    "routing": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "modelRouterBindingRef": { "type": ["string", "null"] },
+        "taskClasses": { "type": "array", "items": { "type": "string" } },
+        "fallbackOrder": { "type": "array", "items": { "type": "string" } },
+        "hostedFallbackRequiresPolicy": { "type": "boolean", "default": true }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "promptEgressDefault": { "type": "string", "enum": ["deny", "allow-with-policy", "allow"] },
+        "storePrompts": { "type": "boolean", "default": false },
+        "storeCompletions": { "type": "boolean", "default": false },
+        "allowTrainingUse": { "type": "boolean", "default": false },
+        "requiresDpaOrEnterpriseTerms": { "type": "boolean", "default": true },
+        "requiresUserConsentForPersonalData": { "type": "boolean", "default": true }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emitRouteDecision": { "type": "boolean", "default": true },
+        "emitNetworkDecision": { "type": "boolean", "default": true },
+        "emitProviderHealth": { "type": "boolean", "default": true },
+        "promptHashOnly": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

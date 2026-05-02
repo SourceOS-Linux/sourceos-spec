@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/FirewallBindingProfile.json",
+  "title": "FirewallBindingProfile",
+  "description": "SourceOS firewall binding profile for host, enterprise, and cluster firewall integrations such as LuLu, pf, Windows Defender Firewall, nftables, Cilium, Kubernetes NetworkPolicy, and enterprise gateways.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "bindingClass", "mode", "rules", "evidence"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:firewall-binding-profile:" },
+    "type": { "const": "FirewallBindingProfile" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "bindingClass": { "type": "string", "enum": ["macos-lulu", "macos-pf", "windows-defender-firewall", "linux-nftables", "linux-ufw", "cilium", "kubernetes-network-policy", "enterprise-gateway", "other"] },
+    "mode": { "type": "string", "enum": ["observe", "plan", "enforce", "import-only"] },
+    "owner": { "type": "string", "enum": ["user", "enterprise", "workspace", "device", "cluster"] },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ruleId", "direction", "decision", "subject", "destination"],
+        "properties": {
+          "ruleId": { "type": "string" },
+          "direction": { "type": "string", "enum": ["egress", "ingress", "both"] },
+          "decision": { "type": "string", "enum": ["allow", "deny", "ask", "log-only"] },
+          "subject": { "type": "string", "description": "Process, bundle id, container id, pod selector, service account, or workload identity." },
+          "destination": { "type": "string", "description": "Domain, CIDR, service, mesh host, or provider endpoint ref." },
+          "ports": { "type": "array", "items": { "type": "integer", "minimum": 1, "maximum": 65535 } },
+          "protocols": { "type": "array", "items": { "type": "string", "enum": ["tcp", "udp", "icmp", "http", "https", "grpc", "other"] } },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "precedence": { "type": "integer", "minimum": 0 },
+    "conflictPolicy": { "type": "string", "enum": ["most-restrictive-wins", "enterprise-wins", "user-wins", "deny-on-conflict"] },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emitRulePlan": { "type": "boolean", "default": true },
+        "emitAppliedRuleReceipt": { "type": "boolean", "default": true },
+        "emitDeniedConnectionReceipt": { "type": "boolean", "default": true },
+        "redactDestinations": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

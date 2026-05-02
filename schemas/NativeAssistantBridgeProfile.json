@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/NativeAssistantBridgeProfile.json",
+  "title": "NativeAssistantBridgeProfile",
+  "description": "SourceOS native assistant bridge profile for host/device assistant surfaces such as Apple App Intents, Siri/App Shortcuts, Apple Foundation Models, Android intents, Windows shell integrations, and browser/native extension bridges.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "platform", "bridgeClass", "capabilities", "policy", "evidence"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:native-assistant-bridge-profile:" },
+    "type": { "const": "NativeAssistantBridgeProfile" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "platform": { "type": "string", "enum": ["macos", "ios", "ipados", "watchos", "visionos", "android", "windows", "linux", "browser", "cross-device"] },
+    "bridgeClass": { "type": "string", "enum": ["apple-app-intents", "apple-shortcuts", "apple-foundation-models", "android-intents", "windows-shell", "browser-extension", "native-messaging", "mcp", "other"] },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capabilityId", "operation", "defaultDecision"],
+        "properties": {
+          "capabilityId": { "type": "string" },
+          "operation": { "type": "string", "enum": ["open-workroom", "create-office-artifact", "summarize", "route-local-model", "handoff-to-agent-machine", "inspect-evidence", "search-workspace", "create-reminder", "create-note", "share-artifact", "other"] },
+          "defaultDecision": { "type": "string", "enum": ["allow-readonly", "ask", "deny", "allow-with-policy"] },
+          "requiresUserConfirmation": { "type": "boolean", "default": true },
+          "requiresNetworkProfileRef": { "type": ["string", "null"] },
+          "requiresModelRouteBindingRef": { "type": ["string", "null"] },
+          "requiresAgentRegistryGrantRef": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "localOnlyDefault": { "type": "boolean", "default": true },
+        "allowPromptEgress": { "type": "boolean", "default": false },
+        "allowCrossDeviceHandoff": { "type": "boolean", "default": false },
+        "allowPersonalContextRead": { "type": "boolean", "default": false },
+        "allowSideEffectsWithoutConfirmation": { "type": "boolean", "default": false },
+        "allowedAppSurfaces": { "type": "array", "items": { "type": "string" } },
+        "deniedAppSurfaces": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "dataBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "allowedRefs": { "type": "array", "items": { "type": "string" } },
+        "deniedRefs": { "type": "array", "items": { "type": "string" } },
+        "rawAppDatabaseAccessAllowed": { "type": "boolean", "default": false },
+        "promptHashOnlyEvidence": { "type": "boolean", "default": true }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emitAssistantInvocation": { "type": "boolean", "default": true },
+        "emitUserConfirmation": { "type": "boolean", "default": true },
+        "emitRouteDecision": { "type": "boolean", "default": true },
+        "emitNativeBridgeReceipt": { "type": "boolean", "default": true },
+        "redactPromptText": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

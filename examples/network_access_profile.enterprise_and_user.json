@@ -1,0 +1,52 @@
+{
+  "id": "urn:srcos:network-access-profile:enterprise-and-user-default",
+  "type": "NetworkAccessProfile",
+  "specVersion": "2.2.0",
+  "name": "Enterprise and user network policy stack",
+  "scope": "workspace",
+  "defaultDecision": "deny",
+  "precedence": ["enterprise", "workspace", "device", "user", "agent", "model-provider"],
+  "profiles": [
+    {
+      "profileId": "enterprise-primary-egress",
+      "profileClass": "corporate-firewall",
+      "priority": 0,
+      "defaultEgress": "allow-listed",
+      "allowDomains": [
+        "models.enterprise.example",
+        "registry.enterprise.example",
+        "updates.enterprise.example"
+      ],
+      "denyDomains": ["*"],
+      "allowCidrs": ["10.0.0.0/8", "172.16.0.0/12"],
+      "denyCidrs": [],
+      "proxyRef": "urn:srcos:proxy:enterprise-primary",
+      "firewallBindingRef": "urn:srcos:firewall-binding-profile:enterprise-gateway-default",
+      "meshBindingRef": "urn:srcos:mesh-binding-profile:istio-egress-default",
+      "modelProviderRefs": ["urn:srcos:external-model-provider-profile:enterprise-openai-compatible"],
+      "notes": "Enterprise network profile has higher precedence than user profile."
+    },
+    {
+      "profileId": "user-local-firewall",
+      "profileClass": "user-firewall",
+      "priority": 50,
+      "defaultEgress": "allow-with-prompt",
+      "allowDomains": ["localhost", "127.0.0.1"],
+      "denyDomains": [],
+      "allowCidrs": ["127.0.0.0/8"],
+      "denyCidrs": [],
+      "proxyRef": null,
+      "firewallBindingRef": "urn:srcos:firewall-binding-profile:macos-lulu-user-default",
+      "meshBindingRef": null,
+      "modelProviderRefs": ["urn:srcos:external-model-provider-profile:user-openai-compatible"],
+      "notes": "User profile can be stricter than enterprise policy but cannot override enterprise deny rules."
+    }
+  ],
+  "evidence": {
+    "emitNetworkDecision": true,
+    "emitFirewallBinding": true,
+    "emitMeshBinding": true,
+    "emitModelProviderRoute": true,
+    "redactDestinationPath": true
+  }
+}
