@@ -1,0 +1,73 @@
+{
+  "id": "urn:srcos:agent-machine-mount-policy:default-deny-scoped-roots",
+  "type": "AgentMachineMountPolicy",
+  "specVersion": "2.2.0",
+  "name": "Default deny scoped Agent Machine mount policy",
+  "defaultDecision": "deny",
+  "allowedRoots": [
+    {
+      "path": "~/dev",
+      "pathClass": "code",
+      "accessMode": "read-write",
+      "recursive": true,
+      "requiresGrant": true,
+      "description": "Explicit code/repository workspace root."
+    },
+    {
+      "path": "~/Documents/SourceOS/agent-output",
+      "pathClass": "documents",
+      "accessMode": "read-write",
+      "recursive": true,
+      "requiresGrant": true,
+      "description": "Explicit generated document/report output root."
+    },
+    {
+      "path": "~/Downloads/SourceOS/agent-downloads",
+      "pathClass": "downloads",
+      "accessMode": "browser-read-write-agent-read-only",
+      "recursive": true,
+      "requiresGrant": true,
+      "description": "Scoped browser downloads root; the host Downloads root is not mounted."
+    }
+  ],
+  "deniedPatterns": [
+    { "pattern": "$HOME", "reason": "Whole home directory mounts are forbidden.", "severity": "deny" },
+    { "pattern": "~/.ssh", "reason": "SSH keys must not be exposed through default mounts.", "severity": "deny" },
+    { "pattern": "~/.gnupg", "reason": "GPG keys must not be exposed through default mounts.", "severity": "deny" },
+    { "pattern": "~/Library/Keychains", "reason": "macOS keychain material must not be exposed through filesystem mounts.", "severity": "deny" },
+    { "pattern": "Chrome", "reason": "Browser profiles/cookies are denied by default.", "severity": "deny" },
+    { "pattern": "Firefox", "reason": "Browser profiles/cookies are denied by default.", "severity": "deny" },
+    { "pattern": "~/.aws", "reason": "Cloud credentials require a Secrets Door grant.", "severity": "deny" },
+    { "pattern": "~/.config/gcloud", "reason": "Cloud credentials require a Secrets Door grant.", "severity": "deny" },
+    { "pattern": "~/.azure", "reason": "Cloud credentials require a Secrets Door grant.", "severity": "deny" },
+    { "pattern": "~/.kube", "reason": "Cluster credentials require a Secrets Door grant.", "severity": "deny" }
+  ],
+  "uidGidMapping": {
+    "mode": "runtime-default",
+    "uid": null,
+    "gid": null
+  },
+  "syncMode": "host-bind",
+  "downloadPolicy": {
+    "defaultHostPath": "~/Downloads/SourceOS/agent-downloads",
+    "defaultAgentPath": "/workspace/downloads",
+    "browserAccess": "read-write",
+    "agentAccess": "read-only",
+    "directExecutionAllowed": false,
+    "hashDownloads": true,
+    "recordSourceDomain": true,
+    "mountWholeDownloadsDirectoryAllowed": false
+  },
+  "promotionPolicy": {
+    "downloadsToCodeRequiresEvidence": true,
+    "downloadsToDocumentsRequiresEvidence": true,
+    "allowAutomaticPromotion": false
+  },
+  "evidence": {
+    "required": true,
+    "recordDeniedAttempts": true,
+    "recordMountLaunch": true,
+    "recordPromotionActions": true,
+    "redactHostUserName": true
+  }
+}
