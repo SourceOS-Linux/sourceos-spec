@@ -1,0 +1,77 @@
+{
+  "id": "urn:srcos:agent-machine-local-data-plane:macos-default",
+  "type": "AgentMachineLocalDataPlane",
+  "specVersion": "2.2.0",
+  "name": "macOS default Agent Machine local data plane",
+  "profileRef": "urn:srcos:agent-machine-profile:macos-podman-default",
+  "hostAdapter": "macos",
+  "storageBackend": "podman-machine-bind",
+  "denyByDefault": true,
+  "sensitivePathDenylist": [
+    "~/.ssh",
+    "~/.gnupg",
+    "~/Library/Keychains",
+    "~/Library/Application Support/Google/Chrome",
+    "~/Library/Application Support/Firefox",
+    "~/.aws",
+    "~/.config/gcloud",
+    "~/.azure",
+    "~/.kube",
+    "~/.docker",
+    "~/.npmrc",
+    "~/.pypirc"
+  ],
+  "mounts": [
+    {
+      "mountId": "dev-root",
+      "pathClass": "code",
+      "hostPath": "~/dev",
+      "agentPath": "/workspace/dev",
+      "accessMode": "read-write",
+      "defaultFor": ["agent", "editor", "terminal", "openclaw", "hermes", "codex", "claude-code"],
+      "repoAllowlist": ["*"],
+      "secretsProhibited": true,
+      "directExecutionAllowed": true,
+      "createIfMissing": false,
+      "retentionPolicy": "user-managed",
+      "description": "User repository root. This is explicit workspace code storage, not a wholesale home mount."
+    },
+    {
+      "mountId": "docs-output",
+      "pathClass": "documents",
+      "hostPath": "~/Documents/SourceOS/agent-output",
+      "agentPath": "/workspace/output",
+      "accessMode": "read-write",
+      "defaultFor": ["agent", "editor", "terminal", "openclaw", "hermes", "codex", "claude-code"],
+      "secretsProhibited": true,
+      "directExecutionAllowed": false,
+      "createIfMissing": true,
+      "retentionPolicy": "user-managed",
+      "description": "Default document/report output area for agent-authored files."
+    },
+    {
+      "mountId": "browser-downloads",
+      "pathClass": "downloads",
+      "hostPath": "~/Downloads/SourceOS/agent-downloads",
+      "agentPath": "/workspace/downloads",
+      "accessMode": "browser-read-write-agent-read-only",
+      "defaultFor": ["browser"],
+      "secretsProhibited": true,
+      "directExecutionAllowed": false,
+      "createIfMissing": true,
+      "retentionPolicy": "user-managed",
+      "description": "Scoped browser downloads folder. The full host Downloads directory is intentionally not mounted."
+    }
+  ],
+  "evidence": {
+    "required": true,
+    "recordHostPath": true,
+    "recordAgentPath": true,
+    "recordAccessMode": true,
+    "recordPolicyHash": true,
+    "recordGitRefWhenAvailable": true,
+    "recordStorageBackend": true,
+    "recordDownloadHashes": true
+  },
+  "notes": "Mac local mode uses Podman-machine bind semantics. TopoLVM is not used on APFS/macOS; it is the Linux cluster-local backend profile for the same logical mount contract."
+}
