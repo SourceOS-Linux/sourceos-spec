@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentMachineMountPolicy.json",
+  "title": "AgentMachineMountPolicy",
+  "description": "A SourceOS Agent Machine mount policy governing allowed host roots, denied sensitive paths, access modes, sync posture, and evidence for local and TopoLVM-backed workspace mounts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "defaultDecision",
+    "allowedRoots",
+    "deniedPatterns"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:agent-machine-mount-policy:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:agent-machine-mount-policy:<local-id>."
+    },
+    "type": {
+      "const": "AgentMachineMountPolicy"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "defaultDecision": {
+      "type": "string",
+      "enum": ["deny", "ask", "permit"],
+      "description": "Default decision for mounts not matching an explicit allowed root. Recommended: deny."
+    },
+    "allowedRoots": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/allowedRoot" }
+    },
+    "deniedPatterns": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/deniedPattern" }
+    },
+    "uidGidMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["runtime-default", "keep-id", "explicit"] },
+        "uid": { "type": ["integer", "null"], "minimum": 0 },
+        "gid": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "syncMode": {
+      "type": "string",
+      "enum": ["host-bind", "cached", "delegated", "rsync", "topolvm-local", "other"],
+      "default": "host-bind"
+    },
+    "downloadPolicy": {
+      "$ref": "#/$defs/downloadPolicy"
+    },
+    "promotionPolicy": {
+      "$ref": "#/$defs/promotionPolicy"
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    }
+  },
+  "$defs": {
+    "allowedRoot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "pathClass", "accessMode"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "pathClass": {
+          "type": "string",
+          "enum": ["code", "documents", "downloads", "cache", "artifacts", "media", "app-bridge"]
+        },
+        "accessMode": {
+          "type": "string",
+          "enum": ["read-only", "read-write", "browser-read-write-agent-read-only", "write-only-artifacts"]
+        },
+        "recursive": { "type": "boolean", "default": false },
+        "requiresGrant": { "type": "boolean", "default": true },
+        "description": { "type": "string" }
+      }
+    },
+    "deniedPattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pattern", "reason"],
+      "properties": {
+        "pattern": { "type": "string", "minLength": 1 },
+        "reason": { "type": "string", "minLength": 1 },
+        "severity": { "type": "string", "enum": ["warn", "deny"], "default": "deny" }
+      }
+    },
+    "downloadPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "defaultHostPath": { "type": "string", "default": "~/Downloads/SourceOS/agent-downloads" },
+        "defaultAgentPath": { "type": "string", "default": "/workspace/downloads" },
+        "browserAccess": { "type": "string", "enum": ["read-write", "none"], "default": "read-write" },
+        "agentAccess": { "type": "string", "enum": ["read-only", "read-write", "none"], "default": "read-only" },
+        "directExecutionAllowed": { "type": "boolean", "default": false },
+        "hashDownloads": { "type": "boolean", "default": true },
+        "recordSourceDomain": { "type": "boolean", "default": true },
+        "mountWholeDownloadsDirectoryAllowed": { "type": "boolean", "default": false }
+      }
+    },
+    "promotionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "downloadsToCodeRequiresEvidence": { "type": "boolean", "default": true },
+        "downloadsToDocumentsRequiresEvidence": { "type": "boolean", "default": true },
+        "allowAutomaticPromotion": { "type": "boolean", "default": false }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean", "default": true },
+        "recordDeniedAttempts": { "type": "boolean", "default": true },
+        "recordMountLaunch": { "type": "boolean", "default": true },
+        "recordPromotionActions": { "type": "boolean", "default": true },
+        "redactHostUserName": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}
