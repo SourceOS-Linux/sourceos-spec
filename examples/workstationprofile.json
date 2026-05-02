@@ -13,6 +13,13 @@
   "validation": {
     "doctorCommand": "sourceos doctor --json",
     "statusCommand": "sourceos status --json",
-    "searchCommand": "sourceos search --snippet"
+    "searchCommand": "sourceos search --snippet",
+    "polishValidationCommand": "sourceos polish validate --json"
+  },
+  "macOnLinuxPolish": {
+    "status": "active",
+    "screenshotHelperCommand": "sourceos-screenshot",
+    "quickLookPackages": ["gnome-sushi"],
+    "keymapPolicyRef": "urn:srcos:keymap-profile:mac-linux-primary"
   }
 }
