@@ -65,6 +65,37 @@
     "launcherProviderRef": {
       "type": ["string", "null"],
       "description": "Optional reference to the primary LauncherProvider."
+    },
+    "macOnLinuxPolish": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional bounded Mac-on-Linux polish metadata. This records active and future workstation polish signals without claiming full macOS parity.",
+      "properties": {
+        "implementationAuthority": {
+          "type": "string",
+          "description": "Repository or authority responsible for concrete realization."
+        },
+        "activeFeatures": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Currently active / implemented polish signals."
+        },
+        "validationBackedFeatures": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Signals backed by helper or CI validation surfaces."
+        },
+        "proposedFeatures": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Future or proposed signals that must not be counted as delivered."
+        },
+        "nonGoals": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Explicit non-goals for this desktop profile."
+        }
+      }
     }
   }
 }

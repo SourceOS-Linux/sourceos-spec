@@ -17,6 +17,26 @@
       "name": "SourceOS Terminal",
       "binding": "<Super>Return",
       "command": "gnome-terminal"
+    },
+    {
+      "name": "SourceOS Screenshot Screen",
+      "binding": "<Super><Shift>3",
+      "command": "mac-screenshot.sh screen"
+    },
+    {
+      "name": "SourceOS Screenshot Area",
+      "binding": "<Super><Shift>4",
+      "command": "mac-screenshot.sh area"
+    },
+    {
+      "name": "SourceOS Screenshot Interactive",
+      "binding": "<Super><Shift>5",
+      "command": "mac-screenshot.sh interactive"
+    },
+    {
+      "name": "SourceOS Screenshots Folder",
+      "binding": "<Super><Shift>6",
+      "command": "mac-screenshot.sh open-dir"
     }
   ],
   "input": {
@@ -24,5 +44,39 @@
     "compatibilityBackends": ["xremap", "kinto"],
     "gestures": "fusuma"
   },
-  "launcherProviderRef": "urn:srcos:launcher-provider:sourceos-palette"
+  "launcherProviderRef": "urn:srcos:launcher-provider:sourceos-palette",
+  "macOnLinuxPolish": {
+    "implementationAuthority": "SociOS-Linux/source-os",
+    "activeFeatures": [
+      "sourceos-palette",
+      "files-shortcut",
+      "terminal-shortcut",
+      "screenshot-shortcuts",
+      "sushi-quick-preview",
+      "finder-like-sidebar-bookmarks",
+      "bounded-gnome-appearance-defaults",
+      "fusuma-gesture-lane"
+    ],
+    "validationBackedFeatures": [
+      "shortcut-map-contract",
+      "keyboard-remap-policy",
+      "mac-polish-helper",
+      "aggregate-polish-helper",
+      "gnome-dock-extension-helper",
+      "status-json-polish-warnings",
+      "lampstand-search-lane"
+    ],
+    "proposedFeatures": [
+      "doctor-aggregate-polish-integration",
+      "richer-palette-provider-routing",
+      "mission-control-style-overview-tuning",
+      "text-editing-modifier-parity"
+    ],
+    "nonGoals": [
+      "full-macos-ui-clone",
+      "gnome-shell-fork",
+      "libadwaita-replacement",
+      "proprietary-asset-requirement"
+    ]
+  }
 }

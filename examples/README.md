@@ -8,6 +8,8 @@ This directory contains one conforming JSON example payload for each top-level s
 
 The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state. Compression Commons examples add an artifact-versus-baseline evaluation record that references existing governance, execution, provenance, and content-reference contracts.
 
+Desktop/workstation examples may include bounded Mac-on-Linux polish metadata. These are contract signals only: concrete implementation authority remains in `SociOS-Linux/source-os`, and the examples do not claim full macOS parity.
+
 ```text
 connector.json       ──► asset.json
                               │
@@ -188,11 +190,11 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `schema.json` | SchemaDefinition | The schema for health observations |
 | `session_receipt.json` | SessionReceipt | Receipt for the completed agent session |
 | `session_review.json` | SessionReview | Post-session learning review |
-| `settlement_event.json` | SettlementEvent | Optional receipt-to-settlement mapping |
+| `settlement_event.json` | Optional receipt-to-settlement mapping |
 | `skill_manifest.json` | SkillManifest | The obfuscation skill manifest |
 | `telemetry_event.json` | TelemetryEvent | An informational telemetry event from the agent session |
 | `topic.json` | Topic | FogVault topic definition |
-| `topic_envelope.json` | TopicEnvelope | FogVault append-only entry envelope |
+| `topic_envelope.json` | FogVault append-only entry envelope |
 | `truth_surface.json` | TruthSurface | Truth Plane truth surface example |
 | `workflow_spec.json` | WorkflowSpec | The health-data obfuscation workflow |
 | `workorder.json` | WorkOrder | FogCompute work order |
