@@ -59,9 +59,38 @@
       "properties": {
         "doctorCommand": { "type": ["string", "null"] },
         "statusCommand": { "type": ["string", "null"] },
-        "searchCommand": { "type": ["string", "null"] }
+        "searchCommand": { "type": ["string", "null"] },
+        "polishValidationCommand": {
+          "type": ["string", "null"],
+          "description": "Aggregate Mac-on-Linux polish validation entrypoint."
+        }
       },
       "description": "Operator-facing validation and inspection entrypoints."
+    },
+    "macOnLinuxPolish": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Mac-on-Linux polish signal set. Implementation authority: SociOS-Linux/source-os. Use 'status: active' for signals that are live in SociOS-Linux/source-os; use 'planned' or 'non-goal' to record intent or explicit exclusions.",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["active", "planned", "non-goal"],
+          "description": "Implementation state of the Mac-on-Linux polish surface for this profile. Use 'active' for features shipped in SociOS-Linux/source-os, 'planned' for accepted follow-on work, and 'non-goal' to explicitly record excluded features."
+        },
+        "screenshotHelperCommand": {
+          "type": ["string", "null"],
+          "description": "Shell command providing Mac-style screenshot capture (e.g. sourceos-screenshot)."
+        },
+        "quickLookPackages": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Package names providing Quick Look / Sushi-compatible file preview support."
+        },
+        "keymapPolicyRef": {
+          "type": ["string", "null"],
+          "description": "URN reference to a KeymapProfile expressing the Mac-keyboard remap policy."
+        }
+      }
     }
   }
 }

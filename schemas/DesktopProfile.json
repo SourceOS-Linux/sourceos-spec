@@ -65,6 +65,39 @@
     "launcherProviderRef": {
       "type": ["string", "null"],
       "description": "Optional reference to the primary LauncherProvider."
+    },
+    "appearance": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Bounded appearance defaults for the desktop environment.",
+      "properties": {
+        "colorScheme": {
+          "type": "string",
+          "enum": ["light", "dark", "follow-system"],
+          "description": "Preferred color scheme."
+        },
+        "accentColor": {
+          "type": ["string", "null"],
+          "description": "Accent color token or hex value."
+        },
+        "fontScaling": {
+          "type": ["number", "null"],
+          "description": "Font scaling factor (1.0 = default)."
+        }
+      }
+    },
+    "sidebarBookmarks": {
+      "type": "array",
+      "description": "Sidebar (e.g., Files/Nautilus) bookmark entries mirroring Mac Finder sidebar conventions.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "path"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 }
+        }
+      }
     }
   }
 }
