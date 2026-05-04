@@ -1,0 +1,85 @@
+{
+  "policyId": "urn:srcos:bearhistory-sync-policy:default-local-first-v1",
+  "specVersion": "2.0.0",
+  "serviceManifestRef": "urn:srcos:local-first-service:bearhistoryd",
+  "profilePolicies": [
+    {
+      "profileClass": "human-secure",
+      "exportToOpsHistory": "deny",
+      "syncWindowSeconds": 1209600,
+      "payloadCapChars": 100000,
+      "profileBoundary": {
+        "credentialsExportAllowed": false,
+        "cookiesExportAllowed": false,
+        "ambientSessionExportAllowed": false
+      },
+      "lanes": [
+        {
+          "lane": "save",
+          "priority": "maintenance",
+          "idleDelaySeconds": 90,
+          "cadence": [
+            { "count": 1, "intervalSeconds": 86400 }
+          ],
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "redaction",
+          "priority": "critical",
+          "idleDelaySeconds": 6,
+          "cadence": [
+            { "count": 20, "intervalSeconds": 5 }
+          ],
+          "requiresPolicyDecision": true
+        }
+      ]
+    },
+    {
+      "profileClass": "agent-runtime",
+      "exportToOpsHistory": "policy-gated",
+      "syncWindowSeconds": 604800,
+      "payloadCapChars": 50000,
+      "profileBoundary": {
+        "credentialsExportAllowed": false,
+        "cookiesExportAllowed": false,
+        "ambientSessionExportAllowed": false
+      },
+      "lanes": [
+        {
+          "lane": "save",
+          "priority": "normal",
+          "idleDelaySeconds": 30,
+          "cadence": [
+            { "count": 50, "intervalSeconds": 60 },
+            { "count": 10, "intervalSeconds": 300 }
+          ],
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "export",
+          "priority": "normal",
+          "idleDelaySeconds": 30,
+          "cadence": [
+            { "count": 20, "intervalSeconds": 180 }
+          ],
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "redaction",
+          "priority": "critical",
+          "idleDelaySeconds": 6,
+          "cadence": [
+            { "count": 20, "intervalSeconds": 5 }
+          ],
+          "requiresPolicyDecision": true
+        }
+      ]
+    }
+  ],
+  "network": {
+    "offlineBehavior": "queue-local",
+    "meteredAllowed": false,
+    "batteryAllowed": true,
+    "transferDirection": "bidirectional"
+  }
+}
