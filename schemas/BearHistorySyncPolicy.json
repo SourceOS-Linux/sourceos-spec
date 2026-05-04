@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/BearHistorySyncPolicy.json",
+  "title": "BearHistorySyncPolicy",
+  "description": "Local-first BearBrowser history/session/capture sync policy with profile separation, payload caps, throttling, and redaction priority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policyId", "specVersion", "profilePolicies", "serviceManifestRef"],
+  "properties": {
+    "policyId": { "type": "string", "pattern": "^urn:srcos:bearhistory-sync-policy:" },
+    "specVersion": { "type": "string" },
+    "serviceManifestRef": { "type": "string" },
+    "profilePolicies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["profileClass", "exportToOpsHistory", "syncWindowSeconds", "payloadCapChars", "lanes"],
+        "properties": {
+          "profileClass": { "type": "string", "enum": ["human-secure", "agent-runtime"] },
+          "exportToOpsHistory": { "type": "string", "enum": ["deny", "metadata-only", "summary", "ref-only", "policy-gated"] },
+          "syncWindowSeconds": { "type": "integer", "minimum": 0 },
+          "payloadCapChars": { "type": "integer", "minimum": 0 },
+          "profileBoundary": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["credentialsExportAllowed", "cookiesExportAllowed", "ambientSessionExportAllowed"],
+            "properties": {
+              "credentialsExportAllowed": { "type": "boolean" },
+              "cookiesExportAllowed": { "type": "boolean" },
+              "ambientSessionExportAllowed": { "type": "boolean" }
+            }
+          },
+          "lanes": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["lane", "priority", "cadence"],
+              "properties": {
+                "lane": { "type": "string", "enum": ["save", "fetch", "push", "export", "redaction"] },
+                "priority": { "type": "string", "enum": ["maintenance", "normal", "high", "critical"] },
+                "idleDelaySeconds": { "type": ["integer", "null"], "minimum": 0 },
+                "cadence": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["count", "intervalSeconds"],
+                    "properties": {
+                      "count": { "type": "integer", "minimum": 1 },
+                      "intervalSeconds": { "type": "integer", "minimum": 0 }
+                    }
+                  }
+                },
+                "requiresPolicyDecision": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "offlineBehavior": { "type": "string", "enum": ["queue-local", "deny", "metadata-only", "ref-only"] },
+        "meteredAllowed": { "type": "boolean" },
+        "batteryAllowed": { "type": "boolean" },
+        "transferDirection": { "type": "string", "enum": ["none", "upload", "download", "bidirectional"] }
+      }
+    }
+  }
+}
