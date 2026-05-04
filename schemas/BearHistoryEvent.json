@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/BearHistoryEvent.json",
+  "title": "BearHistoryEvent",
+  "description": "Governed BearBrowser browser-state event for local-first sync and OpsHistory export.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventId", "specVersion", "profileClass", "eventClass", "occurredAt", "payloadMode", "policyDecisionRefs"],
+  "properties": {
+    "eventId": { "type": "string", "pattern": "^urn:srcos:bearhistory-event:" },
+    "specVersion": { "type": "string" },
+    "profileClass": { "type": "string", "enum": ["human-secure", "agent-runtime"] },
+    "eventClass": {
+      "type": "string",
+      "enum": ["navigation", "tab-session", "download-metadata", "capture-metadata", "automation-action", "credential-boundary", "policy-decision", "artifact-ref", "redaction-tombstone"]
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "sessionRef": { "type": ["string", "null"] },
+    "opsHistoryEventRef": { "type": ["string", "null"] },
+    "payloadMode": { "type": "string", "enum": ["metadata-only", "summary", "ref-only", "inline-bounded", "redacted"] },
+    "payload": { "type": ["object", "null"], "additionalProperties": true },
+    "artifactRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "redactionRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "policyDecisionRefs": { "type": "array", "items": { "type": "string" } },
+    "profileBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "humanProfileExportAllowed": { "type": "boolean" },
+        "agentRuntimeExportAllowed": { "type": "boolean" },
+        "credentialMaterialIncluded": { "type": "boolean" },
+        "cookieMaterialIncluded": { "type": "boolean" }
+      }
+    }
+  }
+}
