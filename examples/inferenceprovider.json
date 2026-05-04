@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:inference-provider:llama-cpp-cpu-arm64-local",
+  "type": "InferenceProvider",
+  "specVersion": "2.1.0",
+  "providerClass": "llama.cpp",
+  "endpointMode": "local-http",
+  "executionProfile": "cpu-arm64",
+  "trustPosture": "local-sandboxed",
+  "supportedModalities": [
+    "text",
+    "code",
+    "embedding"
+  ],
+  "openAICompatible": true,
+  "requiresNetwork": false,
+  "evidenceRefs": [
+    "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+  ]
+}
