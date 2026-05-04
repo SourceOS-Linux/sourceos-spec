@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:agent-machine-receipt:m2-asahi-observation-20260504t170000z",
+  "type": "AgentMachineReceipt",
+  "specVersion": "2.1.0",
+  "machineRef": "urn:srcos:agent-machine:m2-asahi-local",
+  "receiptClass": "probe",
+  "issuedAt": "2026-05-04T17:00:10Z",
+  "taskRef": "urn:prophet:run-capsule:local-observation-20260504",
+  "agentPodRef": "urn:srcos:agent-pod:local-observation-0001",
+  "placementFactRefs": [
+    "urn:srcos:placement-fact:m2-asahi-local-20260504t170000z"
+  ],
+  "modelResidencyRefs": [
+    "urn:srcos:model-residency:m2-local-llama32-3b-20260504t170000z"
+  ],
+  "inferenceProviderRefs": [
+    "urn:srcos:inference-provider:llama-cpp-cpu-arm64-local"
+  ],
+  "policyDecisionRef": "urn:srcos:decision:runtime-observation-20260504",
+  "verdict": "observed",
+  "metrics": {
+    "durationMs": 142.0,
+    "providerCount": 1,
+    "residentModelCount": 1
+  },
+  "evidenceHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "evidenceRefs": [
+    "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  ]
+}
