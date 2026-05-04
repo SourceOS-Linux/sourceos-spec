@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ModelResidency.json",
+  "title": "ModelResidency",
+  "description": "Point-in-time evidence that a governed model reference is available, loaded, warm, pinned, evictable, or unavailable on an Agent Machine.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "machineRef", "modelCarryRef", "providerRef", "residencyState", "observedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:model-residency:", "description": "Stable URN identifier. Pattern: urn:srcos:model-residency:<local-id>" },
+    "type": { "const": "ModelResidency", "description": "Discriminator constant — always \"ModelResidency\"." },
+    "specVersion": { "type": "string", "description": "Spec version of this document, e.g. \"2.1.0\"." },
+    "machineRef": { "type": "string", "pattern": "^urn:srcos:agent-machine:", "description": "Agent Machine URN where residency was observed." },
+    "modelCarryRef": { "type": "string", "pattern": "^urn:srcos:model-carry-ref:", "description": "SourceOSModelCarryRef URN for the governed model/service reference." },
+    "providerRef": { "type": "string", "pattern": "^urn:srcos:inference-provider:", "description": "InferenceProvider URN serving or expected to serve the model." },
+    "residencyState": { "type": "string", "enum": ["unavailable", "downloadable", "cached", "loading", "loaded-cold", "loaded-warm", "pinned", "evictable", "failed"], "description": "Observed model residency state." },
+    "quantization": { "type": ["string", "null"], "description": "Quantization or precision label when known, such as q4_k_m, int8, fp16, or null." },
+    "bytesOnDisk": { "type": ["integer", "null"], "minimum": 0, "description": "Observed model bytes on local storage, or null when unknown." },
+    "cacheTier": { "type": ["string", "null"], "enum": ["ram", "nvme", "object-store", "network-cache", "none", null], "description": "Primary cache tier currently holding the model or null when unknown." },
+    "observedAt": { "type": "string", "format": "date-time", "description": "Timestamp when residency was observed." },
+    "evidenceRefs": { "type": "array", "description": "Evidence URNs or content hashes for probe output, checksums, and provider state.", "items": { "type": "string" } }
+  }
+}
