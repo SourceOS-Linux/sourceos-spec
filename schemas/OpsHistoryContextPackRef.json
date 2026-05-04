@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OpsHistoryContextPackRef.json",
+  "title": "OpsHistoryContextPackRef",
+  "description": "Reference envelope for bounded, policy-admitted context packs exchanged between OpsHistory, Memory Mesh, and AgentPlane.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contextPackRef", "specVersion", "scope", "payloadMode", "sourceEventRefs", "policyDecisionRefs"],
+  "properties": {
+    "contextPackRef": { "type": "string", "pattern": "^urn:srcos:context-pack:" },
+    "specVersion": { "type": "string" },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["workroomRef"],
+      "properties": {
+        "roomRef": { "type": ["string", "null"] },
+        "threadRef": { "type": ["string", "null"] },
+        "workroomRef": { "type": "string" },
+        "topicRef": { "type": ["string", "null"] },
+        "sessionRef": { "type": ["string", "null"] }
+      }
+    },
+    "payloadMode": { "type": "string", "enum": ["summary", "ref-only", "metadata-only", "redacted"] },
+    "sourceEventRefs": { "type": "array", "items": { "type": "string" } },
+    "artifactRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "memoryMeshRef": { "type": ["string", "null"] },
+    "agentPlaneRef": { "type": ["string", "null"] },
+    "retention": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mode": { "type": "string", "enum": ["ephemeral", "durable", "deny-writeback"] },
+        "ttlSeconds": { "type": ["integer", "null"], "minimum": 0 },
+        "promotionRequiresPolicyDecision": { "type": "boolean" }
+      }
+    },
+    "redactionRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "policyDecisionRefs": { "type": "array", "items": { "type": "string" } },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}
