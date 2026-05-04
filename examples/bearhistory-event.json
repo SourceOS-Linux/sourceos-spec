@@ -1,0 +1,26 @@
+{
+  "eventId": "urn:srcos:bearhistory-event:agent-runtime-navigation-0001",
+  "specVersion": "2.0.0",
+  "profileClass": "agent-runtime",
+  "eventClass": "navigation",
+  "occurredAt": "2026-05-04T17:40:00Z",
+  "sessionRef": "urn:srcos:browser-session:agent-runtime-demo-0001",
+  "opsHistoryEventRef": "urn:srcos:ops-history-event:bearbrowser-navigation-demo-0001",
+  "payloadMode": "metadata-only",
+  "payload": {
+    "navigationClass": "policy-admitted",
+    "destinationHashRef": "urn:srcos:content-ref:sha256-demo-destination",
+    "rawUrlIncluded": false
+  },
+  "artifactRefs": [],
+  "redactionRefs": [],
+  "policyDecisionRefs": [
+    "urn:srcos:policy-decision:browser-event-export-metadata-only-0001"
+  ],
+  "profileBoundary": {
+    "humanProfileExportAllowed": false,
+    "agentRuntimeExportAllowed": true,
+    "credentialMaterialIncluded": false,
+    "cookieMaterialIncluded": false
+  }
+}
