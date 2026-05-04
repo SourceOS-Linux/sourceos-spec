@@ -1,0 +1,26 @@
+{
+  "tombstoneId": "urn:srcos:redaction-tombstone:demo-credential-boundary-0001",
+  "specVersion": "2.0.0",
+  "issuedAt": "2026-05-04T17:35:00Z",
+  "issuerRef": "urn:srcos:subject:operator-demo",
+  "targetRefs": [
+    "urn:srcos:ops-history-event:demo-agentterm-0001",
+    "urn:srcos:context-pack:ops-history-demo-0001"
+  ],
+  "reasonClass": "sensitive-context",
+  "priority": "critical",
+  "propagation": {
+    "targetPropagationSeconds": 30,
+    "invalidateContextPacks": true,
+    "invalidateMemoryWritebacks": true,
+    "invalidateArtifactExports": true,
+    "notifyAgents": true
+  },
+  "replacementRef": null,
+  "policyDecisionRefs": [
+    "urn:srcos:policy-decision:redact-sensitive-context-0001"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:evidence:redaction-demo-0001"
+  ]
+}
