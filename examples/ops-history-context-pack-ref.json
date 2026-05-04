@@ -1,0 +1,32 @@
+{
+  "contextPackRef": "urn:srcos:context-pack:ops-history-demo-0001",
+  "specVersion": "2.0.0",
+  "scope": {
+    "roomRef": "urn:srcos:matrix-room:sourceos-build",
+    "threadRef": "urn:srcos:thread:ops-history-demo",
+    "workroomRef": "urn:srcos:workroom:professional-intelligence-demo",
+    "topicRef": "urn:srcos:topic:professional-intelligence",
+    "sessionRef": "urn:srcos:agent-session:codex-demo-0001"
+  },
+  "payloadMode": "summary",
+  "sourceEventRefs": [
+    "urn:srcos:ops-history-event:demo-agentterm-0001"
+  ],
+  "artifactRefs": [
+    "urn:srcos:artifact-ref:agentplane-context-intake-demo-0001"
+  ],
+  "memoryMeshRef": "urn:srcos:memory-mesh:context-pack-demo-0001",
+  "agentPlaneRef": "urn:srcos:agentplane:context-intake-demo-0001",
+  "retention": {
+    "mode": "ephemeral",
+    "ttlSeconds": 604800,
+    "promotionRequiresPolicyDecision": true
+  },
+  "redactionRefs": [],
+  "policyDecisionRefs": [
+    "urn:srcos:policy-decision:hydrate-context-summary-only-0001"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:evidence:context-pack-ref-demo-0001"
+  ]
+}
