@@ -1,0 +1,35 @@
+{
+  "eventId": "urn:srcos:ops-history-event:demo-agentterm-0001",
+  "specVersion": "2.0.0",
+  "eventClass": "agent.handoff",
+  "occurredAt": "2026-05-04T17:30:00Z",
+  "actorRef": "urn:srcos:agent:codex-demo",
+  "agentRegistryRef": "urn:srcos:agent-registry-grant:codex-demo-read-summary",
+  "scope": {
+    "sourcePlane": "agent-term",
+    "roomRef": "urn:srcos:matrix-room:sourceos-build",
+    "threadRef": "urn:srcos:thread:ops-history-demo",
+    "workroomRef": "urn:srcos:workroom:professional-intelligence-demo",
+    "topicRef": "urn:srcos:topic:professional-intelligence",
+    "profileRef": "urn:srcos:profile:agent-runtime",
+    "sessionRef": "urn:srcos:agent-session:codex-demo-0001"
+  },
+  "payloadMode": "summary",
+  "payload": {
+    "summary": "Agent handoff requested for bounded OpsHistory contract implementation.",
+    "nextAction": "validate schemas and examples",
+    "rawTranscriptIncluded": false
+  },
+  "artifactRefs": [],
+  "policyDecisionRefs": [
+    "urn:srcos:policy-decision:hydrate-context-summary-only-0001"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:evidence:agentplane-context-intake-demo-0001"
+  ],
+  "redactionRefs": [],
+  "integrity": {
+    "eventHash": null,
+    "signature": null
+  }
+}
