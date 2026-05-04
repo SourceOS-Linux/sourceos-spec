@@ -1,0 +1,97 @@
+{
+  "policyId": "urn:srcos:ops-history-sync-policy:default-local-first-v1",
+  "specVersion": "2.0.0",
+  "defaultPayloadCapChars": 100000,
+  "defaultSyncWindowSeconds": 1209600,
+  "offlineBehavior": "queue-local",
+  "topologyProfiles": [
+    {
+      "name": "solo-local",
+      "eventLanes": [
+        {
+          "lane": "control",
+          "priority": "maintenance",
+          "cadence": [
+            { "count": 1, "intervalSeconds": 3600 }
+          ],
+          "payloadCapChars": 10000,
+          "syncWindowSeconds": 86400,
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "redaction",
+          "priority": "critical",
+          "cadence": [
+            { "count": 5, "intervalSeconds": 5 }
+          ],
+          "payloadCapChars": 2000,
+          "syncWindowSeconds": 1209600,
+          "requiresPolicyDecision": true
+        }
+      ]
+    },
+    {
+      "name": "active-multi-agent-room",
+      "eventLanes": [
+        {
+          "lane": "control",
+          "priority": "high",
+          "cadence": [
+            { "count": 50, "intervalSeconds": 60 },
+            { "count": 20, "intervalSeconds": 300 },
+            { "count": 10, "intervalSeconds": 1800 }
+          ],
+          "payloadCapChars": 50000,
+          "syncWindowSeconds": 1209600,
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "operational",
+          "priority": "normal",
+          "cadence": [
+            { "count": 50, "intervalSeconds": 180 },
+            { "count": 20, "intervalSeconds": 600 },
+            { "count": 10, "intervalSeconds": 3600 }
+          ],
+          "payloadCapChars": 25000,
+          "syncWindowSeconds": 604800,
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "memory",
+          "priority": "maintenance",
+          "cadence": [
+            { "count": 10, "intervalSeconds": 1800 },
+            { "count": 2, "intervalSeconds": 14400 }
+          ],
+          "payloadCapChars": 20000,
+          "syncWindowSeconds": 604800,
+          "requiresPolicyDecision": true
+        },
+        {
+          "lane": "redaction",
+          "priority": "critical",
+          "cadence": [
+            { "count": 20, "intervalSeconds": 5 },
+            { "count": 10, "intervalSeconds": 30 }
+          ],
+          "payloadCapChars": 2000,
+          "syncWindowSeconds": 1209600,
+          "requiresPolicyDecision": true
+        }
+      ]
+    }
+  ],
+  "redactionPriority": {
+    "priority": "critical",
+    "targetPropagationSeconds": 30,
+    "invalidateContextPacks": true,
+    "invalidateMemoryWritebacks": true,
+    "invalidateArtifactExports": true
+  },
+  "network": {
+    "meteredAllowed": false,
+    "batteryAllowed": true,
+    "transferDirection": "bidirectional"
+  }
+}
