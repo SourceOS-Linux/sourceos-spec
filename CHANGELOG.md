@@ -9,6 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ## [Unreleased]
 
 ### Added
+- Agent Machine / Model Carry schemas: `SourceOSModelCarryRef`, `InferenceProvider`, `ModelResidency`, `PlacementFact`, and `AgentMachineReceipt` with canonical examples and a contract-additions placement note.
 - NLBoot object schemas: `NLBootPlan`, `ArtifactCacheRecord`, `BootProofRecord`, `AppleSiliconAdapterEvidence` with canonical examples and validation (`tools/validate_nlboot_examples.py`)
 - Compression Commons: `CompressionEvaluation` schema and canonical example (`examples/compressionevaluation.json`)
 - Truth Plane: `TruthSurface` and `DeltaSurface` schemas + canonical examples (`examples/truth_surface.json`, `examples/delta_surface.json`)
