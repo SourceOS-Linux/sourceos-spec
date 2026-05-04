@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ShellReceiptEvent.json",
+  "title": "ShellReceiptEvent",
+  "description": "Governed SourceOS shell/TurtleTerm/cloud-fog receipt event. Content capture is disabled by default; result material should be capped, summarized, or ref-only by policy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["eventId", "specVersion", "eventClass", "occurredAt", "actorRef", "payloadMode", "policyDecisionRefs"],
+  "properties": {
+    "eventId": { "type": "string", "pattern": "^urn:srcos:shell-receipt-event:" },
+    "specVersion": { "type": "string" },
+    "eventClass": {
+      "type": "string",
+      "enum": ["session-start", "session-end", "command-request", "execution-start", "execution-complete", "execution-fail", "artifact-ref", "agent-delegation", "policy-decision", "cloudfog-attach", "cloudfog-detach", "redaction-tombstone"]
+    },
+    "occurredAt": { "type": "string", "format": "date-time" },
+    "actorRef": { "type": "string" },
+    "agentRegistryRef": { "type": ["string", "null"] },
+    "sessionRef": { "type": ["string", "null"] },
+    "workroomRef": { "type": ["string", "null"] },
+    "payloadMode": { "type": "string", "enum": ["metadata-only", "summary", "ref-only", "inline-bounded", "redacted"] },
+    "contentCaptureEnabled": { "type": "boolean", "default": false },
+    "payload": { "type": ["object", "null"], "additionalProperties": true },
+    "artifactRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "policyDecisionRefs": { "type": "array", "items": { "type": "string" } },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "redactionRefs": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}
