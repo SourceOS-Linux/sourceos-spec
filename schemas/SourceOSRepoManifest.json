@@ -1,0 +1,106 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SourceOSRepoManifest.json",
+  "title": "SourceOSRepoManifest",
+  "description": "Repository-level declaration of SourceOS/SociOS contract ownership, sync engines, policy classes, audit events, SourceChannel surfaces, and dangerous surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "repo",
+    "domain",
+    "specVersion",
+    "ownedSchemas",
+    "syncEngines",
+    "sourceChannels",
+    "policyClasses",
+    "auditEvents",
+    "dangerousSurfaces"
+  ],
+  "properties": {
+    "repo": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$",
+      "description": "GitHub repository in owner/name form."
+    },
+    "domain": {
+      "type": "string",
+      "enum": [
+        "spec",
+        "tooling",
+        "workspace",
+        "agent",
+        "policy",
+        "memory",
+        "shell",
+        "browser",
+        "os",
+        "transport",
+        "observability",
+        "model",
+        "security",
+        "integration"
+      ]
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Version of the SourceOSRepoManifest contract used by this repo."
+    },
+    "ownedSchemas": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "syncEngines": {
+      "type": "array",
+      "items": {
+        "$ref": "SyncEngineManifest.json"
+      }
+    },
+    "sourceChannels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "description": "Named SourceChannel surfaces or bridge IDs implemented by the repo."
+    },
+    "policyClasses": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["low", "medium", "high", "critical"]
+      },
+      "uniqueItems": true
+    },
+    "auditEvents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9_.-]+$"
+      },
+      "uniqueItems": true
+    },
+    "dangerousSurfaces": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9_.-]+$"
+      },
+      "uniqueItems": true
+    },
+    "authorityRepos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+      },
+      "uniqueItems": true,
+      "description": "Repos this repo depends on as contract, policy, agent, memory, or runtime authorities."
+    },
+    "notes": {
+      "type": "string"
+    }
+  }
+}
