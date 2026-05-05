@@ -1,0 +1,28 @@
+{
+  "channelId": "urn:srcos:channel:prophet-workspace-local",
+  "requestId": "urn:srcos:request:workspace-agent-lease-001",
+  "origin": "https://workspace.socioprophet.local",
+  "surface": "prophet-workspace",
+  "profileId": "urn:srcos:profile:local-user",
+  "workspaceId": "urn:srcos:workspace:demo",
+  "deviceId": "urn:srcos:device:macbook-demo",
+  "agentId": "urn:srcos:agent:code-reviewer",
+  "capability": "agent.lease.grant",
+  "scope": {
+    "repo": "SocioProphet/agent-registry",
+    "tools": [
+      "git.read",
+      "github.issue.comment"
+    ],
+    "memoryScopes": [
+      "workspace:demo"
+    ]
+  },
+  "policyBundleHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "nonce": "demo-nonce-0001",
+  "issuedAt": "2026-05-05T00:00:00Z",
+  "expiresAt": "2026-05-05T00:05:00Z",
+  "reason": "Grant a bounded code-reviewer lease for the demo workspace.",
+  "auditId": "urn:srcos:audit:sourcechannel-demo-001",
+  "signature": "base64url-demo-signature"
+}
