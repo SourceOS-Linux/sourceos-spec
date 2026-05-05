@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReasoningRun.json",
+  "title": "ReasoningRun",
+  "description": "Top-level record for a governed recursive reasoning run with safe operational trace references, adapter records, evidence pointers, replay posture, and benchmark posture.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "status",
+    "task",
+    "agentRef",
+    "workspaceRef",
+    "safeTrace",
+    "eventRefs",
+    "artifactRefs",
+    "startedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:reasoning-run:" },
+    "type": { "const": "ReasoningRun" },
+    "specVersion": { "type": "string" },
+    "status": { "enum": ["created", "validated", "admitted", "planned", "running", "blocked", "awaiting_approval", "resumed", "completed", "failed", "cancelled", "replayed", "reviewed", "promoted"] },
+    "task": {
+      "type": "object",
+      "required": ["id", "title"],
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "objectiveHash": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "agentRef": { "type": "string" },
+    "workspaceRef": { "type": "string" },
+    "safeTrace": {
+      "type": "object",
+      "required": ["mode", "rawPrivateReasoning"],
+      "properties": {
+        "mode": { "const": "operational-trace-only" },
+        "rawPrivateReasoning": { "const": "not-collected" },
+        "eventCount": { "type": "integer", "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "eventRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:reasoning-event:" }
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "adapterRecords": {
+      "type": "array",
+      "items": { "type": "object" }
+    },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "completedAt": { "type": "string", "format": "date-time" }
+  }
+}
