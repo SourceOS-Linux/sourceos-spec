@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReasoningReplayPlan.json",
+  "title": "ReasoningReplayPlan",
+  "description": "Replay plan for a recursive reasoning run, including replay class, input references, constraints, and command/reference hints.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "specVersion", "runRef", "replayClass", "inputs", "constraints", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:reasoning-replay-plan:" },
+    "type": { "const": "ReasoningReplayPlan" },
+    "specVersion": { "type": "string" },
+    "runRef": { "type": "string", "pattern": "^urn:srcos:reasoning-run:" },
+    "replayClass": { "enum": ["exact", "best-effort", "evidence-only", "non-replayable-side-effect"] },
+    "inputs": { "type": "object", "additionalProperties": true },
+    "constraints": { "type": "object", "additionalProperties": true },
+    "stepRefs": { "type": "array", "items": { "type": "string" } },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
