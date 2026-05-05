@@ -1,0 +1,20 @@
+{
+  "id": "urn:srcos:host-capability-placement:sourceos-supervisor",
+  "type": "HostCapabilityPlacement",
+  "specVersion": "2.2.0",
+  "name": "SourceOS host supervisor",
+  "placementClass": "image-baked-host-capability",
+  "authority": "sourceos-base",
+  "mandatoryForBaseNode": true,
+  "requiresEnrollment": false,
+  "lifecycleCoupling": "host-release",
+  "pathHints": [
+    "/usr/libexec/sourceos/supervisor",
+    "/usr/lib/systemd/system/sourceos-supervisor.service"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:release-receipt:sourceos-supervisor-bootstrap"
+  ],
+  "policyRef": "urn:srcos:policy:immutable-node-host-supervisor",
+  "notes": "Base SourceOS capability. This is not a Socios enrollment dependency."
+}
