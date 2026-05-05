@@ -1,0 +1,64 @@
+{
+  "@context": {
+    "@version": 1.1,
+    "srcos": "https://schemas.srcos.ai/v2/",
+    "prov": "http://www.w3.org/ns/prov#",
+    "id": "@id",
+    "type": "@type",
+
+    "SourceOSModelCarryRef": "srcos:SourceOSModelCarryRef",
+    "InferenceProvider": "srcos:InferenceProvider",
+    "ModelResidency": "srcos:ModelResidency",
+    "PlacementFact": "srcos:PlacementFact",
+    "AgentMachineReceipt": "srcos:AgentMachineReceipt",
+
+    "modelRef": { "@id": "srcos:modelRef", "@type": "@id" },
+    "governanceRef": { "@id": "srcos:governanceRef", "@type": "@id" },
+    "routerProfileRef": { "@id": "srcos:routerProfileRef", "@type": "@id" },
+    "releaseSetRefs": { "@id": "srcos:releaseSetRefs", "@type": "@id" },
+    "launchProfileRefs": { "@id": "srcos:launchProfileRefs", "@type": "@id" },
+    "fallbackRefs": { "@id": "srcos:fallbackRefs", "@type": "@id" },
+    "carryPolicy": "srcos:carryPolicy",
+    "cachePolicy": "srcos:cachePolicy",
+    "mutableModelState": "srcos:mutableModelState",
+
+    "providerClass": "srcos:providerClass",
+    "endpointMode": "srcos:endpointMode",
+    "executionProfile": "srcos:executionProfile",
+    "trustPosture": "srcos:trustPosture",
+    "supportedModalities": "srcos:supportedModalities",
+    "openAICompatible": "srcos:openAICompatible",
+    "requiresNetwork": "srcos:requiresNetwork",
+
+    "machineRef": { "@id": "srcos:machineRef", "@type": "@id" },
+    "modelCarryRef": { "@id": "srcos:modelCarryRef", "@type": "@id" },
+    "providerRef": { "@id": "srcos:providerRef", "@type": "@id" },
+    "residencyState": "srcos:residencyState",
+    "quantization": "srcos:quantization",
+    "bytesOnDisk": "srcos:bytesOnDisk",
+    "cacheTier": "srcos:cacheTier",
+    "observedAt": "srcos:observedAt",
+
+    "hardware": "srcos:hardware",
+    "isolation": "srcos:isolation",
+    "modelResidencyRefs": { "@id": "srcos:modelResidencyRefs", "@type": "@id" },
+    "providerRefs": { "@id": "srcos:providerRefs", "@type": "@id" },
+    "cacheNotes": "srcos:cacheNotes",
+
+    "receiptClass": "srcos:receiptClass",
+    "issuedAt": "srcos:issuedAt",
+    "taskRef": { "@id": "srcos:taskRef", "@type": "@id" },
+    "agentPodRef": { "@id": "srcos:agentPodRef", "@type": "@id" },
+    "placementFactRefs": { "@id": "srcos:placementFactRefs", "@type": "@id" },
+    "inferenceProviderRefs": { "@id": "srcos:inferenceProviderRefs", "@type": "@id" },
+    "policyDecisionRef": { "@id": "srcos:policyDecisionRef", "@type": "@id" },
+    "verdict": "srcos:verdict",
+    "metrics": "srcos:metrics",
+    "evidenceHash": "srcos:evidenceHash",
+    "evidenceRefs": { "@id": "srcos:evidenceRefs", "@type": "@id" },
+
+    "wasGeneratedBy": { "@id": "prov:wasGeneratedBy", "@type": "@id" },
+    "used": { "@id": "prov:used", "@type": "@id" },
+    "wasDerivedFrom": { "@id": "prov:wasDerivedFrom", "@type": "@id" }
+  }
+}
