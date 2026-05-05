@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SourceGraphWrite.json",
+  "title": "SourceGraphWrite",
+  "description": "Signed write envelope for SourceGraph object operations, including policy domain, encryption scope, causal metadata, and audit pointer.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "objectId",
+    "collection",
+    "schemaVersion",
+    "operation",
+    "payloadHash",
+    "authorId",
+    "deviceId",
+    "policyDomain",
+    "encryptionScope",
+    "causalClock",
+    "signature",
+    "auditId"
+  ],
+  "properties": {
+    "objectId": {
+      "type": "string",
+      "pattern": "^urn:srcos:"
+    },
+    "collection": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string",
+      "enum": ["put", "patch", "delete", "tombstone", "command"]
+    },
+    "payloadHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    },
+    "authorId": {
+      "type": "string",
+      "pattern": "^urn:srcos:"
+    },
+    "deviceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:device:"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace:"
+    },
+    "orgId": {
+      "type": "string",
+      "pattern": "^urn:srcos:org:"
+    },
+    "policyDomain": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "encryptionScope": {
+      "type": "string",
+      "enum": ["public", "profile", "workspace", "org", "device", "vault"]
+    },
+    "causalClock": {
+      "type": "string",
+      "minLength": 1
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1
+    },
+    "auditId": {
+      "type": "string",
+      "pattern": "^urn:srcos:audit:"
+    },
+    "reasonCode": {
+      "type": "string"
+    },
+    "relayId": {
+      "type": "string",
+      "pattern": "^urn:srcos:relay:"
+    }
+  }
+}
