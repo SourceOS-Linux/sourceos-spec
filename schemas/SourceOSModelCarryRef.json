@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SourceOSModelCarryRef.json",
+  "title": "SourceOSModelCarryRef",
+  "description": "Approved SourceOS on-device reference to a governed model or model-service profile that may be carried by a ReleaseSet or BootReleaseSet without embedding mutable model state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "modelRef", "governanceRef", "routerProfileRef", "carryPolicy", "cachePolicy", "mutableModelState"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:model-carry-ref:", "description": "Stable URN identifier. Pattern: urn:srcos:model-carry-ref:<local-id>" },
+    "type": { "const": "SourceOSModelCarryRef", "description": "Discriminator constant — always \"SourceOSModelCarryRef\"." },
+    "specVersion": { "type": "string", "description": "Spec version of this document, e.g. \"2.1.0\"." },
+    "modelRef": { "type": "string", "description": "Governed model, adapter, or service reference approved by model-governance-ledger and consumable by model-router." },
+    "governanceRef": { "type": "string", "description": "Reference to the model governance ledger release decision or factsheet record authorizing this carry reference." },
+    "routerProfileRef": { "type": "string", "pattern": "^urn:srcos:model-router-profile:", "description": "Model-router profile URN that describes route constraints for this carried reference." },
+    "releaseSetRefs": { "type": "array", "description": "Optional ReleaseSet or BootReleaseSet URNs allowed to carry this reference.", "items": { "type": "string", "pattern": "^urn:srcos:release-set:" } },
+    "launchProfileRefs": { "type": "array", "description": "Optional SourceOS launch profile URNs for local service startup.", "items": { "type": "string" } },
+    "fallbackRefs": { "type": "array", "description": "Fallback model carry references used when this route is unavailable or disallowed.", "items": { "type": "string", "pattern": "^urn:srcos:model-carry-ref:" } },
+    "carryPolicy": { "type": "string", "enum": ["reference-only", "download-on-demand", "preload-reference", "disabled"], "description": "How SourceOS may carry or prepare the referenced model/service without embedding mutable model state." },
+    "cachePolicy": { "type": "string", "enum": ["none", "metadata-only", "weights-cache-allowed", "kv-cache-allowed", "embedding-cache-allowed"], "description": "Highest cache behavior allowed for this reference under local policy." },
+    "mutableModelState": { "type": "boolean", "const": false, "description": "Whether the OS image carries mutable model weights or adapters. Must remain false." },
+    "evidenceRefs": { "type": "array", "description": "Evidence URNs or content hashes supporting approval, cache policy, and release binding.", "items": { "type": "string" } }
+  }
+}

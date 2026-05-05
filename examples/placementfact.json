@@ -1,0 +1,23 @@
+{
+  "id": "urn:srcos:placement-fact:m2-asahi-local-20260504t170000z",
+  "type": "PlacementFact",
+  "specVersion": "2.1.0",
+  "machineRef": "urn:srcos:agent-machine:m2-asahi-local",
+  "observedAt": "2026-05-04T17:00:00Z",
+  "hardware": {
+    "arch": "aarch64",
+    "accelerators": ["cpu", "vulkan-probe"],
+    "memoryBytes": 25769803776,
+    "storageBytesAvailable": 107374182400
+  },
+  "isolation": {
+    "runtime": "rootless-podman",
+    "networkDefault": "policy-gated",
+    "filesystemDefault": "workspace-scoped-rw"
+  },
+  "trustPosture": "sandboxed-local",
+  "modelResidencyRefs": ["urn:srcos:model-residency:m2-local-llama32-3b-20260504t170000z"],
+  "providerRefs": ["urn:srcos:inference-provider:llama-cpp-cpu-arm64-local"],
+  "cacheNotes": ["NVMe model cache available; KV cache reuse requires identity and policy match."],
+  "evidenceRefs": ["sha256:3333333333333333333333333333333333333333333333333333333333333333"]
+}
