@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/HostCapabilityPlacement.json",
+  "title": "HostCapabilityPlacement",
+  "description": "A SourceOS immutable-node placement declaration for one host capability, service workload, extension, or state root.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "placementClass",
+    "authority"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:host-capability-placement:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:host-capability-placement:<local-id>."
+    },
+    "type": {
+      "const": "HostCapabilityPlacement",
+      "description": "Discriminator constant — always HostCapabilityPlacement."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. 2.2.0."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable capability name."
+    },
+    "placementClass": {
+      "type": "string",
+      "enum": [
+        "image-baked-host-capability",
+        "sysext-host-capability",
+        "confext-policy-config-capability",
+        "quadlet-bound-service-workload",
+        "quadlet-floating-service-workload",
+        "var-state-object"
+      ],
+      "description": "Canonical placement class inherited from the immutable-node host capability model."
+    },
+    "authority": {
+      "type": "string",
+      "enum": [
+        "sourceos-base",
+        "sourceos-boot",
+        "agent-machine",
+        "sourceos-devtools",
+        "agentplane",
+        "prophet-platform",
+        "socios-optional-pack"
+      ],
+      "description": "Repo or plane class that owns the implementation boundary for this capability."
+    },
+    "mandatoryForBaseNode": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the capability is required for a base SourceOS immutable node without Socios enrollment."
+    },
+    "requiresEnrollment": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether activation requires opt-in enrollment, Proof-of-Life, or signed intent."
+    },
+    "lifecycleCoupling": {
+      "type": "string",
+      "enum": [
+        "host-release",
+        "extension-release",
+        "service-release",
+        "state-schema",
+        "operator-local"
+      ],
+      "description": "Primary lifecycle to which this capability is coupled."
+    },
+    "pathHints": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Expected implementation paths such as /usr/libexec/sourceos, /usr/share/containers/systemd, /var/lib/sourceos, or /var/lib/socios."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Optional references to evidence records emitted by the capability."
+    },
+    "policyRef": {
+      "type": ["string", "null"],
+      "description": "Optional policy identifier or URN governing activation or mutation."
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Human-readable review notes."
+    }
+  }
+}
