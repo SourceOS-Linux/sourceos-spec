@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReasoningEvent.json",
+  "title": "ReasoningEvent",
+  "description": "A safe operational trace event emitted during a recursive reasoning run.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "specVersion", "runRef", "eventType", "summary", "traceLevel", "trustLevel", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:reasoning-event:" },
+    "type": { "const": "ReasoningEvent" },
+    "specVersion": { "type": "string" },
+    "runRef": { "type": "string", "pattern": "^urn:srcos:reasoning-run:" },
+    "eventType": { "type": "string" },
+    "summary": { "type": "string" },
+    "traceLevel": { "enum": ["public-safe", "workspace-safe", "operator-private", "restricted"] },
+    "trustLevel": { "enum": ["trusted-control-input", "trusted-workspace-source", "semi-trusted-project-source", "untrusted-observation", "restricted-material"] },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
