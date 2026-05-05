@@ -58,6 +58,7 @@ These types support:
 | `CapabilityToken.json` | CapabilityToken | _(plain `tokenId` string)_ |
 | `Comment.json` | Comment | `urn:srcos:comment:` |
 | `Community.json` | Community | `urn:srcos:community:` |
+| `CompressionEvaluation.json` | CompressionEvaluation | `urn:srcos:compression-eval:` |
 | `Connector.json` | Connector | `urn:srcos:connector:` |
 | `ContentRef.json` | ContentRef | _(digest-based content reference)_ |
 | `DataRef.json` | DataRef | _(sub-object, no top-level id)_ |
@@ -206,6 +207,7 @@ These types support:
 | `WorkflowEdge` | A directed dependency edge between two `WorkflowNode` IDs |
 | `Trigger` | How a workflow is activated: cron schedule, event, or manual |
 | `ProvenanceRecord` | A W3C PROV-compatible record linking a run to its input/output entities |
+| `CompressionEvaluation` | Artifact-versus-baseline evaluation record composed from content/data refs, estimator metrics, and governance/provenance references |
 | `MappingSpec` | A field-to-field semantic mapping with multi-method confidence evidence |
 | `MappingEvidence` | A single evidence item for a `MappingSpec` (label similarity, value overlap, …) |
 | `EventEnvelope` | The universal wrapper for all AsyncAPI channel messages |
