@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentCapabilityLease.json",
+  "title": "AgentCapabilityLease",
+  "description": "Scoped, expiring, revocable, auditable capability grant for an agent operation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "leaseId",
+    "agentId",
+    "workspaceId",
+    "grantedBy",
+    "capability",
+    "scope",
+    "issuedAt",
+    "expiresAt",
+    "policyBundleHash",
+    "requiresHumanApproval",
+    "revocable",
+    "auditId",
+    "signature"
+  ],
+  "properties": {
+    "leaseId": {
+      "type": "string",
+      "pattern": "^urn:srcos:lease:"
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^urn:srcos:agent:"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace:"
+    },
+    "grantedBy": {
+      "type": "string",
+      "pattern": "^urn:srcos:"
+    },
+    "capability": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Bounded lease scope. Typical keys include tools, repos, paths, memoryScopes, models, networkZones, and duration."
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "policyBundleHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    },
+    "requiresHumanApproval": {
+      "type": "boolean"
+    },
+    "revocable": {
+      "const": true
+    },
+    "revokedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "revokedBy": {
+      "type": "string",
+      "pattern": "^urn:srcos:"
+    },
+    "auditId": {
+      "type": "string",
+      "pattern": "^urn:srcos:audit:"
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}
