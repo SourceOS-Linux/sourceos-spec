@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:immutable-node-profile:m2-asahi-dev",
+  "type": "ImmutableNodeProfile",
+  "specVersion": "2.2.0",
+  "name": "M2 Asahi SourceOS dev immutable node",
+  "channel": "m2-asahi-dev",
+  "substrate": {
+    "strategy": "bootc-first",
+    "hostMutationPosture": "staged-updates-only",
+    "sociosRequired": false
+  },
+  "bootReleaseSetRef": "urn:srcos:boot-release-set:m2-asahi-dev",
+  "releaseSetRef": "urn:srcos:release-set:m2-asahi-dev",
+  "workstationProfileRef": "urn:srcos:workstation-profile:workstation-v0",
+  "agentMachineProfileRef": "urn:srcos:agent-machine-profile:m2-asahi-dev",
+  "hostCapabilityPlacementRefs": [
+    "urn:srcos:host-capability-placement:sourceos-supervisor"
+  ],
+  "nodeStateSchemaRefs": [
+    "urn:srcos:node-state-schema:sourceos-evidence-root"
+  ],
+  "optionalSociosCapabilityPackRefs": [
+    "urn:socios:capability-pack:automation-commons-opt-in"
+  ],
+  "validation": {
+    "planCommand": "sourceosctl immutable-node plan --profile m2-asahi-dev --dry-run",
+    "validateCommand": "sourceosctl immutable-node validate --profile m2-asahi-dev",
+    "inspectCommand": "sourceosctl immutable-node inspect --profile m2-asahi-dev",
+    "evidenceCommand": "agent-machine release evidence inspect --profile m2-asahi-dev"
+  },
+  "policyRefs": [
+    "urn:srcos:policy:immutable-node-base",
+    "urn:srcos:policy:socios-opt-in-required"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:release-receipt:m2-asahi-dev"
+  ],
+  "notes": "SourceOS base node profile. Socios pack reference is optional and does not imply enrollment."
+}
