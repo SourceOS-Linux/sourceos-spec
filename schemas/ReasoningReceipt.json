@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReasoningReceipt.json",
+  "title": "ReasoningReceipt",
+  "description": "Final receipt for a recursive reasoning run, including trace hash, replay class, and coordination posture summaries.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "specVersion", "runRef", "taskRef", "status", "traceHash", "replayClass", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:receipt:reasoning:" },
+    "type": { "const": "ReasoningReceipt" },
+    "specVersion": { "type": "string" },
+    "runRef": { "type": "string", "pattern": "^urn:srcos:reasoning-run:" },
+    "taskRef": { "type": "string" },
+    "status": { "enum": ["completed", "failed", "blocked", "cancelled"] },
+    "traceHash": { "type": "string" },
+    "coordination": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "replayClass": { "enum": ["exact", "best-effort", "evidence-only", "non-replayable-side-effect"] },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
