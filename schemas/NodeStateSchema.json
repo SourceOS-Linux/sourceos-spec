@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/NodeStateSchema.json",
+  "title": "NodeStateSchema",
+  "description": "A SourceOS immutable-node durable state schema declaration for rollback-aware node substrate and agent runtime state roots.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "rootPath", "stateClass", "rollbackCompatibility"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:node-state-schema:", "description": "Stable URN identifier. Pattern: urn:srcos:node-state-schema:<local-id>." },
+    "type": { "const": "NodeStateSchema", "description": "Discriminator constant — always NodeStateSchema." },
+    "specVersion": { "type": "string", "description": "Spec version of this document, e.g. 2.2.0." },
+    "name": { "type": "string", "minLength": 1, "description": "Human-readable state root name." },
+    "rootPath": { "type": "string", "pattern": "^/var/(lib|cache)/", "description": "Durable or rebuildable state root. Authoritative mutable truth must not live under /usr or /etc." },
+    "stateClass": { "type": "string", "enum": ["durable-truth", "append-only-evidence", "replay-checkpoint", "model-cache", "rebuildable-cache", "operator-local"], "description": "Semantic class of the state root." },
+    "primaryPlane": { "type": "string", "enum": ["node-substrate", "agent-runtime-substrate", "execution-evidence", "platform-runtime", "desktop-consumer", "optional-commons"], "description": "Primary architectural plane for the state root. Desktop surfaces should usually consume state summaries, not own durable node state." },
+    "schemaRef": { "type": ["string", "null"], "description": "Optional schema, contract, or URN reference for records stored in this root." },
+    "rollbackCompatibility": { "type": "string", "enum": ["required-n-and-n-minus-1", "best-effort", "not-required-rebuildable", "operator-managed"], "description": "Rollback compatibility expectation for readers and writers of this state root." },
+    "mutability": { "type": "string", "enum": ["append-only", "controlled-write", "rebuildable", "ephemeral-cache"], "description": "Expected write posture for this root." },
+    "owner": { "type": ["string", "null"], "description": "Owning plane or repository class for this state root." },
+    "evidenceRequired": { "type": "boolean", "default": false, "description": "Whether writes to this state root require evidence emission." },
+    "desktopVisible": { "type": "boolean", "default": false, "description": "Whether desktop/workstation surfaces may display this state root's summarized posture." },
+    "notes": { "type": ["string", "null"], "description": "Human-readable review notes." }
+  }
+}

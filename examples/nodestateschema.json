@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:node-state-schema:sourceos-evidence-root",
+  "type": "NodeStateSchema",
+  "specVersion": "2.2.0",
+  "name": "SourceOS evidence root",
+  "rootPath": "/var/lib/sourceos/evidence",
+  "stateClass": "append-only-evidence",
+  "primaryPlane": "execution-evidence",
+  "schemaRef": "urn:srcos:release-receipt:sourceos-evidence",
+  "rollbackCompatibility": "required-n-and-n-minus-1",
+  "mutability": "append-only",
+  "owner": "agent-machine",
+  "evidenceRequired": true,
+  "desktopVisible": true,
+  "notes": "Durable evidence root survives host rollback. Desktop surfaces may display summarized posture, but Agent Machine and evidence consumers own the state contract."
+}
