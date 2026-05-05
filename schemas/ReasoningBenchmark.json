@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReasoningBenchmark.json",
+  "title": "ReasoningBenchmark",
+  "description": "Benchmark result for a recursive reasoning run, including suite name, assertions, verdict, and evaluation time.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "specVersion", "runRef", "suite", "passed", "assertions", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:reasoning-benchmark:" },
+    "type": { "const": "ReasoningBenchmark" },
+    "specVersion": { "type": "string" },
+    "runRef": { "type": "string", "pattern": "^urn:srcos:reasoning-run:" },
+    "suite": { "type": "string" },
+    "passed": { "type": "boolean" },
+    "assertions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "passed"],
+        "properties": {
+          "name": { "type": "string" },
+          "passed": { "type": "boolean" },
+          "summary": { "type": "string" }
+        },
+        "additionalProperties": true
+      }
+    },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
