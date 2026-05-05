@@ -1,0 +1,14 @@
+{
+  "id": "urn:srcos:model-residency:m2-local-llama32-3b-20260504t170000z",
+  "type": "ModelResidency",
+  "specVersion": "2.1.0",
+  "machineRef": "urn:srcos:agent-machine:m2-asahi-local",
+  "modelCarryRef": "urn:srcos:model-carry-ref:local-llama32-3b-office-assist",
+  "providerRef": "urn:srcos:inference-provider:llama-cpp-cpu-arm64-local",
+  "residencyState": "cached",
+  "quantization": "q4_k_m",
+  "bytesOnDisk": 2147483648,
+  "cacheTier": "nvme",
+  "observedAt": "2026-05-04T17:00:00Z",
+  "evidenceRefs": ["sha256:2222222222222222222222222222222222222222222222222222222222222222"]
+}
