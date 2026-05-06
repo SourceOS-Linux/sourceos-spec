@@ -9,6 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ## [Unreleased]
 
 ### Added
+- Runtime observability and capability governance contracts: `CapabilityLedger`, `BrowserAutomationReceipt`, `GitWorkspaceState`, `OrphanEventReceipt`, and `RuntimeInstallReceipt` with canonical examples, validation wiring (`tools/validate_runtime_observability_examples.py`), a contract catalog, and ADR-0012.
 - Reasoning run contracts: `ReasoningRun`, `ReasoningEvent`, `ReasoningReceipt`, `ReasoningReplayPlan`, and `ReasoningBenchmark` with canonical examples and a contract-additions note for the Superconscious reference loop.
 - Agent Machine / Model Carry schemas: `SourceOSModelCarryRef`, `InferenceProvider`, `ModelResidency`, `PlacementFact`, and `AgentMachineReceipt` with canonical examples and a contract-additions placement note.
 - NLBoot object schemas: `NLBootPlan`, `ArtifactCacheRecord`, `BootProofRecord`, `AppleSiliconAdapterEvidence` with canonical examples and validation (`tools/validate_nlboot_examples.py`)

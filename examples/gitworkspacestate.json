@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:git-workspace-state:runtime-observability-0001",
+  "type": "GitWorkspaceState",
+  "specVersion": "0.1.0",
+  "sessionRef": "urn:srcos:session:runtime-observability-demo-0001",
+  "capabilityLedgerRef": "urn:srcos:capability-ledger:runtime-observability-0001",
+  "agentMachineReceiptRef": "urn:srcos:agent-machine-receipt:runtime-probe-0001",
+  "workspaceRef": "urn:srcos:workspace:runtime-observability-demo",
+  "state": "not_a_repo",
+  "severity": "info",
+  "operation": "passive_discovery",
+  "actionability": "none",
+  "pathEvidence": {
+    "pathDigest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "redactedPathHint": "~/Documents/New project",
+    "redaction": "user_home_redacted",
+    "rawPathStored": false
+  },
+  "gitFacts": {
+    "branch": null,
+    "headSha": null,
+    "remoteState": "not_applicable",
+    "worktreeRootDigest": null,
+    "gitDirDigest": null,
+    "failureReason": "Passive discovery classified the directory as not_a_repo; no warning is required.",
+    "commandClass": "rev_parse"
+  },
+  "expectedNegativeState": true,
+  "causalRefs": [
+    "urn:srcos:event:git-passive-discovery-0001",
+    "urn:srcos:capability-ledger:runtime-observability-0001"
+  ],
+  "policyDecisionRef": "urn:srcos:decision:runtime-observability-policy-0001",
+  "evidenceRefs": [
+    "urn:srcos:evidence:git-workspace-passive-discovery-0001",
+    "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  ],
+  "capturedAt": "2026-05-06T04:32:00Z"
+}
