@@ -1,6 +1,6 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples
 	@echo "OK: validate"
 
 validate-control-plane-examples:
@@ -18,3 +18,7 @@ validate-lattice-data-governai-examples:
 validate-ops-history-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_ops_history_examples.py
+
+validate-runtime-observability-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_runtime_observability_examples.py
