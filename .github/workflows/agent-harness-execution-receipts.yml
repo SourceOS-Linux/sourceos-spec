@@ -1,0 +1,37 @@
+name: Agent Harness Execution Receipts
+
+on:
+  pull_request:
+    paths:
+      - 'docs/agent-harness-execution-receipts.md'
+      - 'schemas/AgentHarnessExecutionReceipts.json'
+      - 'examples/agent-harness-execution-receipts.example.json'
+      - 'tools/validate_agent_harness_execution_receipts.py'
+      - '.github/workflows/agent-harness-execution-receipts.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/agent-harness-execution-receipts.md'
+      - 'schemas/AgentHarnessExecutionReceipts.json'
+      - 'examples/agent-harness-execution-receipts.example.json'
+      - 'tools/validate_agent_harness_execution_receipts.py'
+      - '.github/workflows/agent-harness-execution-receipts.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-agent-harness-execution-receipts:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate Agent Harness execution receipts
+        run: python3 tools/validate_agent_harness_execution_receipts.py
