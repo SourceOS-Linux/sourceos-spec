@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TrustMode.json",
+  "title": "TrustMode",
+  "description": "A named permission envelope for SourceOS/SociOS agent sessions. TrustMode translates user-visible operating modes such as Observe Only, Read-Only Analyst, Repo Contributor, or Agent Sandbox into explicit filesystem, execution, network, connector, scheduling, indexing, and publication permissions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "category",
+    "permissions",
+    "defaultExecutionSurfaceRef",
+    "requiresHumanApproval",
+    "receiptRequired"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:trust-mode:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:trust-mode:<local-id>"
+    },
+    "type": {
+      "const": "TrustMode",
+      "description": "Discriminator constant — always \"TrustMode\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable trust mode label shown in onboarding, composer footers, and policy panels."
+    },
+    "category": {
+      "enum": [
+        "observeOnly",
+        "readOnlyAnalyst",
+        "draftOnlyAssistant",
+        "repoContributor",
+        "localOperator",
+        "agentSandbox",
+        "privilegedMaintainer",
+        "custom"
+      ],
+      "description": "Canonical trust-mode category."
+    },
+    "summary": {
+      "type": "string",
+      "description": "Short user-facing explanation of what this trust mode permits and forbids."
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "filesystemRead",
+        "filesystemWrite",
+        "commandRun",
+        "networkEgress",
+        "connectorRead",
+        "connectorWrite",
+        "messageSend",
+        "publishExternal",
+        "indexPersist",
+        "scheduleCreate",
+        "deleteOrDestructiveAction"
+      ],
+      "properties": {
+        "filesystemRead": { "type": "boolean" },
+        "filesystemWrite": { "enum": ["none", "draftOnly", "scoped", "workspace", "unrestricted"] },
+        "commandRun": { "enum": ["none", "diagnosticOnly", "scoped", "unrestricted"] },
+        "networkEgress": { "enum": ["none", "allowlist", "connectorOnly", "full"] },
+        "connectorRead": { "type": "boolean" },
+        "connectorWrite": { "enum": ["none", "draftOnly", "scoped", "full"] },
+        "messageSend": { "enum": ["none", "draftOnly", "explicitApproval", "allowed"] },
+        "publishExternal": { "enum": ["none", "explicitApproval", "allowed"] },
+        "indexPersist": { "type": "boolean" },
+        "scheduleCreate": { "type": "boolean" },
+        "deleteOrDestructiveAction": { "enum": ["none", "explicitApproval", "allowed"] },
+        "computerUse": { "enum": ["none", "observeOnly", "sandboxedControl", "explicitApprovalControl"], "default": "none" },
+        "browserUse": { "enum": ["none", "isolatedRead", "isolatedInteractive", "credentialedExplicitApproval"], "default": "none" }
+      },
+      "description": "User-visible verb permissions. These are intentionally explicit so the UI never collapses trust into an opaque label."
+    },
+    "defaultExecutionSurfaceRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:surface:",
+      "description": "Optional default ExecutionSurface URN used when creating AgentSession.surface for this trust mode."
+    },
+    "requiresHumanApproval": {
+      "type": "boolean",
+      "description": "Whether one or more actions under this mode require explicit human approval before execution."
+    },
+    "approvalProfileRef": {
+      "type": ["string", "null"],
+      "description": "Optional approval-profile identifier or URN used by shell/runtime policy gates."
+    },
+    "receiptRequired": {
+      "type": "boolean",
+      "description": "Whether sessions using this trust mode must emit a receipt."
+    },
+    "riskLevel": {
+      "enum": ["low", "medium", "high", "critical"],
+      "default": "medium",
+      "description": "Risk tier shown in capability and onboarding surfaces."
+    },
+    "policyRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:policy:" },
+      "description": "Policies governing this trust mode."
+    }
+  }
+}
