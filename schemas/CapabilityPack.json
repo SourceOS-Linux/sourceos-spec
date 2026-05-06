@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityPack.json",
+  "title": "CapabilityPack",
+  "description": "A curated SourceOS/SociOS product capability bundle. CapabilityPack composes one or more SkillManifest entries, connector action scopes, permission requirements, expected artifacts, and receipt requirements into a user-visible onboarding/catalog unit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "version",
+    "publisher",
+    "category",
+    "skillRefs",
+    "requiredConnectorActionScopeRefs",
+    "requiredPermissionRefs",
+    "riskLevel",
+    "artifactOutputs",
+    "receiptRequired",
+    "revocation"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:capability-pack:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:capability-pack:<local-id>"
+    },
+    "type": {
+      "const": "CapabilityPack",
+      "description": "Discriminator constant — always \"CapabilityPack\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable pack name shown in onboarding, catalog, project, and automation surfaces."
+    },
+    "version": {
+      "type": "string",
+      "description": "SemVer version for this capability-pack declaration."
+    },
+    "description": {
+      "type": "string",
+      "description": "Short explanation of the workflow this pack enables."
+    },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "trustLevel", "signatureRequired"],
+      "properties": {
+        "name": { "type": "string" },
+        "trustLevel": { "enum": ["firstParty", "trustedPartner", "community", "local", "unknown"] },
+        "signatureRequired": { "type": "boolean" },
+        "signatureRef": { "type": ["string", "null"] }
+      },
+      "description": "Publisher and signing posture for the capability pack."
+    },
+    "category": {
+      "enum": [
+        "office",
+        "repoOrchestration",
+        "research",
+        "evidenceCapture",
+        "securityForensics",
+        "osBuild",
+        "fogstackDeployment",
+        "legalEntityIntelligence",
+        "curriculum",
+        "dataScience",
+        "designReview",
+        "operations",
+        "automation",
+        "actuator",
+        "custom"
+      ],
+      "description": "Catalog category used for filtering and onboarding recommendations."
+    },
+    "skillRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:skill:" },
+      "description": "SkillManifest URNs composed by this pack."
+    },
+    "requiredConnectorActionScopeRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:connector-action-scope:" },
+      "description": "Connector action scopes required or requested by this pack."
+    },
+    "requiredPermissionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Permission identifiers required by this pack, such as filesystem.read, artifact.write, github.pr.read, or command.run.scoped."
+    },
+    "compatibleTrustModeRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:trust-mode:" },
+      "description": "Trust modes under which this pack is allowed to run by default."
+    },
+    "forbiddenTrustModeRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:trust-mode:" },
+      "description": "Trust modes under which this pack must not run."
+    },
+    "riskLevel": {
+      "enum": ["low", "medium", "high", "critical"],
+      "description": "Risk tier shown in UI and used by policy gates."
+    },
+    "artifactOutputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "name"],
+        "properties": {
+          "kind": { "type": "string" },
+          "name": { "type": "string" },
+          "required": { "type": "boolean", "default": true }
+        }
+      },
+      "description": "Artifacts this pack is expected to create, such as reports, receipts, PR drafts, manifests, or review summaries."
+    },
+    "receiptRequired": {
+      "type": "boolean",
+      "description": "Whether sessions using this pack must emit a receipt."
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revocable", "revokeDeletesLocalIndex", "revokeDisablesAutomations"],
+      "properties": {
+        "revocable": { "type": "boolean" },
+        "revokeDeletesLocalIndex": { "type": "boolean" },
+        "revokeDisablesAutomations": { "type": "boolean" },
+        "revocationNotes": { "type": "string" }
+      },
+      "description": "How disabling this capability pack affects local indexes, scheduled work, and future tool activation."
+    },
+    "policyRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:policy:" },
+      "description": "Policies governing activation, execution, and revocation of this pack."
+    }
+  }
+}
