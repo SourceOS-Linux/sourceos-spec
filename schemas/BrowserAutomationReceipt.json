@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/BrowserAutomationReceipt.json",
+  "title": "BrowserAutomationReceipt",
+  "description": "Receipt for a user-visible, revocable browser automation session with explicit owner, transport, permission scope, policy decision, and evidence references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "ownerRef",
+    "transport",
+    "permissionScope",
+    "origin",
+    "userVisible",
+    "revocable",
+    "policyDecisionRef",
+    "evidenceRefs",
+    "capturedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:receipt:browser-automation:" },
+    "type": { "const": "BrowserAutomationReceipt" },
+    "specVersion": { "type": "string" },
+    "sessionRef": { "type": "string", "pattern": "^urn:srcos:session:" },
+    "ownerRef": { "type": "string" },
+    "transport": { "type": "string", "enum": ["native_pipe", "cdp", "webdriver", "extension", "accessibility"] },
+    "permissionScope": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["read_dom", "click", "type", "download", "upload", "inspect_network", "inspect_cookies", "use_credentials", "screenshot", "navigate", "read_clipboard", "write_clipboard"]
+      }
+    },
+    "origin": { "type": "string", "enum": ["local", "remote", "workspace"] },
+    "controlledScope": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "windowRef": { "type": ["string", "null"] },
+        "tabRef": { "type": ["string", "null"] },
+        "urlOrigin": { "type": ["string", "null"] },
+        "workspaceRef": { "type": ["string", "null"] }
+      }
+    },
+    "userVisible": { "type": "boolean", "const": true },
+    "revocable": { "type": "boolean", "const": true },
+    "revokedAt": { "type": ["string", "null"], "format": "date-time" },
+    "terminalState": { "type": ["string", "null"], "enum": ["active", "revoked", "completed", "failed", "denied", null] },
+    "policyDecisionRef": { "type": "string", "pattern": "^urn:srcos:decision:" },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
