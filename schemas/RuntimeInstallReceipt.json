@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RuntimeInstallReceipt.json",
+  "title": "RuntimeInstallReceipt",
+  "description": "Receipt for runtime installation, update, rollback, denial, or partial install flows with artifact verification, compact log references, policy decision linkage, and evidence references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "sessionRef", "capabilityLedgerRef", "runtimeRef", "targetRef", "platform", "installState", "manifest", "artifacts", "logMode", "policyDecisionRef", "evidenceRefs", "startedAt", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:receipt:runtime-install:" },
+    "type": { "const": "RuntimeInstallReceipt" },
+    "specVersion": { "type": "string" },
+    "sessionRef": { "type": "string", "pattern": "^urn:srcos:session:" },
+    "capabilityLedgerRef": { "type": "string", "pattern": "^urn:srcos:capability-ledger:" },
+    "agentMachineReceiptRef": { "type": ["string", "null"], "pattern": "^urn:srcos:agent-machine-receipt:" },
+    "runtimeRef": { "type": "string", "pattern": "^urn:srcos:runtime:" },
+    "runtimeName": { "type": ["string", "null"] },
+    "runtimeVersion": { "type": ["string", "null"] },
+    "targetRef": { "type": "string", "pattern": "^urn:srcos:target:" },
+    "platform": { "type": "string", "enum": ["darwin-arm64", "darwin-x64", "linux-x64", "linux-arm64", "win32-x64"] },
+    "installState": { "type": "string", "enum": ["requested", "manifest_resolved", "artifact_verified", "installing", "installed", "failed", "rolled_back", "partial", "denied", "deferred"] },
+    "manifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifestRef", "manifestDigest", "resolvedAt"],
+      "properties": {
+        "manifestRef": { "type": "string" },
+        "manifestDigest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+        "bundleFormatVersion": { "type": ["string", "integer", "null"] },
+        "resolvedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["artifactRef", "digest", "verificationState"],
+        "properties": {
+          "artifactRef": { "type": "string" },
+          "digest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+          "sizeBytes": { "type": ["integer", "null"], "minimum": 0 },
+          "verificationState": { "type": "string", "enum": ["not_checked", "verified", "failed", "skipped"] }
+        }
+      }
+    },
+    "rollbackRef": { "type": ["string", "null"] },
+    "failureReason": { "type": ["string", "null"] },
+    "logMode": { "type": "string", "enum": ["compact_receipt_ref", "full_debug_redacted"] },
+    "causalRefs": { "type": "array", "items": { "type": "string" } },
+    "policyDecisionRef": { "type": "string", "pattern": "^urn:srcos:decision:" },
+    "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "finishedAt": { "type": ["string", "null"], "format": "date-time" },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
