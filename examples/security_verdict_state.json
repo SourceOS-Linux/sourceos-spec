@@ -1,0 +1,14 @@
+{
+  "id": "urn:srcos:security-verdict:lulu_flow_001",
+  "type": "SecurityVerdictState",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:component:lulu_extension",
+  "decision": "no-verdict",
+  "verdictProviderState": "no-verdict-provider",
+  "observedAt": "2026-05-06T22:36:00Z",
+  "policyRef": "urn:srcos:policy:network_flow_block",
+  "providerRef": "urn:srcos:verdict-provider:lulu",
+  "evidenceRefs": ["urn:srcos:telemetry:te_002"],
+  "userVisibleImpact": "Flows exist but no security verdict available",
+  "remediationHint": "Verify extension provisioning and provider availability"
+}
