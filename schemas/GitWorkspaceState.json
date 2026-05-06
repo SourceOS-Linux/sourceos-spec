@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GitWorkspaceState.json",
+  "title": "GitWorkspaceState",
+  "description": "Typed terminal/workspace Git-state classification emitted before passive Git discovery or user-requested Git operations, with severity discipline, redacted path evidence, session linkage, and capability-ledger linkage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "sessionRef",
+    "capabilityLedgerRef",
+    "workspaceRef",
+    "state",
+    "severity",
+    "operation",
+    "actionability",
+    "pathEvidence",
+    "gitFacts",
+    "policyDecisionRef",
+    "evidenceRefs",
+    "capturedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:git-workspace-state:"
+    },
+    "type": {
+      "const": "GitWorkspaceState"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "sessionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:session:"
+    },
+    "capabilityLedgerRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:capability-ledger:"
+    },
+    "agentMachineReceiptRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:agent-machine-receipt:"
+    },
+    "workspaceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace:"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "not_a_repo",
+        "repo_root",
+        "inside_worktree",
+        "inside_git_dir",
+        "bare_repo",
+        "worktree_no_remote",
+        "detached_head",
+        "corrupt_repo",
+        "permission_denied",
+        "operation_superseded"
+      ]
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "debug",
+        "info",
+        "warning",
+        "error"
+      ]
+    },
+    "operation": {
+      "type": "string",
+      "enum": [
+        "passive_discovery",
+        "watcher_refresh",
+        "user_requested_command",
+        "agent_requested_command",
+        "ci_validation"
+      ]
+    },
+    "actionability": {
+      "type": "string",
+      "enum": [
+        "none",
+        "remediation_hint",
+        "blocked",
+        "quarantined"
+      ]
+    },
+    "pathEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "pathDigest",
+        "redaction",
+        "rawPathStored"
+      ],
+      "properties": {
+        "pathDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-fA-F0-9]{64}$"
+        },
+        "redactedPathHint": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "redaction": {
+          "type": "string",
+          "enum": [
+            "none",
+            "user_home_redacted",
+            "workspace_alias",
+            "digest_only"
+          ]
+        },
+        "rawPathStored": {
+          "type": "boolean",
+          "const": false
+        }
+      }
+    },
+    "gitFacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "branch",
+        "headSha",
+        "remoteState",
+        "worktreeRootDigest",
+        "gitDirDigest"
+      ],
+      "properties": {
+        "branch": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "headSha": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[a-fA-F0-9]{7,40}$"
+        },
+        "remoteState": {
+          "type": "string",
+          "enum": [
+            "available",
+            "missing",
+            "not_applicable",
+            "error",
+            "unknown"
+          ]
+        },
+        "worktreeRootDigest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[a-fA-F0-9]{64}$"
+        },
+        "gitDirDigest": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^sha256:[a-fA-F0-9]{64}$"
+        },
+        "failureReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "commandClass": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "config",
+            "rev_parse",
+            "symbolic_ref",
+            "for_each_ref",
+            "status",
+            "remote",
+            "watcher",
+            null
+          ]
+        }
+      }
+    },
+    "expectedNegativeState": {
+      "type": "boolean"
+    },
+    "causalRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "policyDecisionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:decision:"
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
