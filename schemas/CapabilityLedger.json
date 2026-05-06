@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityLedger.json",
+  "title": "CapabilityLedger",
+  "description": "Effective capability-state record after reconciling config, UI, runtime, server, plugin, policy, schema, and transport claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "capabilityRef",
+    "declaredBy",
+    "negotiatedBy",
+    "effectiveState",
+    "policyDecisionRef",
+    "evidenceRefs",
+    "capturedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:capability-ledger:" },
+    "type": { "const": "CapabilityLedger" },
+    "specVersion": { "type": "string" },
+    "capabilityRef": { "type": "string", "pattern": "^urn:srcos:capability:" },
+    "declaredBy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["config", "ui", "runtime", "server", "plugin", "policy", "schema", "transport", "user", "agent", "workspace"]
+      }
+    },
+    "negotiatedBy": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["config", "ui", "runtime", "server", "plugin", "policy", "schema", "transport", "user", "agent", "workspace"]
+      }
+    },
+    "effectiveState": {
+      "type": "string",
+      "enum": ["declared", "requested", "negotiating", "available", "enabled", "degraded", "blocked_by_policy", "unsupported_by_runtime", "unsupported_by_server", "missing_plugin", "missing_schema", "failed"]
+    },
+    "stateReason": { "type": ["string", "null"] },
+    "ownerRefs": { "type": "array", "items": { "type": "string" } },
+    "conflictRefs": { "type": "array", "items": { "type": "string" } },
+    "policyDecisionRef": { "type": "string", "pattern": "^urn:srcos:decision:" },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}
