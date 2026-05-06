@@ -1,5 +1,5 @@
 {
-  "id": "urn:srcos:retry-loop:blkbock_tcc_001",
+  "id": "urn:srcos:retry-loop:blockblock_tcc_001",
   "type": "RetryLoopFingerprint",
   "specVersion": "2.0.0",
   "signature": "capability_denial:blockblock:fda_tcc",
@@ -14,7 +14,6 @@
   "policyValidity": "denied-but-noisy",
   "severity": "warn",
   "sampleEventRefs": ["urn:srcos:telemetry:te_001"],
-  "causalParentRef": null,
   "suppressionPolicy": "deduplicate_and_summarize",
   "userVisibleImpact": "Full Disk Access not granted, polling continues",
   "remediationHint": "Request Full Disk Access from user preferences"
