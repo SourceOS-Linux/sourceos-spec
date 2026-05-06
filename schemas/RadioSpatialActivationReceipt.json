@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RadioSpatialActivationReceipt.json",
+  "title": "RadioSpatialActivationReceipt",
+  "description": "Receipt proving radio-spatial intelligence was intentionally activated, scoped, and made visible to the user before collecting or deriving device, mesh, network, Home, or location context.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "capability",
+    "activationMode",
+    "scope",
+    "allowedDerivations",
+    "deniedDerivations",
+    "userVisible",
+    "revocation"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:receipt:radio-spatial-activation:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:receipt:radio-spatial-activation:<local-id>"
+    },
+    "type": {
+      "const": "RadioSpatialActivationReceipt",
+      "description": "Discriminator constant."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. 2.1.0."
+    },
+    "capability": {
+      "const": "radio_spatial_intelligence",
+      "description": "Capability activated by this receipt."
+    },
+    "activationMode": {
+      "type": "string",
+      "enum": ["user_enabled", "scheduled_diagnostic", "emergency", "admin_policy", "disabled"],
+      "description": "How the capability was activated."
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["location", "duration", "signalSources"],
+      "properties": {
+        "location": {
+          "type": "string",
+          "enum": ["home", "office", "lab", "travel", "custom", "unknown"],
+          "description": "User-visible site or environment scope."
+        },
+        "duration": {
+          "type": "string",
+          "description": "Activation duration, ISO 8601 interval, or policy label."
+        },
+        "signalSources": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "enum": ["wifi", "bluetooth", "awdl", "thread", "matter", "homekit", "motion", "location", "uwb", "other"]
+          },
+          "description": "Signal sources allowed under this activation."
+        }
+      }
+    },
+    "allowedDerivations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["dead_zone_detection", "device_presence", "mesh_health", "rogue_device_detection", "room_inference", "automation_context", "home_topology", "routine_detection", "other"]
+      },
+      "description": "Derived context classes explicitly allowed by the user or policy."
+    },
+    "deniedDerivations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["persistent_room_map", "cloud_mirroring", "partner_compute", "home_topology", "routine_detection", "raw_identifier_retention", "other"]
+      },
+      "description": "Derived context classes explicitly denied or disabled."
+    },
+    "userVisible": {
+      "type": "boolean",
+      "description": "Whether this activation is visible in the SourceOS Context Receipts surface."
+    },
+    "revocation": {
+      "type": "string",
+      "description": "Revocation control, e.g. one_click, policy_change, emergency_expiry, or disabled."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Evidence references, consent proofs, policy decisions, or UI activation receipts."
+    }
+  }
+}
