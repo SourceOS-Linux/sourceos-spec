@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RadioSpatialSignalReceipt.json",
+  "title": "RadioSpatialSignalReceipt",
+  "description": "Receipt for radio-spatial signal collection such as Wi-Fi, Bluetooth, AWDL, Nearby, location, motion, HomeKit, Matter, or Thread observations. Raw identifiers must be redacted or hashed unless explicitly exported by the user.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "source", "collector", "observedFeatures", "rawIdentifiersRedacted", "rawValuesCollected", "timestampWindow", "userVisible", "revocationPolicy"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^urn:srcos:receipt:radio-spatial-signal:", "description": "Stable URN identifier. Pattern: urn:srcos:receipt:radio-spatial-signal:<local-id>"},
+    "type": {"const": "RadioSpatialSignalReceipt", "description": "Discriminator constant."},
+    "specVersion": {"type": "string", "description": "Spec version of this document, e.g. 2.1.0."},
+    "source": {"type": "string", "enum": ["wifi", "bluetooth", "awdl", "nearby", "location", "motion", "homekit", "matter", "thread", "uwb", "other"], "description": "Signal source class."},
+    "collector": {"type": "string", "description": "Daemon, service, app, or component that collected or observed the signal."},
+    "observedFeatures": {"type": "array", "minItems": 1, "items": {"type": "string", "enum": ["rssi", "per_antenna_rssi", "lqm", "snr", "channel", "ap_count", "bssid_hash", "wifi_location_fix", "bluetooth_hint", "wifi_hint", "motion_hint", "ranging_supported", "rssi_change_detection", "home_accessory_event", "thread_topology", "matter_fabric", "other"]}},
+    "rawIdentifiersRedacted": {"type": "boolean", "description": "True when SSIDs, BSSIDs, MACs, home IDs, accessory IDs, and equivalent identifiers are redacted or hashed."},
+    "rawValuesCollected": {"type": "boolean", "description": "True only when the receipt payload contains raw signal values rather than presence/count/hash evidence."},
+    "timestampWindow": {"type": "string", "description": "ISO 8601 interval or timestamp window covered by this receipt."},
+    "userVisible": {"type": "boolean", "description": "Whether the user-facing Context Receipts surface exposes this receipt."},
+    "revocationPolicy": {"type": "string", "description": "Policy or control used to disable future collection or revoke the derived context."},
+    "evidenceRefs": {"type": "array", "items": {"type": "string"}, "description": "Evidence references, hashes, or provenance links."},
+    "notes": {"type": "string", "description": "Optional operator-readable notes."}
+  }
+}
