@@ -158,7 +158,7 @@
         {
           "properties": {
             "primitive": { "const": "EvidencePipelineReceipt" },
-            "subtype": { "enum": ["routing_receipt", "sink_precedence", "evidence_gap", "log_flush", "symbolication_quality", "agent_coverage_attestation", "compromise_assessment"] },
+            "subtype": { "enum": ["routing_receipt", "sink_precedence", "evidence_gap", "log_flush", "symbolication_quality", "agent_coverage_attestation", "compromise_assessment", "diagnostic_self_noise"] },
             "evidence_pipeline": {
               "type": "object",
               "properties": {
