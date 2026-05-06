@@ -1,0 +1,89 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AutomationTemplate.json",
+  "title": "AutomationTemplate",
+  "description": "A reusable scheduled or event-driven SourceOS/SociOS work-product template. AutomationTemplate binds trigger semantics, required capability packs, required permissions, output artifacts, and receipt requirements for recurring governed agent work.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "category",
+    "trigger",
+    "requiredCapabilityPackRefs",
+    "requiredPermissionRefs",
+    "defaultTimeWindow",
+    "outputs",
+    "receiptRequired"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:automation-template:" },
+    "type": { "const": "AutomationTemplate" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "category": {
+      "enum": [
+        "statusReports",
+        "releasePrep",
+        "incidentsAndTriage",
+        "codeQuality",
+        "repoMaintenance",
+        "securityCompliance",
+        "fogstackOperations",
+        "sourceosWorkstation",
+        "knowledgeOffice",
+        "researchCurriculum",
+        "communityGrowth",
+        "custom"
+      ]
+    },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["manual", "schedule", "event", "condition"] },
+        "schedule": { "type": ["string", "null"], "description": "Cron, RRULE, or platform schedule reference when kind=schedule." },
+        "eventRef": { "type": ["string", "null"], "description": "Event type, topic, webhook, or signal reference when kind=event." },
+        "condition": { "type": ["string", "null"], "description": "Human-readable or policy-evaluable condition when kind=condition." }
+      }
+    },
+    "requiredCapabilityPackRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:capability-pack:" }
+    },
+    "requiredConnectorActionScopeRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:connector-action-scope:" }
+    },
+    "requiredPermissionRefs": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "defaultTimeWindow": {
+      "type": "string",
+      "description": "Default temporal scope such as previous_day, previous_week, since_last_run, last_ci_window, or explicit duration syntax."
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "name"],
+        "properties": {
+          "kind": { "type": "string" },
+          "name": { "type": "string" },
+          "required": { "type": "boolean", "default": true }
+        }
+      }
+    },
+    "mustInclude": { "type": "array", "items": { "type": "string" } },
+    "mustExclude": { "type": "array", "items": { "type": "string" } },
+    "receiptRequired": { "type": "boolean" },
+    "riskLevel": { "enum": ["low", "medium", "high", "critical"], "default": "medium" },
+    "policyRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:policy:" } }
+  }
+}
