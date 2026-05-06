@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:network-truth:wifi_epoch_001",
+  "type": "NetworkTruthState",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:36:20Z",
+  "networkEpoch": "wifi-en0-20260506-223620",
+  "interfaceRef": "en0",
+  "deviceIdentityState": "nil",
+  "radioState": "on",
+  "associationState": "not-associated",
+  "authenticationState": "unknown",
+  "dhcpState": "observer-failed",
+  "dnsState": "observer-failed",
+  "routeState": "route-failed",
+  "captivePortalState": "credential-missing",
+  "internetReachability": "unreachable",
+  "localMeshReachability": "unknown",
+  "vpnOrPrivacyOverlayState": "unknown",
+  "trustedPeerPathState": "not-evaluated",
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_dns_nil_device",
+    "urn:srcos:telemetry:te_no_route_host",
+    "urn:srcos:telemetry:te_wifi_active_no_network"
+  ],
+  "userVisibleSummary": "Wi-Fi radio is active, but no network is associated and route/DNS observers are degraded.",
+  "remediationHint": "Re-evaluate association, DHCP, DNS, and route state before remote sync or browser launch."
+}
