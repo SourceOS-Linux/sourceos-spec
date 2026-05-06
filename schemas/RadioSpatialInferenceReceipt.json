@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RadioSpatialInferenceReceipt.json",
+  "title": "RadioSpatialInferenceReceipt",
+  "description": "Receipt for derived radio-spatial inference such as Wi-Fi location, micro-location, visit, location of interest, routine, nearby presence, home service area, room inference, or home topology. The receipt separates heuristic/model use from unproven causal bridges.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "inputReceiptRefs",
+    "inferenceType",
+    "modelOrAlgorithm",
+    "outputStore",
+    "retentionPolicy",
+    "deletionPolicy",
+    "userVisible"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:receipt:radio-spatial-inference:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:receipt:radio-spatial-inference:<local-id>"
+    },
+    "type": {
+      "const": "RadioSpatialInferenceReceipt",
+      "description": "Discriminator constant."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. 2.1.0."
+    },
+    "inputReceiptRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Signal, model, context, or prior inference receipts used as inputs."
+    },
+    "inferenceType": {
+      "type": "string",
+      "enum": [
+        "wifi_location",
+        "micro_location",
+        "visit",
+        "location_of_interest",
+        "routine",
+        "nearby_presence",
+        "home_service_area",
+        "room_inference",
+        "home_topology",
+        "other"
+      ],
+      "description": "Derived radio-spatial context class."
+    },
+    "modelOrAlgorithm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "class", "aneUsed"],
+      "properties": {
+        "name": { "type": "string", "description": "Model, heuristic, daemon, or algorithm identifier." },
+        "class": { "type": "string", "enum": ["heuristic", "ml_model", "foundation_model", "rule", "unknown"], "description": "Computation class." },
+        "aneUsed": { "oneOf": [{"type": "boolean"}, {"const": "unknown"}], "description": "Whether Apple Neural Engine or equivalent NPU use is proven, denied, or unknown." },
+        "modelAssetRef": { "type": ["string", "null"], "description": "Optional model-asset receipt, hash, or URN." }
+      }
+    },
+    "outputStore": {
+      "type": "string",
+      "description": "Store, graph, cache, protected context store, or receipt sink where derived context was written."
+    },
+    "outputStoreHash": {
+      "type": ["string", "null"],
+      "pattern": "^(sha256:[a-fA-F0-9]{64})$",
+      "description": "Optional hash for the canonicalized output store descriptor."
+    },
+    "retentionPolicy": {
+      "type": "string",
+      "description": "Retention policy for the derived context."
+    },
+    "deletionPolicy": {
+      "type": "string",
+      "description": "Deletion or tombstoning policy coupled to source signal/object deletion."
+    },
+    "userVisible": {
+      "type": "boolean",
+      "description": "Whether the user-facing Context Receipts surface exposes this inference."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Evidence references, hashes, logs, or provenance links."
+    },
+    "notes": {
+      "type": "string",
+      "description": "Optional operator-readable notes."
+    }
+  }
+}
