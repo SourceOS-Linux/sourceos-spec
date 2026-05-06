@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkspaceScope.json",
+  "title": "WorkspaceScope",
+  "description": "A bounded workspace, project, folder, repository, organization, fog workspace, or sandbox selected for a SourceOS/SociOS agent session. Captures read/write/index/execution boundaries before capabilities or connectors are activated.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "workspaceKind",
+    "displayName",
+    "rootRef",
+    "mountMode",
+    "allowedReadRefs",
+    "allowedWriteRefs",
+    "excludedRefs",
+    "indexingPolicy",
+    "secretScanPolicy",
+    "artifactRootRef"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace-scope:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:workspace-scope:<local-id>"
+    },
+    "type": {
+      "const": "WorkspaceScope",
+      "description": "Discriminator constant — always \"WorkspaceScope\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "workspaceKind": {
+      "enum": [
+        "none",
+        "localFolder",
+        "gitRepository",
+        "projectGraph",
+        "organizationWorkspace",
+        "fogWorkspace",
+        "osBuildWorkspace",
+        "ephemeralSandbox",
+        "custom"
+      ],
+      "description": "The workspace class selected during onboarding or session setup."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Human-readable workspace label shown in the shell UI."
+    },
+    "rootRef": {
+      "type": "string",
+      "description": "Opaque path, URI, URN, repository, or workspace reference. Local UIs may redact this when serialized externally."
+    },
+    "mountMode": {
+      "enum": [
+        "noAccess",
+        "readOnly",
+        "draftOnly",
+        "scopedWrite",
+        "fullWorkspace",
+        "sandboxCopy"
+      ],
+      "description": "How the workspace is exposed to the agent runtime."
+    },
+    "allowedReadRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths, globs, URNs, or refs the agent may read. Empty means no read access unless mountMode semantics say otherwise."
+    },
+    "allowedWriteRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths, globs, URNs, or refs the agent may write. Empty means no direct workspace writes."
+    },
+    "excludedRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Refs that remain blocked regardless of broader read/write grants, such as secrets, build outputs, and dependency caches."
+    },
+    "indexingPolicy": {
+      "enum": ["disabled", "ephemeral", "persistent"],
+      "description": "Whether workspace content may be indexed and whether any index may persist beyond the session."
+    },
+    "secretScanPolicy": {
+      "enum": ["notRequired", "requiredBeforeIndex", "requiredBeforeWrite", "requiredBeforeRun"],
+      "description": "Secret-scanning gate required before indexing, writes, or execution."
+    },
+    "artifactRootRef": {
+      "type": "string",
+      "description": "Output directory, artifact vault ref, or content-addressed root for generated reports and receipts."
+    },
+    "connectorRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:connector:" },
+      "description": "Connectors bound to this workspace scope."
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:decision:" },
+      "description": "Policy decisions that authorized or denied the workspace boundary."
+    },
+    "time": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "createdAt": { "type": "string", "format": "date-time" },
+        "expiresAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}
