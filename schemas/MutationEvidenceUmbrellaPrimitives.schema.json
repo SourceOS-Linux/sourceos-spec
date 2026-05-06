@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/MutationEvidenceUmbrellaPrimitives.schema.json",
+  "title": "SourceOS Mutation Evidence Umbrella Primitives v0.1",
+  "description": "Umbrella schema for SourceOS MutationReceipt, ExecutionContextReceipt, ServiceWorkReceipt, and EvidencePipelineReceipt with specialized subtypes.",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/mutation_receipt" },
+    { "$ref": "#/$defs/execution_context_receipt" },
+    { "$ref": "#/$defs/service_work_receipt" },
+    { "$ref": "#/$defs/evidence_pipeline_receipt" }
+  ],
+  "$defs": {
+    "actor_ref": {
+      "type": "object",
+      "required": ["role", "kind", "id", "name"],
+      "properties": {
+        "role": { "enum": ["human", "origin_actor", "requesting_actor", "execution_actor", "storage_actor", "observer", "policy_engine", "unknown"] },
+        "kind": { "enum": ["user", "process", "service", "daemon", "agent", "browser", "browser_content_process", "terminal", "file_manager", "sync_daemon", "cloud_service", "diagnostic_service", "kernel", "peripheral", "unknown"] },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "digest": { "type": ["string", "null"] },
+        "coalition_id": { "type": ["string", "null"] },
+        "persona_id": { "type": ["string", "null"] },
+        "trust_zone": { "type": ["string", "null"] },
+        "attribution_status": { "enum": ["complete", "partial", "none", "unknown_origin", "delegated_unknown"] }
+      },
+      "additionalProperties": true
+    },
+    "object_ref": {
+      "type": "object",
+      "required": ["class", "id", "path_class"],
+      "properties": {
+        "class": { "type": "string" },
+        "id": { "type": "string" },
+        "path_class": { "enum": ["user_data", "app_state", "browser_profile", "origin_storage", "service_worker_cache", "cache", "tmp", "sync_root", "cloud_object", "fog_object", "archive", "diagnostic_archive", "evidence_store", "system_volume", "trash", "downloads", "external_volume", "network_mount", "package_bundle", "unknown"] },
+        "redaction": { "enum": ["none", "stable_pseudonym", "path_class_only", "forensic_expansion_required"] }
+      },
+      "additionalProperties": true
+    },
+    "resource_cost": {
+      "type": "object",
+      "properties": {
+        "logical_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "physical_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "dirty_memory_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "clone_or_reflink_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "cpu_ms": { "type": ["integer", "null"], "minimum": 0 },
+        "network_bytes_in": { "type": ["integer", "null"], "minimum": 0 },
+        "network_bytes_out": { "type": ["integer", "null"], "minimum": 0 },
+        "fsync_count": { "type": ["integer", "null"], "minimum": 0 },
+        "wal_bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "checkpoint_count": { "type": ["integer", "null"], "minimum": 0 },
+        "entries_visited": { "type": ["integer", "null"], "minimum": 0 },
+        "objects_processed": { "type": ["integer", "null"], "minimum": 0 }
+      },
+      "additionalProperties": true
+    },
+    "policy_ref": {
+      "type": "object",
+      "required": ["decision"],
+      "properties": {
+        "decision": { "enum": ["allow", "deny", "degrade", "sample", "drop", "route", "quarantine", "unknown"] },
+        "policy_id": { "type": ["string", "null"] },
+        "budget_id": { "type": ["string", "null"] },
+        "classification": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "evidence_quality": {
+      "type": "object",
+      "required": ["status", "confidence"],
+      "properties": {
+        "status": { "enum": ["complete", "partial", "degraded_sensor", "opaque_symbolication", "redacted", "insufficient_for_clearance"] },
+        "confidence": { "enum": ["high", "medium", "low", "unknown"] },
+        "missing_fields": { "type": "array", "items": { "type": "string" } },
+        "sensor_state": { "enum": ["healthy", "degraded", "blind", "missing", "not_applicable", "unknown"] }
+      },
+      "additionalProperties": true
+    },
+    "base_receipt": {
+      "type": "object",
+      "required": ["schema", "primitive", "subtype", "event_id", "timestamp", "actor_chain", "object", "operation", "policy", "evidence_quality"],
+      "properties": {
+        "schema": { "const": "sourceos.mutation_evidence.umbrella.v0.1" },
+        "primitive": { "enum": ["MutationReceipt", "ExecutionContextReceipt", "ServiceWorkReceipt", "EvidencePipelineReceipt"] },
+        "subtype": { "type": "string" },
+        "event_id": { "type": "string", "minLength": 8 },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "boot_id": { "type": ["string", "null"] },
+        "session_id": { "type": ["string", "null"] },
+        "actor_chain": { "type": "array", "items": { "$ref": "#/$defs/actor_ref" }, "minItems": 1 },
+        "object": { "$ref": "#/$defs/object_ref" },
+        "operation": { "type": "string" },
+        "resource_cost": { "$ref": "#/$defs/resource_cost" },
+        "policy": { "$ref": "#/$defs/policy_ref" },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" },
+        "causal_parents": { "type": "array", "items": { "type": "string" } },
+        "downstream_effects": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "mutation_receipt": {
+      "allOf": [
+        { "$ref": "#/$defs/base_receipt" },
+        { "properties": { "primitive": { "const": "MutationReceipt" }, "subtype": { "enum": ["browser_write", "delegated_io", "sync_cycle", "folder_sizing", "metadata_traversal", "archive_extraction", "diagnostic_self_noise", "write_burst", "filesystem_clone", "cache_maintenance", "media_work", "temporary_artifact"] } } }
+      ]
+    },
+    "execution_context_receipt": {
+      "allOf": [
+        { "$ref": "#/$defs/base_receipt" },
+        {
+          "properties": {
+            "primitive": { "const": "ExecutionContextReceipt" },
+            "subtype": { "enum": ["qos_policy", "user_activity_context", "persona_context", "path_boundary", "binary_provenance", "model_activity_state", "terminal_session"] },
+            "execution_context": {
+              "type": "object",
+              "properties": {
+                "frontmost": { "type": ["boolean", "null"] },
+                "user_active": { "type": ["boolean", "null"] },
+                "effective_qos": { "type": ["string", "null"] },
+                "requested_qos": { "type": ["string", "null"] },
+                "qos_match": { "type": ["boolean", "null"] },
+                "path_boundary_crossed": { "type": ["boolean", "null"] }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      ]
+    },
+    "service_work_receipt": {
+      "allOf": [
+        { "$ref": "#/$defs/base_receipt" },
+        {
+          "properties": {
+            "primitive": { "const": "ServiceWorkReceipt" },
+            "subtype": { "enum": ["scheduler_receipt", "ephemeral_service_work", "fileprovider_tracking", "cloud_object_transfer", "ui_event_route", "compositor_frame", "display_update_pressure", "ipc_serialization", "peripheral_io", "dock_channel_event"] },
+            "service_work": {
+              "type": "object",
+              "properties": {
+                "scheduler_kind": { "type": ["string", "null"] },
+                "batch_size": { "type": ["integer", "null"], "minimum": 0 },
+                "max_cost": { "type": ["integer", "null"], "minimum": 0 },
+                "retry_after_ms": { "type": ["integer", "null"], "minimum": 0 },
+                "throttle": { "type": ["string", "null"] },
+                "object_count": { "type": ["integer", "null"], "minimum": 0 }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      ]
+    },
+    "evidence_pipeline_receipt": {
+      "allOf": [
+        { "$ref": "#/$defs/base_receipt" },
+        {
+          "properties": {
+            "primitive": { "const": "EvidencePipelineReceipt" },
+            "subtype": { "enum": ["routing_receipt", "sink_precedence", "evidence_gap", "log_flush", "symbolication_quality", "agent_coverage_attestation", "compromise_assessment"] },
+            "evidence_pipeline": {
+              "type": "object",
+              "properties": {
+                "received": { "type": ["integer", "null"], "minimum": 0 },
+                "written": { "type": ["integer", "null"], "minimum": 0 },
+                "sampled": { "type": ["integer", "null"], "minimum": 0 },
+                "dropped": { "type": ["integer", "null"], "minimum": 0 },
+                "redacted": { "type": ["integer", "null"], "minimum": 0 },
+                "diverted": { "type": ["integer", "null"], "minimum": 0 },
+                "clearance_allowed": { "type": ["boolean", "null"] }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      ]
+    }
+  }
+}
