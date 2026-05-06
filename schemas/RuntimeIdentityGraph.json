@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RuntimeIdentityGraph.json",
+  "title": "RuntimeIdentityGraph",
+  "description": "A runtime identity graph connecting process, package, executable, helper, broker, profile, session, and audit-token identity observations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "observedAt",
+    "rootComponentRef",
+    "identityVerdict",
+    "nodes"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:runtime-identity-graph:" },
+    "type": { "const": "RuntimeIdentityGraph" },
+    "specVersion": { "type": "string" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "rootComponentRef": { "type": "string", "minLength": 1 },
+    "identityVerdict": { "enum": ["valid", "degraded", "missing", "ambiguous", "invalid", "unknown"] },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["nodeId", "nodeKind", "displayName"],
+        "properties": {
+          "nodeId": { "type": "string", "minLength": 1 },
+          "nodeKind": { "enum": ["app", "daemon", "xpc-service", "browser-child", "terminal-helper", "broker", "extension", "package", "profile", "session", "audit-token", "executable"] },
+          "displayName": { "type": "string", "minLength": 1 },
+          "processId": { "type": "integer", "minimum": 0 },
+          "bundleOrPackageId": { "type": "string" },
+          "executableDigest": { "type": "string" },
+          "auditIdentity": { "type": "string" },
+          "verificationVerdict": { "enum": ["valid", "degraded", "missing", "ambiguous", "invalid", "unknown"] }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from", "to", "relationship"],
+        "properties": {
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "relationship": { "enum": ["spawned", "owns", "brokers", "uses-profile", "runs-as", "attests", "packages", "observed-as", "unknown"] }
+        }
+      }
+    },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleImpact": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}
