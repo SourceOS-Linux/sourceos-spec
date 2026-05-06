@@ -9,6 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ## [Unreleased]
 
 ### Added
+- Onboarding control-plane contract family: `WorkspaceScope`, `TrustMode`, `CapabilityPack`, `ConnectorActionScope`, `AutomationTemplate`, and `OnboardingReceipt`, with canonical first-run examples, semantic vocabulary seed, ADR, and `validate-onboarding-examples` validation target.
 - Reasoning run contracts: `ReasoningRun`, `ReasoningEvent`, `ReasoningReceipt`, `ReasoningReplayPlan`, and `ReasoningBenchmark` with canonical examples and a contract-additions note for the Superconscious reference loop.
 - Agent Machine / Model Carry schemas: `SourceOSModelCarryRef`, `InferenceProvider`, `ModelResidency`, `PlacementFact`, and `AgentMachineReceipt` with canonical examples and a contract-additions placement note.
 - NLBoot object schemas: `NLBootPlan`, `ArtifactCacheRecord`, `BootProofRecord`, `AppleSiliconAdapterEvidence` with canonical examples and validation (`tools/validate_nlboot_examples.py`)
