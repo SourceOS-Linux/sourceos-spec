@@ -1,0 +1,41 @@
+{
+  "id": "urn:srcos:boot-session-phase:post_login_locked_001",
+  "type": "BootSessionPhaseState",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:36:15Z",
+  "bootId": "boot-20260506-001",
+  "sessionId": "session-501-post-login-locked",
+  "phase": "post-login-locked",
+  "phaseVerdict": "not-ready",
+  "availableKeyrings": [],
+  "availablePortals": ["notification"],
+  "allowedComponents": [
+    {
+      "componentRef": "urn:srcos:component:basic-network-observer",
+      "state": "allowed-degraded",
+      "reason": "May observe interface transitions but cannot access unlocked user analytics state."
+    }
+  ],
+  "blockedComponents": [
+    {
+      "componentRef": "urn:srcos:component:wifianalyticsd",
+      "requiredPhase": "unlocked-user-session",
+      "state": "deferred",
+      "reason": "Device has not been unlocked since boot, so analytics client and detached signature stores are unavailable.",
+      "remediationHint": "Defer analytics sampling until the user session reaches unlocked-user-session."
+    },
+    {
+      "componentRef": "urn:srcos:component:deleted-registry-sweep",
+      "requiredPhase": "unlocked-user-session",
+      "state": "deferred",
+      "reason": "Registry cleanup requires unlocked stores and should not run during locked post-login state.",
+      "remediationHint": "Queue cleanup until unlock or recovery session."
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_device_not_unlocked_since_boot",
+    "urn:srcos:telemetry:te_key_store_locked"
+  ],
+  "userVisibleSummary": "The session is post-login but still locked; components requiring unlocked state must be deferred.",
+  "remediationHint": "Transition to unlocked-user-session before running analytics, registry repair, or browser launch preflight requiring user stores."
+}

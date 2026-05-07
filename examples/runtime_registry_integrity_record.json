@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:runtime-registry-integrity:launchservices_001",
+  "type": "RuntimeRegistryIntegrityRecord",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:37:00Z",
+  "componentRef": "urn:srcos:component:desktop-registry",
+  "bundleOrPackageIdentity": "com.apple.CloudPhotosConfiguration",
+  "verificationVerdict": "degraded",
+  "registryRecords": [
+    {
+      "recordKind": "extension-record",
+      "recordRef": "com.apple.CloudPhotosConfiguration",
+      "state": "missing",
+      "errorCode": "LS_-10814",
+      "userVisibleImpact": "The runtime could not construct an extension record from the desktop registry.",
+      "remediationHint": "Refresh or rebuild the runtime extension registry before enabling extension discovery."
+    },
+    {
+      "recordKind": "namespace-descriptor",
+      "recordRef": "trial-treatment-layer-0x4",
+      "state": "missing",
+      "userVisibleImpact": "Experiment or treatment metadata could not be resolved during maintenance.",
+      "remediationHint": "Suppress repeated namespace lookups and emit a DiagnosticStormRecord until the namespace cache changes."
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_lsbundle_record_missing",
+    "urn:srcos:telemetry:te_namespace_descriptor_missing"
+  ],
+  "userVisibleSummary": "Registry integrity is degraded because extension records and treatment namespace descriptors are missing.",
+  "remediationHint": "Run a bounded registry repair or defer registry-dependent launch work until integrity is restored."
+}

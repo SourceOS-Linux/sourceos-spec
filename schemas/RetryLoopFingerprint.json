@@ -1,0 +1,118 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RetryLoopFingerprint.json",
+  "title": "RetryLoopFingerprint",
+  "description": "A bounded summary of a repeated runtime failure or retry loop, preserving count, cadence, burst density, policy validity, and terminal state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "signature",
+    "sourceComponent",
+    "firstSeen",
+    "lastSeen",
+    "count",
+    "retryClass",
+    "terminalState",
+    "policyValidity"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:retry-loop:"
+    },
+    "type": {
+      "const": "RetryLoopFingerprint"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sourceComponent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "firstSeen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "lastSeen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "medianIntervalMs": {
+      "type": "number",
+      "minimum": 0
+    },
+    "maxEventsPerSecond": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "retryClass": {
+      "enum": [
+        "polling",
+        "burst",
+        "backoff",
+        "sweep",
+        "respawn",
+        "unknown"
+      ]
+    },
+    "terminalState": {
+      "enum": [
+        "resolved",
+        "still-looping",
+        "suppressed",
+        "quarantined",
+        "escalated",
+        "unknown"
+      ]
+    },
+    "policyValidity": {
+      "enum": [
+        "expected",
+        "unexpected",
+        "denied-correctly",
+        "denied-but-noisy",
+        "invalid-retry",
+        "unknown"
+      ]
+    },
+    "severity": {
+      "enum": [
+        "debug",
+        "info",
+        "warn",
+        "error",
+        "critical"
+      ]
+    },
+    "sampleEventRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "causalParentRef": {
+      "type": "string"
+    },
+    "suppressionPolicy": {
+      "type": "string"
+    },
+    "userVisibleImpact": {
+      "type": "string"
+    },
+    "remediationHint": {
+      "type": "string"
+    }
+  }
+}

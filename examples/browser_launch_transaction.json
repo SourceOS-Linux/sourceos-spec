@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:browser-launch-transaction:bearbrowser_001",
+  "type": "BrowserLaunchTransaction",
+  "specVersion": "2.0.0",
+  "componentRef": "urn:srcos:component:BearBrowser",
+  "phaseStatus": "preflight",
+  "capabilityPreflightPassed": false,
+  "identityGraphValid": true,
+  "desktopBrokerValid": false,
+  "profileStoreValid": true,
+  "extensionRegistryValid": false,
+  "networkTruthSnapshotCaptured": true,
+  "childProcessSpawnAllowed": false,
+  "childProcessAttested": false,
+  "pageLoadStarted": false,
+  "observedAt": "2026-05-06T22:37:03Z",
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_child_process_failed",
+    "urn:srcos:telemetry:te_launchservices_denied",
+    "urn:srcos:telemetry:te_pasteboard_denied"
+  ],
+  "userVisibleImpact": "WebContent child processes cannot spawn due to missing broker and extension validation",
+  "remediationHint": "Verify desktop broker availability and extension registry integrity before retrying launch."
+}

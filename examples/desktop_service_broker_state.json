@@ -1,0 +1,38 @@
+{
+  "id": "urn:srcos:desktop-service-broker-state:bearbrowser_001",
+  "type": "DesktopServiceBrokerState",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:37:03Z",
+  "componentRef": "urn:srcos:component:BearBrowser",
+  "overallState": "degraded",
+  "brokers": [
+    {
+      "brokerKind": "pasteboard",
+      "state": "policy-blocked",
+      "fallback": "disable clipboard integration for WebContent child processes",
+      "userVisibleImpact": "Copy and paste may be unavailable inside sandboxed web content.",
+      "remediationHint": "Route pasteboard access through the desktop broker and require user gesture gating."
+    },
+    {
+      "brokerKind": "core-services",
+      "state": "policy-blocked",
+      "fallback": "prevent child-process LaunchServices/CoreServices lookup",
+      "userVisibleImpact": "Browser child process cannot directly register with host desktop services.",
+      "remediationHint": "Move host desktop service calls into a parent-process broker."
+    },
+    {
+      "brokerKind": "extension-registry",
+      "state": "degraded",
+      "fallback": "quarantine extension discovery for this launch transaction",
+      "userVisibleImpact": "Extensions are disabled until registry integrity is verified.",
+      "remediationHint": "Rebuild or refresh the extension registry before enabling extension discovery."
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_pasteboard_denied",
+    "urn:srcos:telemetry:te_coreservices_denied",
+    "urn:srcos:telemetry:te_extension_query_cancelled"
+  ],
+  "userVisibleSummary": "Desktop service brokers are degraded for BearBrowser, so child-process desktop access must remain brokered or disabled.",
+  "remediationHint": "Verify pasteboard, CoreServices, and extension-registry brokers before spawning WebContent."
+}
