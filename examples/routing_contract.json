@@ -1,0 +1,31 @@
+{
+  "id": "urn:srcos:routing-contract:checkout-example",
+  "type": "RoutingContract",
+  "specVersion": "2.0.0",
+  "name": "checkout-example",
+  "selectors": {
+    "headers": [
+      { "name": "x-routing-key", "op": "equals", "value": "checkout-example" }
+    ],
+    "actorRef": "urn:srcos:session:agent-example",
+    "branchRef": "checkout-example",
+    "missionRef": "urn:srcos:workflow:checkout-validation",
+    "trustClass": "low"
+  },
+  "targets": [
+    {
+      "name": "checkout-http",
+      "targetRef": "urn:srcos:workload:checkout",
+      "port": 8080,
+      "fallback": "baseline",
+      "writePolicy": "isolated_only"
+    }
+  ],
+  "propagation": {
+    "traceContext": "w3c",
+    "extraHeaders": ["x-routing-key", "x-agent-session"]
+  },
+  "defaultDeny": false,
+  "requireCapabilityToken": true,
+  "readOnlySurface": false
+}
