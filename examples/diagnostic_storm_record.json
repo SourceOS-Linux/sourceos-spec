@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:diagnostic-storm:triald_missing_namespace_001",
+  "type": "DiagnosticStormRecord",
+  "specVersion": "2.0.0",
+  "signature": "experiment:triald_system:missing_namespace_descriptor",
+  "sourceComponent": "triald_system",
+  "normalizedFailureClass": "registry-integrity-failure",
+  "firstSeen": "2026-05-06T22:37:00Z",
+  "lastSeen": "2026-05-06T22:37:18Z",
+  "repeatCount": 492,
+  "medianIntervalMs": 4.5,
+  "maxEventsPerSecond": 136,
+  "severity": "error",
+  "sampleEvents": [
+    {
+      "eventRef": "urn:srcos:telemetry:te_triald_namespace_missing_001",
+      "messageTemplate": "Requested namespace descriptor does not exist for treatment layer",
+      "observedAt": "2026-05-06T22:37:00Z"
+    }
+  ],
+  "suppressionPolicy": "summarize",
+  "terminalState": "still-active",
+  "linkedIncidentRef": "urn:srcos:incident:runtime_registry_degraded_001",
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_triald_namespace_missing",
+    "urn:srcos:retry-loop:triald_namespace_descriptor_001"
+  ],
+  "userVisibleSummary": "Trial namespace descriptor lookup repeated hundreds of times in a maintenance sweep.",
+  "remediationHint": "Summarize repeated namespace misses and defer further lookups until the namespace cache or registry epoch changes."
+}
