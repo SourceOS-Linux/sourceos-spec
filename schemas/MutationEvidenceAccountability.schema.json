@@ -1,0 +1,234 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/MutationEvidenceAccountability.schema.json",
+  "title": "SourceOS Mutation and Evidence Accountability v0.1",
+  "type": "object",
+  "oneOf": [
+    { "$ref": "#/$defs/observability_event" },
+    { "$ref": "#/$defs/write_accountability" },
+    { "$ref": "#/$defs/routing_receipt" },
+    { "$ref": "#/$defs/media_work" },
+    { "$ref": "#/$defs/temporary_artifact" },
+    { "$ref": "#/$defs/coalition_resource" },
+    { "$ref": "#/$defs/policy_decision" },
+    { "$ref": "#/$defs/compromise_assessment" }
+  ],
+  "$defs": {
+    "actor": {
+      "type": "object",
+      "required": ["kind", "id", "name"],
+      "properties": {
+        "kind": { "enum": ["process", "service", "agent", "kernel", "user", "container", "browser_content_process", "indexer", "sync_agent"] },
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "digest": { "type": ["string", "null"] },
+        "coalition_id": { "type": ["string", "null"] },
+        "trust_zone": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "object_ref": {
+      "type": "object",
+      "properties": {
+        "class": { "type": "string" },
+        "id": { "type": "string" },
+        "path_class": { "type": ["string", "null"] },
+        "redaction": { "enum": ["none", "stable_pseudonym", "path_class_only", "forensic_expansion_required"] }
+      },
+      "additionalProperties": true
+    },
+    "policy": {
+      "type": "object",
+      "required": ["decision"],
+      "properties": {
+        "decision": { "enum": ["allow", "deny", "degrade", "sample", "drop", "route", "unknown"] },
+        "policy_id": { "type": ["string", "null"] },
+        "classification": { "type": ["string", "null"] }
+      },
+      "additionalProperties": true
+    },
+    "evidence_quality": {
+      "type": "object",
+      "required": ["status"],
+      "properties": {
+        "status": { "enum": ["complete", "partial", "degraded_sensor", "opaque_symbolication", "redacted", "insufficient_for_clearance"] },
+        "missing_fields": { "type": "array", "items": { "type": "string" } },
+        "confidence": { "enum": ["high", "medium", "low", "unknown"] }
+      },
+      "additionalProperties": true
+    },
+    "base_event_fields": {
+      "type": "object",
+      "required": ["schema", "event_id", "timestamp", "actor", "operation", "policy", "evidence_quality"],
+      "properties": {
+        "schema": { "type": "string" },
+        "event_id": { "type": "string", "minLength": 8 },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "boot_id": { "type": "string" },
+        "session_id": { "type": "string" },
+        "actor": { "$ref": "#/$defs/actor" },
+        "operation": { "type": "string" },
+        "object": { "$ref": "#/$defs/object_ref" },
+        "policy": { "$ref": "#/$defs/policy" },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" },
+        "causal_parents": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    },
+    "observability_event": {
+      "allOf": [
+        { "$ref": "#/$defs/base_event_fields" },
+        { "properties": { "schema": { "const": "sourceos.observability.event.v0.1" } } }
+      ]
+    },
+    "write_accountability": {
+      "allOf": [
+        { "$ref": "#/$defs/base_event_fields" },
+        {
+          "required": ["bytes"],
+          "properties": {
+            "schema": { "const": "sourceos.write_accountability.v0.1" },
+            "operation": { "enum": ["write", "append", "sqlite_commit", "sqlite_wal_write", "sqlite_checkpoint", "atomic_rename", "fsync", "cache_write", "index_write", "unknown"] },
+            "bytes": {
+              "type": "object",
+              "required": ["written"],
+              "properties": {
+                "written": { "type": "integer", "minimum": 0 },
+                "dirtied": { "type": "integer", "minimum": 0 },
+                "read": { "type": "integer", "minimum": 0 },
+                "write_amplification_ratio": { "type": ["number", "null"], "minimum": 0 }
+              }
+            },
+            "db": {
+              "type": "object",
+              "properties": {
+                "engine": { "enum": ["sqlite", "rocksdb", "postgres", "lmdb", "lancedb", "qdrant", "unknown"] },
+                "wal_bytes": { "type": ["integer", "null"], "minimum": 0 },
+                "checkpoint_count": { "type": ["integer", "null"], "minimum": 0 },
+                "fsync_count": { "type": ["integer", "null"], "minimum": 0 }
+              },
+              "additionalProperties": true
+            }
+          }
+        }
+      ]
+    },
+    "routing_receipt": {
+      "type": "object",
+      "required": ["schema", "event_id", "timestamp", "source", "routing_policy", "counts", "destinations", "evidence_quality"],
+      "properties": {
+        "schema": { "const": "sourceos.routing_receipt.v0.1" },
+        "event_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "source": { "type": "string" },
+        "routing_policy": {
+          "type": "object",
+          "required": ["claimed_by", "visible_in_standard_log", "visible_in_evidence_store", "retention_days"],
+          "properties": {
+            "claimed_by": { "type": "string" },
+            "visible_in_standard_log": { "type": "boolean" },
+            "visible_in_evidence_store": { "type": "boolean" },
+            "requires_privilege": { "type": "boolean" },
+            "redaction_profile": { "type": "string" },
+            "retention_days": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": true
+        },
+        "counts": {
+          "type": "object",
+          "required": ["received", "written", "sampled", "dropped", "redacted", "diverted"],
+          "properties": {
+            "received": { "type": "integer", "minimum": 0 },
+            "written": { "type": "integer", "minimum": 0 },
+            "sampled": { "type": "integer", "minimum": 0 },
+            "dropped": { "type": "integer", "minimum": 0 },
+            "redacted": { "type": "integer", "minimum": 0 },
+            "diverted": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "destinations": { "type": "array", "items": { "type": "string" } },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" }
+      },
+      "additionalProperties": true
+    },
+    "media_work": {
+      "type": "object",
+      "required": ["schema", "event_id", "timestamp", "component", "operation", "trigger", "input", "output", "codec", "policy", "evidence_quality"],
+      "properties": {
+        "schema": { "const": "sourceos.media_work.v0.1" },
+        "event_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "component": { "type": "string" },
+        "operation": { "enum": ["tile_encode", "preview_generate", "attachment_transcode", "thumbnail_generate", "decode", "unknown"] },
+        "trigger": { "enum": ["user_action", "message_received", "sync_replay", "cache_rebuild", "migration", "indexing", "unknown"] },
+        "input": { "type": "object", "required": ["artifact_class"], "additionalProperties": true },
+        "output": { "type": "object", "required": ["artifact_class", "path_class", "cleanup_policy"], "additionalProperties": true },
+        "codec": { "type": "object", "required": ["family", "mode"], "additionalProperties": true },
+        "policy": { "$ref": "#/$defs/policy" },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" }
+      },
+      "additionalProperties": true
+    },
+    "temporary_artifact": {
+      "type": "object",
+      "required": ["schema", "event_id", "timestamp", "artifact", "lifecycle", "policy", "evidence_quality"],
+      "properties": {
+        "schema": { "const": "sourceos.temporary_artifact.v0.1" },
+        "event_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "artifact": { "type": "object", "required": ["class", "path_class"], "additionalProperties": true },
+        "lifecycle": { "type": "object", "required": ["created", "cleanup_state"], "additionalProperties": true },
+        "policy": { "$ref": "#/$defs/policy" },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" }
+      },
+      "additionalProperties": true
+    },
+    "coalition_resource": {
+      "type": "object",
+      "required": ["schema", "event_id", "timestamp", "coalition", "processes", "resources", "evidence_quality"],
+      "properties": {
+        "schema": { "const": "sourceos.coalition_resource.v0.1" },
+        "event_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "coalition": { "type": "object", "required": ["id", "class"], "additionalProperties": true },
+        "processes": { "type": "array", "items": { "type": "object", "required": ["pid", "name"], "additionalProperties": true } },
+        "resources": { "type": "object", "additionalProperties": true },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" }
+      },
+      "additionalProperties": true
+    },
+    "policy_decision": {
+      "type": "object",
+      "required": ["schema", "event_id", "timestamp", "subject", "target", "decision", "classification", "evidence_quality"],
+      "properties": {
+        "schema": { "const": "sourceos.policy_decision.v0.1" },
+        "event_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "subject": { "$ref": "#/$defs/actor" },
+        "target": { "type": "object", "required": ["kind", "id"], "additionalProperties": true },
+        "decision": { "enum": ["allow", "deny", "degrade", "unknown"] },
+        "classification": { "enum": ["expected_benign", "expected_degraded", "configuration_missing", "policy_violation", "possible_tamper", "impossible_state", "unknown"] },
+        "retry_policy": { "type": "object", "additionalProperties": true },
+        "downstream_effects": { "type": "array", "items": { "type": "string" } },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" }
+      },
+      "additionalProperties": true
+    },
+    "compromise_assessment": {
+      "type": "object",
+      "required": ["schema", "assessment_id", "timestamp", "scope", "status", "sensor_state", "evidence_quality", "conclusion"],
+      "properties": {
+        "schema": { "const": "sourceos.compromise_assessment.v0.1" },
+        "assessment_id": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" },
+        "scope": { "type": "object", "required": ["system", "time_window"], "additionalProperties": true },
+        "status": { "type": "array", "items": { "enum": ["compromise_proven", "compromise_suspected", "no_positive_compromise_evidence", "cannot_exclude_compromise", "sensor_degraded", "evidence_inadequate"] }, "minItems": 1 },
+        "sensor_state": { "type": "array", "items": { "type": "object", "required": ["sensor", "state"], "additionalProperties": true } },
+        "evidence_quality": { "$ref": "#/$defs/evidence_quality" },
+        "conclusion": { "type": "string" },
+        "required_next_evidence": { "type": "array", "items": { "type": "string" } }
+      },
+      "additionalProperties": true
+    }
+  }
+}

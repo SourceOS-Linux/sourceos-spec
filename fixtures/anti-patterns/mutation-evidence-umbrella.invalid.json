@@ -1,0 +1,224 @@
+{
+  "anti_patterns": [
+    {
+      "name": "browser write falsely attributed to extensions when no visible extensions exist",
+      "event": {
+        "schema": "sourceos.mutation_evidence.umbrella.v0.1",
+        "primitive": "MutationReceipt",
+        "subtype": "browser_write",
+        "event_id": "bad-browser-extension-attribution-0001",
+        "timestamp": "2026-05-05T22:30:00Z",
+        "boot_id": "boot-redacted-0001",
+        "session_id": "session-redacted-0001",
+        "actor_chain": [
+          {
+            "role": "execution_actor",
+            "kind": "browser",
+            "id": "process:firefox",
+            "name": "Firefox",
+            "digest": null,
+            "coalition_id": "coalition:firefox-redacted",
+            "persona_id": "persona:interactive-desktop",
+            "trust_zone": "user.desktop.browser",
+            "attribution_status": "partial"
+          }
+        ],
+        "object": {
+          "class": "browser_extension_storage",
+          "id": "browser-extension:unknown",
+          "path_class": "browser_profile",
+          "redaction": "stable_pseudonym"
+        },
+        "operation": "sqlite_wal_write",
+        "resource_cost": {
+          "dirty_memory_bytes": 2147480000
+        },
+        "policy": {
+          "decision": "allow",
+          "policy_id": "browser.profile.write.policy",
+          "budget_id": "browser.profile.daily.write.budget",
+          "classification": "extension_storage_primary"
+        },
+        "evidence_quality": {
+          "status": "partial",
+          "confidence": "medium",
+          "missing_fields": ["hidden_addon_inventory", "extension_id"],
+          "sensor_state": "healthy"
+        },
+        "browser": {
+          "browser_actor_class": "browser_extension_storage",
+          "extension_inventory_state": "none_visible",
+          "extension_evidence_quality": "partial",
+          "primary_extension_cause_allowed": true
+        },
+        "causal_parents": [],
+        "downstream_effects": ["write_pressure_threshold_crossed"]
+      }
+    },
+    {
+      "name": "delegated mutation without actor chain",
+      "event": {
+        "schema": "sourceos.mutation_evidence.umbrella.v0.1",
+        "primitive": "MutationReceipt",
+        "subtype": "delegated_io",
+        "event_id": "bad-delegated-no-chain-0001",
+        "timestamp": "2026-05-05T23:00:00Z",
+        "boot_id": "boot-redacted-0002",
+        "session_id": "session-redacted-0002",
+        "actor_chain": [
+          {
+            "role": "execution_actor",
+            "kind": "sync_daemon",
+            "id": "service:sourceos-syncd",
+            "name": "sourceos-syncd",
+            "digest": null,
+            "coalition_id": "coalition:syncd",
+            "persona_id": "persona:interactive-desktop",
+            "trust_zone": "user.desktop.sync",
+            "attribution_status": "partial"
+          }
+        ],
+        "object": {
+          "class": "sync_metadata_db",
+          "id": "sync-db:workspace-redacted",
+          "path_class": "sync_root",
+          "redaction": "stable_pseudonym"
+        },
+        "operation": "sync_metadata_commit",
+        "resource_cost": {
+          "dirty_memory_bytes": 2147480000
+        },
+        "policy": {
+          "decision": "allow",
+          "policy_id": "sync.delegated_io.policy",
+          "budget_id": "sync.workspace.default",
+          "classification": "delegated_mutation"
+        },
+        "evidence_quality": {
+          "status": "complete",
+          "confidence": "high",
+          "missing_fields": [],
+          "sensor_state": "healthy"
+        },
+        "causal_parents": [],
+        "downstream_effects": ["sync_cycle"]
+      }
+    },
+    {
+      "name": "diagnostic self-noise allows clearance despite redaction and observer writes",
+      "event": {
+        "schema": "sourceos.mutation_evidence.umbrella.v0.1",
+        "primitive": "EvidencePipelineReceipt",
+        "subtype": "diagnostic_self_noise",
+        "event_id": "bad-diagnostic-clearance-0001",
+        "timestamp": "2026-05-05T23:20:00Z",
+        "boot_id": "boot-redacted-0002",
+        "session_id": "session-redacted-0002",
+        "actor_chain": [
+          {
+            "role": "observer",
+            "kind": "diagnostic_service",
+            "id": "service:symbolication",
+            "name": "symbolication-service",
+            "digest": null,
+            "coalition_id": "coalition:diagnostics",
+            "persona_id": null,
+            "trust_zone": "system.diagnostics",
+            "attribution_status": "partial"
+          }
+        ],
+        "object": {
+          "class": "diagnostic_archive",
+          "id": "diagnostic-archive:mmap-redacted",
+          "path_class": "diagnostic_archive",
+          "redaction": "stable_pseudonym"
+        },
+        "operation": "write_symbolication_archive",
+        "resource_cost": {
+          "logical_bytes": 67108864,
+          "physical_bytes": 67108864,
+          "dirty_memory_bytes": 67108864
+        },
+        "policy": {
+          "decision": "allow",
+          "policy_id": "diagnostics.observer_effect.policy",
+          "budget_id": "diagnostics.default.write.budget",
+          "classification": "observer_effect_unaccounted"
+        },
+        "evidence_quality": {
+          "status": "partial",
+          "confidence": "medium",
+          "missing_fields": ["observed_process_identity_for_all_samples"],
+          "sensor_state": "healthy"
+        },
+        "evidence_pipeline": {
+          "received": 8,
+          "written": 8,
+          "sampled": 0,
+          "dropped": 0,
+          "redacted": 3,
+          "diverted": 0,
+          "clearance_allowed": true
+        },
+        "causal_parents": ["evt-resource-pressure-report-0001"],
+        "downstream_effects": ["diagnostic_write_pressure_contribution"]
+      }
+    },
+    {
+      "name": "archive extraction without path boundary and cleanup accounting",
+      "event": {
+        "schema": "sourceos.mutation_evidence.umbrella.v0.1",
+        "primitive": "MutationReceipt",
+        "subtype": "archive_extraction",
+        "event_id": "bad-archive-missing-boundary-0001",
+        "timestamp": "2026-05-05T23:10:00Z",
+        "boot_id": "boot-redacted-0002",
+        "session_id": "terminal-session-redacted-0001",
+        "actor_chain": [
+          {
+            "role": "execution_actor",
+            "kind": "process",
+            "id": "process:archive-tool-redacted",
+            "name": "archive-extractor",
+            "digest": null,
+            "coalition_id": "coalition:archive-extract",
+            "persona_id": "persona:interactive-developer",
+            "trust_zone": "user.terminal.tool",
+            "attribution_status": "partial"
+          }
+        ],
+        "object": {
+          "class": "archive",
+          "id": "archive:sha256-redacted",
+          "path_class": "unknown",
+          "redaction": "stable_pseudonym"
+        },
+        "operation": "extract_archive",
+        "resource_cost": {
+          "logical_bytes": 734003200,
+          "physical_bytes": 681574400,
+          "dirty_memory_bytes": 681574400
+        },
+        "policy": {
+          "decision": "allow",
+          "policy_id": "archive.extract.default",
+          "budget_id": "workspace.import.default",
+          "classification": "user_requested_import"
+        },
+        "evidence_quality": {
+          "status": "complete",
+          "confidence": "high",
+          "missing_fields": [],
+          "sensor_state": "healthy"
+        },
+        "archive": {
+          "permissions_changed": null,
+          "xattrs_changed": null,
+          "quarantine_state": "unknown"
+        },
+        "causal_parents": [],
+        "downstream_effects": []
+      }
+    }
+  ]
+}
