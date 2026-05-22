@@ -1,0 +1,97 @@
+{
+  "interactionEventId": "urn:srcos:interaction-event:noetica-standalone-complete-0001",
+  "type": "SourceOSInteractionEvent",
+  "specVersion": "2.0.0",
+  "eventClass": "interaction.task_completed",
+  "occurredAt": "2026-05-22T16:20:00Z",
+  "surface": {
+    "surfaceKind": "noetica",
+    "sourcePlane": "SocioProphet/Noetica",
+    "clientRef": "web:noetica:local-demo"
+  },
+  "mode": "standalone",
+  "session": {
+    "sessionId": "noetica-session-local",
+    "conversationRef": "urn:srcos:conversation:noetica-local-demo",
+    "roomRef": null,
+    "threadRef": "urn:srcos:thread:noetica-local-demo",
+    "workroomRef": "urn:srcos:workroom:professional-intelligence-demo",
+    "topicRef": "urn:srcos:topic:professional-intelligence",
+    "opsHistoryEventRef": "urn:srcos:ops-history-event:noetica-local-demo-0001"
+  },
+  "actor": {
+    "actorRef": "urn:srcos:subject:user:operator",
+    "actorKind": "human",
+    "agentRegistryRef": null,
+    "onBehalfOfRef": "urn:srcos:workroom:professional-intelligence-demo"
+  },
+  "participants": [
+    {
+      "role": "user",
+      "participantRef": "urn:srcos:subject:user:operator",
+      "agentRegistryRef": null
+    },
+    {
+      "role": "assistant",
+      "participantRef": "urn:srcos:agent:noetica",
+      "agentRegistryRef": "urn:srcos:agent-registry:noetica"
+    },
+    {
+      "role": "provider",
+      "participantRef": "provider:openai",
+      "agentRegistryRef": null
+    }
+  ],
+  "task": {
+    "taskRef": "urn:srcos:task:noetica-standalone-0001",
+    "status": "success",
+    "modelHint": "gpt-4.1",
+    "modelRouted": "gpt-4.1",
+    "provider": "openai",
+    "latencyMs": 842
+  },
+  "steeringIntent": {
+    "steeringKind": "none",
+    "featureRef": null,
+    "strength": null,
+    "status": "noop"
+  },
+  "governanceTrace": {
+    "policyAdmitted": true,
+    "policyRef": "noetica://standalone/local-policy",
+    "policyDecisionRefs": [
+      "urn:srcos:decision:noetica-standalone-admit-0001"
+    ],
+    "grantRefs": [
+      "call:openai"
+    ],
+    "memoryScopeRef": "noetica-session-local",
+    "memoryWritten": false,
+    "contextPackRefs": [],
+    "requestHash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "evidenceHash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "providerRouteEvidenceRef": "urn:srcos:evidence:provider-route:noetica-standalone-0001",
+    "agentPlaneRunRef": null,
+    "evidenceRefs": [
+      "urn:srcos:evidence:noetica-standalone-0001"
+    ],
+    "replayRef": "urn:srcos:replay:noetica-standalone-0001"
+  },
+  "payloadMode": "summary",
+  "payload": {
+    "summary": "Noetica completed a standalone provider call and emitted a governance trace consumable by AgentTerm.",
+    "egress": {
+      "contactedExternalProvider": true,
+      "sentPrompt": true,
+      "promptEgressDefault": "external-provider"
+    }
+  },
+  "sourceEventRefs": [
+    "urn:srcos:ops-history-event:noetica-local-demo-0001"
+  ],
+  "redactionRefs": [],
+  "integrity": {
+    "eventHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "signature": null
+  }
+}
