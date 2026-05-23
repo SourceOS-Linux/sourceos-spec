@@ -1,0 +1,38 @@
+{
+  "id": "urn:srcos:automation-template:yesterday-git-activity",
+  "type": "AutomationTemplate",
+  "specVersion": "2.0.0",
+  "name": "Yesterday Git activity digest",
+  "description": "Creates a daily standup artifact summarizing repository activity from the previous day with links, source refs, and a receipt.",
+  "category": "statusReports",
+  "trigger": {
+    "kind": "schedule",
+    "schedule": "RRULE:FREQ=DAILY;BYHOUR=8;BYMINUTE=0;BYSECOND=0",
+    "eventRef": null,
+    "condition": null
+  },
+  "requiredCapabilityPackRefs": ["urn:srcos:capability-pack:repo-release-prep"],
+  "requiredConnectorActionScopeRefs": ["urn:srcos:connector-action-scope:github-read-only"],
+  "requiredPermissionRefs": ["github.repo.read", "github.pr.read", "github.issue.read", "artifact.write"],
+  "defaultTimeWindow": "previous_day",
+  "outputs": [
+    {
+      "kind": "report",
+      "name": "standup_git_activity.md",
+      "required": true,
+      "contentHashRequired": true
+    },
+    {
+      "kind": "receipt",
+      "name": "standup_git_activity_receipt.json",
+      "required": true,
+      "contentHashRequired": true
+    }
+  ],
+  "automationLifecycle": ["draft", "enabled", "paused", "running", "failed", "disabled", "revoked", "expired"],
+  "mustInclude": ["source_refs", "time_window", "policy_decision_refs", "artifact_hashes"],
+  "mustExclude": ["workspace_writes", "message_send", "external_publish", "merge", "delete"],
+  "receiptRequired": true,
+  "riskLevel": "low",
+  "policyRefs": ["urn:srcos:policy:automation-status-report-read-only"]
+}
