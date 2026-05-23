@@ -1,0 +1,66 @@
+name: Runtime Diagnostics
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "schemas/RetryLoopFingerprint.json"
+      - "schemas/SecurityVerdictState.json"
+      - "schemas/NetworkTruthState.json"
+      - "schemas/BrowserLaunchTransaction.json"
+      - "schemas/DesktopServiceBrokerState.json"
+      - "schemas/MaintenanceEpoch.json"
+      - "schemas/RuntimeRegistryIntegrityRecord.json"
+      - "schemas/BootSessionPhaseState.json"
+      - "schemas/DiagnosticStormRecord.json"
+      - "examples/retry_loop_fingerprint.json"
+      - "examples/security_verdict_state.json"
+      - "examples/network_truth_state.json"
+      - "examples/browser_launch_transaction.json"
+      - "examples/desktop_service_broker_state.json"
+      - "examples/maintenance_epoch.json"
+      - "examples/runtime_registry_integrity_record.json"
+      - "examples/boot_session_phase_state.json"
+      - "examples/diagnostic_storm_record.json"
+      - "tools/validate_runtime_causality_examples.py"
+      - ".github/workflows/runtime-diagnostics.yml"
+  push:
+    branches: ["main", "replay/s100-current"]
+    paths:
+      - "schemas/RetryLoopFingerprint.json"
+      - "schemas/SecurityVerdictState.json"
+      - "schemas/NetworkTruthState.json"
+      - "schemas/BrowserLaunchTransaction.json"
+      - "schemas/DesktopServiceBrokerState.json"
+      - "schemas/MaintenanceEpoch.json"
+      - "schemas/RuntimeRegistryIntegrityRecord.json"
+      - "schemas/BootSessionPhaseState.json"
+      - "schemas/DiagnosticStormRecord.json"
+      - "examples/retry_loop_fingerprint.json"
+      - "examples/security_verdict_state.json"
+      - "examples/network_truth_state.json"
+      - "examples/browser_launch_transaction.json"
+      - "examples/desktop_service_broker_state.json"
+      - "examples/maintenance_epoch.json"
+      - "examples/runtime_registry_integrity_record.json"
+      - "examples/boot_session_phase_state.json"
+      - "examples/diagnostic_storm_record.json"
+      - "tools/validate_runtime_causality_examples.py"
+      - ".github/workflows/runtime-diagnostics.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-runtime-diagnostics:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validator dependencies
+        run: python -m pip install --upgrade pip jsonschema
+      - name: Validate runtime diagnostic examples
+        run: python tools/validate_runtime_causality_examples.py
