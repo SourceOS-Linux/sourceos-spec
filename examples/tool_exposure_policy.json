@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:tool-exposure:synthetic-readonly-mcp",
+  "type": "ToolExposurePolicy",
+  "specVersion": "2.0.0",
+  "name": "Synthetic read-only MCP exposure",
+  "version": "0.1.0",
+  "transport": "mcp",
+  "exposureMode": "allow_list",
+  "policyRefs": ["urn:srcos:policy:synthetic-readonly-tools"],
+  "defaultToolsets": ["synthetic.repo.read"],
+  "includeTools": ["repo.status", "repo.diff", "artifact.read"],
+  "excludeTools": ["repo.write", "repo.push", "artifact.delete"],
+  "requireMutationConsent": true,
+  "sensitiveDataMode": "redacted",
+  "lockdownMode": true
+}

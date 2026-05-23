@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:workbench:synthetic-mcp-validation",
+  "type": "ProtocolWorkbench",
+  "specVersion": "2.0.0",
+  "name": "Synthetic MCP validation workbench",
+  "protocol": "mcp",
+  "executionForkRef": "urn:srcos:execution-fork:synthetic-readonly-review",
+  "routingContractRef": "urn:srcos:routing-contract:synthetic-review-routing",
+  "serverUnderTest": {
+    "entrypoint": "synthetic-mcp-server",
+    "localMapping": true,
+    "previewUrlEnabled": false
+  },
+  "clientProfiles": ["synthetic-readonly-client"],
+  "trafficCapture": {
+    "captureRequests": true,
+    "captureResponses": true,
+    "captureToolCalls": true,
+    "redactSensitiveFields": true
+  },
+  "transcriptMode": "tool_call",
+  "validationRefs": ["urn:srcos:validation:synthetic-mcp-contract"],
+  "artifactClasses": ["transcript", "request_log", "response_log", "tool_trace"]
+}

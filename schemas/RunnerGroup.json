@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RunnerGroup.json",
+  "title": "RunnerGroup",
+  "description": "A versioned runtime bundle that supplies pinned images, built-in primitives, custom primitive extensions, and execution defaults for validations or protocol workbenches.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "version", "runtime", "imageRef", "imageDigestPinned"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:runner-group:" },
+    "type": { "const": "RunnerGroup" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "runtime": { "type": "string", "enum": ["container", "wasm", "local", "hybrid"] },
+    "imageRef": { "type": "string" },
+    "imageDigestPinned": { "type": "boolean" },
+    "builtInPrimitives": { "type": "array", "items": { "type": "string" } },
+    "customPrimitiveRefs": { "type": "array", "items": { "type": "string" } },
+    "dependencyProfiles": { "type": "array", "items": { "type": "string" } },
+    "networkPolicyRef": { "type": ["string", "null"] },
+    "filesystemPolicy": { "type": "string", "enum": ["ephemeral", "retained", "read_only_base"] },
+    "cachePolicy": { "type": "string", "enum": ["none", "ephemeral", "shared_read_only"] }
+  }
+}

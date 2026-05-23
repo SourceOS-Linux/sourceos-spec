@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:runner-group:synthetic-local-validation",
+  "type": "RunnerGroup",
+  "specVersion": "2.0.0",
+  "name": "Synthetic local validation runner group",
+  "version": "0.1.0",
+  "runtime": "local",
+  "imageRef": "synthetic-local-runner",
+  "imageDigestPinned": false,
+  "builtInPrimitives": ["jsonschema.validate", "artifact.hash", "report.emit"],
+  "customPrimitiveRefs": ["urn:srcos:primitive:synthetic-contract-check"],
+  "dependencyProfiles": ["python-jsonschema"],
+  "networkPolicyRef": null,
+  "filesystemPolicy": "ephemeral",
+  "cachePolicy": "none"
+}
