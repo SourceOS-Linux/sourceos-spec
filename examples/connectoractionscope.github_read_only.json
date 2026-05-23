@@ -1,0 +1,26 @@
+{
+  "id": "urn:srcos:connector-action-scope:github-read-only",
+  "type": "ConnectorActionScope",
+  "specVersion": "2.0.0",
+  "name": "GitHub read-only",
+  "description": "Allows reading repository metadata, issues, and pull requests. It cannot comment, push, merge, publish releases, or mutate repository state.",
+  "connectorRef": "urn:srcos:connector:github-sourceos-linux",
+  "connectorKind": "github",
+  "actions": ["github.repo.read", "github.pr.read", "github.issue.read"],
+  "accessLevel": "readOnly",
+  "riskLevel": "low",
+  "requiresExplicitApproval": false,
+  "approvalMoments": [],
+  "credentialUse": "delegatedToken",
+  "dataExposure": {
+    "mayReadContent": true,
+    "mayTransmitContent": false,
+    "allowedDomains": ["github.com", "api.github.com"],
+    "dataClasses": ["public", "internal"]
+  },
+  "retentionPolicy": "sessionOnly",
+  "receiptRequired": true,
+  "policyRefs": ["urn:srcos:policy:github-read-only"],
+  "validFrom": "2026-05-05T00:00:00Z",
+  "expiresAt": null
+}
