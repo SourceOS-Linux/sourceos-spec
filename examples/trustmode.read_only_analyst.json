@@ -1,0 +1,31 @@
+{
+  "id": "urn:srcos:trust-mode:read-only-analyst",
+  "type": "TrustMode",
+  "specVersion": "2.0.0",
+  "name": "Read-only analyst",
+  "category": "readOnlyAnalyst",
+  "summary": "Allows bounded repository and artifact reading without workspace writes, command execution, persistent indexing, message sends, or destructive actions.",
+  "permissions": {
+    "filesystemRead": true,
+    "filesystemWrite": "none",
+    "commandRun": "none",
+    "networkEgress": "none",
+    "connectorRead": false,
+    "connectorWrite": "none",
+    "messageSend": "none",
+    "publishExternal": "none",
+    "indexPersist": false,
+    "scheduleCreate": false,
+    "deleteOrDestructiveAction": "none",
+    "computerUse": "none",
+    "browserUse": "none",
+    "credentialUse": "none"
+  },
+  "defaultExecutionSurfaceRef": null,
+  "requiresHumanApproval": false,
+  "approvalMoments": [],
+  "approvalProfileRef": null,
+  "receiptRequired": true,
+  "riskLevel": "low",
+  "policyRefs": ["urn:srcos:policy:onboarding-read-only"]
+}

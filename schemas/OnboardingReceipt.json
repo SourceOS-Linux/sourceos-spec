@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OnboardingReceipt.json",
+  "title": "OnboardingReceipt",
+  "description": "Receipt for a SourceOS/SociOS onboarding ceremony. Records selected role profiles, workspace scope, trust mode, capability packs, connector action scopes, automation templates, trial task, artifacts, policy decisions, and revocation hooks before a session reaches ready state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "sessionRef", "workspaceScopeRef", "trustModeRef", "enabledCapabilityPackRefs", "enabledConnectorActionScopeRefs", "enabledAutomationTemplateRefs", "trialTask", "artifactRefs", "revocation", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:receipt:onboarding:", "description": "Stable onboarding receipt URN." },
+    "type": { "const": "OnboardingReceipt", "description": "Discriminator constant." },
+    "specVersion": { "type": "string", "description": "Spec version." },
+    "sessionRef": { "type": "string", "pattern": "^urn:srcos:session:", "description": "AgentSession initialized or drafted by onboarding." },
+    "roleProfileRefs": { "type": "array", "items": { "type": "string" }, "description": "RoleProfile or semantic role references selected during onboarding." },
+    "workspaceScopeRef": { "type": "string", "pattern": "^urn:srcos:workspace-scope:", "description": "Selected WorkspaceScope." },
+    "trustModeRef": { "type": "string", "pattern": "^urn:srcos:trust-mode:", "description": "Selected TrustMode." },
+    "enabledCapabilityPackRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:capability-pack:" }, "description": "Capability packs enabled by onboarding." },
+    "disabledCapabilityPackRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:capability-pack:" }, "description": "Capability packs explicitly disabled or denied." },
+    "enabledConnectorActionScopeRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:connector-action-scope:" }, "description": "Connector action scopes enabled by onboarding." },
+    "disabledConnectorActionScopeRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:connector-action-scope:" }, "description": "Connector action scopes explicitly disabled or denied." },
+    "enabledAutomationTemplateRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:automation-template:" }, "description": "Automation templates enabled by onboarding." },
+    "disabledAutomationTemplateRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:automation-template:" }, "description": "Automation templates explicitly disabled or denied." },
+    "policyDecisionRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:decision:" }, "description": "Policy decisions that allowed, denied, or deferred onboarding grants." },
+    "eventRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:event:" }, "description": "Append-only event references summarized by this receipt." },
+    "trialTask": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "description", "status"],
+      "properties": {
+        "id": { "type": "string", "description": "Local trial task identifier." },
+        "description": { "type": "string", "description": "Human-readable trial task." },
+        "status": { "enum": ["notRun", "passed", "failed", "skipped"], "description": "Trial result." },
+        "replayClass": { "enum": ["exact", "bestEffort", "evidenceOnly", "nonReplayableSideEffect"], "description": "Replayability of the trial." },
+        "runRef": { "type": ["string", "null"], "description": "Optional run reference." },
+        "receiptRef": { "type": ["string", "null"], "description": "Optional trial receipt reference." }
+      }
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "ref"],
+        "properties": {
+          "name": { "type": "string", "description": "Artifact name or path." },
+          "ref": { "type": "string", "description": "Artifact URI, URN, path, or content reference." },
+          "sha256": { "type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$", "description": "Optional SHA-256 hash." },
+          "kind": { "type": "string", "description": "Artifact kind." }
+        }
+      },
+      "description": "Artifacts created or linked by onboarding."
+    },
+    "receiptRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:receipt:" }, "description": "Related receipt references." },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "contentHash": { "type": ["string", "null"], "description": "Optional hash over canonical receipt content." },
+        "hashAlgorithm": { "type": ["string", "null"], "description": "Hash algorithm." },
+        "signatureRef": { "type": ["string", "null"], "description": "Optional signature or ledger reference." },
+        "previousReceiptRef": { "type": ["string", "null"], "description": "Optional previous receipt in a chain." }
+      }
+    },
+    "revocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["supported", "instructions"],
+      "properties": {
+        "supported": { "type": "boolean", "description": "Whether grants can be revoked." },
+        "instructions": { "type": "string", "description": "Human-readable revocation path." },
+        "revocationRefs": { "type": "array", "items": { "type": "string" }, "description": "Revocation record, policy, script, or UI route references." },
+        "cleanupActions": { "type": "array", "items": { "enum": ["disableCapabilityPack", "disableConnectorScope", "disableAutomation", "deleteLocalIndex", "removeCredentialToken", "invalidateCapabilityToken", "deleteArtifactCache"] }, "description": "Cleanup actions expected on revocation." }
+      }
+    },
+    "capturedAt": { "type": "string", "format": "date-time", "description": "Capture timestamp." },
+    "capturedBy": { "type": ["string", "null"], "description": "Optional capturer identifier." }
+  }
+}

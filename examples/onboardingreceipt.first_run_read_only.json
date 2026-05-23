@@ -1,0 +1,66 @@
+{
+  "id": "urn:srcos:receipt:onboarding:first-run-read-only",
+  "type": "OnboardingReceipt",
+  "specVersion": "2.0.0",
+  "sessionRef": "urn:srcos:session:first-run-read-only",
+  "roleProfileRefs": ["urn:srcos:role-profile:maintainer-analyst"],
+  "workspaceScopeRef": "urn:srcos:workspace-scope:socioprophet-sourceos-spec-readonly",
+  "trustModeRef": "urn:srcos:trust-mode:read-only-analyst",
+  "enabledCapabilityPackRefs": ["urn:srcos:capability-pack:repo-release-prep"],
+  "disabledCapabilityPackRefs": ["urn:srcos:capability-pack:repo-merge-operator"],
+  "enabledConnectorActionScopeRefs": ["urn:srcos:connector-action-scope:github-read-only"],
+  "disabledConnectorActionScopeRefs": [
+    "urn:srcos:connector-action-scope:github-merge",
+    "urn:srcos:connector-action-scope:email-send"
+  ],
+  "enabledAutomationTemplateRefs": ["urn:srcos:automation-template:yesterday-git-activity"],
+  "disabledAutomationTemplateRefs": [],
+  "policyDecisionRefs": [
+    "urn:srcos:decision:onboarding-workspace-readonly-allow",
+    "urn:srcos:decision:github-read-only-allow"
+  ],
+  "eventRefs": ["urn:srcos:event:onboarding-first-run-read-only-0001"],
+  "trialTask": {
+    "id": "trial-read-repo-no-write",
+    "description": "Read repository metadata and draft a local standup artifact without writing to the repository or sending messages.",
+    "status": "passed",
+    "replayClass": "evidenceOnly",
+    "runRef": "urn:srcos:run:onboarding-trial-readonly-0001",
+    "receiptRef": "urn:srcos:receipt:session:onboarding-trial-readonly-0001"
+  },
+  "artifactRefs": [
+    {
+      "name": "workspace_scope.json",
+      "ref": "artifacts/onboarding/sourceos-spec-readonly/workspace_scope.json",
+      "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+      "kind": "scope"
+    },
+    {
+      "name": "onboarding_receipt.json",
+      "ref": "artifacts/onboarding/sourceos-spec-readonly/onboarding_receipt.json",
+      "sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "kind": "receipt"
+    }
+  ],
+  "receiptRefs": ["urn:srcos:receipt:session:onboarding-trial-readonly-0001"],
+  "integrity": {
+    "contentHash": null,
+    "hashAlgorithm": "sha256",
+    "signatureRef": null,
+    "previousReceiptRef": null
+  },
+  "revocation": {
+    "supported": true,
+    "instructions": "Disable the GitHub read-only scope, disable dependent automations, invalidate derived capability tokens, and clear ephemeral workspace indexes.",
+    "revocationRefs": ["urn:srcos:policy:onboarding-revoke-read-only"],
+    "cleanupActions": [
+      "disableCapabilityPack",
+      "disableConnectorScope",
+      "disableAutomation",
+      "deleteLocalIndex",
+      "invalidateCapabilityToken"
+    ]
+  },
+  "capturedAt": "2026-05-05T00:00:00Z",
+  "capturedBy": "urn:srcos:agent:onboarding-control-plane"
+}

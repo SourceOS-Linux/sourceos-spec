@@ -1,0 +1,60 @@
+{
+  "id": "urn:srcos:capability-pack:repo-release-prep",
+  "type": "CapabilityPack",
+  "specVersion": "2.0.0",
+  "name": "Repository release preparation",
+  "version": "0.1.0",
+  "description": "Reads repository state and drafts release-readiness artifacts without mutating the repository.",
+  "publisher": {
+    "name": "SourceOS-Linux",
+    "trustLevel": "firstParty",
+    "signatureRequired": true,
+    "signatureRef": null,
+    "sourceRef": "github:SourceOS-Linux/sourceos-spec"
+  },
+  "category": "repoOrchestration",
+  "lifecycle": "internal",
+  "skillRefs": [
+    "urn:srcos:skill:git-activity-summary",
+    "urn:srcos:skill:release-notes-draft",
+    "urn:srcos:skill:changelog-check"
+  ],
+  "requiredConnectorActionScopeRefs": ["urn:srcos:connector-action-scope:github-read-only"],
+  "requiredPermissionRefs": ["github.repo.read", "github.pr.read", "github.issue.read", "artifact.write"],
+  "compatibleTrustModeRefs": ["urn:srcos:trust-mode:read-only-analyst"],
+  "forbiddenTrustModeRefs": ["urn:srcos:trust-mode:privileged-maintainer"],
+  "riskLevel": "medium",
+  "licensePolicy": {
+    "allowedLicenses": ["MIT", "Apache-2.0", "BSD-2-Clause", "BSD-3-Clause"],
+    "forbiddenLicenses": ["review-required"],
+    "sbomRef": null
+  },
+  "executionModes": {
+    "supportsDryRun": true,
+    "supportsDraftOnly": true,
+    "supportsApply": false,
+    "defaultMode": "draftOnly"
+  },
+  "artifactOutputs": [
+    {
+      "kind": "report",
+      "name": "release_notes.md",
+      "required": true,
+      "contentHashRequired": true
+    },
+    {
+      "kind": "receipt",
+      "name": "release_readiness_receipt.json",
+      "required": true,
+      "contentHashRequired": true
+    }
+  ],
+  "receiptRequired": true,
+  "revocation": {
+    "revocable": true,
+    "revokeDeletesLocalIndex": true,
+    "revokeDisablesAutomations": true,
+    "revocationNotes": "Disable dependent automations and clear ephemeral release-prep indexes."
+  },
+  "policyRefs": ["urn:srcos:policy:repo-release-prep-draft-only"]
+}

@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ConnectorActionScope.json",
+  "title": "ConnectorActionScope",
+  "description": "Precise action-scope envelope for a configured Connector. Prevents vague connector enablement by enumerating exact verbs, risk, credential-use posture, approval requirements, data exposure bounds, and receipt obligations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "connectorRef", "connectorKind", "actions", "accessLevel", "riskLevel", "requiresExplicitApproval", "credentialUse", "receiptRequired"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:connector-action-scope:", "description": "Stable URN identifier." },
+    "type": { "const": "ConnectorActionScope", "description": "Discriminator constant." },
+    "specVersion": { "type": "string", "description": "Spec version." },
+    "name": { "type": "string", "description": "Human-readable scope name." },
+    "description": { "type": "string", "description": "What this scope permits and forbids." },
+    "connectorRef": { "type": "string", "pattern": "^urn:srcos:connector:", "description": "Configured Connector URN." },
+    "connectorKind": { "enum": ["filesystem", "github", "gitlab", "email", "calendar", "drive", "slack", "linear", "notion", "browser", "computer", "httpApi", "kafka", "rdbms", "objectStore", "lakehouse", "shell", "ci", "deployment", "observability", "custom"], "description": "Connector class." },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^[a-z0-9]+(\\.[a-z0-9_:-]+)+$" },
+      "description": "Exact allowed connector verbs such as github.pr.read, email.draft, browser.submit_form, or computer.capture_replay."
+    },
+    "accessLevel": { "enum": ["none", "readOnly", "draftOnly", "commentOnly", "scopedWrite", "send", "publish", "merge", "destructive", "control"], "description": "Maximum side-effect class." },
+    "riskLevel": { "enum": ["low", "medium", "high", "critical"], "description": "Risk tier." },
+    "requiresExplicitApproval": { "type": "boolean", "description": "Whether use requires explicit approval." },
+    "approvalMoments": { "type": "array", "items": { "enum": ["beforeConnectorEnable", "beforeCredentialUse", "beforeWrite", "beforeComment", "beforeSend", "beforePublish", "beforeMerge", "beforeDelete", "beforeFormSubmit", "beforeComputerControl", "beforeAutomationEnable"] }, "description": "Specific lifecycle moments that require approval." },
+    "credentialUse": { "enum": ["none", "ambientReadOnly", "explicitApproval", "credentialedSession", "delegatedToken"], "description": "Credential, cookie, session, or token posture." },
+    "dataExposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "mayReadContent": { "type": "boolean", "description": "Whether content may be read." },
+        "mayTransmitContent": { "type": "boolean", "description": "Whether content may be transmitted outside the boundary." },
+        "allowedDomains": { "type": "array", "items": { "type": "string" }, "description": "Allowed network or application domains." },
+        "dataClasses": { "type": "array", "items": { "enum": ["public", "internal", "private", "sensitive", "secret", "credential", "regulated"] }, "description": "Permitted data classifications." }
+      },
+      "description": "Data exposure and classification constraints."
+    },
+    "retentionPolicy": { "enum": ["none", "sessionOnly", "untilRevoked", "policyDefined"], "default": "sessionOnly", "description": "How long data may be cached or indexed." },
+    "receiptRequired": { "type": "boolean", "description": "Whether use must be represented in a receipt." },
+    "policyRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:policy:" }, "description": "Governing policies." },
+    "validFrom": { "type": ["string", "null"], "format": "date-time", "description": "Optional activation start time." },
+    "expiresAt": { "type": ["string", "null"], "format": "date-time", "description": "Optional expiry time." }
+  }
+}
