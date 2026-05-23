@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:network-truth:synthetic-epoch-001",
+  "type": "NetworkTruthState",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:36:20Z",
+  "networkEpoch": "synthetic-network-epoch-001",
+  "interfaceRef": "synthetic-interface",
+  "deviceIdentityState": "unknown",
+  "radioState": "on",
+  "associationState": "not-associated",
+  "authenticationState": "unknown",
+  "dhcpState": "observer-failed",
+  "dnsState": "observer-failed",
+  "routeState": "route-failed",
+  "captivePortalState": "credential-missing",
+  "internetReachability": "unreachable",
+  "localMeshReachability": "unknown",
+  "vpnOrPrivacyOverlayState": "unknown",
+  "trustedPeerPathState": "not-evaluated",
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-dns-observer",
+    "urn:srcos:telemetry:synthetic-route-observer",
+    "urn:srcos:telemetry:synthetic-radio-state"
+  ],
+  "userVisibleSummary": "Radio state is available, but association and route observers are degraded.",
+  "remediationHint": "Re-evaluate association, DHCP, DNS, and route state before remote synchronization or browser launch."
+}

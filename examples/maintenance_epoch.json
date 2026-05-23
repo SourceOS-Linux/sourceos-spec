@@ -1,0 +1,29 @@
+{
+  "id": "urn:srcos:maintenance-epoch:synthetic-registry-sweep-001",
+  "type": "MaintenanceEpoch",
+  "specVersion": "2.0.0",
+  "startedAt": "2026-05-06T22:37:00Z",
+  "endedAt": "2026-05-06T22:37:21Z",
+  "epochKind": "registry-sweep",
+  "state": "degraded",
+  "sourceComponent": "synthetic-registry-maintenance",
+  "allowedDuringInteractiveLaunch": false,
+  "bootPhaseRequirement": "unlocked-user-session",
+  "lockRequirements": [
+    "runtime-registry",
+    "launch-index",
+    "namespace-cache"
+  ],
+  "emissionBudget": {
+    "maxEventsPerMinute": 60,
+    "onBudgetExceeded": "summarize"
+  },
+  "observedStormRefs": [
+    "urn:srcos:diagnostic-storm:synthetic-registry-miss-001"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-registry-miss"
+  ],
+  "userVisibleSummary": "Background registry maintenance emitted repeated synthetic misses during an interactive launch window.",
+  "remediationHint": "Defer registry sweeps during interactive launches and summarize repeated missing descriptors."
+}

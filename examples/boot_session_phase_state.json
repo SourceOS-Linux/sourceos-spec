@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:boot-session-phase:synthetic-locked-001",
+  "type": "BootSessionPhaseState",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:36:15Z",
+  "bootId": "boot-synthetic-001",
+  "sessionId": "session-synthetic-locked",
+  "phase": "post-login-locked",
+  "phaseVerdict": "not-ready",
+  "availableKeyrings": [],
+  "availablePortals": ["notification"],
+  "allowedComponents": [
+    {
+      "componentRef": "urn:srcos:component:synthetic-observer",
+      "state": "allowed-degraded",
+      "reason": "May observe coarse transitions while user stores remain unavailable."
+    }
+  ],
+  "blockedComponents": [
+    {
+      "componentRef": "urn:srcos:component:synthetic-registry-sweep",
+      "requiredPhase": "unlocked-user-session",
+      "state": "deferred",
+      "reason": "Registry maintenance requires unlocked stores and should not run during locked post-login state.",
+      "remediationHint": "Queue maintenance until unlock or recovery session."
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-session-locked",
+    "urn:srcos:telemetry:synthetic-key-store-locked"
+  ],
+  "userVisibleSummary": "The session is post-login but still locked; components requiring unlocked state must be deferred.",
+  "remediationHint": "Transition to unlocked-user-session before running preflight checks that require user stores."
+}

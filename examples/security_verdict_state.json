@@ -1,0 +1,14 @@
+{
+  "id": "urn:srcos:security-verdict:synthetic-flow-001",
+  "type": "SecurityVerdictState",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:component:synthetic-extension",
+  "decision": "no-verdict",
+  "verdictProviderState": "no-verdict-provider",
+  "observedAt": "2026-05-06T22:36:00Z",
+  "policyRef": "urn:srcos:policy:synthetic-flow-policy",
+  "providerRef": "urn:srcos:verdict-provider:synthetic",
+  "evidenceRefs": ["urn:srcos:telemetry:synthetic-002"],
+  "userVisibleImpact": "Flow observation exists but no provider verdict is available.",
+  "remediationHint": "Verify provider availability and continue with fail-closed review posture."
+}

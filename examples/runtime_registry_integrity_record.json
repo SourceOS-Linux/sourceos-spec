@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:runtime-registry-integrity:synthetic-registry-001",
+  "type": "RuntimeRegistryIntegrityRecord",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:37:00Z",
+  "componentRef": "urn:srcos:component:synthetic-registry",
+  "bundleOrPackageIdentity": "synthetic.package.identifier",
+  "verificationVerdict": "degraded",
+  "registryRecords": [
+    {
+      "recordKind": "extension-record",
+      "recordRef": "synthetic-extension-record",
+      "state": "missing",
+      "errorCode": "SYNTHETIC_MISSING_RECORD",
+      "userVisibleImpact": "The runtime could not construct an extension record from the synthetic registry.",
+      "remediationHint": "Refresh or rebuild the runtime extension registry before enabling extension discovery."
+    },
+    {
+      "recordKind": "namespace-descriptor",
+      "recordRef": "synthetic-namespace-descriptor",
+      "state": "missing",
+      "userVisibleImpact": "Synthetic namespace metadata could not be resolved during maintenance.",
+      "remediationHint": "Suppress repeated namespace lookups and emit a DiagnosticStormRecord until the namespace cache changes."
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-extension-record-missing",
+    "urn:srcos:telemetry:synthetic-namespace-descriptor-missing"
+  ],
+  "userVisibleSummary": "Registry integrity is degraded because synthetic records are missing.",
+  "remediationHint": "Run bounded registry repair or defer registry-dependent launch work until integrity is restored."
+}
