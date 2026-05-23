@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SecurityVerdictState.json",
+  "title": "SecurityVerdictState",
+  "description": "A typed state record for security or network-flow verdict availability, including degraded provider states such as no-verdict-provider or policy-unavailable.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "decision",
+    "observedAt",
+    "verdictProviderState"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:security-verdict:"
+    },
+    "type": {
+      "const": "SecurityVerdictState"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectRef": {
+      "type": "string",
+      "minLength": 1
+    },
+    "objectRef": {
+      "type": "string"
+    },
+    "flowRef": {
+      "type": "string"
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision": {
+      "enum": [
+        "allow",
+        "deny",
+        "ask",
+        "defer",
+        "no-verdict",
+        "unknown"
+      ]
+    },
+    "verdictProviderState": {
+      "enum": [
+        "ready",
+        "no-verdict-provider",
+        "provider-invalid",
+        "provider-not-ready",
+        "policy-unavailable",
+        "evidence-insufficient",
+        "unknown"
+      ]
+    },
+    "policyRef": {
+      "type": "string"
+    },
+    "providerRef": {
+      "type": "string"
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "userVisibleImpact": {
+      "type": "string"
+    },
+    "remediationHint": {
+      "type": "string"
+    }
+  }
+}
