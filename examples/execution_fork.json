@@ -1,0 +1,26 @@
+{
+  "id": "urn:srcos:execution-fork:checkout-example",
+  "type": "ExecutionFork",
+  "specVersion": "2.0.0",
+  "name": "checkout-example",
+  "substrate": "kubernetes",
+  "baselineRef": "urn:srcos:truth-surface:baseline-example",
+  "baselineDigest": "sha256:baseline-example",
+  "routingContractRef": "urn:srcos:routing-contract:checkout-example",
+  "runnerGroupRef": "urn:srcos:runner-group:validation-standard",
+  "quotaPolicyRef": "urn:srcos:quota:team-default",
+  "isolationRefs": ["urn:srcos:isolation:database-partition-example"],
+  "workloads": [
+    {
+      "name": "checkout",
+      "targetRef": "urn:srcos:workload:checkout",
+      "imageRef": "image.local/checkout:example",
+      "localPath": null,
+      "writePolicy": "isolated_only",
+      "envOverrides": { "FEATURE_MODE": "example" }
+    }
+  ],
+  "ttl": "8h",
+  "cleanupPolicy": "destroy_with_evidence_retained",
+  "tags": ["example", "validation"]
+}

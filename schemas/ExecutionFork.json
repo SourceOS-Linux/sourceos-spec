@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExecutionFork.json",
+  "title": "ExecutionFork",
+  "description": "A delta execution environment that overlays changed workloads, local mappings, and isolation references onto a shared baseline.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "substrate", "baselineRef", "routingContractRef", "workloads", "cleanupPolicy"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:execution-fork:" },
+    "type": { "const": "ExecutionFork" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": "string" },
+    "substrate": { "type": "string", "enum": ["kubernetes", "local", "hybrid", "container", "vm"] },
+    "baselineRef": { "type": "string" },
+    "baselineDigest": { "type": "string" },
+    "routingContractRef": { "type": "string", "pattern": "^urn:srcos:routing-contract:" },
+    "runnerGroupRef": { "type": ["string", "null"], "pattern": "^urn:srcos:runner-group:" },
+    "quotaPolicyRef": { "type": ["string", "null"], "pattern": "^urn:srcos:quota:" },
+    "isolationRefs": { "type": "array", "items": { "type": "string" } },
+    "workloads": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "targetRef"],
+        "properties": {
+          "name": { "type": "string" },
+          "targetRef": { "type": "string" },
+          "imageRef": { "type": ["string", "null"] },
+          "localPath": { "type": ["string", "null"] },
+          "writePolicy": { "type": "string", "enum": ["inherit", "isolated_only", "blocked"] },
+          "envOverrides": { "type": "object", "additionalProperties": { "type": "string" } }
+        }
+      }
+    },
+    "ttl": { "type": ["string", "null"] },
+    "cleanupPolicy": { "type": "string", "enum": ["destroy_with_evidence_retained", "destroy_all", "retain_for_debug"] },
+    "tags": { "type": "array", "items": { "type": "string" } }
+  }
+}

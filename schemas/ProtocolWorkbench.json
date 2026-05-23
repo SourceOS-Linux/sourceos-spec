@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ProtocolWorkbench.json",
+  "title": "ProtocolWorkbench",
+  "description": "A typed workbench for developing, testing, and validating protocol-facing servers such as MCP, TriTRPC, HTTP APIs, gRPC services, or A2A endpoints against an execution fork.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "protocol", "executionForkRef", "serverUnderTest"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:workbench:" },
+    "type": { "const": "ProtocolWorkbench" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "protocol": { "type": "string", "enum": ["mcp", "a2a", "tritrpc", "http_api", "grpc"] },
+    "executionForkRef": { "type": "string", "pattern": "^urn:srcos:execution-fork:" },
+    "routingContractRef": { "type": ["string", "null"], "pattern": "^urn:srcos:routing-contract:" },
+    "serverUnderTest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entrypoint"],
+      "properties": {
+        "entrypoint": { "type": "string" },
+        "localMapping": { "type": "boolean" },
+        "previewUrlEnabled": { "type": "boolean" }
+      }
+    },
+    "clientProfiles": { "type": "array", "items": { "type": "string" } },
+    "trafficCapture": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "captureRequests": { "type": "boolean" },
+        "captureResponses": { "type": "boolean" },
+        "captureToolCalls": { "type": "boolean" },
+        "redactSensitiveFields": { "type": "boolean" }
+      }
+    },
+    "transcriptMode": { "type": "string", "enum": ["request_response", "tool_call", "mixed"] },
+    "validationRefs": { "type": "array", "items": { "type": "string" } },
+    "artifactClasses": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["transcript", "screenshot", "request_log", "response_log", "schema_diff", "tool_trace", "preview_link"] }
+    }
+  }
+}
