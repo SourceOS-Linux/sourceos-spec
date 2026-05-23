@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DesktopServiceBrokerState.json",
+  "title": "DesktopServiceBrokerState",
+  "description": "A desktop-service broker availability record for pasteboard, launcher, file provider, notification, extension, credential, and network-settings surfaces consumed by sandboxed apps and child processes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "observedAt",
+    "componentRef",
+    "overallState",
+    "brokers"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:desktop-service-broker-state:" },
+    "type": { "const": "DesktopServiceBrokerState" },
+    "specVersion": { "type": "string" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "componentRef": { "type": "string", "minLength": 1 },
+    "overallState": { "enum": ["ready", "degraded", "unavailable", "policy-blocked", "unknown"] },
+    "brokers": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["brokerKind", "state"],
+        "properties": {
+          "brokerKind": {
+            "enum": [
+              "pasteboard",
+              "launcher",
+              "core-services",
+              "file-provider",
+              "notification",
+              "extension-registry",
+              "intents",
+              "network-settings",
+              "credential-prompt",
+              "url-opener",
+              "accessibility",
+              "unknown"
+            ]
+          },
+          "state": { "enum": ["ready", "degraded", "unavailable", "policy-blocked", "not-configured", "unknown"] },
+          "policyRef": { "type": "string" },
+          "fallback": { "type": "string" },
+          "userVisibleImpact": { "type": "string" },
+          "remediationHint": { "type": "string" }
+        }
+      }
+    },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleSummary": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}
