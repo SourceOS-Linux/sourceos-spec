@@ -1,0 +1,51 @@
+{
+  "id": "urn:srcos:runtime-identity-graph:bearbrowser_001",
+  "type": "RuntimeIdentityGraph",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:37:03Z",
+  "rootComponentRef": "urn:srcos:component:BearBrowser",
+  "identityVerdict": "degraded",
+  "nodes": [
+    {
+      "nodeId": "app.bearbrowser",
+      "nodeKind": "app",
+      "displayName": "BearBrowser",
+      "processId": 54990,
+      "bundleOrPackageId": "application.dev.sourceos.BearBrowser",
+      "verificationVerdict": "valid"
+    },
+    {
+      "nodeId": "child.webcontent.54997",
+      "nodeKind": "browser-child",
+      "displayName": "WebContent",
+      "processId": 54997,
+      "bundleOrPackageId": "com.apple.WebKit.WebContent",
+      "verificationVerdict": "degraded"
+    },
+    {
+      "nodeId": "audit.webcontent.54997",
+      "nodeKind": "audit-token",
+      "displayName": "WebContent audit token",
+      "auditIdentity": "audit-token-unresolved",
+      "verificationVerdict": "ambiguous"
+    }
+  ],
+  "edges": [
+    {
+      "from": "app.bearbrowser",
+      "to": "child.webcontent.54997",
+      "relationship": "spawned"
+    },
+    {
+      "from": "child.webcontent.54997",
+      "to": "audit.webcontent.54997",
+      "relationship": "observed-as"
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:te_invalid_product_id",
+    "urn:srcos:telemetry:te_audit_token_unresolved"
+  ],
+  "userVisibleImpact": "A browser child process launched, but its runtime identity could not be fully resolved.",
+  "remediationHint": "Verify child-process package identity, audit-token mapping, and broker registration before allowing page load."
+}
