@@ -1,0 +1,54 @@
+name: Onboarding Control Plane
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "schemas/WorkspaceScope.json"
+      - "schemas/TrustMode.json"
+      - "schemas/CapabilityPack.json"
+      - "schemas/ConnectorActionScope.json"
+      - "schemas/AutomationTemplate.json"
+      - "schemas/OnboardingReceipt.json"
+      - "examples/workspacescope.json"
+      - "examples/trustmode.read_only_analyst.json"
+      - "examples/capabilitypack.repo_release_prep.json"
+      - "examples/connectoractionscope.github_read_only.json"
+      - "examples/automationtemplate.yesterday_git_activity.json"
+      - "examples/onboardingreceipt.first_run_read_only.json"
+      - "tools/validate_onboarding_examples.py"
+      - ".github/workflows/onboarding-control-plane.yml"
+  push:
+    branches: ["main", "replay/onboarding-control-plane-current-main"]
+    paths:
+      - "schemas/WorkspaceScope.json"
+      - "schemas/TrustMode.json"
+      - "schemas/CapabilityPack.json"
+      - "schemas/ConnectorActionScope.json"
+      - "schemas/AutomationTemplate.json"
+      - "schemas/OnboardingReceipt.json"
+      - "examples/workspacescope.json"
+      - "examples/trustmode.read_only_analyst.json"
+      - "examples/capabilitypack.repo_release_prep.json"
+      - "examples/connectoractionscope.github_read_only.json"
+      - "examples/automationtemplate.yesterday_git_activity.json"
+      - "examples/onboardingreceipt.first_run_read_only.json"
+      - "tools/validate_onboarding_examples.py"
+      - ".github/workflows/onboarding-control-plane.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-onboarding-control-plane:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validator dependencies
+        run: python -m pip install --upgrade pip jsonschema
+      - name: Validate onboarding examples
+        run: python tools/validate_onboarding_examples.py
