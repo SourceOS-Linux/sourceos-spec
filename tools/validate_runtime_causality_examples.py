@@ -13,15 +13,12 @@ PAIRS = [
     (ROOT / "schemas" / "SecurityVerdictState.json", ROOT / "examples" / "security_verdict_state.json"),
     (ROOT / "schemas" / "NetworkTruthState.json", ROOT / "examples" / "network_truth_state.json"),
     (ROOT / "schemas" / "BrowserLaunchTransaction.json", ROOT / "examples" / "browser_launch_transaction.json"),
+    (ROOT / "schemas" / "RuntimeIdentityGraph.json", ROOT / "examples" / "runtime_identity_graph.json"),
     (ROOT / "schemas" / "DesktopServiceBrokerState.json", ROOT / "examples" / "desktop_service_broker_state.json"),
     (ROOT / "schemas" / "MaintenanceEpoch.json", ROOT / "examples" / "maintenance_epoch.json"),
     (ROOT / "schemas" / "RuntimeRegistryIntegrityRecord.json", ROOT / "examples" / "runtime_registry_integrity_record.json"),
     (ROOT / "schemas" / "BootSessionPhaseState.json", ROOT / "examples" / "boot_session_phase_state.json"),
     (ROOT / "schemas" / "DiagnosticStormRecord.json", ROOT / "examples" / "diagnostic_storm_record.json"),
-]
-DEFERRED = [
-    "schemas/RuntimeIdentityGraph.json",
-    "examples/runtime_identity_graph.json",
 ]
 
 
@@ -37,7 +34,7 @@ def main() -> int:
     for schema_path, example_path in PAIRS:
         validate_pair(schema_path, example_path)
         checks[example_path.name] = True
-    print(json.dumps({"ok": all(checks.values()), "checks": checks, "deferred": DEFERRED}, indent=2, sort_keys=True))
+    print(json.dumps({"ok": all(checks.values()), "checks": checks}, indent=2, sort_keys=True))
     return 0
 
 
