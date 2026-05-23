@@ -1,0 +1,38 @@
+{
+  "id": "urn:srcos:desktop-service-broker-state:synthetic-browser-001",
+  "type": "DesktopServiceBrokerState",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:37:03Z",
+  "componentRef": "urn:srcos:component:synthetic-browser-surface",
+  "overallState": "degraded",
+  "brokers": [
+    {
+      "brokerKind": "pasteboard",
+      "state": "policy-blocked",
+      "fallback": "disable clipboard integration for the synthetic content surface",
+      "userVisibleImpact": "Copy and paste may be unavailable inside the sandboxed surface.",
+      "remediationHint": "Route pasteboard access through the desktop broker and require user gesture gating."
+    },
+    {
+      "brokerKind": "core-services",
+      "state": "policy-blocked",
+      "fallback": "prevent direct host desktop-service lookup",
+      "userVisibleImpact": "The child surface cannot directly register with host desktop services.",
+      "remediationHint": "Move host desktop-service calls into a parent-process broker."
+    },
+    {
+      "brokerKind": "extension-registry",
+      "state": "degraded",
+      "fallback": "quarantine extension discovery for this launch transaction",
+      "userVisibleImpact": "Extensions are disabled until registry integrity is verified.",
+      "remediationHint": "Refresh the extension registry before enabling extension discovery."
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-pasteboard-denial",
+    "urn:srcos:telemetry:synthetic-desktop-service-denial",
+    "urn:srcos:telemetry:synthetic-extension-query"
+  ],
+  "userVisibleSummary": "Desktop service brokers are degraded, so child-surface desktop access remains brokered or disabled.",
+  "remediationHint": "Verify pasteboard, desktop-service, and extension-registry brokers before launch."
+}
