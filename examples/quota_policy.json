@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:quota:synthetic-workbench-budget",
+  "type": "QuotaPolicy",
+  "specVersion": "2.0.0",
+  "name": "Synthetic workbench budget",
+  "version": "0.1.0",
+  "scope": "repo",
+  "selectors": {
+    "repository": "SourceOS-Linux/sourceos-spec",
+    "environmentClass": "synthetic"
+  },
+  "limits": {
+    "sandboxesCreatedPerWindow": 4,
+    "concurrentExecutionForks": 2,
+    "concurrentProtocolWorkbenches": 1,
+    "concurrentGovernedRuns": 2,
+    "testInvocationsPerWindow": 20,
+    "artifactStorageBytes": 104857600,
+    "logRetentionHours": 24
+  },
+  "window": {
+    "unit": "day",
+    "value": 1
+  },
+  "behaviorOnExceed": "queue",
+  "accountingMode": "admission_and_runtime"
+}
