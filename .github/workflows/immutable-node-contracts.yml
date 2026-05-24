@@ -1,0 +1,38 @@
+name: Immutable Node Contracts
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "docs/contract-additions/immutable-node-profiles.md"
+      - "schemas/ImmutableNodeProfile.json"
+      - "schemas/HostCapabilityPlacement.json"
+      - "schemas/NodeStateSchema.json"
+      - "examples/immutablenodeprofile.json"
+      - "examples/hostcapabilityplacement.json"
+      - "examples/nodestateschema.json"
+      - "tools/validate_immutable_node_examples.py"
+      - ".github/workflows/immutable-node-contracts.yml"
+  push:
+    branches: ["main", "replay/s91-s95-current"]
+    paths:
+      - "docs/contract-additions/immutable-node-profiles.md"
+      - "schemas/ImmutableNodeProfile.json"
+      - "schemas/HostCapabilityPlacement.json"
+      - "schemas/NodeStateSchema.json"
+      - "examples/immutablenodeprofile.json"
+      - "examples/hostcapabilityplacement.json"
+      - "examples/nodestateschema.json"
+      - "tools/validate_immutable_node_examples.py"
+      - ".github/workflows/immutable-node-contracts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-immutable-node-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate immutable node examples
+        run: python3 tools/validate_immutable_node_examples.py
