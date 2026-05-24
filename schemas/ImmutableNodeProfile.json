@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ImmutableNodeProfile.json",
+  "title": "ImmutableNodeProfile",
+  "description": "A SourceOS immutable-node profile for node and agent-runtime substrate contracts. Desktop and workstation surfaces may consume this profile, but they do not own the node substrate.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "channel", "substrate"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:immutable-node-profile:", "description": "Stable URN identifier. Pattern: urn:srcos:immutable-node-profile:<local-id>." },
+    "type": { "const": "ImmutableNodeProfile", "description": "Discriminator constant — always ImmutableNodeProfile." },
+    "specVersion": { "type": "string", "description": "Spec version of this document, e.g. 2.2.0." },
+    "name": { "type": "string", "minLength": 1, "description": "Human-readable immutable node profile name." },
+    "channel": { "type": "string", "minLength": 1, "description": "Realization channel such as linux-dev, linux-stable, m2-asahi-dev, or fog-node." },
+    "primaryPlane": { "type": "string", "enum": ["node-substrate", "agent-runtime-substrate"], "description": "Primary plane for this profile. ImmutableNodeProfile is not a desktop-owned contract." },
+    "substrate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["strategy", "hostMutationPosture", "sociosRequired"],
+      "properties": {
+        "strategy": { "type": "string", "enum": ["bootc-first", "ostree-compatible", "rpm-ostree", "coreos-assembler", "nixos-adapter", "other"], "description": "Primary immutable-host realization strategy." },
+        "hostMutationPosture": { "type": "string", "enum": ["immutable-runtime", "staged-updates-only", "lab-live-mutation-allowed", "unknown"], "description": "Allowed host mutation posture for this profile." },
+        "sociosRequired": { "const": false, "description": "Base SourceOS immutable nodes must not require Socios enrollment. Optional Socios packs are modeled separately." }
+      }
+    },
+    "bootReleaseSetRef": { "type": ["string", "null"], "description": "Optional BootReleaseSet or boot/recovery handoff reference." },
+    "releaseSetRef": { "type": ["string", "null"], "description": "Optional ReleaseSet assignment reference." },
+    "agentMachineProfileRef": { "type": ["string", "null"], "description": "Optional Agent Machine or AgentPod profile reference for local runtime realization." },
+    "agentPlaneRuntimeRef": { "type": ["string", "null"], "description": "Optional AgentPlane runtime/evidence contract reference that consumes node activation or runtime receipts." },
+    "workstationProfileRef": { "type": ["string", "null"], "description": "Optional WorkstationProfile reference for desktop/workstation consumption. This must not make the desktop the owner of the node substrate." },
+    "desktopConsumerRefs": { "type": "array", "items": { "type": "string" }, "description": "Optional desktop, shell, settings, or workstation surfaces that may display summarized node posture." },
+    "hostCapabilityPlacementRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:host-capability-placement:" }, "description": "References to HostCapabilityPlacement objects used by this profile." },
+    "nodeStateSchemaRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:node-state-schema:" }, "description": "References to NodeStateSchema objects used by this profile." },
+    "optionalSociosCapabilityPackRefs": { "type": "array", "items": { "type": "string" }, "description": "Optional Socios capability pack references. Presence does not imply base node dependency or enrollment." },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "planCommand": { "type": ["string", "null"] },
+        "validateCommand": { "type": ["string", "null"] },
+        "inspectCommand": { "type": ["string", "null"] },
+        "evidenceCommand": { "type": ["string", "null"] }
+      },
+      "description": "Operator-facing dry-run, validation, inspection, and evidence entrypoints. These are usually implemented by sourceosctl and Agent Machine, not desktop code."
+    },
+    "policyRefs": { "type": "array", "items": { "type": "string" }, "description": "Policy references that govern activation, mutation, enrollment, or rollback." },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" }, "description": "Evidence or receipt references expected from this node profile." },
+    "notes": { "type": ["string", "null"], "description": "Human-readable review notes." }
+  }
+}
