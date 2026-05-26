@@ -1,0 +1,35 @@
+{
+  "engineId": "sourceos.sync.workspace",
+  "collection": "workspace",
+  "schemaVersion": "0.1.0",
+  "ownerRepo": "SocioProphet/prophet-workspace",
+  "defaultEnabled": true,
+  "policyClass": "high",
+  "encryptionScope": "workspace",
+  "mergeStrategy": "graph_merge",
+  "supportsTombstones": true,
+  "supportsRollback": true,
+  "supportsExport": true,
+  "dangerousFields": [
+    "automationRules",
+    "agentBindings",
+    "policyBindings"
+  ],
+  "auditEvents": [
+    "sync.engine.started",
+    "sync.engine.completed",
+    "sync.conflict.detected",
+    "workspace.graph.updated"
+  ],
+  "stateCodes": [
+    "engine_syncing",
+    "engine_current",
+    "conflict_detected",
+    "review_required"
+  ],
+  "reasonCodes": [
+    "policy_denied",
+    "workspace_scope_mismatch",
+    "manual_review_required"
+  ]
+}

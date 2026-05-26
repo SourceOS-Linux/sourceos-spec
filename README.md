@@ -46,9 +46,36 @@ sourceos-spec/
 │   └── fog-vocabulary.jsonld         # Additive fog vocabulary seed
 │
 └── docs/
+    ├── architecture/                 # Architecture specs and system models
+    ├── security/                     # Threat models and security requirements
+    ├── specs/                        # Contract-level specs outside schema files
+    ├── integration/                  # Cross-repository estate integration maps
     ├── adr/                          # Architecture Decision Records
     └── contract-additions/           # Discoverability notes for additive families
 ```
+
+---
+
+## Agentic graph foundation
+
+The local-first agentic graph foundation extends the existing contract layer so SourceOS and SociOS components share one governed model for workspace state, sync, agents, memory, policy, terminals, browsers, relays, and audit.
+
+Start here:
+
+- [Local-First Agentic Graph Architecture](docs/architecture/local-first-agentic-graph.md)
+- [Agentic Sync Threat Model](docs/security/agentic-sync-threat-model.md)
+- [Sync Engine Registry Specification](docs/specs/sync-engine-registry.md)
+- [SourceChannel Bridge Contract](docs/specs/sourcechannel.md)
+- [Estate Integration Repo Map](docs/integration/repo-map.md)
+
+New machine-readable contracts:
+
+- `schemas/SourceOSRepoManifest.json`
+- `schemas/SyncEngineManifest.json`
+- `schemas/SourceChannelEnvelope.json`
+- `schemas/SourceGraphWrite.json`
+- `schemas/AgentCapabilityLease.json`
+- `schemas/AuditEvent.json`
 
 ---
 
@@ -68,6 +95,7 @@ The schemas are organised into domain-oriented families that map to the SourceOS
 | + | **Agent Plane** | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
 | + | **Fog Layer** | `Topic`, `TopicEnvelope`, `ReplicationPolicy`, `ContentRef`, `Offer`, `WorkOrder`, `UsageReceipt`, `SettlementEvent` |
+| + | **Agentic Graph Foundation** | `SourceOSRepoManifest`, `SyncEngineManifest`, `SourceChannelEnvelope`, `SourceGraphWrite`, `AgentCapabilityLease`, `AuditEvent` |
 
 ---
 

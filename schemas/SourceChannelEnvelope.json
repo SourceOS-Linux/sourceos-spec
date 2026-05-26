@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SourceChannelEnvelope.json",
+  "title": "SourceChannelEnvelope",
+  "description": "Origin-bound, profile-bound, workspace-bound, signed, auditable bridge request for privileged SourceOS operations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "channelId",
+    "requestId",
+    "origin",
+    "surface",
+    "profileId",
+    "deviceId",
+    "capability",
+    "scope",
+    "policyBundleHash",
+    "nonce",
+    "issuedAt",
+    "expiresAt",
+    "reason",
+    "auditId",
+    "signature"
+  ],
+  "properties": {
+    "channelId": {
+      "type": "string",
+      "pattern": "^urn:srcos:channel:"
+    },
+    "requestId": {
+      "type": "string",
+      "pattern": "^urn:srcos:request:"
+    },
+    "origin": {
+      "type": "string",
+      "minLength": 1
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "prophet-workspace",
+        "turtleterm",
+        "bearbrowser",
+        "agent-term",
+        "mcp",
+        "daemon",
+        "admin-console",
+        "other"
+      ]
+    },
+    "profileId": {
+      "type": "string",
+      "pattern": "^urn:srcos:profile:"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace:"
+    },
+    "deviceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:device:"
+    },
+    "agentId": {
+      "type": "string",
+      "pattern": "^urn:srcos:agent:"
+    },
+    "capability": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Bounded operation scope. Typical keys include repo, paths, tools, memoryScopes, models, and networkZones."
+    },
+    "policyBundleHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    },
+    "nonce": {
+      "type": "string",
+      "minLength": 8
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "auditId": {
+      "type": "string",
+      "pattern": "^urn:srcos:audit:"
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

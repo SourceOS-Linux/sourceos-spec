@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AuditEvent.json",
+  "title": "AuditEvent",
+  "description": "Append-only SourceAudit event for graph writes, sync decisions, policy decisions, agent leases, memory lifecycle, shell/browser bridge calls, relays, and runtime actions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "eventType",
+    "occurredAt",
+    "actorId",
+    "subjectId",
+    "policyDomain",
+    "outcome",
+    "reasonCode",
+    "eventHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:audit:"
+    },
+    "type": {
+      "const": "AuditEvent"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "eventType": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actorId": {
+      "type": "string",
+      "pattern": "^urn:srcos:"
+    },
+    "subjectId": {
+      "type": "string",
+      "pattern": "^urn:srcos:"
+    },
+    "workspaceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace:"
+    },
+    "deviceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:device:"
+    },
+    "policyDomain": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["allow", "deny", "require_review", "quarantine", "error", "informational"]
+    },
+    "reasonCode": {
+      "type": "string"
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "previousEventHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    },
+    "eventHash": {
+      "type": "string",
+      "pattern": "^sha256:"
+    },
+    "signature": {
+      "type": "string"
+    }
+  }
+}
