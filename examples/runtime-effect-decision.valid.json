@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.1.0",
+  "decision_kind": "runtime-effect-decision",
+  "decision_id": "runtime-effect-decision:demo-dispatch-001",
+  "ts_decided": "2026-05-27T00:50:00Z",
+  "policy_decision_ref": "policy-decision:demo-export-001",
+  "event_ref": {
+    "event_id": "sourceos-event:demo-001",
+    "event_content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "runtime_effect": "export_ref_only",
+  "effect_status": "admitted",
+  "effect_scope": {
+    "component_ref": "sourceos-shell://receipt-export",
+    "operation": "export_receipt_ref",
+    "side_effecting": false
+  },
+  "authority_mutation_performed": false,
+  "ledger_write_performed": false,
+  "grant_state_decision_ref": null,
+  "ledger_record_ref": null,
+  "downstream_refs": ["grant-state-decision:optional-followup"],
+  "evidence_refs": ["evidence://sourceos/runtime-effect/demo-001"],
+  "explanation": "Policy decision allows ref-only export; runtime effect admits only the ref export and performs no authority mutation."
+}
