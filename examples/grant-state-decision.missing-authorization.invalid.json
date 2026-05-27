@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.1.0",
+  "decision_kind": "grant-state-decision",
+  "decision_id": "grant-state-decision:missing-authorization-invalid",
+  "ts_decided": "2026-05-27T00:54:00Z",
+  "grant_ref": "agent-grant:agent-alpha-001",
+  "subject_ref": "agent://agent-alpha",
+  "authority_decision": "revoked",
+  "decision_actor_ref": "service://sourceos-policy-adjudicator",
+  "authorization_policy_ref": "",
+  "authorization_evidence_refs": [],
+  "effective_at": "2026-05-27T00:55:00Z",
+  "authority_effects": {
+    "tool_access": "revoked",
+    "memory_access": "revoked",
+    "event_write": "revoked",
+    "bridge_export": "revoked",
+    "runtime_dispatch": "revoked"
+  },
+  "source_policy_decision_ref": "policy-decision:agent-alpha-revoke-001",
+  "source_runtime_effect_decision_ref": null,
+  "restoration_allowed": false,
+  "restoration_conditions": [],
+  "evidence_refs": ["evidence://sourceos/grant-state/missing-authorization-invalid"],
+  "explanation": "Invalid fixture: grant state changes require authorization policy and evidence refs."
+}
