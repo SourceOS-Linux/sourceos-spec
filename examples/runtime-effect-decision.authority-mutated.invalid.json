@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.1.0",
+  "decision_kind": "runtime-effect-decision",
+  "decision_id": "runtime-effect-decision:invalid-authority-mutation",
+  "ts_decided": "2026-05-27T00:51:00Z",
+  "policy_decision_ref": "policy-decision:demo-export-001",
+  "event_ref": {
+    "event_id": "sourceos-event:demo-001",
+    "event_content_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "runtime_effect": "allow_dispatch",
+  "effect_status": "admitted",
+  "effect_scope": {
+    "component_ref": "agent-term://dispatch",
+    "operation": "dispatch_agent",
+    "side_effecting": true
+  },
+  "authority_mutation_performed": true,
+  "ledger_write_performed": false,
+  "grant_state_decision_ref": "grant-state-decision:invalid-inline-mutation",
+  "ledger_record_ref": null,
+  "downstream_refs": [],
+  "evidence_refs": ["evidence://sourceos/runtime-effect/invalid-authority-mutation"],
+  "explanation": "Invalid fixture: runtime effect decisions must not mutate authority inline."
+}
