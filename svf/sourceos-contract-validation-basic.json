@@ -1,0 +1,128 @@
+{
+  "schema_version": "1.0",
+  "contract_id": "svf:contract:sourceos.contract-validation-basic",
+  "upstream_authority": {
+    "policy_fabric_repo": "SocioProphet/ProCybernetica",
+    "workspace_registry_repo": "SocioProphet/sociosphere",
+    "profile_ref": "svf:profile:sourceos.contracts"
+  },
+  "capability_policy": {
+    "schema_version": "1.0",
+    "policy_id": "svf:policy:sourceos.contract-readonly",
+    "version": "1.0.0",
+    "owner": {
+      "plane": "sourceos-contracts",
+      "repo": "SourceOS-Linux/sourceos-spec"
+    },
+    "actor_classes": ["ci_runner", "workspace_runner"],
+    "allowed_backends": ["local"],
+    "max_side_effects": ["read_only", "write_temp"],
+    "network_modes": ["network_none"],
+    "credential_modes": ["credential_none"],
+    "filesystem_roots": ["schemas", "examples", "semantic", "docs", "tools", "svf"],
+    "production_environment_allowed": false,
+    "human_approval_required": false,
+    "required_receipt_fields": ["run_digest", "plan_digest", "policy_digest", "input_digests", "output_digests"],
+    "non_claims": [
+      "Does not build an OS image.",
+      "Does not certify bootability or hardware compatibility.",
+      "Does not authorize signing, publication, deployment, or production updates.",
+      "Does not authorize credential access."
+    ]
+  },
+  "actions": [
+    {
+      "schema_version": "1.0",
+      "action_id": "svf:action:sourceos.control-plane-examples",
+      "version": "1.0.0",
+      "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+      "binding": {"kind": "make_target", "entrypoint": "validate-control-plane-examples", "args": []},
+      "capability": {"side_effects": ["read_only", "write_temp"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["schemas", "examples", "tools"], "backend": "local", "timeout_seconds": 300},
+      "artifact_contract": {"required_outputs": ["control-plane-validation-output"], "digest_required": false},
+      "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+      "non_claims": ["Does not certify runtime control-plane behavior."]
+    },
+    {
+      "schema_version": "1.0",
+      "action_id": "svf:action:sourceos.nlboot-examples",
+      "version": "1.0.0",
+      "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+      "binding": {"kind": "make_target", "entrypoint": "validate-nlboot-examples", "args": []},
+      "capability": {"side_effects": ["read_only", "write_temp"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["schemas", "examples", "tools"], "backend": "local", "timeout_seconds": 300},
+      "artifact_contract": {"required_outputs": ["nlboot-validation-output"], "digest_required": false},
+      "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+      "non_claims": ["Does not certify bootability or measured boot."]
+    },
+    {
+      "schema_version": "1.0",
+      "action_id": "svf:action:sourceos.lattice-data-governai-examples",
+      "version": "1.0.0",
+      "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+      "binding": {"kind": "make_target", "entrypoint": "validate-lattice-data-governai-examples", "args": []},
+      "capability": {"side_effects": ["read_only", "write_temp"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["schemas", "examples", "tools"], "backend": "local", "timeout_seconds": 300},
+      "artifact_contract": {"required_outputs": ["lattice-data-governai-validation-output"], "digest_required": false},
+      "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+      "non_claims": ["Does not certify downstream data-platform behavior."]
+    },
+    {
+      "schema_version": "1.0",
+      "action_id": "svf:action:sourceos.ops-history-examples",
+      "version": "1.0.0",
+      "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+      "binding": {"kind": "make_target", "entrypoint": "validate-ops-history-examples", "args": []},
+      "capability": {"side_effects": ["read_only", "write_temp"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["schemas", "examples", "tools"], "backend": "local", "timeout_seconds": 300},
+      "artifact_contract": {"required_outputs": ["ops-history-validation-output"], "digest_required": false},
+      "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+      "non_claims": ["Does not certify operational history truth beyond examples."]
+    },
+    {
+      "schema_version": "1.0",
+      "action_id": "svf:action:sourceos.runtime-observability-examples",
+      "version": "1.0.0",
+      "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+      "binding": {"kind": "make_target", "entrypoint": "validate-runtime-observability-examples", "args": []},
+      "capability": {"side_effects": ["read_only", "write_temp"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["schemas", "examples", "tools"], "backend": "local", "timeout_seconds": 300},
+      "artifact_contract": {"required_outputs": ["runtime-observability-validation-output"], "digest_required": false},
+      "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+      "non_claims": ["Does not certify live runtime observability."]
+    },
+    {
+      "schema_version": "1.0",
+      "action_id": "svf:action:sourceos.lifecycle-boundary-examples",
+      "version": "1.0.0",
+      "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+      "binding": {"kind": "make_target", "entrypoint": "validate-lifecycle-boundary-examples", "args": []},
+      "capability": {"side_effects": ["read_only", "write_temp"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["schemas", "examples", "tools"], "backend": "local", "timeout_seconds": 300},
+      "artifact_contract": {"required_outputs": ["lifecycle-boundary-validation-output"], "digest_required": false},
+      "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+      "non_claims": ["Does not certify production lifecycle decisions."]
+    }
+  ],
+  "plan": {
+    "schema_version": "1.0",
+    "plan_id": "svf:plan:sourceos.contract-validation-basic",
+    "version": "1.0.0",
+    "owner": {"plane": "sourceos-contracts", "repo": "SourceOS-Linux/sourceos-spec", "maintainer": "mdheller"},
+    "applicability": {"repos": ["SourceOS-Linux/sourceos-spec"], "planes": ["sourceos-contracts"], "change_classes": ["schema", "fixture", "documentation", "policy", "mixed"]},
+    "mode": "advisory",
+    "policy_ref": "svf:policy:sourceos.contract-readonly",
+    "actions": [
+      {"step_id": "control-plane", "action_ref": "svf:action:sourceos.control-plane-examples", "required": true, "on_failure": "fail_plan"},
+      {"step_id": "nlboot", "action_ref": "svf:action:sourceos.nlboot-examples", "required": true, "on_failure": "fail_plan"},
+      {"step_id": "lattice-data-governai", "action_ref": "svf:action:sourceos.lattice-data-governai-examples", "required": true, "on_failure": "fail_plan"},
+      {"step_id": "ops-history", "action_ref": "svf:action:sourceos.ops-history-examples", "required": true, "on_failure": "fail_plan"},
+      {"step_id": "runtime-observability", "action_ref": "svf:action:sourceos.runtime-observability-examples", "required": true, "on_failure": "fail_plan"},
+      {"step_id": "lifecycle-boundary", "action_ref": "svf:action:sourceos.lifecycle-boundary-examples", "required": true, "on_failure": "fail_plan"}
+    ],
+    "success_criteria": {"required_steps_pass": true, "receipt_required": true, "accepted_statuses": ["pass"]},
+    "failure_taxonomy": ["schema_failure", "fixture_failure", "policy_boundary_failure", "action_failure", "not_configured", "timeout", "inconclusive"],
+    "claim_scopes": ["schema_conformant", "fixtures_validated", "policy_boundary_preserved", "non_production_only"],
+    "required_evidence": ["control-plane-validation-output", "nlboot-validation-output", "lattice-data-governai-validation-output", "ops-history-validation-output", "runtime-observability-validation-output", "lifecycle-boundary-validation-output"],
+    "non_claims": [
+      "Does not build an OS image.",
+      "Does not certify bootability or hardware compatibility.",
+      "Does not certify release readiness or production update safety.",
+      "Does not authorize signing, publication, deployment, or production updates."
+    ]
+  }
+}
