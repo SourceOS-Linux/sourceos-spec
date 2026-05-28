@@ -15,6 +15,7 @@ A metadata governance platform can only unify data meaning, policy, provenance, 
 - **Validators** — AJV (Node.js) or `jsonschema` (Python) loaded from `schemas/`.
 - **Code generators** — TypeScript types via [quicktype](https://quicktype.io); Python models via [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
 - **Semantic tooling** — JSON-LD context + Hydra API documentation in `semantic/`, including additive vocabulary seeds such as `semantic/fog-vocabulary.jsonld`.
+- **SVF workspace discovery** — SourceOS contract validation Plans declared in `svf/` for Sociosphere selection and advisory validation routing.
 
 ---
 
@@ -45,13 +46,17 @@ sourceos-spec/
 │   ├── README.md
 │   └── fog-vocabulary.jsonld         # Additive fog vocabulary seed
 │
+├── svf/                              # Sovereign Validation Fabric contract declarations
+│   └── sourceos-contract-validation-basic.json
+│
 └── docs/
     ├── architecture/                 # Architecture specs and system models
     ├── security/                     # Threat models and security requirements
     ├── specs/                        # Contract-level specs outside schema files
     ├── integration/                  # Cross-repository estate integration maps
     ├── adr/                          # Architecture Decision Records
-    └── contract-additions/           # Discoverability notes for additive families
+    ├── contract-additions/           # Discoverability notes for additive families
+    └── SVF-OS-VALIDATION-PROFILES.md # SVF OS validation profile doctrine
 ```
 
 ---
@@ -67,6 +72,7 @@ Start here:
 - [Sync Engine Registry Specification](docs/specs/sync-engine-registry.md)
 - [SourceChannel Bridge Contract](docs/specs/sourcechannel.md)
 - [Estate Integration Repo Map](docs/integration/repo-map.md)
+- [SVF OS Validation Profiles](docs/SVF-OS-VALIDATION-PROFILES.md)
 
 New machine-readable contracts:
 
@@ -76,6 +82,7 @@ New machine-readable contracts:
 - `schemas/SourceGraphWrite.json`
 - `schemas/AgentCapabilityLease.json`
 - `schemas/AuditEvent.json`
+- `svf/sourceos-contract-validation-basic.json`
 
 ---
 
@@ -96,6 +103,26 @@ The schemas are organised into domain-oriented families that map to the SourceOS
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
 | + | **Fog Layer** | `Topic`, `TopicEnvelope`, `ReplicationPolicy`, `ContentRef`, `Offer`, `WorkOrder`, `UsageReceipt`, `SettlementEvent` |
 | + | **Agentic Graph Foundation** | `SourceOSRepoManifest`, `SyncEngineManifest`, `SourceChannelEnvelope`, `SourceGraphWrite`, `AgentCapabilityLease`, `AuditEvent` |
+
+---
+
+## SVF validation lane
+
+The SourceOS SVF lane declares advisory validation over the existing SourceOS contract/example checks. It does not build an OS image, validate bootability, sign artifacts, publish releases, deploy updates, or certify hardware compatibility.
+
+Validate locally:
+
+```bash
+make validate-svf-contracts
+```
+
+`make validate` includes this lane.
+
+Relevant files:
+
+- `docs/SVF-OS-VALIDATION-PROFILES.md`
+- `svf/sourceos-contract-validation-basic.json`
+- `tools/validate_svf_contracts.py`
 
 ---
 
