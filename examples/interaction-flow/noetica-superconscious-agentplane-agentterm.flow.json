@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "sourceos.interaction-flow-reference.v0.1",
+  "flowId": "urn:srcos:interaction-flow:noetica-superconscious-agentplane-agentterm-0001",
+  "specVersion": "2.0.0",
+  "description": "Canonical reference packet linking Noetica emission, Superconscious task-boundary binding, AgentPlane evidence binding, and AgentTerm rendering over SourceOSInteractionEvent references.",
+  "sourceosSpec": {
+    "repo": "SourceOS-Linux/sourceos-spec",
+    "pinnedCommit": "c7f8c2d9e42a56e1127c2f9b85649cbea0f0a9fa",
+    "schemaRef": "schemas/SourceOSInteractionEvent.json",
+    "exampleRef": "examples/sourceos-interaction-event.json",
+    "generatedTypeRefs": [
+      "generated/typescript/sourceos-interaction-event.ts",
+      "generated/python/sourceos_interaction_event.py"
+    ]
+  },
+  "interactionEvents": {
+    "noeticaEmitted": "urn:srcos:interaction-event:noetica-standalone-complete-0001",
+    "superconsciousAccepted": "urn:srcos:interaction-event:superconscious-boundary-accepted-0001",
+    "agentplaneCompleted": "urn:srcos:interaction-event:agentplane-run-completed-0001",
+    "agenttermRendered": "urn:srcos:interaction-event:agentterm-rendered-governance-trace-0001"
+  },
+  "repositories": [
+    {
+      "repo": "SocioProphet/Noetica",
+      "role": "browser-chat-surface",
+      "pinnedCommit": "2a73b44338335a39283bcf65b4e072e29b8946a3",
+      "obligations": [
+        "emit SourceOSInteractionEvent from standalone and SourceOS chat lifecycle",
+        "show inline governance trace",
+        "sync-check generated TypeScript contract artifact"
+      ],
+      "sourceRefs": [
+        "SocioProphet/Noetica#16",
+        "SocioProphet/Noetica#17",
+        "SocioProphet/Noetica#18"
+      ],
+      "ownsAuthority": [
+        "browser chat UX",
+        "model-selection UX",
+        "steering UX"
+      ],
+      "doesNotOwnAuthority": [
+        "policy admission",
+        "agent grants",
+        "durable memory writeback",
+        "AgentPlane execution evidence",
+        "SourceOSInteractionEvent schema"
+      ]
+    },
+    {
+      "repo": "SocioProphet/superconscious",
+      "role": "task-cognition-coordinator",
+      "pinnedCommit": "a4742b092584432871a7a15da49e15f054b8d393",
+      "obligations": [
+        "accept or emit SourceOSInteractionEvent references at the task boundary",
+        "preserve policy/grant/memory/evidence refs",
+        "reject authority drift into policy, grant, memory, routing, or evidence ownership"
+      ],
+      "sourceRefs": [
+        "SocioProphet/superconscious#60"
+      ],
+      "ownsAuthority": [
+        "task/cognition coordination"
+      ],
+      "doesNotOwnAuthority": [
+        "policy admission",
+        "agent grants",
+        "durable memory writeback",
+        "model routing",
+        "AgentPlane evidence",
+        "SourceOSInteractionEvent schema"
+      ]
+    },
+    {
+      "repo": "SocioProphet/agentplane",
+      "role": "execution-evidence-replay-authority",
+      "pinnedCommit": "e9797a8358405475fc12eb94d5c6b00547bd0ddf",
+      "obligations": [
+        "attach run/evidence/replay refs to SourceOSInteractionEvent governance traces",
+        "require hash-qualified artifact refs",
+        "reject raw execution log, credential, secret, transcript, shell-output, or private-reasoning leakage"
+      ],
+      "sourceRefs": [
+        "SocioProphet/agentplane#253"
+      ],
+      "ownsAuthority": [
+        "execution evidence",
+        "run artifacts",
+        "replay artifacts",
+        "validation artifacts",
+        "placement artifacts"
+      ],
+      "doesNotOwnAuthority": [
+        "policy admission",
+        "agent grants",
+        "Memory Mesh semantics",
+        "Noetica UI state",
+        "AgentTerm terminal state",
+        "SourceOSInteractionEvent schema"
+      ]
+    },
+    {
+      "repo": "SourceOS-Linux/agent-term",
+      "role": "terminal-operator-surface",
+      "pinnedCommit": "076db5f0ebd6acae665a0b3b90e56c88735bc301",
+      "obligations": [
+        "ingest/render/record SourceOSInteractionEvent governance traces",
+        "use generated Python contract artifact",
+        "sync-check generated Python contract artifact"
+      ],
+      "sourceRefs": [
+        "SourceOS-Linux/agent-term#46",
+        "SourceOS-Linux/agent-term#47",
+        "SourceOS-Linux/agent-term#48"
+      ],
+      "ownsAuthority": [
+        "terminal operator rendering",
+        "operator event recording surface"
+      ],
+      "doesNotOwnAuthority": [
+        "cognition loop",
+        "policy admission",
+        "agent grants",
+        "durable memory writeback",
+        "AgentPlane evidence",
+        "SourceOSInteractionEvent schema"
+      ]
+    }
+  ],
+  "authorityBoundaries": {
+    "sourceosSpec": "canonical schema and generated artifact authority",
+    "noetica": "browser chat/model/steering surface",
+    "superconscious": "task/cognition coordination boundary",
+    "agentplane": "execution evidence and replay authority",
+    "agentTerm": "terminal/operator rendering surface",
+    "policyFabric": "policy admission authority",
+    "agentRegistry": "identity, grants, sessions, and revocation authority",
+    "memoryMesh": "durable memory and context-pack authority"
+  },
+  "forbiddenPayloads": [
+    "raw secrets",
+    "credentials",
+    "unrestricted browser history",
+    "unrestricted shell output",
+    "unrestricted transcripts",
+    "private chain-of-thought",
+    "private reasoning",
+    "raw execution logs"
+  ],
+  "validationRefs": [
+    "tools/validate_sourceos_interaction_examples.py",
+    "tools/validate_interaction_flow_reference.py",
+    "SocioProphet/Noetica/.github/workflows/sourceos-contract-sync.yml",
+    "SourceOS-Linux/agent-term/.github/workflows/sourceos-contract-sync.yml",
+    "SocioProphet/superconscious/scripts/check_sourceos_interaction_boundary.py",
+    "SocioProphet/agentplane/tools/validate_sourceos_interaction_evidence_binding.py"
+  ]
+}
