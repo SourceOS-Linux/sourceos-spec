@@ -1,0 +1,35 @@
+name: SourceOS Interaction Reference Flow
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "examples/interaction-flow/noetica-superconscious-agentplane-agentterm.flow.json"
+      - "docs/contract-additions/sourceos-interaction-reference-flow.md"
+      - "tools/validate_interaction_flow_reference.py"
+      - ".github/workflows/sourceos-interaction-reference-flow.yml"
+  push:
+    branches: ["main", "work/sourceos-interaction-reference-packet"]
+    paths:
+      - "examples/interaction-flow/noetica-superconscious-agentplane-agentterm.flow.json"
+      - "docs/contract-additions/sourceos-interaction-reference-flow.md"
+      - "tools/validate_interaction_flow_reference.py"
+      - ".github/workflows/sourceos-interaction-reference-flow.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-interaction-reference-flow:
+    name: Validate interaction reference flow
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Validate reference flow packet
+        run: python tools/validate_interaction_flow_reference.py
