@@ -24,9 +24,40 @@ The key architectural rule is that Noetica and AgentTerm are separate surfaces o
 | --- | --- |
 | `schemas/SourceOSInteractionEvent.json` | Machine-readable JSON Schema for the shared interaction envelope. |
 | `examples/sourceos-interaction-event.json` | Valid Noetica standalone completion example consumable by AgentTerm. |
+| `generated/typescript/sourceos-interaction-event.ts` | Generated TypeScript interface/union definitions for downstream TypeScript consumers. |
+| `generated/python/sourceos_interaction_event.py` | Generated Python `TypedDict` / `Literal` definitions for downstream Python consumers. |
+| `tools/generate_sourceos_interaction_types.py` | Generator and stale-output checker for the generated artifacts. |
 | `tools/validate_sourceos_interaction_examples.py` | Dedicated validator for the schema/example pair. |
-| `.github/workflows/sourceos-interaction-substrate.yml` | CI workflow for the interaction-substrate slice. |
+| `.github/workflows/sourceos-interaction-substrate.yml` | CI workflow for the interaction-substrate schema/example slice. |
+| `.github/workflows/sourceos-interaction-codegen.yml` | CI workflow that checks generated artifacts are current. |
 | `docs/contract-additions/sourceos-interaction-substrate.md` | Normative design and authority-boundary contract. |
+
+## Generated type consumption
+
+The canonical generation command is:
+
+```bash
+python tools/generate_sourceos_interaction_types.py
+```
+
+The canonical drift check is:
+
+```bash
+python tools/generate_sourceos_interaction_types.py --check
+```
+
+Downstream repositories may consume the generated artifacts by vendoring from a pinned `sourceos-spec` commit, importing from a subtree/submodule, or running the generator during their own contract-sync process.
+
+Recommended downstream mapping:
+
+| Consumer | Generated artifact |
+| --- | --- |
+| `SocioProphet/Noetica` | `generated/typescript/sourceos-interaction-event.ts` |
+| `SourceOS-Linux/agent-term` | `generated/python/sourceos_interaction_event.py` |
+| `SocioProphet/superconscious` | Python or TypeScript artifact depending on implementation lane |
+| `SocioProphet/agentplane` | Python or TypeScript artifact depending on implementation lane |
+
+Schema changes must update the generated artifacts in the same PR. CI should fail when the generated files are stale.
 
 ## Required downstream bindings
 
@@ -67,10 +98,12 @@ AgentTerm Matrix or terminal command
 
 ## Completion status
 
-Initial implementation status at catalog creation:
+Initial implementation status after codegen tranche:
 
 - SourceOS spec schema/example/validator/workflow: merged.
 - AgentTerm fixture ingest/render path: merged.
 - Noetica emitter path: merged.
+- TypeScript and Python generated artifacts: present.
+- Drift check workflow: present.
 
-Future work should add generated types or schema-consumption automation when the downstream repositories are ready for a shared package or codegen path.
+Future work should migrate Noetica and AgentTerm from local mirrors to the generated artifacts or a pinned contract-sync process.
