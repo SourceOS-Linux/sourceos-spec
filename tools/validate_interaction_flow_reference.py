@@ -11,7 +11,6 @@ ROOT = Path(__file__).resolve().parents[1]
 FLOW = ROOT / "examples" / "interaction-flow" / "noetica-superconscious-agentplane-agentterm.flow.json"
 
 REQUIRED_REPOS = {
-    "SourceOS-Linux/sourceos-spec": "canonical schema and generated artifact authority",
     "SocioProphet/Noetica": "browser-chat-surface",
     "SocioProphet/superconscious": "task-cognition-coordinator",
     "SocioProphet/agentplane": "execution-evidence-replay-authority",
@@ -69,6 +68,7 @@ def main() -> int:
     require_equal(sourceos_spec.get("repo"), "SourceOS-Linux/sourceos-spec", "sourceosSpec.repo")
     require_nonempty(sourceos_spec.get("pinnedCommit"), "sourceosSpec.pinnedCommit")
     require_equal(sourceos_spec.get("schemaRef"), "schemas/SourceOSInteractionEvent.json", "sourceosSpec.schemaRef")
+    require_nonempty_list(sourceos_spec.get("generatedTypeRefs"), "sourceosSpec.generatedTypeRefs")
 
     interaction_events = require_object(flow, "interactionEvents")
     for key, value in interaction_events.items():
