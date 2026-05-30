@@ -4,6 +4,18 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — SourceOS Interaction Substrate
+
+The SourceOS interaction substrate adds the following top-level schema:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `SourceOSInteractionEvent.json` | SourceOSInteractionEvent | `urn:srcos:interaction-event:` |
+
+This type supports governed noetic/chat/task lifecycle events shared by Noetica, AgentTerm, Matrix-facing operator flows, Superconscious task boundaries, AgentPlane evidence references, Memory Mesh context-pack handoffs, Agent Registry grant references, and Policy Fabric decisions.
+
+---
+
 ## Recent additions — Release and build lifecycle
 
 The release/build lifecycle slice adds the following top-level schemas:
@@ -135,6 +147,7 @@ These types support:
 | `SessionReview.json` | SessionReview | `urn:srcos:session-review:` |
 | `SettlementEvent.json` | SettlementEvent | `urn:srcos:settlement:` |
 | `SkillManifest.json` | SkillManifest | `urn:srcos:skill:` |
+| `SourceOSInteractionEvent.json` | SourceOSInteractionEvent | `urn:srcos:interaction-event:` |
 | `SubjectContext.json` | SubjectContext | _(sub-object, no id)_ |
 | `SubjectSelector.json` | SubjectSelector | _(sub-object inside Policy scope)_ |
 | `TagAssignment.json` | TagAssignment | _(sub-object inside Field/GlossaryTerm)_ |
@@ -242,6 +255,7 @@ These types support:
 | `EventEnvelope` | The universal wrapper for all AsyncAPI channel messages |
 | `TruthSurface` | Signed truth summary emitted by a plane (system/user/agent/witness) |
 | `DeltaSurface` | Signed diff between two TruthSurfaces with gate results |
+| `SourceOSInteractionEvent` | Shared noetic/chat/task lifecycle event envelope for Noetica, AgentTerm, governance traces, task submission, and evidence handoff |
 
 ### Agent Plane
 
