@@ -86,6 +86,28 @@ New machine-readable contracts:
 
 ---
 
+## SourceOS interaction substrate
+
+The SourceOS interaction substrate defines the governed noetic/chat/task event path shared by Noetica, AgentTerm, Superconscious, and AgentPlane.
+
+Start here:
+
+- [SourceOS Interaction Substrate Catalog](docs/contract-additions/sourceos-interaction-catalog.md)
+- [SourceOS Interaction Reference Flow](docs/contract-additions/sourceos-interaction-reference-flow.md)
+- [SourceOS Interaction Top-Level Index](docs/contract-additions/sourceos-interaction-top-level-index.md)
+- `schemas/SourceOSInteractionEvent.json`
+- `examples/interaction-flow/noetica-superconscious-agentplane-agentterm.flow.json`
+
+Validate locally:
+
+```bash
+python tools/validate_sourceos_interaction_examples.py
+python tools/generate_sourceos_interaction_types.py --check
+python tools/validate_interaction_flow_reference.py
+```
+
+---
+
 ## Schema families
 
 The schemas are organised into domain-oriented families that map to the SourceOS / SociOS contract surface:
@@ -103,6 +125,7 @@ The schemas are organised into domain-oriented families that map to the SourceOS
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
 | + | **Fog Layer** | `Topic`, `TopicEnvelope`, `ReplicationPolicy`, `ContentRef`, `Offer`, `WorkOrder`, `UsageReceipt`, `SettlementEvent` |
 | + | **Agentic Graph Foundation** | `SourceOSRepoManifest`, `SyncEngineManifest`, `SourceChannelEnvelope`, `SourceGraphWrite`, `AgentCapabilityLease`, `AuditEvent` |
+| + | **Interaction Substrate** | `SourceOSInteractionEvent` |
 
 ---
 
