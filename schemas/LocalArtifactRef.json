@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LocalArtifactRef.json",
+  "title": "LocalArtifactRef",
+  "description": "Provisional local artifact reference capturing file availability state, content integrity, durability tier, and local-to-remote artifact mapping. Raw filesystem paths are never stored; only content hashes and opaque path hints are allowed.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "deviceRef",
+    "contentHash",
+    "availabilityState",
+    "durabilityTier",
+    "operationLogRef",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:local-artifact:",
+      "description": "Stable local-artifact URN. Must be unique per artifact."
+    },
+    "type": { "const": "LocalArtifactRef" },
+    "specVersion": { "type": "string" },
+    "deviceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:device-identity:",
+      "description": "DeviceIdentity URN for the device holding this artifact."
+    },
+    "artifactClass": {
+      "type": "string",
+      "enum": [
+        "terminal.output",
+        "browser.capture",
+        "agent.output",
+        "file.snapshot",
+        "model.output",
+        "diagnostic.export",
+        "sync.bundle",
+        "policy.record",
+        "other"
+      ],
+      "description": "Typed class of the local artifact."
+    },
+    "mimeType": {
+      "type": ["string", "null"],
+      "description": "MIME type of the artifact content if known."
+    },
+    "contentHash": {
+      "type": "string",
+      "description": "Content-addressed hash of the artifact. Must be a prefixed digest string (e.g. sha256:<hex>)."
+    },
+    "sizeBytes": {
+      "type": ["integer", "null"],
+      "minimum": 0
+    },
+    "availabilityState": {
+      "type": "string",
+      "enum": ["available", "evicted", "pinned", "pending-sync", "remote-only", "tombstoned"],
+      "description": "Current file availability state on this device."
+    },
+    "durabilityTier": {
+      "type": "string",
+      "enum": ["ephemeral", "local-durable", "synced", "archived"],
+      "description": "Artifact durability tier."
+    },
+    "pathHint": {
+      "type": ["string", "null"],
+      "description": "Opaque path hint (e.g. XDG-relative reference). Must not be an absolute filesystem path."
+    },
+    "operationLogRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:local-operation-log:",
+      "description": "LocalOperationLog URN that produced or consumed this artifact."
+    },
+    "remoteArtifactRef": {
+      "type": ["string", "null"],
+      "description": "Remote canonical Artifact URN (e.g. prophet-core Artifact) if this local artifact has been synced."
+    },
+    "encryptionProfileRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:local-encryption-profile:",
+      "description": "LocalEncryptionProfile URN if this artifact is encrypted at rest."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evictedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "syncedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "tombstonedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  }
+}

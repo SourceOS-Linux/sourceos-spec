@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkspaceCapabilityProfile.json",
+  "title": "WorkspaceCapabilityProfile",
+  "description": "Capability profile capturing the surface availability and posture of a SourceOS local-first workstation. Covers shell, terminal, browser, sandbox, local model, filesystem, and network state.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "deviceRef",
+    "capturedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:workspace-capability-profile:",
+      "description": "Stable workspace-capability-profile URN."
+    },
+    "type": { "const": "WorkspaceCapabilityProfile" },
+    "specVersion": { "type": "string" },
+    "deviceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:device-identity:",
+      "description": "DeviceIdentity URN this profile describes."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "shell": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Shell availability and posture.",
+      "properties": {
+        "available": { "type": "boolean" },
+        "shells": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "available"],
+            "properties": {
+              "name": { "type": "string", "enum": ["bash", "fish", "zsh", "sh", "nushell", "other"] },
+              "available": { "type": "boolean" },
+              "isDefault": { "type": "boolean" }
+            }
+          }
+        },
+        "sourceosShellAvailable": { "type": "boolean" },
+        "scriptingEnabled": { "type": "boolean" }
+      }
+    },
+    "terminal": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Terminal availability and posture.",
+      "properties": {
+        "available": { "type": "boolean" },
+        "application": {
+          "type": "string",
+          "enum": ["turtleterm", "gnome-terminal", "kitty", "alacritty", "other"]
+        },
+        "agentTermAvailable": { "type": "boolean" },
+        "contentCaptureEnabled": { "type": "boolean" }
+      }
+    },
+    "browser": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Browser availability and posture.",
+      "properties": {
+        "available": { "type": "boolean" },
+        "application": {
+          "type": "string",
+          "enum": ["bearbrowser", "firefox", "chromium", "other"]
+        },
+        "automationEnabled": { "type": "boolean" },
+        "captureEnabled": { "type": "boolean" },
+        "historyRetentionPolicy": {
+          "type": "string",
+          "enum": ["none", "metadata-only", "ref-only", "governed"]
+        }
+      }
+    },
+    "sandbox": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Sandbox/container execution availability.",
+      "properties": {
+        "available": { "type": "boolean" },
+        "kinds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["bubblewrap", "flatpak", "podman", "docker", "nsjail", "other"]
+          }
+        },
+        "networkIsolationDefault": { "type": "boolean" },
+        "filesystemOverlayDefault": { "type": "boolean" }
+      }
+    },
+    "localModel": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Local inference model availability.",
+      "properties": {
+        "available": { "type": "boolean" },
+        "modelRefs": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "SourceOSModelCarryRef or InferenceProvider URNs available locally."
+        },
+        "accelerator": {
+          "type": "string",
+          "enum": ["cpu", "gpu-cuda", "gpu-metal", "gpu-vulkan", "npu", "none"]
+        }
+      }
+    },
+    "filesystem": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Filesystem capability and encryption posture.",
+      "properties": {
+        "encryptedAtRest": { "type": "boolean" },
+        "availabilityStates": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["available", "evicted", "pinned", "pending-sync", "remote-only", "tombstoned"]
+          },
+          "description": "File availability states supported on this device."
+        },
+        "overlayFsAvailable": { "type": "boolean" },
+        "maxLocalStorageBytes": { "type": ["integer", "null"], "minimum": 0 }
+      }
+    },
+    "network": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Network state and offline posture.",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["online", "offline", "metered", "battery-saver", "unknown"]
+        },
+        "offlineBehavior": {
+          "type": "string",
+          "enum": ["queue-local", "deny", "metadata-only", "ref-only"]
+        },
+        "vpnActive": { "type": "boolean" },
+        "meshNetworkAvailable": { "type": "boolean" }
+      }
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SyncConflictRecord.json",
+  "title": "SyncConflictRecord",
+  "description": "Conflict record for a local-to-remote or peer-to-peer sync conflict. Captures the conflict kind, competing operation references, and the governance-approved resolution decision (merge, fork, skip, or tombstone).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "deviceRef",
+    "detectedAt",
+    "conflictKind",
+    "localOperationRef",
+    "resolution",
+    "policyDecisionRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:sync-conflict:",
+      "description": "Stable sync-conflict URN."
+    },
+    "type": { "const": "SyncConflictRecord" },
+    "specVersion": { "type": "string" },
+    "deviceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:device-identity:",
+      "description": "DeviceIdentity URN of the device that detected the conflict."
+    },
+    "detectedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "conflictKind": {
+      "type": "string",
+      "enum": [
+        "merge",
+        "fork",
+        "delete-update",
+        "update-delete",
+        "schema-mismatch",
+        "replay-collision",
+        "policy-rejection"
+      ],
+      "description": "Type of conflict detected."
+    },
+    "localOperationRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:local-operation-log:",
+      "description": "LocalOperationLog URN for the local operation that triggered the conflict."
+    },
+    "remoteOperationRef": {
+      "type": ["string", "null"],
+      "description": "Remote operation URN (WorkspaceOperation, OperationEvent, or peer LocalOperationLog) that conflicts with the local operation."
+    },
+    "artifactRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:local-artifact:",
+      "description": "LocalArtifactRef URN if the conflict involves a specific artifact."
+    },
+    "conflictingDeviceRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:device-identity:",
+      "description": "DeviceIdentity URN of the peer device whose operation conflicts with the local operation."
+    },
+    "resolution": {
+      "type": "string",
+      "enum": ["pending", "merge", "fork", "skip", "tombstone"],
+      "description": "Resolution decision. pending = awaiting governance approval; merge = content merged; fork = divergent copies kept; skip = local change discarded; tombstone = artifact tombstoned."
+    },
+    "resolvedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp of resolution, if not pending."
+    },
+    "resolutionRef": {
+      "type": ["string", "null"],
+      "description": "URN of the resolution artifact (merged LocalOperationLog, fork branch, or RedactionTombstone) produced by this resolution."
+    },
+    "resolutionNote": {
+      "type": ["string", "null"],
+      "description": "Optional governance or operator note explaining the resolution decision."
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Policy Fabric decision refs governing conflict detection and resolution."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  }
+}

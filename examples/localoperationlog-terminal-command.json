@@ -1,0 +1,43 @@
+{
+  "id": "urn:srcos:local-operation-log:terminal-command-demo-0001",
+  "type": "LocalOperationLog",
+  "specVersion": "2.0.0",
+  "operationType": "terminal.command",
+  "surface": "turtleterm",
+  "occurredAt": "2026-05-06T14:23:00Z",
+  "actorRef": "urn:srcos:subject:operator-demo",
+  "agentRegistryRef": null,
+  "deviceRef": "urn:srcos:device-identity:workstation-demo-0001",
+  "sessionRef": "urn:srcos:shell-session:turtleterm-demo-0001",
+  "workspaceRef": "urn:srcos:workroom:professional-intelligence-demo",
+  "durabilityTier": "local-durable",
+  "replaySafe": false,
+  "replayConstraints": null,
+  "payloadMode": "metadata-only",
+  "payload": {
+    "commandClass": "build",
+    "commandHashRef": "urn:srcos:content-ref:sha256-demo-terminal-cmd-0001",
+    "exitCode": 0,
+    "rawCommandIncluded": false,
+    "rawOutputIncluded": false,
+    "durationMs": 1240
+  },
+  "artifactRefs": [],
+  "remoteOperationRef": null,
+  "workspaceOperationRef": "urn:prophet:workspace-operation:demo-ws-op-0001",
+  "operationTaskRef": "urn:prophet:operation-task:demo-task-0001",
+  "operationEventRef": "urn:prophet:operation-event:demo-event-0001",
+  "policyGateRecordRef": null,
+  "encryptionProfileRef": "urn:srcos:local-encryption-profile:workstation-demo-0001-default",
+  "policyDecisionRefs": [
+    "urn:srcos:policy-decision:terminal-metadata-only-export-0001"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:evidence:shell-receipt-terminal-demo-0001"
+  ],
+  "redactionRefs": [],
+  "integrity": {
+    "entryHash": "sha256:aabbccdd0011223344556677889900aabbccdd0011223344556677889900aabb",
+    "signature": null
+  }
+}
