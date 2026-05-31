@@ -9,6 +9,7 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ## [Unreleased]
 
 ### Added
+- SourceOS interaction substrate top-level index and README discovery links for `SourceOSInteractionEvent`, generated TypeScript/Python artifacts, and the Noetica → Superconscious → AgentPlane → AgentTerm reference flow.
 - Runtime observability and capability governance contracts: `CapabilityLedger`, `BrowserAutomationReceipt`, `GitWorkspaceState`, `OrphanEventReceipt`, and `RuntimeInstallReceipt` with canonical examples, validation wiring (`tools/validate_runtime_observability_examples.py`), a contract catalog, and ADR-0012.
 - Reasoning run contracts: `ReasoningRun`, `ReasoningEvent`, `ReasoningReceipt`, `ReasoningReplayPlan`, and `ReasoningBenchmark` with canonical examples and a contract-additions note for the Superconscious reference loop.
 - Agent Machine / Model Carry schemas: `SourceOSModelCarryRef`, `InferenceProvider`, `ModelResidency`, `PlacementFact`, and `AgentMachineReceipt` with canonical examples and a contract-additions placement note.
