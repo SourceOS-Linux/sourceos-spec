@@ -78,5 +78,17 @@
       "libadwaita-replacement",
       "proprietary-asset-requirement"
     ]
-  }
+  },
+  "appearance": {
+    "colorScheme": "dark",
+    "accentColor": null,
+    "fontScaling": 1.0
+  },
+  "sidebarBookmarks": [
+    { "label": "Home", "path": "~/" },
+    { "label": "Desktop", "path": "~/Desktop" },
+    { "label": "Documents", "path": "~/Documents" },
+    { "label": "Downloads", "path": "~/Downloads" },
+    { "label": "Code", "path": "~/code" }
+  ]
 }
