@@ -1,7 +1,7 @@
 # SourceOS Interaction Runtime Bridge Ledger
 
 Status: implementation ledger  
-Last updated: 2026-06-01
+Last updated: 2026-06-02
 
 ## Purpose
 
@@ -48,7 +48,7 @@ AgentTerm owns opt-in artifact import/render:
 | --- | --- |
 | `SocioProphet/Noetica` | `validate` passed for `#45`, `#47`, and `#48`. |
 | `SourceOS-Linux/agent-term` | `CI` passed for `#50`. |
-| `SourceOS-Linux/sourceos-spec` | `SVF Validation` and `validate-ops-history` passed for `#122`. |
+| `SourceOS-Linux/sourceos-spec` | `SVF Validation` and `validate-ops-history` passed for `#122` and `#123`. |
 
 ## Boundary posture
 
@@ -62,10 +62,20 @@ The bridge is intentionally bounded:
 - No Policy Fabric, Agent Registry, Memory Mesh, Superconscious, or AgentPlane authority moved into Noetica or AgentTerm.
 - Events remain summary/ref-oriented and must not carry private reasoning, raw transcripts, raw shell output, browser history, credentials, secrets, unrestricted provider payloads, or raw execution logs.
 
+## Follow-up issue routing
+
+| Owner | Issue | Scope |
+| --- | --- | --- |
+| `SocioProphet/Noetica` | `#49` | Select production app-data export path once the local service install/runtime contract stabilizes. |
+| `SocioProphet/Noetica` | `#50` | Evaluate an optional local recent-event endpoint after artifact export remains stable. |
+| `SocioProphet/Noetica` | `#51` | Decide whether OpsHistory becomes the durable event store after artifact export/import is proven. |
+| `SocioProphet/policy-fabric` | `#94` | Bind Policy Fabric decision refs and admission semantics into the runtime bridge. |
+| `SocioProphet/agent-registry` | `#48` | Bind identity, grant, session, and revocation refs into the runtime bridge. |
+| `SocioProphet/memory-mesh` | `#37` | Bind context-pack and durable memory refs into the runtime bridge. |
+
 ## Remaining work
 
-1. Add production app-data export path selection once Noetica's local service install/runtime contract stabilizes.
-2. Add an AgentTerm import smoke command or fixture path example to operator docs.
-3. Decide whether Noetica should expose recent events through a local endpoint after artifact export is stable.
-4. Decide whether OpsHistory becomes the durable event store after artifact export/import is proven.
-5. Bind Policy Fabric, Agent Registry, and Memory Mesh references into real runtime emissions when their boundaries are ready.
+1. Complete the issue-routed follow-up items above.
+2. Replace pinned vendoring with a managed package, subtree, or submodule strategy.
+3. Add a replay demo that consumes the canonical reference-flow packet without live service dependencies.
+4. Defer SocioSphere manifest/lock mutation until network-aware materializer supports live commit SHA resolution.
