@@ -1,0 +1,27 @@
+schema_version: effective-authority/v0.1
+repo: SourceOS-Linux/sourceos-spec
+zone: D
+owner: SourceOS specification lane
+maturity: draft
+
+authority_classes:
+  - os_invariant_spec
+  - consent_gate_spec
+  - runtime_boundary_spec
+  - observation_channel_spec
+observation_channels: []
+control_channels: []
+egress_classes:
+  - schema
+  - policy
+background_workers: []
+runtime_subjects: []
+connector_surfaces: []
+policy_sources:
+  - repo
+  - system_invariant
+ledger_sinks:
+  - model-governance-ledger
+  - policy-fabric
+ci_validators:
+  - effective-authority-ci
