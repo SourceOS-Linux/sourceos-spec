@@ -1,0 +1,37 @@
+{
+  "id": "urn:srcos:sync-receipt:builder-aarch64-2026-06-16T00:00:00Z-001",
+  "type": "SyncCycleReceipt",
+  "specVersion": "0.1.0",
+  "cycleId": "cycle-builder-aarch64-20260616-001",
+  "engineId": "sourceos.sync.katello-content",
+  "org": "SocioProphet",
+  "contentView": "sourceos-builder-aarch64",
+  "fromVersion": null,
+  "toVersion": "1.0",
+  "lifecycleEnv": "dev",
+  "locus": "local",
+  "outcome": "applied",
+  "policyGate": "allowed",
+  "policyReason": "locus 'local' is in ALLOWED_LOCI",
+  "steps": [
+    {
+      "step": "nix copy --from http://127.0.0.1:8101 github:SociOS-Linux/source-os#builder-aarch64",
+      "status": "ok",
+      "returncode": 0,
+      "stdout": "copying 12 paths...",
+      "stderr": ""
+    },
+    {
+      "step": "nixos-rebuild switch --flake github:SociOS-Linux/source-os#builder-aarch64",
+      "status": "ok",
+      "returncode": 0,
+      "stdout": "activating configuration...",
+      "stderr": ""
+    }
+  ],
+  "nixCacheUrl": "http://127.0.0.1:8101",
+  "flakeRef": "github:SociOS-Linux/source-os#builder-aarch64",
+  "durationMs": 47200,
+  "issuedAt": "2026-06-16T00:00:00Z",
+  "auditId": "urn:srcos:audit:builder-aarch64-2026-06-16T00:00:00Z-001"
+}
