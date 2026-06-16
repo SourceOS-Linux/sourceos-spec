@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SyncCycleReceipt.json",
+  "title": "SyncCycleReceipt",
+  "description": "Immutable receipt emitted after a content sync cycle is planned or applied. Captures the before/after content view versions, steps executed, outcome, and audit reference. Owned by SourceOS-Linux/sourceos-syncd.",
+  "type": "object",
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "cycleId",
+    "engineId",
+    "org",
+    "contentView",
+    "toVersion",
+    "lifecycleEnv",
+    "locus",
+    "outcome",
+    "steps",
+    "issuedAt",
+    "auditId"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:sync-receipt:",
+      "description": "Globally unique receipt identifier."
+    },
+    "type": {
+      "const": "SyncCycleReceipt"
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "sourceos-spec version this receipt was emitted against."
+    },
+    "cycleId": {
+      "type": "string",
+      "description": "Correlation ID for the sync cycle; may span plan + apply."
+    },
+    "engineId": {
+      "type": "string",
+      "pattern": "^sourceos\\.sync\\.",
+      "description": "SyncEngineManifest engineId that produced this receipt."
+    },
+    "org": {
+      "type": "string",
+      "description": "Katello organization name."
+    },
+    "contentView": {
+      "type": "string",
+      "description": "Katello content view name (e.g. sourceos-builder-aarch64)."
+    },
+    "fromVersion": {
+      "type": ["string", "null"],
+      "description": "Content view version before the sync; null on first sync."
+    },
+    "toVersion": {
+      "type": "string",
+      "description": "Content view version targeted by this sync."
+    },
+    "lifecycleEnv": {
+      "type": "string",
+      "description": "Katello lifecycle environment (dev, candidate, stable)."
+    },
+    "locus": {
+      "enum": ["local", "trusted_private", "attested_fog", "burst_cloud"],
+      "description": "Execution locus at which the sync was authorized."
+    },
+    "outcome": {
+      "enum": ["planned", "dry_run", "applied", "skipped", "denied", "failed"],
+      "description": "Result of the sync cycle."
+    },
+    "policyGate": {
+      "type": "string",
+      "description": "Policy gate value from the ContentSyncPlan (allowed, denied, no-op)."
+    },
+    "policyReason": {
+      "type": "string",
+      "description": "Human-readable reason for the policy gate decision."
+    },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["step", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "step": { "type": "string" },
+          "status": {
+            "enum": ["dry_run", "ok", "failed", "skipped", "timeout"]
+          },
+          "returncode": { "type": "integer" },
+          "stdout": { "type": "string" },
+          "stderr": { "type": "string" },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "nixCacheUrl": {
+      "type": "string",
+      "description": "Pulp content server URL used as the Nix binary cache."
+    },
+    "flakeRef": {
+      "type": "string",
+      "description": "NixOS flake ref passed to nixos-rebuild."
+    },
+    "durationMs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Wall-clock duration of the sync execution in milliseconds."
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "auditId": {
+      "type": "string",
+      "pattern": "^urn:srcos:audit:",
+      "description": "AuditEvent id that records this sync cycle in the append-only audit log."
+    }
+  }
+}
