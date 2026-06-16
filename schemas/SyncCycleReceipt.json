@@ -118,6 +118,10 @@
       "type": "string",
       "pattern": "^urn:srcos:audit:",
       "description": "AuditEvent id that records this sync cycle in the append-only audit log."
+    },
+    "agentplaneRunRef": {
+      "type": ["string", "null"],
+      "description": "Optional URN or path reference to the agentplane RunArtifact that triggered the build producing this sync cycle. Links the governance execution trace to the SourceOS sync event."
     }
   }
 }
