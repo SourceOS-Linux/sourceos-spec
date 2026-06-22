@@ -608,6 +608,33 @@ paths:
           description: Request body is valid JSON but fails schema validation.
           content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
 
+  /v2/device-identities:
+    post:
+      operationId: upsertDeviceIdentity
+      summary: Upsert a DeviceIdentity
+      description: Registers or updates a fleet device identity (name, platform, trust profile, owner) that NLBoot plans target and boot proofs reference. Idempotent on `id`.
+      tags: [Boot]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/DeviceIdentity.json' }
+      responses:
+        '200':
+          description: DeviceIdentity registered or updated successfully.
+        '400':
+          description: Request body is malformed JSON.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '401':
+          description: Missing or invalid authentication token.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '403':
+          description: Authenticated subject is not permitted to register device identities.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+        '422':
+          description: Request body is valid JSON but fails schema validation.
+          content: { application/json: { schema: { $ref: '#/components/schemas/Error' } } }
+
   /v2/apple-silicon-adapter-evidence:
     post:
       operationId: recordAppleSiliconAdapterEvidence
