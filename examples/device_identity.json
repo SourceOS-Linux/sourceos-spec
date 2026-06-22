@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:device-identity:rack-01",
+  "type": "DeviceIdentity",
+  "specVersion": "2.0.0",
+  "deviceName": "rack-01",
+  "platform": "linux",
+  "archClass": "x86_64",
+  "trustProfile": {
+    "trustLevel": "provisional",
+    "enrolledAt": "2026-06-22T00:00:00Z"
+  },
+  "ownerRef": "urn:srcos:user:operator-9",
+  "registeredAt": "2026-06-22T00:00:00Z",
+  "policyDecisionRefs": [],
+  "evidenceRefs": []
+}
