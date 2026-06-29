@@ -5,6 +5,7 @@
   "createdAt": "2026-06-29T00:00:00Z",
   "subjectRef": "subject:pseudo:abc123",
   "spineRef": "urn:srcos:identity-spine:yi-globe:v1",
+  "proofOfSelfRef": "urn:srcos:proof-of-self:abc123",
   "givenInputs": {
     "birthdate": "private:on-device-only",
     "faith": "private:declared",

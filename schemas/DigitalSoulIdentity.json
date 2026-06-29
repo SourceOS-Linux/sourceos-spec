@@ -13,6 +13,7 @@
     "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when this soul object was created." },
     "subjectRef": { "type": "string", "description": "Pseudonymous, agent-centric reference to the subject. Holds no real-world identifier." },
     "spineRef": { "type": "string", "pattern": "^urn:srcos:identity-spine:", "description": "The IdentitySpine this soul is projected onto." },
+    "proofOfSelfRef": { "type": "string", "pattern": "^urn:srcos:proof-of-self:", "description": "Optional anchor to the verified-identity plane (ProofOfSelfToken). Binds this constitutional soul to a verified, pseudonymous subject so reputation can be sybil-resistant — without exposing given inputs. The anchor is pseudonymous and carries no given-identity data." },
     "givenInputs": {
       "type": "object",
       "additionalProperties": false,

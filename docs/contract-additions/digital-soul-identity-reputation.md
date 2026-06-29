@@ -57,6 +57,21 @@ Reputation is evidence-backed by reuse, not by a new receipt type:
 - `AscensionReading.replayPlanRef` may bind to a `ReasoningReplayPlan` so a reading
   is replayable like any reasoning run.
 
+## Cross-plane anchoring (verified vs constitutional identity)
+
+Two identity senses coexist and stay separate:
+
+- **Verified identity** — `ProofOfSelfToken` (`urn:srcos:proof-of-self:`) / Identity
+  Is Prime: a real, deduplicated, pseudonymous subject.
+- **Constitutional identity** — `DigitalSoulIdentity`: who the person is inwardly.
+
+`DigitalSoulIdentity.proofOfSelfRef` optionally anchors the soul to a
+`ProofOfSelfToken`, which makes reputation sybil-resistant (capital accrues to a
+verified subject) while leaking no given inputs — the anchor is pseudonymous.
+Identity Is Prime remains the proof/evidence layer (see
+`identity-is-prime-reference/docs/70_PLATFORM_IDENTITY_CONTRACT_ADAPTER`); the digital
+soul references it but does not absorb it.
+
 ## Enforced invariants (machine-checked)
 
 `tools/validate_digital_soul_examples.py` (wired into `make validate` via
