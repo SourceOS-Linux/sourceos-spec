@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:surface-registry:socioprophet-2026-06-29",
+  "type": "SurfaceRegistry",
+  "specVersion": "2.0.0",
+  "generatedAt": "2026-06-29T00:00:00Z",
+  "signature": null,
+  "surfaces": [
+    { "surfaceId": "urn:srcos:surface:socioprophet-com", "domain": "socioprophet.com", "role": "Canonical marketing entrypoint", "privilege": "public", "defaultBehavior": "Primary / landing + /documentation", "intent": "brand", "ttlSeconds": 86400, "owner": "marketing", "notes": "Canonical public brand entrypoint" },
+    { "surfaceId": "urn:srcos:surface:socioprophet-ai", "domain": "socioprophet.ai", "role": "AI platform", "privilege": "public-premium", "defaultBehavior": "Redirect to product section until shipped", "intent": "product", "ttlSeconds": 86400, "owner": "product", "notes": null },
+    { "surfaceId": "urn:srcos:surface:socioprophet-dev", "domain": "socioprophet.dev", "role": "Developer platform", "privilege": "public", "defaultBehavior": "Redirect to /documentation", "intent": "product", "ttlSeconds": 86400, "owner": "product", "notes": null },
+    { "surfaceId": "urn:srcos:surface:socioprophet-cloud", "domain": "socioprophet.cloud", "role": "Hosted suite", "privilege": "public-premium", "defaultBehavior": "Redirect to product section until shipped", "intent": "product", "ttlSeconds": 86400, "owner": "product", "notes": null },
+    { "surfaceId": "urn:srcos:surface:socioprophet-sh", "domain": "socioprophet.sh", "role": "Installers + cloud shell", "privilege": "public-operator", "defaultBehavior": "/install public, /shell gated", "intent": "operator", "ttlSeconds": 86400, "owner": "platform", "notes": "Operator realm separated" },
+    { "surfaceId": "urn:srcos:surface:socioprophet-live", "domain": "socioprophet.live", "role": "Live builds / boot images", "privilege": "immutable", "defaultBehavior": "Immutable content-addressed + verify", "intent": "artifact", "ttlSeconds": null, "owner": "platform", "notes": "Artifact hosting" },
+    { "surfaceId": "urn:srcos:surface:socioprophet-academy", "domain": "socioprophet.academy", "role": "Education", "privilege": "public-accounts", "defaultBehavior": "public-first", "intent": "education", "ttlSeconds": 86400, "owner": "academy", "notes": null },
+    { "surfaceId": "urn:srcos:surface:socioprophet-md", "domain": "socioprophet.md", "role": "Medical access", "privilege": "public-premium", "defaultBehavior": "free public + premium clinicians", "intent": "regulated", "ttlSeconds": 86400, "owner": "medical", "notes": "Regulated surface" },
+    { "surfaceId": "urn:srcos:surface:socioprophet-law", "domain": "socioprophet.law", "role": "AI law product", "privilege": "public-premium", "defaultBehavior": "public knowledge + gated practitioners", "intent": "regulated", "ttlSeconds": 86400, "owner": "law", "notes": "Regulated surface" },
+    { "surfaceId": "urn:srcos:surface:truthorbot", "domain": "truthorbot.org", "role": "Adversarial evaluation lab", "privilege": "public", "defaultBehavior": "static-only", "intent": "evaluation", "ttlSeconds": 86400, "owner": "research", "notes": null }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "id": "urn:srcos:recommendation-object:ro_2026w27_restore_root_files_01",
+  "type": "RecommendationObject",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-06-29T00:00:00Z",
+  "title": "Restore robots.txt, sitemap.xml, llms.txt on socioprophet.com",
+  "scope": {
+    "properties": ["socioprophet.com"],
+    "surfaces": ["urn:srcos:surface:socioprophet-marketing"],
+    "tags": []
+  },
+  "evidence": {
+    "source": "semrush-site-audit-2026-03-04",
+    "robots_txt": "404",
+    "sitemap_xml": "404",
+    "llms_txt": "missing",
+    "site_health_pct": 77,
+    "healthy_pages": 0
+  },
+  "action": {
+    "kind": "publish_static_files",
+    "files": ["marketing/public/robots.txt", "marketing/public/sitemap.xml", "marketing/public/llms.txt"],
+    "deploy_target": "firebase:marketing"
+  },
+  "risk": {
+    "policyCompliance": 0,
+    "privacy": 0,
+    "brandSafety": 0,
+    "outcomeQuality": 0,
+    "volatility": 0,
+    "manipulation": 0
+  },
+  "guardrails": {
+    "keep_ai_bots_allowed": true,
+    "no_disallow_root": true
+  },
+  "rollback": {
+    "method": "remove_files",
+    "revert_to": "pre-deploy"
+  },
+  "validation": {
+    "design": "recrawl",
+    "primary": "site_health_score",
+    "expect": "robots/sitemap/llms return 200; healthy_pages > 0",
+    "duration": "1w"
+  },
+  "status": "proposed",
+  "autonomyLevel": 2,
+  "admissionReceiptRef": null,
+  "replayClass": "exact",
+  "traceHash": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+}
