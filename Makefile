@@ -1,6 +1,6 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-digital-soul-examples
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-digital-soul-examples
 	@echo "OK: validate"
 
 validate-control-plane-examples:
@@ -33,3 +33,7 @@ validate-svf-contracts:
 validate-sync-cycle-receipts:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_sync_cycle_receipts.py
+
+validate-digital-soul-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_digital_soul_examples.py

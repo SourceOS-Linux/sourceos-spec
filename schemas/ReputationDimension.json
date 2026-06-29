@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReputationDimension.json",
+  "title": "ReputationDimension",
+  "description": "A community-authored, context-local axis of reputation in the Neighbourhoods sense. Each neighbourhood defines its own dimensions and scores them over members' acts and works; dimensions are subjective by design and are never normalized into a single global score. The optional latticeBinding is the keystone of portability: when present, it expresses the dimension in the IdentitySpine's shared vocabulary (a gate or an inner axis), which makes capital earned under this dimension partially legible across neighbourhoods — portable MEANING, not just portable data. Without a binding the dimension remains opaque to foreign neighbourhoods. A dimension scores WORKS only and carries no field able to reference a subject's given identity inputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "dimensionId", "neighbourhoodId", "range", "computedOver", "subjective", "portability"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:reputation-dimension:", "description": "Stable URN identifier for this dimension." },
+    "type": { "const": "ReputationDimension", "description": "Type discriminator; always 'ReputationDimension'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the dimension was authored." },
+    "dimensionId": { "type": "string", "description": "Neighbourhood-local dimension name; globally unique together with neighbourhoodId." },
+    "neighbourhoodId": { "type": "string", "description": "The community that authored and computes this dimension." },
+    "label": { "type": "string", "description": "Human-readable dimension name." },
+    "description": { "type": "string", "description": "What this dimension measures, in the community's own terms." },
+    "range": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "description": "The measurement range. Subjective and community-defined.",
+      "properties": {
+        "kind": { "type": "string", "enum": ["ordinal", "interval", "enum"], "description": "Range type." },
+        "min": { "type": "number" },
+        "max": { "type": "number" },
+        "values": { "type": "array", "items": { "type": "string" }, "description": "Allowed values when kind is 'enum'." }
+      }
+    },
+    "computedOver": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Which evidence the dimension scores. Points at works on the existing evidence fabric — WORKS only, never identity inputs.",
+      "properties": {
+        "receiptKinds": { "type": "array", "items": { "type": "string" }, "description": "Receipt kinds (e.g. reasoning-receipt) whose works count toward this dimension." },
+        "eventTypes": { "type": "array", "items": { "type": "string" }, "description": "ReasoningEvent eventType values that contribute." }
+      }
+    },
+    "subjective": { "const": true, "description": "Reputation is subjective and context-local. Never collapse dimensions across neighbourhoods into one score. Always true." },
+    "latticeBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spineRef", "target", "mapping", "confidence"],
+      "description": "Optional join into the IdentitySpine vocabulary. Its presence is what makes the dimension portable across neighbourhoods.",
+      "properties": {
+        "spineRef": { "type": "string", "pattern": "^urn:srcos:identity-spine:" },
+        "target": {
+          "oneOf": [
+            { "type": "object", "additionalProperties": false, "required": ["gateRef"], "properties": { "gateRef": { "type": "string", "pattern": "^gate_(0[1-9]|[1-5][0-9]|6[0-4])$" } } },
+            { "type": "object", "additionalProperties": false, "required": ["axisId"], "properties": { "axisId": { "type": "string", "enum": ["shadowGift", "blockedOpen", "ascendingDescending"] } } }
+          ],
+          "description": "The gate or inner axis this dimension binds to."
+        },
+        "mapping": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "description": "How the dimension's range maps onto the spine target.",
+          "properties": {
+            "kind": { "type": "string", "enum": ["monotone", "labeled-stops"] },
+            "stops": { "type": "array", "items": { "type": "object", "additionalProperties": false, "properties": { "from": {}, "to": { "type": "number" } } } }
+          }
+        },
+        "confidence": { "type": "string", "enum": ["authored", "inferred"], "description": "Whether the binding was declared by the community or inferred." }
+      }
+    },
+    "portability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["travelsWithHolder", "foreignReadableIf"],
+      "description": "Portability semantics.",
+      "properties": {
+        "travelsWithHolder": { "const": true, "description": "The dimension's values travel with the agent, not the app. Always true." },
+        "foreignReadableIf": { "type": "string", "enum": ["lattice-binding-present"], "description": "A foreign neighbourhood may interpret this dimension only when a latticeBinding is present; otherwise it is opaque." }
+      }
+    }
+  }
+}
