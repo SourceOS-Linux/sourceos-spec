@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PersonaBundle.json",
+  "title": "PersonaBundle",
+  "description": "A persona expressed as a Boolean expression over AudienceTag identifiers, preserving human legibility while keeping the targeting system bound to stable atomic tags rather than brittle caricatures.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "label", "tagExpression"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:persona-bundle:", "description": "Stable URN identifier for this persona bundle." },
+    "type": { "const": "PersonaBundle", "description": "Type discriminator; always 'PersonaBundle'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "label": { "type": "string", "description": "Human-readable persona name, e.g. 'Developer (builder)'." },
+    "definition": { "type": "string", "description": "One-sentence description of the persona." },
+    "tagExpression": {
+      "type": "string",
+      "description": "Boolean expression over AudienceTag ids/families using AND/OR/NOT and set membership, e.g. \"IDENTITY_ROLE in {developer, engineer} AND INTENT_STAGE in {implementing, evaluating}\"."
+    },
+    "jobsToBeDone": { "type": "array", "items": { "type": "string" }, "description": "Primary jobs-to-be-done for this persona." }
+  }
+}

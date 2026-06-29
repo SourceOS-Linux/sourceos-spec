@@ -1,0 +1,9 @@
+{
+  "id": "urn:srcos:persona-bundle:p_dev_builder",
+  "type": "PersonaBundle",
+  "specVersion": "2.0.0",
+  "label": "Developer (builder)",
+  "definition": "Individual contributor building software.",
+  "tagExpression": "IDENTITY_ROLE in {developer, engineer} AND INTENT_STAGE in {implementing, evaluating}",
+  "jobsToBeDone": ["ship features", "choose tools", "fix bugs"]
+}

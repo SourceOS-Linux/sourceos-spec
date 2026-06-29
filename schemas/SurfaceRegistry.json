@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SurfaceRegistry.json",
+  "title": "SurfaceRegistry",
+  "description": "A signed, queryable registry of marketing/product web surfaces (domains and paths) with role, privilege boundary, default routing behavior, intent, and TTL. The single source of truth that RecommendationObject scopes resolve against.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "surfaces"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:surface-registry:",
+      "description": "Stable URN identifier for this registry snapshot."
+    },
+    "type": { "const": "SurfaceRegistry", "description": "Type discriminator; always 'SurfaceRegistry'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "generatedAt": { "type": "string", "format": "date-time", "description": "Timestamp the registry snapshot was generated." },
+    "signature": { "type": ["string", "null"], "description": "Detached signature over the canonicalized surfaces array, or null if unsigned." },
+    "surfaces": {
+      "type": "array",
+      "description": "The registered surfaces.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["surfaceId", "domain", "role", "privilege"],
+        "properties": {
+          "surfaceId": { "type": "string", "pattern": "^urn:srcos:surface:", "description": "Stable URN identifier for the surface." },
+          "domain": { "type": "string", "description": "Host the surface is served on, e.g. socioprophet.com." },
+          "role": { "type": "string", "description": "What the surface is for, e.g. 'Canonical marketing entrypoint'." },
+          "privilege": {
+            "enum": ["public", "public-premium", "public-operator", "public-accounts", "operator", "immutable", "reserved"],
+            "description": "Privilege boundary governing access and actuation."
+          },
+          "defaultBehavior": { "type": ["string", "null"], "description": "Default routing/landing behavior." },
+          "intent": { "type": ["string", "null"], "description": "Primary intent served (e.g. brand, product, docs, education, regulated)." },
+          "ttlSeconds": { "type": ["integer", "null"], "minimum": 0, "description": "Freshness TTL for this surface entry in seconds." },
+          "owner": { "type": ["string", "null"], "description": "Accountable owner of the surface." },
+          "notes": { "type": ["string", "null"], "description": "Free-text notes." }
+        }
+      }
+    }
+  }
+}
