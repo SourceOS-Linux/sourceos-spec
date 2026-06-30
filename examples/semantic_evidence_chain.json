@@ -1,0 +1,106 @@
+{
+  "id": "urn:srcos:semantic-evidence-chain:imagegen-suspicious-layer-demo",
+  "type": "SemanticEvidenceChain",
+  "specVersion": "2.0.0",
+  "runRef": "urn:srcos:reasoning-run:imagegen-blue-team-demo",
+  "receiptRef": "urn:srcos:receipt:reasoning:imagegen-blue-team-demo",
+  "builtAt": "2026-06-29T00:00:00Z",
+  "traceLevel": "workspace-safe",
+  "nodes": [
+    {
+      "nodeId": "n0",
+      "kind": "detection",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-build-observed",
+      "trustLevel": "trusted-workspace-source",
+      "label": "Image build manifest observed."
+    },
+    {
+      "nodeId": "n1",
+      "kind": "detection",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-unexpected-layer",
+      "trustLevel": "untrusted-observation",
+      "label": "Unexpected post-install layer mutates a shell startup file."
+    },
+    {
+      "nodeId": "n2",
+      "kind": "awareness",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-hypothesis-supplychain",
+      "trustLevel": "semi-trusted-project-source",
+      "label": "Hypothesis: poisoned build dependency injected the layer."
+    },
+    {
+      "nodeId": "n3",
+      "kind": "awareness",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-hypothesis-misconfig",
+      "trustLevel": "semi-trusted-project-source",
+      "label": "Alternate hypothesis: benign misconfigured base image."
+    },
+    {
+      "nodeId": "n4",
+      "kind": "detection",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-dep-signature-mismatch",
+      "trustLevel": "trusted-workspace-source",
+      "label": "Dependency signature mismatch confirmed against registry integrity record."
+    },
+    {
+      "nodeId": "n5",
+      "kind": "awareness",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-verdict-supplychain",
+      "trustLevel": "trusted-workspace-source",
+      "label": "Convergent verdict: confirmed supply-chain injection; quarantine the layer."
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "e0",
+      "from": "n0",
+      "to": "n1",
+      "transition": "advance",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-layer-scan",
+      "weights": { "clarity": 0.92, "entropyReduction": 1.4, "temporalCost": 120 }
+    },
+    {
+      "edgeId": "e1",
+      "from": "n1",
+      "to": "n2",
+      "transition": "branch",
+      "weights": { "clarity": 0.55, "entropyReduction": 0.8, "temporalCost": 60 }
+    },
+    {
+      "edgeId": "e2",
+      "from": "n1",
+      "to": "n3",
+      "transition": "branch",
+      "weights": { "clarity": 0.45, "entropyReduction": 0.5, "temporalCost": 60 }
+    },
+    {
+      "edgeId": "e3",
+      "from": "n2",
+      "to": "n4",
+      "transition": "advance",
+      "eventRef": "urn:srcos:reasoning-event:imagegen-signature-check",
+      "weights": { "clarity": 0.97, "entropyReduction": 2.1, "temporalCost": 340 }
+    },
+    {
+      "edgeId": "e4",
+      "from": "n4",
+      "to": "n5",
+      "transition": "converge",
+      "weights": { "clarity": 0.95, "entropyReduction": 1.6, "temporalCost": 90 }
+    },
+    {
+      "edgeId": "e5",
+      "from": "n3",
+      "to": "n5",
+      "transition": "converge",
+      "weights": { "clarity": 0.30, "entropyReduction": 0.2, "temporalCost": 80 }
+    }
+  ],
+  "analysis": {
+    "convergencePath": ["n0", "n1", "n2", "n4", "n5"],
+    "cumulativeWeight": { "clarity": 0.4663, "entropyReduction": 5.9, "temporalCost": 610 },
+    "divergencePoints": ["n1"],
+    "loops": [],
+    "playbookLane": "blue-team"
+  }
+}
