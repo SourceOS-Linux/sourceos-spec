@@ -1,0 +1,35 @@
+{
+  "id": "urn:srcos:reputation-claim:abc123:hiring-1",
+  "type": "PortableReputationClaim",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-06-29T00:00:00Z",
+  "holderRef": "subject:pseudo:abc123",
+  "issuedByNeighbourhood": "nh:math-commons",
+  "claimedDimensions": [
+    {
+      "dimensionRef": "urn:srcos:reputation-dimension:math-commons:proof-rigor:v1",
+      "value": 4,
+      "evidenceRefs": [
+        "urn:srcos:reasoning-receipt:work-1",
+        "urn:srcos:reasoning-receipt:work-2"
+      ]
+    }
+  ],
+  "ascensionClaim": {
+    "gateRef": "gate_25",
+    "axisId": "shadowGift",
+    "fromValue": -1,
+    "toValue": 1,
+    "evidenceRefs": [
+      "urn:srcos:reasoning-receipt:work-1",
+      "urn:srcos:reasoning-receipt:work-2"
+    ]
+  },
+  "disclosureScope": "audience:hiring-circle",
+  "holderMinted": true,
+  "signature": {
+    "alg": "ed25519",
+    "value": "base64:PLACEHOLDER",
+    "keyRef": "key:holder:abc123"
+  }
+}

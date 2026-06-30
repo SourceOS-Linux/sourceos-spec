@@ -1,0 +1,532 @@
+{
+  "id": "urn:srcos:digital-soul:abc123:v1",
+  "type": "DigitalSoulIdentity",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-06-29T00:00:00Z",
+  "subjectRef": "subject:pseudo:abc123",
+  "spineRef": "urn:srcos:identity-spine:yi-globe:v1",
+  "proofOfSelfRef": "urn:srcos:proof-of-self:abc123",
+  "givenInputs": {
+    "birthdate": "private:on-device-only",
+    "faith": "private:declared",
+    "personalityProfile": {
+      "instrument": "private:on-device-only"
+    }
+  },
+  "gateState": [
+    {
+      "gateRef": "gate_01",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_02",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_03",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_04",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_05",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_06",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_07",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_08",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_09",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_10",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_11",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_12",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_13",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_14",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_15",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_16",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_17",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_18",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_19",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_20",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_21",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_22",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_23",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_24",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_25",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_26",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_27",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_28",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_29",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_30",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_31",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_32",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_33",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_34",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_35",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_36",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_37",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_38",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_39",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_40",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_41",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_42",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_43",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_44",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_45",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_46",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_47",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_48",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_49",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_50",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_51",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_52",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_53",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_54",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_55",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_56",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_57",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_58",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_59",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_60",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_61",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_62",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_63",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    },
+    {
+      "gateRef": "gate_64",
+      "axisValues": {
+        "shadowGift": 0,
+        "blockedOpen": 1,
+        "ascendingDescending": 0
+      }
+    }
+  ],
+  "privacyClass": "agent-held-private",
+  "disclosureDefault": "none"
+}

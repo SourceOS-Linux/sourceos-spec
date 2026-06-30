@@ -1,0 +1,23 @@
+{
+  "id": "urn:srcos:sacred-capital:abc123:v1",
+  "type": "SacredCapitalLedger",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-06-29T00:00:00Z",
+  "holderRef": "subject:pseudo:abc123",
+  "entries": [
+    {
+      "dimensionRef": "urn:srcos:reputation-dimension:math-commons:proof-rigor:v1",
+      "neighbourhoodId": "nh:math-commons",
+      "value": 4,
+      "evidenceRefs": [
+        "urn:srcos:reasoning-receipt:work-1",
+        "urn:srcos:reasoning-receipt:work-2"
+      ],
+      "asOf": "2026-06-29T00:00:00Z"
+    }
+  ],
+  "aggregation": "within-dimension-or-via-lattice-binding-only",
+  "noGlobalScore": true,
+  "privacyClass": "agent-held-portable",
+  "disclosure": "selective"
+}

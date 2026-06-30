@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SacredCapitalLedger.json",
+  "title": "SacredCapitalLedger",
+  "description": "An agent-held, portable, multi-dimensional record of reputation as capital. Each entry is a value on a ReputationDimension, backed by evidence references to works-receipts on the existing reasoning-evidence fabric. There is deliberately NO global score: aggregation is permitted only within a single (neighbourhood, dimension), or across neighbourhoods solely through a declared latticeBinding on the dimensions involved. The ledger is held by the subject's own agent and travels with them; disclosure is always selective and happens only via a PortableReputationClaim. Entries reference works only and carry no field able to hold given identity inputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "holderRef", "entries", "aggregation", "noGlobalScore", "privacyClass", "disclosure"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:sacred-capital:", "description": "Stable URN identifier for this ledger." },
+    "type": { "const": "SacredCapitalLedger", "description": "Type discriminator; always 'SacredCapitalLedger'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the ledger was created or last materialized." },
+    "holderRef": { "type": "string", "description": "Pseudonymous, agent-centric reference to the holder who owns this capital." },
+    "entries": {
+      "type": "array",
+      "description": "Capital accrued per (neighbourhood, dimension), each backed by evidence on the fabric.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimensionRef", "neighbourhoodId", "value", "evidenceRefs", "asOf"],
+        "properties": {
+          "dimensionRef": { "type": "string", "pattern": "^urn:srcos:reputation-dimension:", "description": "The ReputationDimension this value is measured on." },
+          "neighbourhoodId": { "type": "string", "description": "The community that computed this value." },
+          "value": { "description": "The computed value, within the dimension's declared range (number or enum string)." },
+          "evidenceRefs": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" },
+            "description": "Works-receipts substantiating this value. Every capital entry is evidence-backed."
+          },
+          "asOf": { "type": "string", "format": "date-time", "description": "When this value was last computed." }
+        }
+      }
+    },
+    "aggregation": {
+      "type": "string",
+      "enum": ["within-dimension-or-via-lattice-binding-only"],
+      "description": "Aggregation rule. Capital may only be summed within a single (neighbourhood, dimension) or across dimensions that share a latticeBinding. Never globally."
+    },
+    "noGlobalScore": { "const": true, "description": "There is no single global reputation number. Always true." },
+    "privacyClass": { "type": "string", "enum": ["agent-held-portable"], "description": "Held by the holder's agent and portable across neighbourhoods." },
+    "disclosure": { "type": "string", "enum": ["selective"], "description": "Disclosed only selectively, via a holder-minted PortableReputationClaim." }
+  }
+}
