@@ -99,7 +99,9 @@ This is the key inversion: CRDTs guarantee *everyone sees the same graph*; our c
 2. ✅ **Deterministic fold** — rebuild graph state from the op-log; assert it matches current derived store (regression gate). — *landed as `materialize()`; `test_materialize_matches_live_graph`.*
 3. ✅ **OR-Set merge** — union two replicas' logs, prove convergence (property test: commutativity/idempotence over random op interleavings). — *landed: `merge()` + add-wins retracts; 9 tests incl. offline convergence, random-shuffle order-independence, add-wins-over-concurrent-retract. Suite 74 green.*
 4. ✅ **Locus/attestation gate** — canonical vs. quarantine view split; emit `SyncCycleReceipt`-shaped merge receipts. — *landed: `pkg_gate.py` `gate()`, fail-closed admission + untrusted-retract security property + SyncCycleReceipt v2 conformance; 7 tests. Suite 81 green.*
-5. ⬜ **Live ingester** — second device / agent as a real second replica. — *only slice remaining.*
+5. ✅ **Live ingester** — second device / agent as a real second replica. — *landed: `pkg_replica.py` `Replica` + anti-entropy `sync()` + `replay_to_hellgraph()` (closes the emit-only gap) + `persist_canonical()` (only the gated-canonical graph reaches HellGraph); 6 tests. Suite 87 green.*
+
+**All 5 slices landed** (prophet-mesh#13, 27 CRDT tests, suite 87 green). The design is end-to-end real: emit → reconstruct → converge → gate on correctness → live-sync + persist only the proven-correct sub-graph.
 
 ## 9. Open questions
 
