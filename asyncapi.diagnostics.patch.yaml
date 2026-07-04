@@ -1,0 +1,33 @@
+# Additive AsyncAPI patch fragment for diagnostics bundles.
+# Merge this file into asyncapi.yaml at build time using @asyncapi/bundler.
+# All channels use Kafka with the same broker configuration as the base spec.
+
+channels:
+  srcos.v2.diagnostics.events:
+    description: Events emitted when a DiagnosticsBundle is recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.diagnostics.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishDiagnosticsBundleEvent
+      summary: Publish a diagnostics bundle domain event
+      description: Publishes an event whenever a DiagnosticsBundle is recorded.
+      message:
+        name: DiagnosticsBundleEvent
+        title: Diagnostics Bundle Domain Event
+        summary: A change event for a DiagnosticsBundle.
+        description: |
+          The `eventType` in the payload envelope is `DiagnosticsBundleRecorded`.
+          The payload contains the full DiagnosticsBundle object.
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+        bindings:
+          kafka:
+            key:
+              type: string
+              description: The `objectId` URN of the DiagnosticsBundle.
