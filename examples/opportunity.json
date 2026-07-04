@@ -36,5 +36,18 @@
   ],
   "partnerLane": "Health IT SI; VistA/MUMPS niche partner",
   "winTheme": "We preserve continuity while industrializing governed modernization with low-regret migration paths.",
-  "status": "Active"
+  "status": "Active",
+  "workroomRef": "workroom://health-devsecops",
+  "controlRoomRef": "controlroom://health-devsecops",
+  "telos": {
+    "objective": "Intelligence serves human flourishing",
+    "constraints": [
+      "non-domination",
+      "consent",
+      "dignity"
+    ]
+  },
+  "evidenceRefs": [
+    "urn:srcos:attestation:health-devsecops/win-theme"
+  ]
 }

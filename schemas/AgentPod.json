@@ -71,6 +71,21 @@
         "paused"
       ],
       "description": "Operational status of the pod."
+    },
+    "choirRole": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "prophet-mesh agent-choir role this pod aligns to (e.g. \"planning-agent\", \"governance-sentinel\"). The choir is the canonical role vocabulary; this pod is its capture-side projection."
+    },
+    "agentSessionRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:session:",
+      "description": "The AgentSession URN when this pod is executing (the Perceive→Reason→Act→Verify loop)."
     }
   }
 }

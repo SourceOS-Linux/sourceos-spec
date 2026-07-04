@@ -112,6 +112,50 @@
         "Watch",
         "Paused"
       ]
+    },
+    "workroomRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "prophet-workspace ProfessionalWorkroom backing this objective (the objective/pursuit container). Composition, not duplication — the workroom owns context/policy/artifacts/tasks/evidence."
+    },
+    "controlRoomRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "prophet-workspace OrgGovControlRoom governing this objective (Objective→Actor→Role→Policy→Asset→Action→Evidence→Review→Outcome→Score→Learning)."
+    },
+    "telos": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objective"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "description": "The end this objective serves, under the Telos layer (e.g. intelligence serves human flourishing)."
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": "Binding constraints that set weights/thresholds and burden-of-proof — e.g. non-domination, consent, dignity. Sets thresholds; does not assert truth."
+        }
+      },
+      "description": "Telos layer: objective + constraints. Sets the burden of proof; per the governance constitution it cannot assert truth — that is the Truth Engine's role."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Truth Engine attestation/evidence records (Witness/Attestation → Truth Record) supporting this objective's claims."
     }
   }
 }

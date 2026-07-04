@@ -19,5 +19,7 @@
     "sociosphere",
     "socioprophet"
   ],
-  "status": "active"
+  "status": "active",
+  "choirRole": "governance-sentinel",
+  "agentSessionRef": "urn:srcos:session:capture-lead-run-01"
 }

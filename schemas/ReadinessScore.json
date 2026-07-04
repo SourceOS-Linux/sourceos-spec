@@ -139,6 +139,21 @@
     "nextGate": {
       "type": "string",
       "description": "The next capture gate, e.g. \"Gate 1\"."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Truth Engine attestations backing the scored dimensions — a dimension advances only when its claim earns a Truth Record (burden-of-proof gate, not a self-asserted number)."
+    },
+    "policyRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The Da'at policy interface defining what counts as acceptable proof for these gates."
     }
   }
 }
