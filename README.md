@@ -36,6 +36,7 @@ sourceos-spec/
 ├── asyncapi.agent-plane.patch.yaml   # Agent-plane event channels
 ├── asyncapi.fog.patch.yaml           # Fog-layer event channels
 │
+├── schemas/                          # 64 JSON Schema (draft 2020-12) files
 ├── schemas/                          # Top-level JSON Schema files (draft 2020-12)
 │   └── README.md                     # Schema catalog and URN patterns
 │
@@ -110,6 +111,7 @@ python tools/validate_interaction_flow_reference.py
 
 ## Schema families
 
+The current schema set is organised into families that map directly to the platform layers and exchange surfaces:
 The schemas are organised into domain-oriented families that map to the SourceOS / SociOS contract surface:
 
 | # | Family | Key schemas |
@@ -117,12 +119,13 @@ The schemas are organised into domain-oriented families that map to the SourceOS
 | 1 | **Physical Assets** | `Connector`, `PhysicalAsset` |
 | 2 | **Glossary** | `GlossaryTerm`, `AuthorityLink` |
 | 3 | **Governance** | `Policy`, `Rule`, `PolicyCondition`, `PolicyDecision`, `CapabilityToken`, `Obligation`, `Exception` |
-| 4 | **Collaboration** | `Comment`, `Rating`, `Community` |
+| 4 | **Collaboration** | `Comment`, `Rating`, `Community`, `CommentSignal` |
 | 5 | **Models / Schemas** | `SchemaDefinition`, `EntityField`, `Field`, `ValidValues`, `TagAssignment`, `QualityMetric`, `ProfileStats` |
 | 6 | **Agreements** | `Agreement`, `Party` |
 | + | **Execution / Provenance** | `Dataset`, `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataSphere`, `ProvenanceRecord`, `EventEnvelope`, `MappingSpec` |
 | + | **Agent Plane** | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
+| + | **Shell / Document / Publication** | `ArtifactManifest`, `SignedArtifact`, `PdfValidationReport`, `AnnotationExport`, `RunReport`, `NoetherDiagnostic`, `PublishDecision`, `MirrorReceipt`, `SearchRouteDecision` |
 | + | **Fog Layer** | `Topic`, `TopicEnvelope`, `ReplicationPolicy`, `ContentRef`, `Offer`, `WorkOrder`, `UsageReceipt`, `SettlementEvent` |
 | + | **Agentic Graph Foundation** | `SourceOSRepoManifest`, `SyncEngineManifest`, `SourceChannelEnvelope`, `SourceGraphWrite`, `AgentCapabilityLease`, `AuditEvent` |
 | + | **Interaction Substrate** | `SourceOSInteractionEvent` |

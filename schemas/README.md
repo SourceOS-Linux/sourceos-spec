@@ -1,5 +1,6 @@
 # Schema Catalog
 
+This directory contains all 64 JSON Schema (draft 2020-12) files that make up the SourceOS/SociOS Typed Contracts specification.
 This directory contains the JSON Schema (draft 2020-12) files that make up the SourceOS/SociOS Typed Contracts specification.
 
 ---
@@ -87,13 +88,17 @@ These types support:
 |------|------|-----------|
 | `AgentSession.json` | AgentSession | `urn:srcos:session:` |
 | `Agreement.json` | Agreement | `urn:srcos:agreement:` |
+| `AnnotationExport.json` | AnnotationExport | `urn:srcos:schema:AnnotationExport` |
+| `ArtifactManifest.json` | ArtifactManifest | `urn:srcos:schema:ArtifactManifest` |
 | `AppleSiliconAdapterEvidence.json` | AppleSiliconAdapterEvidence | `urn:srcos:as-adapter-evidence:` |
 | `ArtifactCacheRecord.json` | ArtifactCacheRecord | `urn:srcos:artifact-cache:` |
 | `AuthorityLink.json` | AuthorityLink | _(sub-object, no top-level id)_ |
 | `BootProofRecord.json` | BootProofRecord | `urn:srcos:boot-proof:` |
 | `CapabilityToken.json` | CapabilityToken | _(plain `tokenId` string)_ |
 | `Comment.json` | Comment | `urn:srcos:comment:` |
+| `CommentSignal.json` | CommentSignal | `urn:srcos:schema:CommentSignal` |
 | `Community.json` | Community | `urn:srcos:community:` |
+| `CompressionEvaluation.json` | CompressionEvaluation | `urn:srcos:compression-eval:` |
 | `ConfigSource.json` | ConfigSource | `urn:srcos:config-source:` |
 | `Connector.json` | Connector | `urn:srcos:connector:` |
 | `ContentRef.json` | ContentRef | _(digest-based content reference)_ |
@@ -119,6 +124,8 @@ These types support:
 | `MappingEvidence.json` | MappingEvidence | _(sub-object inside MappingSpec)_ |
 | `MappingSpec.json` | MappingSpec | `urn:srcos:mapping:` |
 | `MemoryEntry.json` | MemoryEntry | `urn:srcos:memory:` |
+| `MirrorReceipt.json` | MirrorReceipt | `urn:srcos:schema:MirrorReceipt` |
+| `NoetherDiagnostic.json` | NoetherDiagnostic | `urn:srcos:schema:NoetherDiagnostic` |
 | `NLBootPlan.json` | NLBootPlan | `urn:srcos:nlboot-plan:` |
 | `ObjectContext.json` | ObjectContext | _(sub-object, no id)_ |
 | `ObjectSelector.json` | ObjectSelector | _(sub-object inside Policy scope)_ |
@@ -126,6 +133,7 @@ These types support:
 | `Offer.json` | Offer | `urn:srcos:offer:` |
 | `PackageManifest.json` | PackageManifest | `urn:srcos:package-manifest:` |
 | `Party.json` | Party | `urn:srcos:party:` |
+| `PdfValidationReport.json` | PdfValidationReport | `urn:srcos:schema:PdfValidationReport` |
 | `PhysicalAsset.json` | PhysicalAsset | `urn:srcos:asset:` |
 | `Policy.json` | Policy | `urn:srcos:policy:` |
 | `PolicyBinding.json` | PolicyBinding | _(sub-object inside WorkflowSpec)_ |
@@ -133,6 +141,7 @@ These types support:
 | `PolicyDecision.json` | PolicyDecision | `urn:srcos:decision:` |
 | `ProfileStats.json` | ProfileStats | _(sub-object inside Field.quality)_ |
 | `ProvenanceRecord.json` | ProvenanceRecord | `urn:srcos:prov:` |
+| `PublishDecision.json` | PublishDecision | `urn:srcos:schema:PublishDecision` |
 | `QualityMetric.json` | QualityMetric | _(sub-object inside Field.quality)_ |
 | `Rating.json` | Rating | `urn:srcos:rating:` |
 | `ReleaseManifest.json` | ReleaseManifest | `urn:srcos:release:` |
@@ -142,9 +151,12 @@ These types support:
 | `RolloutPolicy.json` | RolloutPolicy | `urn:srcos:rollout:` |
 | `Rule.json` | Rule | _(sub-object inside Policy)_ |
 | `RunRecord.json` | RunRecord | `urn:srcos:run:` |
+| `RunReport.json` | RunReport | `urn:srcos:schema:RunReport` |
 | `SchemaDefinition.json` | SchemaDefinition | `urn:srcos:schema:` |
+| `SearchRouteDecision.json` | SearchRouteDecision | `urn:srcos:schema:SearchRouteDecision` |
 | `SessionReceipt.json` | SessionReceipt | `urn:srcos:receipt:session:` |
 | `SessionReview.json` | SessionReview | `urn:srcos:session-review:` |
+| `SignedArtifact.json` | SignedArtifact | `urn:srcos:schema:SignedArtifact` |
 | `SettlementEvent.json` | SettlementEvent | `urn:srcos:settlement:` |
 | `SkillManifest.json` | SkillManifest | `urn:srcos:skill:` |
 | `SourceOSInteractionEvent.json` | SourceOSInteractionEvent | `urn:srcos:interaction-event:` |
@@ -204,6 +216,7 @@ These types support:
 | Schema | Description |
 |--------|-------------|
 | `Comment` | A free-text annotation on any addressable object |
+| `CommentSignal` | A reviewer or author signal payload exposing genuine/sarcasm/experience state |
 | `Rating` | A 1–5 star rating on any addressable object |
 | `Community` | A named group of subject URNs |
 
@@ -250,6 +263,7 @@ These types support:
 | `WorkflowEdge` | A directed dependency edge between two `WorkflowNode` IDs |
 | `Trigger` | How a workflow is activated: cron schedule, event, or manual |
 | `ProvenanceRecord` | A W3C PROV-compatible record linking a run to its input/output entities |
+| `CompressionEvaluation` | Artifact-versus-baseline evaluation record composed from content/data refs, estimator metrics, and governance/provenance references |
 | `MappingSpec` | A field-to-field semantic mapping with multi-method confidence evidence |
 | `MappingEvidence` | A single evidence item for a `MappingSpec` (label similarity, value overlap, …) |
 | `EventEnvelope` | The universal wrapper for all AsyncAPI channel messages |
@@ -279,6 +293,19 @@ These types support:
 | `RolloutPolicy` | Audience-based percentage rollout rules for an `ExperimentFlag` |
 | `ReleaseReceipt` | A verified release record with artifact hashes and gate check results |
 
+### Shell / Document / Publication
+
+| Schema | Description |
+|--------|-------------|
+| `ArtifactManifest` | Canonical manifest for a derived shell/document artifact |
+| `SignedArtifact` | Signature metadata associated with a signed artifact |
+| `PdfValidationReport` | Validation report produced for a derived PDF artifact |
+| `AnnotationExport` | Export bundle for PDF/HTML review annotations |
+| `RunReport` | Publication-ready summary of a workflow or execution run |
+| `NoetherDiagnostic` | Measured conservation or invariance reading for a declared model charge |
+| `PublishDecision` | Publish-lane decision across knowledge/value/ecosystem openness |
+| `MirrorReceipt` | Receipt showing artifact mirroring outcome for a downstream channel |
+| `SearchRouteDecision` | Routing decision for scope-based shell search dispatch |
 ### Boot / NLBoot
 
 | Schema | Description |
