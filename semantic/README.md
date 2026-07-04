@@ -11,6 +11,22 @@ This directory provides the JSON-LD and Hydra semantic overlay for the SourceOS/
 | `context.jsonld` | JSON-LD `@context` mapping schema type names to stable IRIs under `https://schemas.srcos.ai/v2/` |
 | `hydra.jsonld` | A `hydra:ApiDocumentation` document describing the REST API's supported classes and operations |
 | `fog-vocabulary.jsonld` | Additive fog vocabulary seed for FogVault / FogCompute types and key predicates |
+| `agent-machine-model-carry-context.jsonld` | Additive context slice for SourceOS model carry and Agent Machine runtime facts/receipts |
+| `agent-machine-model-carry-hydra.jsonld` | Additive Hydra slice for SourceOS model carry and Agent Machine runtime classes |
+
+---
+
+## Recent additions — Agent Machine / Model Carry vocabulary
+
+The Agent Machine / Model Carry slice currently contributes an additive semantic vocabulary covering:
+
+- `SourceOSModelCarryRef`
+- `InferenceProvider`
+- `ModelResidency`
+- `PlacementFact`
+- `AgentMachineReceipt`
+
+This vocabulary is intentionally staged as additive slice files so it can be reviewed independently before being folded into the global `context.jsonld` and `hydra.jsonld` files.
 
 ---
 

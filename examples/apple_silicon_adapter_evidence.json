@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:as-adapter-evidence:m2-adapter-2026-04-30",
+  "type": "AppleSiliconAdapterEvidence",
+  "specVersion": "2.0.0",
+  "deviceRef": "urn:srcos:asset:fedora-asahi-m2",
+  "capturedAt": "2026-04-30T09:55:00Z",
+  "chipModel": "M2",
+  "boardId": "J413AP",
+  "securityPolicy": "reduced-security",
+  "localBootStatus": "ok",
+  "adapterVersion": "0.4.0",
+  "m1n1Version": "1.4.6",
+  "uBootVersion": "2024.01-asahi-4",
+  "bootChainHashes": {
+    "m1n1": "sha256:7a38f2d1e4b9c3a5d6e8f0b2c4a6d8e0f2b4c6a8d0e2f4b6c8a0d2e4f6b8c0a2",
+    "u-boot": "sha256:2b4d6f8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f"
+  },
+  "bootPickerEntryRef": "urn:srcos:boot-entry:m2-demo-sourceos-asahi-installer",
+  "installerDataRef": "urn:srcos:artifact:m2-demo-asahi-installer-data-sha256-3f9c1f44",
+  "notes": "Apple Silicon adapter evidence for M2 MacBook Air running SourceOS via Asahi path."
+}

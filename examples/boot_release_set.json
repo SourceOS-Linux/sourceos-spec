@@ -2,12 +2,73 @@
   "boot_release_set_id": "urn:srcos:boot-release-set:m2-demo-recovery-2026-04-26",
   "base_release_set_ref": "urn:srcos:release-set:m2-demo-2026-04-26",
   "boot_mode": "recovery",
+  "boot_channel": "rescue",
   "status": "ready",
+  "platform_entrypoints": [
+    {
+      "platform": "apple-silicon",
+      "entrypoint_kind": "asahi-installer-entry",
+      "entrypoint_ref": "urn:srcos:boot-entry:m2-demo-sourceos-recovery-asahi-installer",
+      "requires_network": true,
+      "notes": "Models the SourceOS Recovery Environment as an Apple Silicon boot-picker compatible installer/recovery entry using Asahi-style installer metadata hosting."
+    },
+    {
+      "platform": "uefi-ipxe",
+      "entrypoint_kind": "ipxe-menu-entry",
+      "entrypoint_ref": "urn:srcos:boot-entry:generic-ipxe-sourceos-recovery",
+      "requires_network": true,
+      "notes": "Portable PXE-like entrypoint for later PC/Purism/generic UEFI targets."
+    }
+  ],
   "artifacts": {
+    "manifest_ref": "urn:srcos:artifact:m2-demo-recovery-manifest-sha256-6e6f74626f6f74",
     "kernel_ref": "urn:srcos:artifact:m2-demo-recovery-kernel-sha256-0f3b6d7f",
     "initrd_ref": "urn:srcos:artifact:m2-demo-recovery-initrd-sha256-08f4c82e",
-    "rootfs_ref": "urn:srcos:artifact:m2-demo-recovery-rootfs-sha256-5f4dcc3b"
+    "rootfs_ref": "urn:srcos:artifact:m2-demo-recovery-rootfs-sha256-5f4dcc3b",
+    "bootloader_ref": "urn:srcos:artifact:m2-demo-m1n1-uboot-chain-sha256-7a38f2d1",
+    "installer_metadata_ref": "urn:srcos:artifact:m2-demo-asahi-installer-data-sha256-3f9c1f44"
+  },
+  "policy_ref": "urn:srcos:policy:boot-recovery-m2-demo-v1",
+  "signing": {
+    "signature_ref": "urn:srcos:signature:m2-demo-recovery-manifest-rsa-pss-sha256",
+    "signer_ref": "urn:srcos:key:sourceos-release-root",
+    "signature_algorithm": "rsa-pss-sha256",
+    "manifest_digest": {
+      "algorithm": "sha256",
+      "value": "sha256:6e6f74626f6f742d6d322d7265636f766572792d64656d6f"
+    }
+  },
+  "boot_capabilities": {
+    "disk_write": "recovery-scoped",
+    "network_required": true,
+    "kexec_allowed": false,
+    "recovery_actions": [
+      "fetch-release-set",
+      "rollback-system",
+      "repair-user-plane",
+      "repair-agent-plane",
+      "rotate-keys",
+      "report-proof"
+    ]
+  },
+  "proof_reporting": {
+    "required": true,
+    "reports": [
+      "device-claim",
+      "environment-fingerprint",
+      "manifest-digest",
+      "artifact-hash-manifest",
+      "policy-decision",
+      "rollback-result"
+    ],
+    "endpoint_ref": "urn:srcos:endpoint:control-plane-boot-proof-report"
+  },
+  "offline_fallback": {
+    "enabled": true,
+    "strategy": "last-known-good-signed-boot-release-set",
+    "requires_signature_verification": true,
+    "allows_unsigned_artifacts": false
   },
   "created_at": "2026-04-26T14:30:00Z",
-  "notes": "SourceOS Recovery Environment for the M2 local-first demo. This models the nlboot-evolved recovery path: minimal boot artifacts, signed content-addressed refs, and linkage back to the assigned ReleaseSet."
+  "notes": "SourceOS Recovery Environment for the M2 local-first demo. This models the nlboot-evolved recovery path: minimal boot artifacts, signed content-addressed refs, policy-scoped recovery actions, proof reporting, Apple Silicon boot-picker integration, portable UEFI/iPXE semantics, and linkage back to the assigned ReleaseSet."
 }

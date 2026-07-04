@@ -1,24 +1,27 @@
 {
-  "release_set_id": "urn:srcos:release-set:m2-demo-2026-04-26",
-  "release_version": "2026.04.26-demo.1",
+  "id": "urn:srcos:release-set:m2-demo-2026-04-26",
+  "type": "ReleaseSet",
+  "specVersion": "2.0.0",
+  "releaseVersion": "2026.04.26-demo.1",
   "status": "assigned",
   "source": {
-    "git_ref": "refs/heads/main",
-    "git_commit": "9f49e42af46d84c189b6313f5c8962c6ecd5076b"
+    "gitRef": "refs/heads/main",
+    "gitCommit": "9f49e42af46d84c189b6313f5c8962c6ecd5076b",
+    "gitRefBuildRef": "urn:srcos:git-ref-build:m2-demo-main-2026-04-26"
   },
   "targets": [
     {
-      "target_kind": "device",
-      "target_id": "urn:srcos:device:m2-local-demo"
+      "targetKind": "device",
+      "targetRef": "urn:srcos:asset:m2-local-demo"
     }
   ],
-  "experience_profile_ref": "urn:srcos:experience-profile:mac-like-gnome-demo",
-  "isolation_profile_ref": "urn:srcos:isolation-profile:standard-container-demo",
+  "experienceProfileRef": "urn:srcos:experience-profile:mac-like-gnome-demo",
+  "isolationProfileRef": "urn:srcos:isolation-profile:standard-container-demo",
   "artifacts": {
-    "store_closure_hash": "sha256-4e2b2e2c6a843f8b8cf38f7b47c8f875f1f9e4c4206e1f8e9c9f0ec9a0f7a001",
-    "image_ref": "oci://registry.example.invalid/sourceos/m2-system@sha256:8b3f06c9090ccf926fe6ddc6f3b4f49a13d4b8bb4cb4f5cf78e2d12e31b55aa1",
-    "boot_release_set_ref": "urn:srcos:boot-release-set:m2-demo-recovery-2026-04-26"
+    "storeClosureHash": "sha256-4e2b2e2c6a843f8b8cf38f7b47c8f875f1f9e4c4206e1f8e9c9f0ec9a0f7a001",
+    "imageRef": "oci://registry.example.invalid/sourceos/m2-system@sha256:8b3f06c9090ccf926fe6ddc6f3b4f49a13d4b8bb4cb4f5cf78e2d12e31b55aa1",
+    "bootReleaseSetRef": "urn:srcos:boot-release-set:m2-demo-recovery-2026-04-26"
   },
-  "created_at": "2026-04-26T14:15:00Z",
+  "createdAt": "2026-04-26T14:15:00Z",
   "notes": "Local-first M2 demo release assignment produced by the SourceOS control plane."
 }

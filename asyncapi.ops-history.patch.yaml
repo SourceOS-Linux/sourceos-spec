@@ -1,0 +1,48 @@
+asyncapi: 2.6.0
+info:
+  title: SourceOS OpsHistory Additive Channels
+  version: 2.0.0
+  description: Additive AsyncAPI patch for local-first OpsHistory events, context packs, service subscriptions, and redaction/tombstone propagation.
+channels:
+  ops-history.events.v1:
+    publish:
+      summary: Publish a bounded, policy-admitted OpsHistory event.
+      message:
+        name: OpsHistoryEventMessage
+        payload:
+          $ref: './schemas/OpsHistoryEvent.json'
+  ops-history.redactions.v1:
+    publish:
+      summary: Publish a high-priority redaction/tombstone event.
+      message:
+        name: RedactionTombstoneMessage
+        payload:
+          $ref: './schemas/RedactionTombstone.json'
+  ops-history.context-packs.v1:
+    publish:
+      summary: Publish or reference a bounded OpsHistory context pack for Memory Mesh or AgentPlane.
+      message:
+        name: OpsHistoryContextPackRefMessage
+        payload:
+          $ref: './schemas/OpsHistoryContextPackRef.json'
+  ops-history.service-subscriptions.v1:
+    publish:
+      summary: Publish local-first service subscription registration and posture metadata.
+      message:
+        name: LocalFirstServiceManifestMessage
+        payload:
+          $ref: './schemas/LocalFirstServiceManifest.json'
+  bearhistory.events.v1:
+    publish:
+      summary: Publish governed BearBrowser browser-state events.
+      message:
+        name: BearHistoryEventMessage
+        payload:
+          $ref: './schemas/BearHistoryEvent.json'
+  shell.receipts.v1:
+    publish:
+      summary: Publish governed SourceOS shell/TurtleTerm/cloud-fog receipt metadata.
+      message:
+        name: ShellReceiptEventMessage
+        payload:
+          $ref: './schemas/ShellReceiptEvent.json'

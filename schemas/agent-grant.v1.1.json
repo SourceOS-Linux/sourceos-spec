@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/agent-grant.v1.1.json",
+  "title": "Agent Registry Grant v1.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "grant_kind", "grant_id", "ts_granted", "grantor", "grantee", "grant_scope", "grant_authority_layer", "expires_at"],
+  "properties": {
+    "schema_version": {"const": "1.1.0"},
+    "grant_kind": {"const": "agent-registry-grant"},
+    "grant_id": {"type": "string"},
+    "ts_granted": {"type": "string", "format": "date-time"},
+    "grantor": {"type": "object", "required": ["grantor_id", "grantor_authority_kind"], "properties": {"grantor_id": {"type": "string"}, "grantor_authority_kind": {"enum": ["role", "individual", "service_account", "quorum"]}}},
+    "grantee": {"type": "object", "required": ["grantee_id", "grantee_class"], "properties": {"grantee_id": {"type": "string"}, "grantee_class": {"enum": ["H", "M", "X"]}}},
+    "grant_scope": {"type": "object", "required": ["grant_types", "endpoint_refs"], "properties": {"grant_types": {"type": "array", "minItems": 1, "items": {"enum": ["event-read", "event-write", "memory-recall", "memory-writeback", "redaction-request", "redaction-execute", "bridge-export", "service-endpoint"]}}, "endpoint_refs": {"type": "array", "items": {"type": "string"}}, "domain_scope": {"type": "array", "items": {"type": "string"}}, "topology_scope": {"type": "array", "items": {"enum": ["solo-local", "active-multi-agent-room", "multi-room-workroom", "enterprise-bridge", "offline-fog"]}}}},
+    "grant_authority_layer": {"enum": ["institutional_truth", "grounded_schema", "commonsense_prior"]},
+    "reputation_requirement": {"type": ["object", "null"]},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "revocation_ref": {"type": ["object", "null"]}
+  }
+}

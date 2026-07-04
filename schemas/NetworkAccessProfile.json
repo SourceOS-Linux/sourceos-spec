@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/NetworkAccessProfile.json",
+  "title": "NetworkAccessProfile",
+  "description": "SourceOS Network Door profile for enterprise, user, and mesh-aware egress/ingress policy across Agent Machine, Office Plane, Local Model Door, and external model providers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "scope", "defaultDecision", "profiles", "evidence"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:network-access-profile:" },
+    "type": { "const": "NetworkAccessProfile" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "scope": { "type": "string", "enum": ["user", "enterprise", "device", "workspace", "agent-machine", "cluster"] },
+    "defaultDecision": { "type": "string", "enum": ["deny", "allow-with-policy", "ask"] },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["profileId", "profileClass", "priority", "defaultEgress"],
+        "properties": {
+          "profileId": { "type": "string" },
+          "profileClass": { "type": "string", "enum": ["user-firewall", "corporate-firewall", "mesh", "proxy", "vpn", "zero-trust", "offline"] },
+          "priority": { "type": "integer", "minimum": 0 },
+          "defaultEgress": { "type": "string", "enum": ["deny", "allow-listed", "allow-with-prompt", "allow-any"] },
+          "allowDomains": { "type": "array", "items": { "type": "string" } },
+          "denyDomains": { "type": "array", "items": { "type": "string" } },
+          "allowCidrs": { "type": "array", "items": { "type": "string" } },
+          "denyCidrs": { "type": "array", "items": { "type": "string" } },
+          "proxyRef": { "type": ["string", "null"] },
+          "firewallBindingRef": { "type": ["string", "null"] },
+          "meshBindingRef": { "type": ["string", "null"] },
+          "modelProviderRefs": { "type": "array", "items": { "type": "string" } },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "precedence": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["enterprise", "workspace", "device", "user", "agent", "model-provider"] },
+      "description": "Higher-precedence policy layers should be listed first."
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emitNetworkDecision": { "type": "boolean", "default": true },
+        "emitFirewallBinding": { "type": "boolean", "default": true },
+        "emitMeshBinding": { "type": "boolean", "default": true },
+        "emitModelProviderRoute": { "type": "boolean", "default": true },
+        "redactDestinationPath": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

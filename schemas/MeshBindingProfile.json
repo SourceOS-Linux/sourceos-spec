@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MeshBindingProfile.json",
+  "title": "MeshBindingProfile",
+  "description": "SourceOS service-mesh binding profile for Istio, Admiral-style multi-cluster control, Linkerd, Cilium service mesh, Kubernetes NetworkPolicy adjacency, and enterprise mesh imports.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "meshClass", "scope", "traffic", "identity", "evidence"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:mesh-binding-profile:" },
+    "type": { "const": "MeshBindingProfile" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "meshClass": { "type": "string", "enum": ["istio", "admiral-istio", "linkerd", "cilium-service-mesh", "kubernetes-network-policy", "enterprise-mesh", "none", "other"] },
+    "scope": { "type": "string", "enum": ["cluster", "workspace", "agent-machine", "namespace", "tenant", "enterprise"] },
+    "traffic": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "egressMode": { "type": "string", "enum": ["deny", "service-entry-allowlist", "egress-gateway", "direct-allowlist", "ambient", "enterprise-managed"] },
+        "ingressMode": { "type": "string", "enum": ["deny", "gateway", "mesh-internal", "enterprise-managed"] },
+        "allowedHosts": { "type": "array", "items": { "type": "string" } },
+        "deniedHosts": { "type": "array", "items": { "type": "string" } },
+        "mtlsRequired": { "type": "boolean", "default": true },
+        "externalModelEgressAllowed": { "type": "boolean", "default": false }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "serviceAccountRef": { "type": ["string", "null"] },
+        "spiffeIdRef": { "type": ["string", "null"] },
+        "workloadSelector": { "type": ["string", "null"] },
+        "agentRegistryRef": { "type": ["string", "null"] }
+      }
+    },
+    "policyRefs": { "type": "array", "items": { "type": "string" } },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "emitTrafficDecision": { "type": "boolean", "default": true },
+        "emitMeshPolicyRef": { "type": "boolean", "default": true },
+        "emitMtlsStatus": { "type": "boolean", "default": true },
+        "emitEgressGatewayReceipt": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

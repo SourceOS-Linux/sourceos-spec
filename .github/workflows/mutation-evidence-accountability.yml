@@ -1,0 +1,40 @@
+name: Mutation Evidence Accountability
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "schemas/MutationEvidence*.json"
+      - "examples/mutation-evidence*.json"
+      - "fixtures/anti-patterns/mutation-evidence*.json"
+      - "tools/validate_mutation_evidence_accountability.py"
+      - ".github/workflows/mutation-evidence-accountability.yml"
+  push:
+    branches: ["main", "sourceos-mutation-evidence-v0-1"]
+    paths:
+      - "schemas/MutationEvidence*.json"
+      - "examples/mutation-evidence*.json"
+      - "fixtures/anti-patterns/mutation-evidence*.json"
+      - "tools/validate_mutation_evidence_accountability.py"
+      - ".github/workflows/mutation-evidence-accountability.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-mutation-evidence:
+    name: Validate mutation/evidence receipts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install validator dependencies
+        run: python -m pip install --upgrade pip jsonschema
+
+      - name: Validate examples and anti-pattern fixtures
+        run: python tools/validate_mutation_evidence_accountability.py
