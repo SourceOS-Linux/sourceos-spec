@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:browser-launch-transaction:synthetic-001",
+  "type": "BrowserLaunchTransaction",
+  "specVersion": "2.0.0",
+  "componentRef": "urn:srcos:component:synthetic-browser-surface",
+  "phaseStatus": "preflight",
+  "capabilityPreflightPassed": false,
+  "identityGraphValid": true,
+  "desktopBrokerValid": false,
+  "profileStoreValid": true,
+  "extensionRegistryValid": false,
+  "networkTruthSnapshotCaptured": true,
+  "childProcessSpawnAllowed": false,
+  "childProcessAttested": false,
+  "pageLoadStarted": false,
+  "observedAt": "2026-05-06T22:37:03Z",
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-child-preflight",
+    "urn:srcos:telemetry:synthetic-broker-state",
+    "urn:srcos:telemetry:synthetic-extension-state"
+  ],
+  "userVisibleImpact": "Preflight blocked browser launch because required broker and extension checks are not ready.",
+  "remediationHint": "Verify desktop broker availability and extension registry integrity before retrying launch."
+}

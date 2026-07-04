@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SyncEngineManifest.json",
+  "title": "SyncEngineManifest",
+  "description": "Contract declaration for a SourceOS local-first sync engine, including owner, policy class, encryption scope, merge strategy, dangerous fields, and audit events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "engineId",
+    "collection",
+    "schemaVersion",
+    "ownerRepo",
+    "defaultEnabled",
+    "policyClass",
+    "encryptionScope",
+    "mergeStrategy",
+    "supportsTombstones",
+    "supportsRollback",
+    "supportsExport",
+    "dangerousFields",
+    "auditEvents"
+  ],
+  "properties": {
+    "engineId": {
+      "type": "string",
+      "pattern": "^sourceos\\.sync\\.[a-z0-9_.-]+$"
+    },
+    "collection": {
+      "type": "string",
+      "pattern": "^[a-z0-9_.-]+$"
+    },
+    "schemaVersion": {
+      "type": "string"
+    },
+    "ownerRepo": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "defaultEnabled": {
+      "type": "boolean"
+    },
+    "policyClass": {
+      "type": "string",
+      "enum": ["low", "medium", "high", "critical"]
+    },
+    "encryptionScope": {
+      "type": "string",
+      "enum": ["public", "profile", "workspace", "org", "device", "vault"]
+    },
+    "mergeStrategy": {
+      "type": "string",
+      "enum": [
+        "crdt",
+        "graph_merge",
+        "append_only",
+        "manual_review",
+        "strongest_policy_wins",
+        "signed_authority_required",
+        "never_merge",
+        "quarantine"
+      ]
+    },
+    "supportsTombstones": {
+      "type": "boolean"
+    },
+    "supportsRollback": {
+      "type": "boolean"
+    },
+    "supportsExport": {
+      "type": "boolean"
+    },
+    "dangerousFields": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "auditEvents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9_.-]+$"
+      },
+      "uniqueItems": true
+    },
+    "stateCodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "reasonCodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

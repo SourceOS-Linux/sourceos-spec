@@ -1,6 +1,6 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts
 	@echo "OK: validate"
 
 validate-control-plane-examples:
@@ -26,3 +26,14 @@ validate-runtime-observability-examples:
 validate-interpretability-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_interpretability_examples.py
+
+validate-lifecycle-boundary-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_lifecycle_boundary_examples.py
+
+validate-svf-contracts:
+	python3 tools/validate_svf_contracts.py
+
+validate-sync-cycle-receipts:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_sync_cycle_receipts.py

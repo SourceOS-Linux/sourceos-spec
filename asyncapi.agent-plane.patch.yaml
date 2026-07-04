@@ -152,3 +152,82 @@ channels:
               type: string
               description: The `objectId` URN of the ReleaseReceipt.
 
+  srcos.v2.artifact.events:
+    description: Events emitted when shell artifacts are derived, signed, or validated.
+    bindings:
+      kafka:
+        topic: srcos.v2.artifact.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishArtifactEvent
+      summary: Publish an artifact lifecycle event
+      description: Publishes an event for ArtifactManifest upsert, signing, and validation outcomes.
+      message:
+        name: ArtifactEvent
+        title: Artifact Lifecycle Event
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+
+  srcos.v2.annotation.events:
+    description: Events emitted when annotation exports are recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.annotation.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 604800000
+          cleanup.policy: delete
+    publish:
+      operationId: publishAnnotationEvent
+      summary: Publish an annotation export event
+      description: Publishes an event whenever an AnnotationExport is recorded.
+      message:
+        name: AnnotationEvent
+        title: Annotation Export Event
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+
+  srcos.v2.run.events:
+    description: Events emitted when run reports or Noether diagnostics are recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.run.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishRunEvent
+      summary: Publish a run/report event
+      description: Publishes events for RunReport and NoetherDiagnostic objects.
+      message:
+        name: RunEvent
+        title: Run Report Event
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }
+
+  srcos.v2.publish.events:
+    description: Events emitted when publish decisions or mirror receipts are recorded.
+    bindings:
+      kafka:
+        topic: srcos.v2.publish.events
+        partitions: 3
+        replicas: 3
+        topicConfiguration:
+          retention.ms: 2592000000
+          cleanup.policy: delete
+    publish:
+      operationId: publishPublishEvent
+      summary: Publish a publish/mirror event
+      description: Publishes events for PublishDecision and MirrorReceipt objects.
+      message:
+        name: PublishEvent
+        title: Publish and Mirror Event
+        contentType: application/json
+        payload: { $ref: './schemas/EventEnvelope.json' }

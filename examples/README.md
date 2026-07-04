@@ -6,7 +6,7 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
-The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state. Compression Commons examples add an artifact-versus-baseline evaluation record that references existing governance, execution, provenance, and content-reference contracts.
+The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state. Compression Commons examples add an artifact-versus-baseline evaluation record that references existing governance, execution, provenance, and content-reference contracts. SourceOS Interaction examples add the noetic/chat/task event projection shared by Noetica and AgentTerm.
 
 Desktop/workstation examples may include bounded Mac-on-Linux polish metadata. These are contract signals only: concrete implementation authority remains in `SociOS-Linux/source-os`, and the examples do not claim full macOS parity.
 
@@ -40,6 +40,8 @@ agent_session.json  ──►  execution_decision.json  ──►  session_recei
                                                           ▼
                                                    session_review.json
 
+sourceos-interaction-event.json ──► Noetica / AgentTerm governance trace
+
 content_spec.json ──► overlay_bundle.json ──► build_request.json ──► release_manifest.json
                                                                │               │
                                                                │               ▼
@@ -55,6 +57,16 @@ release_set.json ──► boot_release_set.json ──► enrollment_token.json
 
 compressionevaluation.json ──► policy_decision.json / run.json / provenance.json / truth_surface.json / delta_surface.json
 ```
+
+---
+
+## SourceOS Interaction examples
+
+These examples illustrate the shared noetic/chat/task interaction substrate:
+
+| File | Schema type | Description |
+|------|------------|-------------|
+| `sourceos-interaction-event.json` | SourceOSInteractionEvent | Noetica standalone provider completion event with governance trace fields consumable by AgentTerm |
 
 ---
 
@@ -192,6 +204,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `session_review.json` | SessionReview | Post-session learning review |
 | `settlement_event.json` | Optional receipt-to-settlement mapping |
 | `skill_manifest.json` | SkillManifest | The obfuscation skill manifest |
+| `sourceos-interaction-event.json` | SourceOSInteractionEvent | Noetica standalone provider completion event with governance trace fields consumable by AgentTerm |
 | `telemetry_event.json` | TelemetryEvent | An informational telemetry event from the agent session |
 | `topic.json` | Topic | FogVault topic definition |
 | `topic_envelope.json` | FogVault append-only entry envelope |

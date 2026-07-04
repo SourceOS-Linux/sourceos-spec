@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Interaction",
+  "type": "object",
+  "required": ["schema_version","interaction_id","interaction_type","participants","intent","status","causality","time","provenance"],
+  "properties": {
+    "schema_version": { "const": "0.3" },
+    "interaction_id": { "type": "string", "pattern": "^int:[A-Za-z0-9._-]+$" },
+    "interaction_type": { "type": "string" },
+    "participants": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "required": ["entity_id","role"],
+        "properties": {
+          "entity_id": { "type": "string", "pattern": "^ent:[A-Za-z0-9._-]+$" },
+          "role": { "type": "string", "enum": ["initiator","counterparty","substrate","witness_governor","delegate","resource_provider","beneficiary","reviewer","cache","artifact_store","policy_engine","sensor","actuator"] },
+          "cardinality": { "type": ["integer","null"], "minimum": 1 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "intent": {
+      "type": "object",
+      "required": ["verb"],
+      "properties": {
+        "verb": { "type": "string" },
+        "target_ref": { "type": ["string","null"], "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$" },
+        "description": { "type": ["string","null"] }
+      },
+      "additionalProperties": false
+    },
+    "observation_refs": { "type": "array", "items": { "type": "string", "pattern": "^obs:[A-Za-z0-9._-]+$" } },
+    "claim_refs": { "type": "array", "items": { "type": "string", "pattern": "^clm:[A-Za-z0-9._-]+$" } },
+    "action_refs": { "type": "array", "items": { "type": "string", "pattern": "^act:[A-Za-z0-9._-]+$" } },
+    "effect_refs": { "type": "array", "items": { "type": "string", "pattern": "^eff:[A-Za-z0-9._-]+$" } },
+    "boundary_crossing_refs": { "type": "array", "items": { "type": "string", "pattern": "^bcx:[A-Za-z0-9._-]+$" } },
+    "policy_decision_refs": { "type": "array", "items": { "type": "string", "pattern": "^pdec:[A-Za-z0-9._-]+$" } },
+    "artifact_refs": { "type": "array", "items": { "type": "string", "pattern": "^art:[A-Za-z0-9._-]+$" } },
+    "outcome": { "type": ["string","null"] },
+    "status": { "type": "string", "enum": ["planned","running","succeeded","failed","compensated","cancelled","unknown"] },
+    "causality": {
+      "type": "object",
+      "required": ["correlation_id"],
+      "properties": {
+        "parent_interaction_ref": { "type": ["string","null"], "pattern": "^int:[A-Za-z0-9._-]+$" },
+        "previous_interaction_ref": { "type": ["string","null"], "pattern": "^int:[A-Za-z0-9._-]+$" },
+        "correlation_id": { "type": "string" },
+        "idempotency_key": { "type": ["string","null"] }
+      },
+      "additionalProperties": false
+    },
+    "time": {
+      "type": "object",
+      "required": ["event_time"],
+      "properties": {
+        "event_time": { "type": "string", "format": "date-time" },
+        "observed_time": { "type": ["string","null"], "format": "date-time" },
+        "processed_time": { "type": ["string","null"], "format": "date-time" },
+        "decided_time": { "type": ["string","null"], "format": "date-time" },
+        "committed_time": { "type": ["string","null"], "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["source_refs","confidence"],
+      "properties": {
+        "source_refs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$" },
+          "minItems": 1
+        },
+        "confidence": { "type": ["number","null"], "minimum": 0, "maximum": 1 },
+        "witness_refs": { "type": "array", "items": { "type": "string", "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$" } }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
