@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LaborResponse.json",
+  "title": "LaborResponse",
+  "description": "A structured response to a LaborRequest — a proposal, quote, expression of interest, or availability signal with evidence. Trial work that produces usable value SHALL be compensated (LN-005).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "requestRef",
+    "responderRef",
+    "approach"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:labor-response:",
+      "description": "Stable URN. Pattern: urn:srcos:labor-response:<local-id>"
+    },
+    "type": {
+      "const": "LaborResponse",
+      "description": "Discriminator — always \"LaborResponse\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "requestRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:labor-request:",
+      "description": "The request this answers."
+    },
+    "responderRef": {
+      "type": "string",
+      "description": "The worker/team (introduces supply)."
+    },
+    "approach": {
+      "type": "string",
+      "minLength": 1
+    },
+    "terms": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "proposedPricing": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "minimum": 0
+    },
+    "availability": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Evidence packets / fulfillment records backing the response — not follower counts."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "submitted",
+        "shortlisted",
+        "declined",
+        "awarded",
+        "withdrawn"
+      ]
+    }
+  }
+}

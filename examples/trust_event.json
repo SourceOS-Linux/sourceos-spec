@@ -1,0 +1,10 @@
+{
+  "id": "urn:srcos:trust-event:eng-coop-completion-01",
+  "type": "TrustEvent",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:party:eng-cooperative-4471",
+  "kind": "completion",
+  "requestRef": "urn:srcos:labor-request:smelter-audit-0001",
+  "evidenceRef": "urn:srcos:attestation:audit/site",
+  "issuedAt": "2026-07-25T00:00:00Z"
+}

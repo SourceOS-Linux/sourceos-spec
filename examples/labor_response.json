@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:labor-response:smelter-audit-0001-r2",
+  "type": "LaborResponse",
+  "specVersion": "2.0.0",
+  "requestRef": "urn:srcos:labor-request:smelter-audit-0001",
+  "responderRef": "urn:srcos:party:eng-cooperative-4471",
+  "approach": "Two-auditor team; on-site week 1, analysis week 2, report week 3.",
+  "terms": "Fixed $52k; independence attested; no prior work for requester.",
+  "proposedPricing": 52000,
+  "availability": "starts 2026-07-22",
+  "evidenceRefs": [
+    "urn:srcos:attestation:eng-coop/prior-audits"
+  ],
+  "status": "shortlisted"
+}

@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentPod.json",
+  "title": "AgentPod",
+  "description": "A standard agent pod: a named role with a mandate, typed inputs/outputs, and repo anchors. The unit of staffing in the agentic operating system; the pod URN is the same one referenced by AgentMachineReceipt.agentPodRef.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "role",
+    "mandate",
+    "inputs",
+    "outputs",
+    "repoAnchors"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:agent-pod:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:agent-pod:<local-id>"
+    },
+    "type": {
+      "const": "AgentPod",
+      "description": "Discriminator constant — always \"AgentPod\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "role": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human role name, e.g. \"Capture Lead\"."
+    },
+    "mandate": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What the pod owns."
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Core inputs the pod consumes."
+    },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Core artifacts the pod produces."
+    },
+    "repoAnchors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Estate repositories this pod's patterns anchor to."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "shadow",
+        "paused"
+      ],
+      "description": "Operational status of the pod."
+    },
+    "choirRole": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "prophet-mesh agent-choir role this pod aligns to (e.g. \"planning-agent\", \"governance-sentinel\"). The choir is the canonical role vocabulary; this pod is its capture-side projection."
+    },
+    "agentSessionRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:session:",
+      "description": "The AgentSession URN when this pod is executing (the Perceive→Reason→Act→Verify loop)."
+    }
+  }
+}
