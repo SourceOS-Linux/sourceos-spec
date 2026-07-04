@@ -1,6 +1,6 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples
 	@echo "OK: validate"
 
 validate-control-plane-examples:
@@ -19,6 +19,9 @@ validate-ops-history-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_ops_history_examples.py
 
+validate-runtime-causality-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_runtime_causality_examples.py
 validate-onboarding-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_onboarding_examples.py
