@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RiskCluster.json",
+  "title": "RiskCluster",
+  "description": "Common-mode / concentration cluster risk — correlated dependencies (a shared registry, CI provider, identity broker, model provider, or control plane). HHI measures concentration; blast radius, time-to-recover, and exit-difficulty size the systemic exposure.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "clusterName",
+    "hhi",
+    "residualCommonMode",
+    "rating"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:risk-cluster:",
+      "description": "Stable URN. Pattern: urn:srcos:risk-cluster:<local-id>"
+    },
+    "type": {
+      "const": "RiskCluster",
+      "description": "Discriminator — always \"RiskCluster\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "clusterName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "clusterType": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "providerShares": {
+      "type": "array",
+      "items": {
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+      },
+      "description": "Market/dependency share per provider (for HHI)."
+    },
+    "hhi": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Herfindahl-Hirschman concentration index (normalized 0..1)."
+    },
+    "blastRadius": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Fraction of the estate affected if the cluster fails."
+    },
+    "timeToRecover": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Normalized recovery time (0=fast, 1=slow)."
+    },
+    "exitDifficulty": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "How hard it is to switch away (lock-in)."
+    },
+    "residualCommonMode": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Residual common-mode risk after resilience controls."
+    },
+    "rating": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ]
+    }
+  }
+}

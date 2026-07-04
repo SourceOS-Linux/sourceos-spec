@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RiskIndicator.json",
+  "title": "RiskIndicator",
+  "description": "A key risk indicator (KRI) or key control indicator (KCI) with green/amber/red thresholds, tracked against risk appetite.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "indicatorType",
+    "metric"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:risk-indicator:",
+      "description": "Stable URN. Pattern: urn:srcos:risk-indicator:<local-id>"
+    },
+    "type": {
+      "const": "RiskIndicator",
+      "description": "Discriminator — always \"RiskIndicator\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "indicatorType": {
+      "type": "string",
+      "enum": [
+        "KRI",
+        "KCI"
+      ]
+    },
+    "metric": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definition": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "value": {
+      "type": [
+        "number",
+        "null"
+      ]
+    },
+    "green": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "amber": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "red": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "band": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "green",
+        "amber",
+        "red",
+        null
+      ]
+    },
+    "frequency": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "owner": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  }
+}
