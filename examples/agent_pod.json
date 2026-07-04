@@ -1,0 +1,23 @@
+{
+  "id": "urn:srcos:agent-pod:capture-lead",
+  "type": "AgentPod",
+  "specVersion": "2.0.0",
+  "role": "Capture Lead",
+  "mandate": "Own pursuit strategy, buyer map, milestones, and decisions.",
+  "inputs": [
+    "signals",
+    "updates",
+    "Q&A",
+    "competitive intel"
+  ],
+  "outputs": [
+    "pursuit plan",
+    "gate decisions",
+    "action backlog"
+  ],
+  "repoAnchors": [
+    "sociosphere",
+    "socioprophet"
+  ],
+  "status": "active"
+}

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReadinessScore.json",
+  "title": "ReadinessScore",
+  "description": "A 12-dimension readiness scorecard for an objective. Each dimension is 0..3 (0=not started, 3=review-ready with named owner/partner evidence); total 0..36.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "opportunityRef",
+    "dimensions",
+    "total",
+    "rag",
+    "nextGate"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:readiness-score:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:readiness-score:<local-id>"
+    },
+    "type": {
+      "const": "ReadinessScore",
+      "description": "Discriminator constant — always \"ReadinessScore\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "opportunityRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:opportunity:",
+      "description": "The objective this scorecard grades."
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "buyerProblem",
+        "solutionHypothesis",
+        "sharedLibraries",
+        "agentPod",
+        "partnerArchetype",
+        "namedPartnerTargets",
+        "oemLane",
+        "artifactPack",
+        "deltaControl",
+        "questions",
+        "pricing",
+        "pastPerformance"
+      ],
+      "properties": {
+        "buyerProblem": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "solutionHypothesis": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "sharedLibraries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "agentPod": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "partnerArchetype": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "namedPartnerTargets": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "oemLane": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "artifactPack": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "deltaControl": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "questions": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "pricing": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "pastPerformance": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        }
+      },
+      "description": "The 12 readiness dimensions, each scored 0..3."
+    },
+    "total": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 36
+    },
+    "max": {
+      "const": 36
+    },
+    "readinessPct": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "rag": {
+      "type": "string",
+      "enum": [
+        "Red",
+        "Amber",
+        "Green"
+      ]
+    },
+    "nextGate": {
+      "type": "string",
+      "description": "The next capture gate, e.g. \"Gate 1\"."
+    }
+  }
+}

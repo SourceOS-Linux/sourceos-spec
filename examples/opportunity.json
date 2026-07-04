@@ -1,0 +1,40 @@
+{
+  "id": "urn:srcos:opportunity:health-devsecops",
+  "type": "Opportunity",
+  "specVersion": "2.0.0",
+  "name": "Health Services DevSecOps",
+  "cluster": "Health",
+  "missionOwner": "PDS",
+  "buyingProblem": "Sustain legacy health apps while modernizing safely outside the Oracle Health baseline.",
+  "priorities": [
+    "VistA sustainment",
+    "modernization",
+    "MUMPS"
+  ],
+  "deliveryPattern": "Continuity-plus-modernization delivery cell; governed DevSecOps; legacy transition discipline.",
+  "reuseRepos": [
+    "prophet-platform",
+    "prophet-platform-standards",
+    "agentplane",
+    "policy-fabric",
+    "sociosphere"
+  ],
+  "podRefs": [
+    "urn:srcos:agent-pod:capture-lead",
+    "urn:srcos:agent-pod:technical-solution",
+    "urn:srcos:agent-pod:compliance-matrix",
+    "urn:srcos:agent-pod:evidence-qa"
+  ],
+  "sharedLibraryRefs": [
+    "urn:srcos:shared-library:canonical-operating-model",
+    "urn:srcos:shared-library:transition-in",
+    "urn:srcos:shared-library:release-gates"
+  ],
+  "readinessRef": "urn:srcos:readiness-score:health-devsecops",
+  "deltaRefs": [
+    "urn:srcos:capture-delta:health-devsecops-qa"
+  ],
+  "partnerLane": "Health IT SI; VistA/MUMPS niche partner",
+  "winTheme": "We preserve continuity while industrializing governed modernization with low-regret migration paths.",
+  "status": "Active"
+}

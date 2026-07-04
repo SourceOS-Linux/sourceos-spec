@@ -1,0 +1,13 @@
+{
+  "id": "urn:srcos:shared-library:release-gates",
+  "type": "SharedLibrary",
+  "specVersion": "2.0.0",
+  "name": "Quality / release gates",
+  "standardizes": "Validation, test automation, release readiness, defect policy.",
+  "repoAnchors": [
+    "agentplane",
+    "prophet-platform-standards",
+    "sourceos-spec"
+  ],
+  "usedBy": "All build/run objectives"
+}

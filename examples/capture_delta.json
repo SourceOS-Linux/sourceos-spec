@@ -1,0 +1,12 @@
+{
+  "id": "urn:srcos:capture-delta:health-devsecops-qa",
+  "type": "CaptureDelta",
+  "specVersion": "2.0.0",
+  "opportunityRef": "urn:srcos:opportunity:health-devsecops",
+  "kind": "Industry-day Q&A",
+  "monitorSource": "OIT Industry Day site / VOA",
+  "expected": "2026-04-17",
+  "responseSlaHours": 24,
+  "requiredOutput": "delta memo + requirement updates",
+  "status": "Watching"
+}

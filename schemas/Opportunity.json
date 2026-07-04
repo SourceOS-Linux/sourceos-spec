@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Opportunity.json",
+  "title": "Opportunity",
+  "description": "An objective the agentic operating system pursues: the normalized operating fields for a pursuit, anchored to estate repos, agent pods, shared libraries, a readiness scorecard, and delta monitors.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "cluster",
+    "buyingProblem",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:opportunity:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:opportunity:<local-id>"
+    },
+    "type": {
+      "const": "Opportunity",
+      "description": "Discriminator constant — always \"Opportunity\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cluster": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Portfolio cluster, e.g. \"Health\", \"Cyber\"."
+    },
+    "missionOwner": {
+      "type": "string"
+    },
+    "buyingProblem": {
+      "type": "string",
+      "minLength": 1
+    },
+    "priorities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Priorities / burning issues."
+    },
+    "deliveryPattern": {
+      "type": "string",
+      "description": "Primary delivery-excellence pattern."
+    },
+    "reuseRepos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Adjacent estate repositories to reuse."
+    },
+    "podRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^urn:srcos:agent-pod:"
+      },
+      "description": "Agent pods emphasized for this objective."
+    },
+    "sharedLibraryRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^urn:srcos:shared-library:"
+      },
+      "description": "Shared libraries inherited."
+    },
+    "readinessRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:readiness-score:",
+      "description": "The readiness scorecard for this objective."
+    },
+    "deltaRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^urn:srcos:capture-delta:"
+      },
+      "description": "Standing delta monitors."
+    },
+    "partnerLane": {
+      "type": "string"
+    },
+    "winTheme": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Active",
+        "Watch",
+        "Paused"
+      ]
+    }
+  }
+}

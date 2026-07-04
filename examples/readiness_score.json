@@ -1,0 +1,25 @@
+{
+  "id": "urn:srcos:readiness-score:health-devsecops",
+  "type": "ReadinessScore",
+  "specVersion": "2.0.0",
+  "opportunityRef": "urn:srcos:opportunity:health-devsecops",
+  "dimensions": {
+    "buyerProblem": 3,
+    "solutionHypothesis": 2,
+    "sharedLibraries": 3,
+    "agentPod": 2,
+    "partnerArchetype": 2,
+    "namedPartnerTargets": 0,
+    "oemLane": 1,
+    "artifactPack": 2,
+    "deltaControl": 2,
+    "questions": 1,
+    "pricing": 0,
+    "pastPerformance": 0
+  },
+  "total": 18,
+  "max": 36,
+  "readinessPct": 50,
+  "rag": "Amber",
+  "nextGate": "Gate 1"
+}
