@@ -1,0 +1,17 @@
+{
+  "id": "urn:srcos:fit-score:smelter-audit-0001-r2",
+  "type": "FitScore",
+  "specVersion": "2.0.0",
+  "requestRef": "urn:srcos:labor-request:smelter-audit-0001",
+  "responseRef": "urn:srcos:labor-response:smelter-audit-0001-r2",
+  "rubric": {
+    "domain competence": 0.9,
+    "independence": 1.0,
+    "turnaround": 0.8
+  },
+  "fit": 0.9,
+  "confidence": 0.85,
+  "missingEvidence": [
+    "conflict-of-interest declaration"
+  ]
+}
