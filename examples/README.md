@@ -6,6 +6,7 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
+The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state.
 The examples are designed to tell a coherent end-to-end story: a personal health dataset is catalogued, governed, transformed by an obfuscation workload, and released — all within an agent session. They share cross-reference URNs so you can trace the full lifecycle.
 
 The example set now also includes shell/document/publication objects so the same storyline can extend into artifact derivation, signing, validation, annotation export, run reporting, publish decisions, and mirror receipts.
@@ -92,6 +93,9 @@ These examples illustrate the Truth Plane contract additions:
 
 ---
 
+## Recent additions — Control-plane lifecycle and boot provisioning examples
+
+These examples illustrate the local-first control-plane lifecycle and secure boot/recovery family:
 ## Recent additions — Compression Commons examples
 
 These examples illustrate artifact-versus-baseline evaluation using existing SourceOS/SociOS governance, execution, provenance, and reference contracts.
@@ -109,6 +113,8 @@ These examples illustrate the release/build lifecycle schemas added in this slic
 | File | Schema type | Description |
 |------|------------|-------------|
 | `release_set.json` | ReleaseSet | Assigned M2 demo release set with source Git ref, target, profile refs, and boot artifact refs |
+| `boot_release_set.json` | BootReleaseSet | SourceOS Recovery Environment boot artifact set linked to the assigned ReleaseSet |
+| `enrollment_token.json` | EnrollmentToken | One-time recovery authorization token scoped to the M2 demo device and BootReleaseSet |
 | `fingerprint.json` | Fingerprint | Post-apply device observation proving the realized state matches the assigned release set |
 | `config_source.json` | ConfigSource | Git-backed configuration source pinned to a specific commit, consumed by NLBoot/sourceos-boot |
 | `token_door.json` | TokenDoor | One-time recovery-access token door bound to the M2 demo device and release set |
