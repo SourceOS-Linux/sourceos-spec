@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/BrowserLaunchTransaction.json",
+  "title": "BrowserLaunchTransaction",
+  "description": "A preflighted launch transaction for browser or browser-like child processes, ensuring capability, identity, broker, profile, extension, and network truth preconditions are satisfied.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "componentRef",
+    "phaseStatus",
+    "capabilityPreflightPassed",
+    "identityGraphValid",
+    "desktopBrokerValid",
+    "profileStoreValid",
+    "extensionRegistryValid",
+    "networkTruthSnapshotCaptured",
+    "childProcessSpawnAllowed",
+    "observedAt"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:browser-launch-transaction:" },
+    "type": { "const": "BrowserLaunchTransaction" },
+    "specVersion": { "type": "string" },
+    "componentRef": { "type": "string", "minLength": 1 },
+    "phaseStatus": { "enum": ["preflight", "degraded", "failed", "completed"] },
+    "capabilityPreflightPassed": { "type": "boolean" },
+    "identityGraphValid": { "type": "boolean" },
+    "desktopBrokerValid": { "type": "boolean" },
+    "profileStoreValid": { "type": "boolean" },
+    "extensionRegistryValid": { "type": "boolean" },
+    "networkTruthSnapshotCaptured": { "type": "boolean" },
+    "childProcessSpawnAllowed": { "type": "boolean" },
+    "childProcessAttested": { "type": "boolean" },
+    "pageLoadStarted": { "type": "boolean" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleImpact": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}

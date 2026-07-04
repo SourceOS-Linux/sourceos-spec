@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityPolicy.json",
+  "title": "CapabilityPolicy",
+  "description": "A typed capability authorization policy for execution forks, protocols, tools, and runtime primitives. This is the canonical allow/deny surface below which tool exposure policies may only reduce visibility, never widen authority.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "version", "defaultEffect", "grants"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:capability-policy:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:capability-policy:<local-id>."
+    },
+    "type": {
+      "const": "CapabilityPolicy",
+      "description": "Discriminator constant — always \"CapabilityPolicy\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable policy name."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semver version of this capability policy."
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional explanation of what this policy governs."
+    },
+    "appliesToTransport": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["mcp", "tritrpc", "cli", "api", "runtime"] },
+      "description": "Transports or invocation surfaces governed by this policy."
+    },
+    "defaultEffect": {
+      "type": "string",
+      "enum": ["allow", "deny"],
+      "description": "Default decision when no grant matches."
+    },
+    "tokenTtlSeconds": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Optional default token TTL for grants resolved from this policy."
+    },
+    "grants": {
+      "type": "array",
+      "description": "Ordered grants evaluated against subjects, capabilities, and optional selectors.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["effect", "capabilityPrefixes"],
+        "properties": {
+          "subjectRefs": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Explicit subjects, agents, services, or communities this grant applies to."
+          },
+          "effect": {
+            "type": "string",
+            "enum": ["allow", "deny"],
+            "description": "Grant effect."
+          },
+          "capabilityPrefixes": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Capability prefixes matched by this grant, e.g. net.http or fs.read."
+          },
+          "selectors": {
+            "type": "object",
+            "additionalProperties": true,
+            "description": "Optional workload, mission, repo, or trust-class selectors."
+          },
+          "requireHumanApproval": {
+            "type": "boolean",
+            "description": "Whether use of this grant requires explicit human approval."
+          }
+        }
+      }
+    }
+  }
+}

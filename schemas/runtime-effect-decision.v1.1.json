@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/runtime-effect-decision.v1.1.json",
+  "title": "SourceOS Runtime Effect Decision v1.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_kind",
+    "decision_id",
+    "ts_decided",
+    "policy_decision_ref",
+    "event_ref",
+    "runtime_effect",
+    "effect_status",
+    "effect_scope",
+    "authority_mutation_performed",
+    "ledger_write_performed",
+    "evidence_refs"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.1.0"},
+    "decision_kind": {"const": "runtime-effect-decision"},
+    "decision_id": {"type": "string", "minLength": 1},
+    "ts_decided": {"type": "string", "format": "date-time"},
+    "policy_decision_ref": {"type": "string", "minLength": 1},
+    "event_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_content_sha256"],
+      "properties": {
+        "event_id": {"type": "string", "minLength": 1},
+        "event_content_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "runtime_effect": {
+      "type": "string",
+      "enum": ["allow_dispatch", "deny_dispatch", "require_review", "redact_payload", "metadata_only", "export_ref_only", "quarantine", "block", "noop"]
+    },
+    "effect_status": {"type": "string", "enum": ["admitted", "partial", "rejected", "requires_review", "failed_closed"]},
+    "effect_scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["component_ref", "operation", "side_effecting"],
+      "properties": {
+        "component_ref": {"type": "string", "minLength": 1},
+        "operation": {"type": "string", "minLength": 1},
+        "side_effecting": {"type": "boolean"}
+      }
+    },
+    "authority_mutation_performed": {"const": false},
+    "ledger_write_performed": {"const": false},
+    "grant_state_decision_ref": {"type": ["string", "null"]},
+    "ledger_record_ref": {"type": ["string", "null"]},
+    "downstream_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}, "uniqueItems": true},
+    "explanation": {"type": "string"}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:config-source:sourceos-main-boot-config-2026-04-26",
+  "type": "ConfigSource",
+  "specVersion": "2.0.0",
+  "sourceKind": "git",
+  "uri": "https://github.com/SourceOS-Linux/sourceos-boot-config",
+  "gitRef": "refs/heads/main",
+  "gitCommit": "9f49e42af46d84c189b6313f5c8962c6ecd5076b",
+  "contentHash": "sha256:4e2b2e2c6a843f8b8cf38f7b47c8f875f1f9e4c4206e1f8e9c9f0ec9a0f7a001",
+  "inlineContent": null,
+  "authRef": null,
+  "status": "active",
+  "createdAt": "2026-04-26T14:00:00Z",
+  "notes": "Primary boot configuration source for SourceOS M2 demo, pinned to the main branch at the demo commit."
+}

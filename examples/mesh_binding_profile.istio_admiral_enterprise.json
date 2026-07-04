@@ -1,0 +1,36 @@
+{
+  "id": "urn:srcos:mesh-binding-profile:istio-egress-default",
+  "type": "MeshBindingProfile",
+  "specVersion": "2.2.0",
+  "name": "Istio/Admiral-style enterprise mesh egress binding",
+  "meshClass": "admiral-istio",
+  "scope": "enterprise",
+  "traffic": {
+    "egressMode": "egress-gateway",
+    "ingressMode": "gateway",
+    "allowedHosts": [
+      "models.enterprise.example",
+      "registry.enterprise.example",
+      "updates.enterprise.example"
+    ],
+    "deniedHosts": ["*"],
+    "mtlsRequired": true,
+    "externalModelEgressAllowed": false
+  },
+  "identity": {
+    "serviceAccountRef": "system:serviceaccount:sourceos:agent-machine-runner",
+    "spiffeIdRef": "spiffe://enterprise.example/sourceos/agent-machine-runner",
+    "workloadSelector": "app=sourceos-agent-machine",
+    "agentRegistryRef": "urn:socioprophet:agent-registry:agent-machine-runner"
+  },
+  "policyRefs": [
+    "urn:srcos:network-access-profile:enterprise-and-user-default",
+    "urn:srcos:firewall-binding-profile:enterprise-gateway-default"
+  ],
+  "evidence": {
+    "emitTrafficDecision": true,
+    "emitMeshPolicyRef": true,
+    "emitMtlsStatus": true,
+    "emitEgressGatewayReceipt": true
+  }
+}

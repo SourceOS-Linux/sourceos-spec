@@ -16,7 +16,8 @@
     "urn:sourceos:repo:SociOS-Linux:SourceOS",
     "urn:sourceos:repo:SociOS-Linux:socios",
     "urn:sourceos:repo:SocioProphet:sociosphere",
-    "urn:sourceos:repo:SociOS-Linux:socioslinux-web"
+    "urn:sourceos:repo:SociOS-Linux:socioslinux-web",
+    "urn:sourceos:repo:SourceOS-Linux:sourceos-devtools"
   ],
   "consumesVocabularyFrom": "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
   "notThisRepo": [

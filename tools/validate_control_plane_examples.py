@@ -20,6 +20,7 @@ def validate_pair(schema_path: Path, example_path: Path) -> None:
     jsonschema.validators.validator_for(schema).check_schema(schema)
     legacy_ref = schema.get("allOf", [{}])[0].get("$ref")
     validation_schema_path = schema_path.with_name(legacy_ref) if legacy_ref else schema_path
+    validation_schema_path = (schema_path.parent / legacy_ref).resolve() if legacy_ref else schema_path
     validation_schema = json.loads(validation_schema_path.read_text(encoding="utf-8"))
     example = json.loads(example_path.read_text(encoding="utf-8"))
     jsonschema.validate(example, validation_schema)

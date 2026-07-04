@@ -1,0 +1,152 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentMachineLocalDataPlane.json",
+  "title": "AgentMachineLocalDataPlane",
+  "description": "A SourceOS Agent Machine local data plane describing explicit host-to-agent workspace mounts for code, documents, downloads, artifacts, caches, media, and future app-door bridges.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "profileRef",
+    "mounts"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:agent-machine-local-data-plane:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:agent-machine-local-data-plane:<local-id>."
+    },
+    "type": {
+      "const": "AgentMachineLocalDataPlane"
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. 2.2.0."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profileRef": {
+      "type": "string",
+      "description": "Reference to the AgentMachineProfile or compatible profile that consumes this local data plane."
+    },
+    "hostAdapter": {
+      "type": "string",
+      "enum": ["macos", "windows", "linux", "cluster-linux"],
+      "description": "Host environment class for the data plane."
+    },
+    "storageBackend": {
+      "type": "string",
+      "enum": ["podman-bind", "podman-machine-bind", "wsl-bind", "native-bind", "topolvm-local-pv", "other"],
+      "default": "podman-machine-bind",
+      "description": "Storage backend realization. TopoLVM is valid only for Linux cluster-local persistent volume mode."
+    },
+    "mounts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/mount" }
+    },
+    "denyByDefault": {
+      "type": "boolean",
+      "default": true,
+      "description": "When true, only explicitly declared mounts are exposed."
+    },
+    "sensitivePathDenylist": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Host path fragments that must not be mounted by default."
+    },
+    "evidence": {
+      "$ref": "#/$defs/evidence"
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "$defs": {
+    "mount": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mountId", "pathClass", "hostPath", "agentPath", "accessMode"],
+      "properties": {
+        "mountId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pathClass": {
+          "type": "string",
+          "enum": ["code", "documents", "downloads", "cache", "artifacts", "media", "app-bridge"]
+        },
+        "hostPath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Host-side path template or path. Examples may use ~, but implementations must resolve and validate before mounting."
+        },
+        "agentPath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Container/agent-visible path."
+        },
+        "accessMode": {
+          "type": "string",
+          "enum": ["read-only", "read-write", "browser-read-write-agent-read-only", "write-only-artifacts"]
+        },
+        "defaultFor": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["agent", "browser", "editor", "terminal", "openclaw", "hermes", "codex", "claude-code"]
+          }
+        },
+        "repoAllowlist": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Optional repo names or path fragments allowed within a code root."
+        },
+        "secretsProhibited": {
+          "type": "boolean",
+          "default": true
+        },
+        "directExecutionAllowed": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether files from this mount may be executed directly. Downloads should normally set false."
+        },
+        "createIfMissing": {
+          "type": "boolean",
+          "default": false
+        },
+        "retentionPolicy": {
+          "type": "string",
+          "enum": ["user-managed", "workspace-ttl", "ephemeral", "retain-artifacts"],
+          "default": "user-managed"
+        },
+        "quotaHintMiB": {
+          "type": ["integer", "null"],
+          "minimum": 1
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "required": { "type": "boolean", "default": true },
+        "recordHostPath": { "type": "boolean", "default": true },
+        "recordAgentPath": { "type": "boolean", "default": true },
+        "recordAccessMode": { "type": "boolean", "default": true },
+        "recordPolicyHash": { "type": "boolean", "default": true },
+        "recordGitRefWhenAvailable": { "type": "boolean", "default": true },
+        "recordStorageBackend": { "type": "boolean", "default": true },
+        "recordDownloadHashes": { "type": "boolean", "default": true }
+      }
+    }
+  }
+}

@@ -1,0 +1,507 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SourceOSInteractionEvent.json",
+  "title": "SourceOSInteractionEvent",
+  "description": "Shared noetic interaction event envelope for governed chat, terminal, Matrix, and web surfaces that submit tasks, stream results, display governance traces, and hand off evidence across SourceOS.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "interactionEventId",
+    "type",
+    "specVersion",
+    "eventClass",
+    "occurredAt",
+    "surface",
+    "mode",
+    "session",
+    "actor",
+    "payloadMode",
+    "governanceTrace"
+  ],
+  "properties": {
+    "interactionEventId": {
+      "type": "string",
+      "pattern": "^urn:srcos:interaction-event:",
+      "description": "Stable URN identifier for this interaction event. Pattern: urn:srcos:interaction-event:<local-id>"
+    },
+    "type": {
+      "const": "SourceOSInteractionEvent",
+      "description": "Discriminator constant. Always SourceOSInteractionEvent."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "SourceOS spec version for this event shape."
+    },
+    "eventClass": {
+      "type": "string",
+      "enum": [
+        "interaction.session_started",
+        "interaction.message_posted",
+        "interaction.task_submitted",
+        "interaction.task_stream_delta",
+        "interaction.task_completed",
+        "interaction.task_failed",
+        "interaction.governance_trace",
+        "interaction.steering_intent",
+        "interaction.memory_scope_bound",
+        "interaction.context_pack_bound",
+        "interaction.policy_decision",
+        "interaction.approval_requested",
+        "interaction.approval_recorded",
+        "interaction.redacted"
+      ],
+      "description": "Class of noetic interaction event emitted by a surface or authority plane."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this interaction event occurred."
+    },
+    "surface": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Surface or authority plane that emitted the event.",
+      "required": [
+        "surfaceKind",
+        "sourcePlane"
+      ],
+      "properties": {
+        "surfaceKind": {
+          "type": "string",
+          "enum": [
+            "noetica",
+            "agent-term",
+            "matrix",
+            "prophet-workspace",
+            "superconscious",
+            "agentplane",
+            "api",
+            "other"
+          ],
+          "description": "Surface family or authority-plane family that produced this event."
+        },
+        "sourcePlane": {
+          "type": "string",
+          "description": "Concrete emitting plane or repository identifier such as SocioProphet/Noetica or SourceOS-Linux/agent-term."
+        },
+        "clientRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional client, device, workspace, or UI instance reference."
+        }
+      }
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "standalone",
+        "sourceos",
+        "dry-run",
+        "replay"
+      ],
+      "description": "Execution/routing mode used by the surface."
+    },
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Stable conversation and workroom scope binding for the interaction.",
+      "required": [
+        "sessionId"
+      ],
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "description": "Surface-local or SourceOS-global session identifier."
+        },
+        "conversationRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Conversation, chat, or transcript reference."
+        },
+        "roomRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Matrix room, channel, or workroom room reference."
+        },
+        "threadRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Thread root or work-order reference."
+        },
+        "workroomRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Prophet Workspace or Professional Workroom reference."
+        },
+        "topicRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Slash Topics or New Hope topic/membrane scope reference."
+        },
+        "opsHistoryEventRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:ops-history-event:|^$",
+          "description": "Optional OpsHistory event reference when this interaction is durably recorded."
+        }
+      }
+    },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Human, agent, bot, service, or system actor responsible for emitting or initiating the event.",
+      "required": [
+        "actorRef",
+        "actorKind"
+      ],
+      "properties": {
+        "actorRef": {
+          "type": "string",
+          "description": "Actor authority reference. Human subjects may use subject URNs; non-human actors must resolve through Agent Registry when enabled."
+        },
+        "actorKind": {
+          "type": "string",
+          "enum": [
+            "human",
+            "agent",
+            "service",
+            "bot",
+            "system"
+          ],
+          "description": "Actor class."
+        },
+        "agentRegistryRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Agent Registry identity/session/grant reference for non-human actors."
+        },
+        "onBehalfOfRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Optional subject, workroom, or service reference on whose behalf the actor operated."
+        }
+      }
+    },
+    "participants": {
+      "type": "array",
+      "description": "Participants visible in the interaction. This is descriptive only and does not grant authority.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "role",
+          "participantRef"
+        ],
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "user",
+              "assistant",
+              "operator",
+              "agent",
+              "provider",
+              "tool",
+              "observer"
+            ],
+            "description": "Participant role in the interaction."
+          },
+          "participantRef": {
+            "type": "string",
+            "description": "Stable participant reference."
+          },
+          "agentRegistryRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Optional Agent Registry reference for agent-like participants."
+          }
+        }
+      },
+      "default": []
+    },
+    "task": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Optional task/request/result projection for model calls, Superconscious submissions, or AgentPlane-mediated runs.",
+      "properties": {
+        "taskRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Task, run, or request reference."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "submitted",
+            "streaming",
+            "success",
+            "failure",
+            "blocked",
+            "unavailable",
+            "not_configured"
+          ],
+          "description": "Task status as visible to the surface."
+        },
+        "modelHint": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Model requested by the surface, before authoritative routing."
+        },
+        "modelRouted": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Model selected by the authoritative model router or standalone provider path."
+        },
+        "provider": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Provider or authority plane serving the task."
+        },
+        "latencyMs": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0,
+          "description": "Observed latency in milliseconds, when available."
+        }
+      }
+    },
+    "steeringIntent": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Optional steering intent. Blackbox prompting must not be represented as mechanistic SAE steering.",
+      "properties": {
+        "steeringKind": {
+          "type": "string",
+          "enum": [
+            "none",
+            "neuronpedia_feature",
+            "local_sae",
+            "sourceos_local",
+            "other"
+          ],
+          "description": "Steering mechanism class."
+        },
+        "featureRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Feature, layer, or steering primitive reference."
+        },
+        "strength": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Requested steering strength, if applicable."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "requested",
+            "applied",
+            "noop",
+            "not_configured",
+            "blocked"
+          ],
+          "description": "Steering execution status."
+        }
+      }
+    },
+    "governanceTrace": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "User-visible governance trail carried across web, terminal, Matrix, and authority-plane surfaces.",
+      "required": [
+        "policyAdmitted",
+        "memoryWritten"
+      ],
+      "properties": {
+        "policyAdmitted": {
+          "type": "boolean",
+          "description": "Whether policy admitted the visible operation."
+        },
+        "policyRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Primary policy reference or denial reference."
+        },
+        "policyDecisionRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Policy Fabric decision references authorizing routing, context release, memory, side effects, export, or redaction.",
+          "default": []
+        },
+        "grantRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tool/capability grant references requested or resolved through Agent Registry.",
+          "default": []
+        },
+        "memoryScopeRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Memory Mesh scope reference, if any."
+        },
+        "memoryWritten": {
+          "type": "boolean",
+          "description": "Whether durable memory writeback occurred."
+        },
+        "contextPackRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Context-pack references exchanged with Memory Mesh or AgentPlane.",
+          "default": []
+        },
+        "requestHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Hash of request envelope or prompt-relevant bounded payload."
+        },
+        "evidenceHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Hash of result/evidence envelope."
+        },
+        "providerRouteEvidenceRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Provider-route evidence reference for standalone or routed model calls."
+        },
+        "agentPlaneRunRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "AgentPlane run reference, if execution authority was involved."
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Evidence artifact references.",
+          "default": []
+        },
+        "replayRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Replay artifact or replay-plan reference."
+        }
+      }
+    },
+    "payloadMode": {
+      "type": "string",
+      "enum": [
+        "metadata-only",
+        "summary",
+        "ref-only",
+        "inline-bounded",
+        "redacted"
+      ],
+      "description": "Payload disclosure posture. Raw sensitive payloads are denied by default."
+    },
+    "payload": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "Optional bounded payload. Must not contain raw secrets, credentials, unrestricted browser history, unrestricted shell output, or private chain-of-thought."
+    },
+    "sourceEventRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Upstream source event references from OpsHistory, Matrix, Noetica, AgentTerm, Superconscious, AgentPlane, or provider paths.",
+      "default": []
+    },
+    "redactionRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Redaction tombstone references that affect this interaction.",
+      "default": []
+    },
+    "integrity": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Optional integrity envelope for this event.",
+      "properties": {
+        "eventHash": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Hash of canonicalized event content."
+        },
+        "signature": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Cryptographic signature over canonicalized event content, when present."
+        }
+      }
+    }
+  }
+}

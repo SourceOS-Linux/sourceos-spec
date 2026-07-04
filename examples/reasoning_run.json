@@ -1,0 +1,31 @@
+{
+  "id": "urn:srcos:reasoning-run:superconscious-demo",
+  "type": "ReasoningRun",
+  "specVersion": "2.0.0",
+  "status": "completed",
+  "task": {
+    "id": "urn:srcos:reasoning-task:basic-demo",
+    "title": "Basic deterministic reasoning run",
+    "objectiveHash": "sha256:demo-objective"
+  },
+  "agentRef": "urn:socioprophet:agent:superconscious-demo",
+  "workspaceRef": "urn:socioprophet:workspace:superconscious-m1",
+  "safeTrace": {
+    "mode": "operational-trace-only",
+    "rawPrivateReasoning": "not-collected",
+    "eventCount": 1
+  },
+  "eventRefs": [
+    "urn:srcos:reasoning-event:demo-created"
+  ],
+  "artifactRefs": [
+    "events.jsonl",
+    "reasoning-run.json",
+    "reasoning-receipt.json",
+    "reasoning-replay-plan.json",
+    "reasoning-benchmark.json"
+  ],
+  "adapterRecords": [],
+  "startedAt": "2026-05-05T00:00:00Z",
+  "completedAt": "2026-05-05T00:00:01Z"
+}

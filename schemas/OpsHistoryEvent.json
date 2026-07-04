@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OpsHistoryEvent.json",
+  "title": "OpsHistoryEvent",
+  "description": "Local-first operational event envelope for governed multi-chat human/agent operations. Payloads must be bounded, policy-admitted, and safe by default.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "eventId",
+    "specVersion",
+    "eventClass",
+    "occurredAt",
+    "actorRef",
+    "scope",
+    "payloadMode",
+    "policyDecisionRefs"
+  ],
+  "properties": {
+    "eventId": {
+      "type": "string",
+      "pattern": "^urn:srcos:ops-history-event:",
+      "description": "Stable OpsHistory event URN."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "SourceOS spec version for this event shape."
+    },
+    "eventClass": {
+      "type": "string",
+      "enum": [
+        "chat.message",
+        "chat.redaction",
+        "slash.command",
+        "agent.reply",
+        "agent.handoff",
+        "tool.call",
+        "browser.navigation",
+        "browser.capture",
+        "browser.download",
+        "browser.automation",
+        "shell.receipt",
+        "memory.recall",
+        "memory.writeback",
+        "policy.decision",
+        "agentplane.validation",
+        "agentplane.placement",
+        "agentplane.run",
+        "agentplane.replay",
+        "github.issue",
+        "github.pull_request",
+        "ci.status",
+        "artifact.reference",
+        "redaction.tombstone",
+        "revocation.notice"
+      ]
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actorRef": {
+      "type": "string",
+      "description": "Human subject, agent, service, or bot authority reference. Non-human actors must resolve through Agent Registry."
+    },
+    "agentRegistryRef": {
+      "type": ["string", "null"],
+      "description": "Agent Registry identity/grant/session ref for non-human actors."
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourcePlane"],
+      "properties": {
+        "sourcePlane": {
+          "type": "string",
+          "enum": ["agent-term", "bearbrowser", "sourceos-shell", "turtleterm", "memory-mesh", "policy-fabric", "agent-registry", "agentplane", "github", "ci", "other"]
+        },
+        "roomRef": { "type": ["string", "null"] },
+        "threadRef": { "type": ["string", "null"] },
+        "workroomRef": { "type": ["string", "null"] },
+        "topicRef": { "type": ["string", "null"] },
+        "profileRef": { "type": ["string", "null"] },
+        "sessionRef": { "type": ["string", "null"] }
+      }
+    },
+    "payloadMode": {
+      "type": "string",
+      "enum": ["metadata-only", "summary", "ref-only", "inline-bounded", "redacted"],
+      "description": "Raw sensitive payloads are denied by default. Use ref-only for large artifacts."
+    },
+    "payload": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "Optional bounded payload. Must not contain raw secrets, credentials, unrestricted browser history, or unrestricted shell output."
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Policy Fabric decision refs authorizing replication, hydration, writeback, bridge/export, or redaction."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "redactionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "integrity": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "eventHash": { "type": ["string", "null"] },
+        "signature": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

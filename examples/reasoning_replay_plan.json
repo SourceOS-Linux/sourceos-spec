@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:reasoning-replay-plan:superconscious-demo",
+  "type": "ReasoningReplayPlan",
+  "specVersion": "2.0.0",
+  "runRef": "urn:srcos:reasoning-run:superconscious-demo",
+  "replayClass": "exact",
+  "inputs": {
+    "taskRef": "urn:srcos:reasoning-task:basic-demo",
+    "taskHash": "sha256:demo-task",
+    "mode": "deterministic-local"
+  },
+  "constraints": {
+    "network": "denied",
+    "modelCalls": "denied",
+    "hostState": "unchanged"
+  },
+  "stepRefs": [
+    "urn:srcos:reasoning-event:demo-created"
+  ],
+  "capturedAt": "2026-05-05T00:00:01Z"
+}

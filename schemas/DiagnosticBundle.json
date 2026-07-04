@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DiagnosticBundle.json",
+  "title": "DiagnosticBundle",
+  "description": "A sysdiagnose-style diagnostic collection bundle for a host. Captures immutable identity (where available), executed probes, risk policy flags, and artifact hashes so the bundle can be verified and ingested as evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "profile",
+    "capturedAt",
+    "host",
+    "bundle",
+    "probes",
+    "artifactHashes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:diag-bundle:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:diag-bundle:<local-id>"
+    },
+    "type": {
+      "const": "DiagnosticBundle",
+      "description": "Discriminator constant — always \"DiagnosticBundle\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Collector profile identifier (e.g. silverblue-baseline, boot-trust, security-persistence)."
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when capture began (or when the bundle was finalized)."
+    },
+    "host": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["hostname"],
+      "properties": {
+        "hostname": {
+          "type": "string",
+          "description": "System hostname at capture time."
+        },
+        "machineId": {
+          "type": ["string", "null"],
+          "description": "Optional machine-id (/etc/machine-id) if captured and permitted."
+        },
+        "bootId": {
+          "type": ["string", "null"],
+          "description": "Optional system boot-id if captured."
+        },
+        "osRelease": {
+          "type": ["string", "null"],
+          "description": "Optional /etc/os-release content fingerprint or identifier."
+        },
+        "kernel": {
+          "type": ["string", "null"],
+          "description": "Optional kernel release string (e.g. uname -r)."
+        },
+        "arch": {
+          "type": ["string", "null"],
+          "description": "Optional architecture (e.g. x86_64, aarch64)."
+        },
+        "immutable": {
+          "type": ["boolean", "null"],
+          "description": "Optional: whether the host is in an immutable deployment mode (e.g. rpm-ostree)."
+        },
+        "ostree": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "bootedDeployment": { "type": ["string", "null"], "description": "Optional booted deployment identifier." },
+            "origin": { "type": ["string", "null"], "description": "Optional origin ref (rpm-ostree)." },
+            "commit": { "type": ["string", "null"], "description": "Optional OSTree commit hash." }
+          },
+          "description": "Optional immutable deployment identity fields." 
+        }
+      },
+      "description": "Host identity snapshot.",
+      "default": {}
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enablePerf": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether perf sampling collectors were enabled."
+        },
+        "enablePcap": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether packet capture collectors were enabled."
+        },
+        "deepUserJournal": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether deeper user-session journald capture was enabled."
+        }
+      },
+      "description": "Policy flags recorded at capture time (risk-gated collectors)."
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["format", "rootRef"],
+      "properties": {
+        "format": {
+          "enum": ["directory", "tar.gz", "zip"],
+          "description": "Bundle packaging format."
+        },
+        "rootRef": {
+          "$ref": "DataRef.json",
+          "description": "DataRef pointing to the bundle root (directory or archive file)."
+        },
+        "manifestRef": {
+          "$ref": "DataRef.json",
+          "description": "Optional DataRef to machine-readable manifest.json within the bundle."
+        },
+        "ledgerRef": {
+          "$ref": "DataRef.json",
+          "description": "Optional DataRef to the sysdiagnose-style ledger (manifest.tsv)."
+        },
+        "policyRef": {
+          "$ref": "DataRef.json",
+          "description": "Optional DataRef to policy.json emitted by the collector."
+        }
+      },
+      "description": "Pointers to the bundle and its primary index artifacts." 
+    },
+    "probes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "DiagnosticProbeResult.json" },
+      "description": "Per-probe execution records." 
+    },
+    "artifactHashes": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "sha256: prefixed hashes for bundle artifacts (including manifest, policy, and any attached files)." 
+    },
+    "runRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:run:",
+      "description": "Optional RunRecord URN if this capture was recorded as a typed workload run."
+    },
+    "telemetryRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:telemetry:",
+      "description": "Optional TelemetryEvent URN for the bundle creation event."
+    }
+  }
+}

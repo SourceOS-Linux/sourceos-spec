@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:firewall-binding-profile:macos-lulu-user-default",
+  "type": "FirewallBindingProfile",
+  "specVersion": "2.2.0",
+  "name": "macOS user firewall binding for SourceOS local tools",
+  "bindingClass": "macos-lulu",
+  "mode": "plan",
+  "owner": "user",
+  "precedence": 50,
+  "conflictPolicy": "most-restrictive-wins",
+  "rules": [
+    {
+      "ruleId": "allow-local-ollama",
+      "direction": "egress",
+      "decision": "allow",
+      "subject": "sourceosctl",
+      "destination": "127.0.0.1",
+      "ports": [11434],
+      "protocols": ["tcp", "http"],
+      "reason": "Allow local model runtime probe without external network egress."
+    },
+    {
+      "ruleId": "ask-external-model-provider",
+      "direction": "egress",
+      "decision": "ask",
+      "subject": "sourceosctl",
+      "destination": "external-model-provider",
+      "ports": [443],
+      "protocols": ["tcp", "https"],
+      "reason": "External model provider access is user-visible and policy-gated."
+    }
+  ],
+  "evidence": {
+    "emitRulePlan": true,
+    "emitAppliedRuleReceipt": true,
+    "emitDeniedConnectionReceipt": true,
+    "redactDestinations": true
+  }
+}

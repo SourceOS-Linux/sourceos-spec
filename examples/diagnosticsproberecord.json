@@ -1,0 +1,20 @@
+{
+  "name": "journal_boot",
+  "tier": 0,
+  "timeoutSeconds": 25,
+  "command": "journalctl --boot -0 --no-pager -o short-iso",
+  "exitCode": 0,
+  "timeoutHit": false,
+  "durationMs": 412,
+  "stdout": {
+    "path": "raw/0/journal_boot.out",
+    "bytes": 18442,
+    "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+  },
+  "stderr": {
+    "path": "raw/0/journal_boot.err",
+    "bytes": 0,
+    "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+  },
+  "rssMaxKb": 2048
+}

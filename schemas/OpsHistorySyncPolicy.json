@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OpsHistorySyncPolicy.json",
+  "title": "OpsHistorySyncPolicy",
+  "description": "Topology-aware local-first propagation policy for OpsHistory events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["policyId", "specVersion", "defaultPayloadCapChars", "topologyProfiles", "redactionPriority"],
+  "properties": {
+    "policyId": {
+      "type": "string",
+      "pattern": "^urn:srcos:ops-history-sync-policy:"
+    },
+    "specVersion": { "type": "string" },
+    "defaultPayloadCapChars": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "defaultSyncWindowSeconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "offlineBehavior": {
+      "type": "string",
+      "enum": ["queue-local", "deny", "metadata-only", "ref-only"]
+    },
+    "topologyProfiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "eventLanes"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "enum": ["solo-local", "active-multi-agent-room", "multi-room-workroom", "enterprise-bridge", "offline-fog"]
+          },
+          "eventLanes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["lane", "priority", "cadence"],
+              "properties": {
+                "lane": {
+                  "type": "string",
+                  "enum": ["control", "operational", "memory", "artifact", "push", "redaction"]
+                },
+                "priority": {
+                  "type": "string",
+                  "enum": ["maintenance", "normal", "high", "critical"]
+                },
+                "cadence": {
+                  "type": "array",
+                  "description": "Ordered count/interval schedule similar to count:interval backoff policy.",
+                  "items": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": ["count", "intervalSeconds"],
+                    "properties": {
+                      "count": { "type": "integer", "minimum": 1 },
+                      "intervalSeconds": { "type": "integer", "minimum": 0 }
+                    }
+                  }
+                },
+                "payloadCapChars": { "type": ["integer", "null"], "minimum": 0 },
+                "syncWindowSeconds": { "type": ["integer", "null"], "minimum": 0 },
+                "requiresPolicyDecision": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "redactionPriority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["priority", "targetPropagationSeconds", "invalidateContextPacks"],
+      "properties": {
+        "priority": { "type": "string", "enum": ["high", "critical"] },
+        "targetPropagationSeconds": { "type": "integer", "minimum": 0 },
+        "invalidateContextPacks": { "type": "boolean" },
+        "invalidateMemoryWritebacks": { "type": "boolean" },
+        "invalidateArtifactExports": { "type": "boolean" }
+      }
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "meteredAllowed": { "type": "boolean" },
+        "batteryAllowed": { "type": "boolean" },
+        "transferDirection": { "type": "string", "enum": ["none", "upload", "download", "bidirectional"] }
+      }
+    }
+  }
+}

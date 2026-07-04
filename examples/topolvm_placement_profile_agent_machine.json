@@ -1,0 +1,69 @@
+{
+  "id": "urn:srcos:topolvm-placement-profile:agent-machine-cluster-local",
+  "type": "TopoLVMPlacementProfile",
+  "specVersion": "2.2.0",
+  "name": "Agent Machine cluster-local TopoLVM placement profile",
+  "localDataPlaneRef": "urn:srcos:agent-machine-local-data-plane:cluster-default",
+  "storageClassName": "topolvm-provisioner",
+  "sharedStorageSemantics": "node-local",
+  "nodeTopology": {
+    "requiredNodeLabels": {
+      "srcos.ai/storage": "topolvm",
+      "srcos.ai/agent-machine": "enabled"
+    },
+    "preferredNodeLabels": {
+      "srcos.ai/workload-class": "agent-workspace"
+    },
+    "allowRescheduleAcrossNodes": false
+  },
+  "volumeClaims": [
+    {
+      "claimName": "agent-machine-code",
+      "pathClass": "code",
+      "agentPath": "/workspace/dev",
+      "accessMode": "ReadWriteOnce",
+      "sizeGiB": 64,
+      "volumeMode": "Filesystem",
+      "filesystem": "xfs",
+      "expansionAllowed": true,
+      "snapshotAllowed": false,
+      "sourceMountId": "dev-root",
+      "description": "Cluster-local code workspace volume. This is node-local storage and should be scheduled where the volume exists."
+    },
+    {
+      "claimName": "agent-machine-output",
+      "pathClass": "documents",
+      "agentPath": "/workspace/output",
+      "accessMode": "ReadWriteOnce",
+      "sizeGiB": 32,
+      "volumeMode": "Filesystem",
+      "filesystem": "xfs",
+      "expansionAllowed": true,
+      "snapshotAllowed": false,
+      "sourceMountId": "docs-output",
+      "description": "Cluster-local generated document/report output volume."
+    },
+    {
+      "claimName": "agent-machine-downloads",
+      "pathClass": "downloads",
+      "agentPath": "/workspace/downloads",
+      "accessMode": "ReadWriteOnce",
+      "sizeGiB": 16,
+      "volumeMode": "Filesystem",
+      "filesystem": "xfs",
+      "expansionAllowed": true,
+      "snapshotAllowed": false,
+      "sourceMountId": "browser-downloads",
+      "description": "Cluster-local scoped browser downloads volume. Download artifacts should be hashed and promoted explicitly."
+    }
+  ],
+  "evidence": {
+    "required": true,
+    "recordStorageClass": true,
+    "recordNodePlacement": true,
+    "recordPVC": true,
+    "recordPV": true,
+    "recordMountPolicyHash": true
+  },
+  "notes": "TopoLVM provides topology-aware node-local persistent volumes. This profile intentionally does not claim cross-node shared filesystem semantics."
+}
