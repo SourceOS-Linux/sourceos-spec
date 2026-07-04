@@ -1,0 +1,580 @@
+{
+  "id": "urn:srcos:identity-spine:yi-globe:v1",
+  "type": "IdentitySpine",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-06-29T00:00:00Z",
+  "canonicalSpine": "yi-globe-64gate",
+  "spineVersion": "1.0.0",
+  "axes": [
+    {
+      "axisId": "shadowGift",
+      "kind": "ordinal",
+      "stops": [
+        "shadow",
+        "gift",
+        "siddhi"
+      ],
+      "range": {
+        "min": -1,
+        "max": 2
+      }
+    },
+    {
+      "axisId": "blockedOpen",
+      "kind": "ordinal",
+      "stops": [
+        "blocked",
+        "open"
+      ],
+      "range": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    {
+      "axisId": "ascendingDescending",
+      "kind": "signed",
+      "stops": [
+        "descending",
+        "ascending"
+      ],
+      "range": {
+        "min": -1,
+        "max": 1
+      }
+    }
+  ],
+  "gates": [
+    {
+      "gateId": "gate_01",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_02",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_03",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_04",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_05",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_06",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_07",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_08",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_09",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_10",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_11",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_12",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_13",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_14",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_15",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_16",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_17",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_18",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_19",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_20",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_21",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_22",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_23",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_24",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_25",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_26",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_27",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_28",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_29",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_30",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_31",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_32",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_33",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_34",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_35",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_36",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_37",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_38",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_39",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_40",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_41",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_42",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_43",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_44",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_45",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_46",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_47",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_48",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_49",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_50",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_51",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_52",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_53",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_54",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_55",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_56",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_57",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_58",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_59",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_60",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_61",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_62",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_63",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    },
+    {
+      "gateId": "gate_64",
+      "axisIds": [
+        "shadowGift",
+        "blockedOpen",
+        "ascendingDescending"
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "traditionId": "zodiac",
+      "oneWay": true,
+      "sourceOfTruth": false,
+      "symbolic": true,
+      "view": [
+        {
+          "gateRef": "gate_25",
+          "symbol": "Aries"
+        },
+        {
+          "gateRef": "gate_46",
+          "symbol": "Virgo"
+        }
+      ]
+    }
+  ],
+  "privacyClass": "public-shared"
+}

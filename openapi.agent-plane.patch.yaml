@@ -128,3 +128,122 @@ paths:
         '422':
           description: Request body is valid JSON but fails schema validation.
 
+  /v2/artifacts/manifest:
+    post:
+      operationId: upsertArtifactManifest
+      summary: Upsert an ArtifactManifest
+      description: Creates or updates a shell/document artifact manifest for a derived artifact such as a PDF.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/ArtifactManifest.json' }
+      responses:
+        '200':
+          description: ArtifactManifest recorded successfully.
+
+  /v2/artifacts/signature:
+    post:
+      operationId: recordSignedArtifact
+      summary: Record a SignedArtifact
+      description: Persists the signature metadata associated with a signed artifact.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/SignedArtifact.json' }
+      responses:
+        '200':
+          description: SignedArtifact recorded successfully.
+
+  /v2/artifacts/validation:
+    post:
+      operationId: recordPdfValidationReport
+      summary: Record a PdfValidationReport
+      description: Persists a PDF validation report for an artifact.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/PdfValidationReport.json' }
+      responses:
+        '200':
+          description: PdfValidationReport recorded successfully.
+
+  /v2/annotations/export:
+    post:
+      operationId: recordAnnotationExport
+      summary: Record an AnnotationExport
+      description: Persists an annotation export from PDF or HTML review surfaces.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/AnnotationExport.json' }
+      responses:
+        '200':
+          description: AnnotationExport recorded successfully.
+
+  /v2/runs/report:
+    post:
+      operationId: recordRunReport
+      summary: Record a RunReport
+      description: Persists a run report describing workflow artifacts and publication outputs.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/RunReport.json' }
+      responses:
+        '200':
+          description: RunReport recorded successfully.
+
+  /v2/diagnostics/noether:
+    post:
+      operationId: recordNoetherDiagnostic
+      summary: Record a NoetherDiagnostic
+      description: Persists a Noether diagnostic reading for a model layer or run.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/NoetherDiagnostic.json' }
+      responses:
+        '200':
+          description: NoetherDiagnostic recorded successfully.
+
+  /v2/publish/decisions:
+    post:
+      operationId: recordPublishDecision
+      summary: Record a PublishDecision
+      description: Persists a publish decision across knowledge, value, and ecosystem openness lanes.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/PublishDecision.json' }
+      responses:
+        '200':
+          description: PublishDecision recorded successfully.
+
+  /v2/mirror/receipts:
+    post:
+      operationId: recordMirrorReceipt
+      summary: Record a MirrorReceipt
+      description: Persists a receipt for an artifact mirrored to a downstream channel.
+      tags: [Agent Plane]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: './schemas/MirrorReceipt.json' }
+      responses:
+        '200':
+          description: MirrorReceipt recorded successfully.
