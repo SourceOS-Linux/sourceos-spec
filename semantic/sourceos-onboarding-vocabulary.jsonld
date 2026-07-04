@@ -1,0 +1,58 @@
+{
+  "@context": {
+    "srcos": "https://schemas.srcos.ai/v2/",
+    "schema": "https://schema.org/",
+    "id": "@id",
+    "type": "@type",
+    "WorkspaceScope": "srcos:WorkspaceScope",
+    "TrustMode": "srcos:TrustMode",
+    "CapabilityPack": "srcos:CapabilityPack",
+    "ConnectorActionScope": "srcos:ConnectorActionScope",
+    "AutomationTemplate": "srcos:AutomationTemplate",
+    "OnboardingReceipt": "srcos:OnboardingReceipt",
+    "workspaceKind": "srcos:workspaceKind",
+    "mountMode": "srcos:mountMode",
+    "riskLevel": "srcos:riskLevel",
+    "receiptRequired": "srcos:receiptRequired",
+    "requiresExplicitApproval": "srcos:requiresExplicitApproval",
+    "enabledCapabilityPack": "srcos:enabledCapabilityPack",
+    "enabledConnectorActionScope": "srcos:enabledConnectorActionScope",
+    "enabledAutomationTemplate": "srcos:enabledAutomationTemplate",
+    "trialTask": "srcos:trialTask",
+    "revocation": "srcos:revocation",
+    "policyDecisionRef": "srcos:policyDecisionRef",
+    "artifactRef": "srcos:artifactRef"
+  },
+  "@graph": [
+    {
+      "@id": "srcos:WorkspaceScope",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "WorkspaceScope"
+    },
+    {
+      "@id": "srcos:TrustMode",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "TrustMode"
+    },
+    {
+      "@id": "srcos:CapabilityPack",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "CapabilityPack"
+    },
+    {
+      "@id": "srcos:ConnectorActionScope",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "ConnectorActionScope"
+    },
+    {
+      "@id": "srcos:AutomationTemplate",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "AutomationTemplate"
+    },
+    {
+      "@id": "srcos:OnboardingReceipt",
+      "@type": "schema:DefinedTerm",
+      "schema:name": "OnboardingReceipt"
+    }
+  ]
+}
