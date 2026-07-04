@@ -1,0 +1,36 @@
+{
+  "id": "urn:srcos:netting-cell:cu-trade-0001",
+  "type": "NettingCell",
+  "specVersion": "2.0.0",
+  "legs": [
+    {
+      "party": "urn:srcos:party:antofagasta-port",
+      "role": "A",
+      "valueRef": "asset://copper-cathode/500t",
+      "proofRef": "urn:srcos:attestation:antofagasta/bill-of-lading"
+    },
+    {
+      "party": "urn:srcos:party:shanghai-buyer",
+      "role": "B",
+      "valueRef": "asset://ASI/1.16M",
+      "capabilityRef": "cap://import-license/cn"
+    },
+    {
+      "party": "urn:srcos:party:clearing-verifier",
+      "role": "C",
+      "proofRef": "urn:srcos:attestation:route-anf-sha/delivery"
+    }
+  ],
+  "stage": "Verified",
+  "truthClass": "ATTESTED",
+  "admissibility": "release",
+  "bundleRefs": [
+    "urn:srcos:triparty-bundle:cu-trade-0001-fill",
+    "urn:srcos:triparty-bundle:cu-trade-0001-verify"
+  ],
+  "policyKernelRef": "policy://triparty/release-guard",
+  "reserveRef": "reserve://asi/primary",
+  "netAmount": 1160000,
+  "asset": "ASI",
+  "supplyChainRef": "hg:route/anf-sha"
+}

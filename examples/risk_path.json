@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:risk-path:copper-cathode",
+  "type": "RiskPath",
+  "specVersion": "2.0.0",
+  "criticalService": "Copper cathode · Antofagasta → Shanghai",
+  "serviceOwner": "Copper Capital Syndicate",
+  "nodeRefs": [
+    "urn:srcos:risk-node:escondida",
+    "urn:srcos:risk-node:antofagasta-port",
+    "urn:srcos:risk-node:route-anf-sha"
+  ],
+  "pathRisk": 0.48,
+  "rating": "High",
+  "impactTolerance": "< 2 weeks"
+}

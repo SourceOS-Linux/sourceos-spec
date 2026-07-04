@@ -1,0 +1,18 @@
+{
+  "id": "urn:srcos:risk-cluster:trans-pacific-shipping",
+  "type": "RiskCluster",
+  "specVersion": "2.0.0",
+  "clusterName": "Trans-Pacific shipping lanes",
+  "clusterType": "Logistics / route concentration",
+  "providerShares": [
+    0.55,
+    0.25,
+    0.2
+  ],
+  "hhi": 0.39,
+  "blastRadius": 0.6,
+  "timeToRecover": 0.5,
+  "exitDifficulty": 0.7,
+  "residualCommonMode": 0.52,
+  "rating": "High"
+}
