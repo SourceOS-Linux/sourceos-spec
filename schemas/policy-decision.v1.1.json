@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/policy-decision.v1.1.json",
+  "title": "Policy Fabric Decision v1.1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["schema_version", "decision_kind", "decision_id", "ts_decided", "event_ref", "policy_ref", "decision_family", "outcome", "verdict_status", "payload_mode", "decision_authority"],
+  "properties": {
+    "schema_version": {"const": "1.1.0"},
+    "decision_kind": {"const": "policy-fabric-decision"},
+    "decision_id": {"type": "string"},
+    "ts_decided": {"type": "string", "format": "date-time"},
+    "event_ref": {"type": "object", "required": ["event_id", "event_class", "event_content_sha256"], "properties": {"event_id": {"type": "string"}, "event_class": {"type": "string"}, "event_content_sha256": {"$ref": "#/$defs/sha256"}}},
+    "policy_ref": {"type": "object", "required": ["policy_id", "policy_content_sha256", "policy_epoch"], "properties": {"policy_id": {"type": "string"}, "policy_content_sha256": {"$ref": "#/$defs/sha256"}, "policy_epoch": {"type": "integer", "minimum": 0}}},
+    "decision_family": {"type": "string", "enum": ["replicate_event", "hydrate_context", "write_memory", "redact_event", "bridge_event", "export_artifact", "browser_event_export", "receipt_event_export"]},
+    "outcome": {"type": "string", "enum": ["allow", "deny", "summary_only", "ref_only", "redaction_required"]},
+    "verdict_status": {"type": "string", "enum": ["admitted", "partial", "rejected", "undecided"]},
+    "followup_required": {"type": ["object", "null"]},
+    "payload_mode": {"type": "string", "enum": ["metadata-only", "summary", "ref-only", "inline-bounded", "redacted"]},
+    "decision_authority": {"type": "object", "required": ["authority_id", "authority_kind", "authority_layer"], "properties": {"authority_id": {"type": "string"}, "authority_kind": {"enum": ["role", "individual", "service_account", "quorum"]}, "authority_layer": {"enum": ["institutional_truth", "grounded_schema", "commonsense_prior"]}}},
+    "explanation": {"type": "string"},
+    "evidence_refs": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {"sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}}
+}

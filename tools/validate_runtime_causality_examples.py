@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate runtime-causality schema/example pairs."""
+"""Validate runtime diagnostic schema/example pairs."""
 from __future__ import annotations
 
 import json

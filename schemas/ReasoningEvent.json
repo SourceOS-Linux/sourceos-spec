@@ -15,6 +15,19 @@
     "summary": { "type": "string" },
     "traceLevel": { "enum": ["public-safe", "workspace-safe", "operator-private", "restricted"] },
     "trustLevel": { "enum": ["trusted-control-input", "trusted-workspace-source", "semi-trusted-project-source", "untrusted-observation", "restricted-material"] },
-    "capturedAt": { "type": "string", "format": "date-time" }
+    "capturedAt": { "type": "string", "format": "date-time" },
+    "controlFlow": {
+      "type": "object",
+      "description": "Optional operational control-flow annotation. Present on the reserved control-flow eventTypes so downstream consumers can recover orchestration structure (e.g. SP-TRACE-CFR narration-fidelity verification) WITHOUT collecting raw reasoning — operational structure only, honoring traceLevel/trustLevel. Reserved eventTypes: 'reasoning.tool.called' (site), 'reasoning.decision.branched' (site, branchTaken, guardPosition), 'reasoning.subrun.spawned' / 'reasoning.subrun.joined' (site, sidechainId), 'reasoning.run.completed' (site).",
+      "properties": {
+        "site": { "type": "string", "description": "Stable orchestration-site identity; the decision-fold key (not a payload hash)." },
+        "branchTaken": { "type": ["string", "null"], "description": "Edge label on a decision successor (e.g. true/false/case:k)." },
+        "guardPosition": { "enum": ["pre", "post", null], "description": "Loop guard relative to first body execution: pre = pre-checked (WHILE), post = post-checked (DO_WHILE)." },
+        "sidechainId": { "type": ["string", "null"], "description": "Delegated sub-run id for spawn/join (SESE sidechain)." },
+        "arg": { "type": ["string", "null"], "description": "Argument name whose provenance carries this event's trustLevel (argument-level taint / IFC)." }
+      },
+      "required": ["site"],
+      "additionalProperties": true
+    }
   }
 }

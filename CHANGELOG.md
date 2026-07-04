@@ -9,6 +9,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Thi
 ## [Unreleased]
 
 ### Added
+- Onboarding control-plane contract family: `WorkspaceScope`, `TrustMode`, `CapabilityPack`, `ConnectorActionScope`, `AutomationTemplate`, and `OnboardingReceipt`, with canonical first-run examples, semantic vocabulary seed, ADR, and `validate-onboarding-examples` validation target.
+- `ReasoningEvent.controlFlow` (optional) + a reserved control-flow `eventType` vocabulary (`reasoning.tool.called` / `reasoning.decision.branched` / `reasoning.subrun.spawned` / `reasoning.subrun.joined` / `reasoning.run.completed`) so emitters can carry a run's operational control flow for downstream narration-fidelity verification (SP-TRACE-CFR). Backward-compatible; operational structure only (no raw reasoning). See `docs/reasoning-control-flow-events.md` and `examples/reasoning_event_control_flow.json`.
+- SourceOS interaction substrate top-level index and README discovery links for `SourceOSInteractionEvent`, generated TypeScript/Python artifacts, and the Noetica → Superconscious → AgentPlane → AgentTerm reference flow.
+- Runtime observability and capability governance contracts: `CapabilityLedger`, `BrowserAutomationReceipt`, `GitWorkspaceState`, `OrphanEventReceipt`, and `RuntimeInstallReceipt` with canonical examples, validation wiring (`tools/validate_runtime_observability_examples.py`), a contract catalog, and ADR-0012.
 - Reasoning run contracts: `ReasoningRun`, `ReasoningEvent`, `ReasoningReceipt`, `ReasoningReplayPlan`, and `ReasoningBenchmark` with canonical examples and a contract-additions note for the Superconscious reference loop.
 - Agent Machine / Model Carry schemas: `SourceOSModelCarryRef`, `InferenceProvider`, `ModelResidency`, `PlacementFact`, and `AgentMachineReceipt` with canonical examples and a contract-additions placement note.
 - NLBoot object schemas: `NLBootPlan`, `ArtifactCacheRecord`, `BootProofRecord`, `AppleSiliconAdapterEvidence` with canonical examples and validation (`tools/validate_nlboot_examples.py`)

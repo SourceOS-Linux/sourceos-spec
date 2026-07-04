@@ -1,0 +1,31 @@
+name: validate-sync-cycle-receipts
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-sync-cycle-receipts:
+    name: Validate SyncCycleReceipt contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate SyncCycleReceipt schema and examples
+        run: |
+          python3 -m pip install jsonschema
+          python3 tools/validate_sync_cycle_receipts.py

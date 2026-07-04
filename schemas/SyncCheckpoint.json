@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SyncCheckpoint.json",
+  "title": "SyncCheckpoint",
+  "description": "Local-first sync checkpoint capturing offline queue state, last-sync position, and sync health for a SourceOS device. Supports offline replay and recovery.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "deviceRef",
+    "checkpointAt",
+    "syncState",
+    "policyDecisionRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:sync-checkpoint:",
+      "description": "Stable sync-checkpoint URN."
+    },
+    "type": { "const": "SyncCheckpoint" },
+    "specVersion": { "type": "string" },
+    "deviceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:device-identity:",
+      "description": "DeviceIdentity URN for the device this checkpoint describes."
+    },
+    "checkpointAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp at which this checkpoint was recorded."
+    },
+    "syncState": {
+      "type": "string",
+      "enum": ["idle", "syncing", "offline-queued", "conflict", "error", "recovery"],
+      "description": "Current sync health state of this device."
+    },
+    "lastSyncedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Timestamp of the last successful sync with a remote or peer device."
+    },
+    "lastSyncedRemoteRef": {
+      "type": ["string", "null"],
+      "description": "Remote endpoint or peer device URN for the last successful sync."
+    },
+    "queueDepth": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Number of LocalOperationLog entries currently in the offline queue awaiting sync."
+    },
+    "offlineQueueRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:local-operation-log:" },
+      "default": [],
+      "description": "LocalOperationLog URNs pending sync in the offline queue."
+    },
+    "conflictRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:sync-conflict:" },
+      "default": [],
+      "description": "SyncConflictRecord URNs awaiting resolution."
+    },
+    "replayPending": {
+      "type": "boolean",
+      "description": "Whether offline-queued entries are pending replay on reconnection."
+    },
+    "replaySafeQueueDepth": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "description": "Number of queued entries with replaySafe=true, eligible for automatic replay."
+    },
+    "network": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["online", "offline", "metered", "battery-saver", "unknown"]
+        },
+        "offlineSince": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Policy Fabric decision refs governing sync admission and replay."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  }
+}

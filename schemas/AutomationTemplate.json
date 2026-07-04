@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AutomationTemplate.json",
+  "title": "AutomationTemplate",
+  "description": "Reusable governed work template for manual, scheduled, event-driven, or conditional agent work. Binds required capability packs, connector action scopes, output artifacts, lifecycle defaults, and receipt requirements.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "category", "trigger", "requiredCapabilityPackRefs", "requiredPermissionRefs", "defaultTimeWindow", "outputs", "receiptRequired"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:automation-template:", "description": "Stable URN identifier." },
+    "type": { "const": "AutomationTemplate", "description": "Discriminator constant." },
+    "specVersion": { "type": "string", "description": "Spec version." },
+    "name": { "type": "string", "description": "Human-readable template name." },
+    "description": { "type": "string", "description": "Template purpose." },
+    "category": { "enum": ["statusReports", "releasePrep", "incidentsAndTriage", "codeQuality", "repoMaintenance", "securityCompliance", "fogstackOperations", "sourceosWorkstation", "knowledgeOffice", "researchCurriculum", "communityGrowth", "custom"], "description": "Operational category." },
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["manual", "schedule", "event", "condition"], "description": "Activation kind." },
+        "schedule": { "type": ["string", "null"], "description": "Cron, RRULE, or platform schedule reference." },
+        "eventRef": { "type": ["string", "null"], "description": "Event, topic, webhook, or signal reference." },
+        "condition": { "type": ["string", "null"], "description": "Policy-evaluable condition." }
+      }
+    },
+    "requiredCapabilityPackRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:capability-pack:" }, "description": "Required capability packs." },
+    "requiredConnectorActionScopeRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:connector-action-scope:" }, "description": "Required connector action scopes." },
+    "requiredPermissionRefs": { "type": "array", "items": { "type": "string" }, "description": "Canonical permission identifiers." },
+    "defaultTimeWindow": { "type": "string", "description": "Default temporal scope, such as previous_day or since_last_run." },
+    "outputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "name"],
+        "properties": {
+          "kind": { "type": "string", "description": "Output kind." },
+          "name": { "type": "string", "description": "Output name or relative path." },
+          "required": { "type": "boolean", "default": true, "description": "Whether the output is mandatory." },
+          "contentHashRequired": { "type": "boolean", "default": false, "description": "Whether the output needs a hash." }
+        }
+      },
+      "description": "Expected work products."
+    },
+    "automationLifecycle": { "type": "array", "items": { "enum": ["draft", "enabled", "paused", "running", "failed", "disabled", "revoked", "expired"] }, "description": "Allowed lifecycle states for derived instances." },
+    "mustInclude": { "type": "array", "items": { "type": "string" }, "description": "Required evidence or content categories." },
+    "mustExclude": { "type": "array", "items": { "type": "string" }, "description": "Forbidden actions or content categories." },
+    "receiptRequired": { "type": "boolean", "description": "Whether every run needs a receipt." },
+    "riskLevel": { "enum": ["low", "medium", "high", "critical"], "default": "medium", "description": "Risk tier." },
+    "policyRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:policy:" }, "description": "Governing policies." }
+  }
+}

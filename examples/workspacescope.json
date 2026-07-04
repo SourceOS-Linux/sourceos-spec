@@ -1,0 +1,29 @@
+{
+  "id": "urn:srcos:workspace-scope:socioprophet-sourceos-spec-readonly",
+  "type": "WorkspaceScope",
+  "specVersion": "2.0.0",
+  "workspaceKind": "gitRepository",
+  "displayName": "SourceOS Spec read-only review workspace",
+  "rootRef": "github:SourceOS-Linux/sourceos-spec",
+  "mountMode": "readOnly",
+  "allowedReadRefs": ["README.md", "schemas/**", "examples/**", "semantic/**", "docs/adr/**"],
+  "allowedWriteRefs": [],
+  "excludedRefs": ["local-secret-files", "private-credential-stores", "dependency-caches"],
+  "worktreeRef": "refs/heads/main",
+  "branchPolicy": {
+    "baseRef": "refs/heads/main",
+    "headRef": null,
+    "allowedPushRefs": [],
+    "requiresPullRequest": true
+  },
+  "indexingPolicy": "ephemeral",
+  "retentionPolicy": "sessionOnly",
+  "secretScanPolicy": "requiredBeforeIndex",
+  "artifactRootRef": "artifacts/onboarding/sourceos-spec-readonly",
+  "connectorRefs": ["urn:srcos:connector:github-sourceos-linux"],
+  "policyDecisionRefs": ["urn:srcos:decision:onboarding-workspace-readonly-allow"],
+  "time": {
+    "createdAt": "2026-05-05T00:00:00Z",
+    "expiresAt": null
+  }
+}

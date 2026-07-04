@@ -1,0 +1,19 @@
+{
+  "mode": "raw-and-share",
+  "rawArtifactRetained": true,
+  "sharedArtifactGenerated": true,
+  "deterministicMasking": true,
+  "maskedClasses": [
+    "authorizationBearer",
+    "cookie",
+    "apiKey",
+    "token",
+    "email",
+    "privateIp",
+    "macAddress"
+  ],
+  "privateIpMasked": true,
+  "publicIpMasked": false,
+  "macAddressMasked": true,
+  "notes": "Default share-safe policy for operator export; public IPs remain visible for network triage unless explicitly overridden."
+}
