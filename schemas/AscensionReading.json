@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AscensionReading.json",
+  "title": "AscensionReading",
+  "description": "The single, one-way bridge between reputation and identity. Reads the holder's own works-receipts (ReasoningReceipt records of acts/works in the knowledge commons) back through the IdentitySpine projections to move the holder's private gate-state along its inner axes — this movement is 'ascension'. It MUST be computed on the holder's own device/agent and MUST NOT be offered as a network service: no party other than the holder may compute or store the holder's inner-axis state. Direction is strictly one-way (works -> inner axes); identity inputs never flow into reputation; the inner reading reaches the outside world only when the holder deliberately mints a PortableReputationClaim. Each step is deterministic and replayable, optionally bound to a ReasoningReplayPlan.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "capturedAt", "subjectRef", "computedOn", "networkServiceProhibited", "inputs", "directionality", "privacyClass"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:ascension-reading:", "description": "Stable URN identifier for this reading." },
+    "type": { "const": "AscensionReading", "description": "Type discriminator; always 'AscensionReading'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "capturedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the reading was computed." },
+    "subjectRef": { "type": "string", "description": "Pseudonymous, agent-centric reference to the holder. Must match the soul being read." },
+    "computedOn": { "type": "string", "enum": ["holder-device", "holder-agent"], "description": "Where the reading ran. Must be a holder-controlled context." },
+    "networkServiceProhibited": { "const": true, "description": "Normative guard: this computation may never be performed as a hosted/network service. Always true." },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["spineRef", "worksReceiptRefs"],
+      "description": "What the reading consumed.",
+      "properties": {
+        "spineRef": { "type": "string", "pattern": "^urn:srcos:identity-spine:" },
+        "worksReceiptRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" },
+          "description": "Receipts for the holder's own acts/works in the commons, drawn from the existing reasoning-evidence fabric."
+        }
+      }
+    },
+    "steps": {
+      "type": "array",
+      "description": "Deterministic, replayable mapping of each work onto gate-axis movement.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["receiptRef", "gateRef", "axisId", "fromValue", "toValue", "deterministic"],
+        "properties": {
+          "receiptRef": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" },
+          "gateRef": { "type": "string", "pattern": "^gate_(0[1-9]|[1-5][0-9]|6[0-4])$" },
+          "axisId": { "type": "string", "enum": ["shadowGift", "blockedOpen", "ascendingDescending"] },
+          "fromValue": { "type": "number" },
+          "toValue": { "type": "number" },
+          "deterministic": { "const": true, "description": "The mapping is a pure function of the receipt and spine; replayable. Always true." }
+        }
+      }
+    },
+    "replayPlanRef": { "type": "string", "pattern": "^urn:srcos:reasoning-replay-plan:", "description": "Optional binding to a ReasoningReplayPlan so the reading is replayable like any reasoning run." },
+    "result": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Net private movement per axis. Private; never auto-emitted.",
+      "properties": {
+        "netAscension": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["axisId", "delta"],
+            "properties": {
+              "axisId": { "type": "string", "enum": ["shadowGift", "blockedOpen", "ascendingDescending"] },
+              "delta": { "type": "number" }
+            }
+          }
+        }
+      }
+    },
+    "directionality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["worksToInnerAxes", "identityInputsToReputation", "innerToOutsideRequiresClaim"],
+      "description": "The normative direction constraints, encoded so conformance can be machine-checked.",
+      "properties": {
+        "worksToInnerAxes": { "const": "allowed", "description": "Works may move inner axes. Always 'allowed'." },
+        "identityInputsToReputation": { "const": "forbidden", "description": "Identity inputs may never flow into reputation. Always 'forbidden'." },
+        "innerToOutsideRequiresClaim": { "const": true, "description": "Inner state reaches the outside only via a holder-minted PortableReputationClaim. Always true." }
+      }
+    },
+    "privacyClass": { "type": "string", "enum": ["agent-held-private"], "description": "The reading and its result are private to the holder." }
+  }
+}

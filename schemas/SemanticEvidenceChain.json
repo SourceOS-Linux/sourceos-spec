@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SemanticEvidenceChain.json",
+  "title": "SemanticEvidenceChain",
+  "description": "A Semantic Evidence Chain (SEC) is a directed, weighted view onto the reasoning-evidence fabric. Nodes are awareness/detection states, edges are state transitions, and edge weights carry clarity, entropy-reduction, and temporal-cost. SEC is a derived analytic projection: every node and edge binds back to ReasoningRun / ReasoningEvent / ReasoningReceipt records. SEC defines no independent evidence store and asserts no physical, topological, or geometric quantities; any such framing is motivating metaphor only and is out of scope for this contract.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "runRef",
+    "nodes",
+    "edges",
+    "builtAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:semantic-evidence-chain:"
+    },
+    "type": {
+      "const": "SemanticEvidenceChain"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "runRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:reasoning-run:",
+      "description": "The governed reasoning run this chain is a view onto. SEC never exists without a parent run."
+    },
+    "receiptRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:receipt:reasoning:",
+      "description": "Optional pointer to the ReasoningReceipt that closed the run, present once the run is sealed."
+    },
+    "builtAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "traceLevel": {
+      "enum": ["public-safe", "workspace-safe", "operator-private", "restricted"],
+      "description": "Highest disclosure level required to view this chain; inherited from the most restricted bound ReasoningEvent."
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/secNode" }
+    },
+    "edges": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/secEdge" }
+    },
+    "analysis": {
+      "$ref": "#/$defs/secAnalysis",
+      "description": "Optional cached output of SEC operations (score-path, detect-divergence, detect-loop, find-convergence). Always recomputable from nodes+edges; advisory only."
+    }
+  },
+  "$defs": {
+    "secNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nodeId", "kind", "eventRef"],
+      "properties": {
+        "nodeId": {
+          "type": "string",
+          "description": "Chain-local node identifier, unique within this SEC."
+        },
+        "kind": {
+          "enum": ["awareness", "detection"],
+          "description": "awareness = a cognitive/reasoning state node; detection = a security observation state node. Both are state nodes; the distinction selects the consuming playbook lane."
+        },
+        "eventRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:reasoning-event:",
+          "description": "The ReasoningEvent this node is a projection of. Binding is mandatory: no free-floating SEC nodes."
+        },
+        "trustLevel": {
+          "enum": [
+            "trusted-control-input",
+            "trusted-workspace-source",
+            "semi-trusted-project-source",
+            "untrusted-observation",
+            "restricted-material"
+          ],
+          "description": "Mirrors the bound ReasoningEvent.trustLevel. An SEC node never upgrades trust above its bound event."
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable summary of the awareness/detection state. SHOULD echo ReasoningEvent.summary."
+        }
+      }
+    },
+    "secEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edgeId", "from", "to", "transition", "weights"],
+      "properties": {
+        "edgeId": {
+          "type": "string",
+          "description": "Chain-local edge identifier, unique within this SEC."
+        },
+        "from": {
+          "type": "string",
+          "description": "Source nodeId. Directed edge tail."
+        },
+        "to": {
+          "type": "string",
+          "description": "Target nodeId. Directed edge head."
+        },
+        "transition": {
+          "enum": ["advance", "branch", "loop", "converge"],
+          "description": "advance = linear state transition; branch = divergence point (>1 outgoing); loop = entanglement edge returning to an ancestor; converge = an inbound edge at a node with >1 predecessor on distinct paths."
+        },
+        "eventRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:reasoning-event:",
+          "description": "Optional ReasoningEvent that evidences the transition itself (e.g. a tool call or detection trigger)."
+        },
+        "weights": {
+          "$ref": "#/$defs/weightVector"
+        }
+      }
+    },
+    "weightVector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["clarity", "entropyReduction", "temporalCost"],
+      "description": "W = the evidence weight of a transition. All three components are unitless, observed/estimated analytics over fabric events. They are NOT derived physical quantities.",
+      "properties": {
+        "clarity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence that the transition is well-evidenced (0 = ambiguous, 1 = fully grounded). Derived from bound event trustLevel and corroboration count."
+        },
+        "entropyReduction": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Non-negative reduction in candidate-state uncertainty contributed by this transition, in bits. An information-theoretic analytic over the run's hypothesis set, not a physics quantity."
+        },
+        "temporalCost": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Elapsed cost of the transition in milliseconds, from bound event timestamps."
+        }
+      }
+    },
+    "secAnalysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "convergencePath": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Ordered nodeId list of the selected convergence path (full-awareness path), if one is found."
+        },
+        "cumulativeWeight": {
+          "$ref": "#/$defs/weightVector",
+          "description": "Aggregate W over the convergence path: clarity = product, entropyReduction = sum, temporalCost = sum."
+        },
+        "divergencePoints": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "nodeIds with more than one outgoing branch edge."
+        },
+        "loops": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "description": "Detected loops (entanglements), each an ordered nodeId cycle."
+        },
+        "playbookLane": {
+          "enum": ["red-team", "blue-team", "forensic", "none"],
+          "description": "Which image-gen security playbook lane this chain feeds, if any."
+        }
+      }
+    }
+  }
+}

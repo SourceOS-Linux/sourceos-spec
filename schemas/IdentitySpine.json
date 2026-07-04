@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/IdentitySpine.json",
+  "title": "IdentitySpine",
+  "description": "The canonical inner object of the digital soul: one lattice of 64 gates carrying three developmental inner axes. Every other tradition (zodiac, sefirot, enneagram, chakra, the twelve senses) is registered here only as a one-way PROJECTION (a presentation view) and is never a writable source of truth. The spine definition is a public, shared standard; a person's per-subject state lives in DigitalSoulIdentity and is private. Projections are symbolic mappings only and MUST NOT be presented as measured or physically derived values.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "canonicalSpine", "spineVersion", "axes", "gates", "privacyClass"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:identity-spine:",
+      "description": "Stable URN identifier for this spine definition."
+    },
+    "type": { "const": "IdentitySpine", "description": "Type discriminator; always 'IdentitySpine'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when this spine definition was created." },
+    "canonicalSpine": {
+      "type": "string",
+      "enum": ["yi-globe-64gate"],
+      "description": "The committed canonical inner object. Locked to the 64-gate yi-globe; an enum so future spines can be registered without breaking existing data."
+    },
+    "spineVersion": { "type": "string", "description": "Version of the gate/axis layout, independent of contract specVersion." },
+    "axes": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Definitions of the developmental inner axes every gate carries.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["axisId", "kind"],
+        "properties": {
+          "axisId": { "type": "string", "enum": ["shadowGift", "blockedOpen", "ascendingDescending"], "description": "Stable axis identifier." },
+          "kind": { "type": "string", "enum": ["ordinal", "signed"], "description": "ordinal = monotone progression (e.g. shadow..gift..siddhi); signed = directional vector (e.g. ascending/descending)." },
+          "stops": { "type": "array", "items": { "type": "string" }, "description": "Ordered, human-readable labels for the axis positions (e.g. ['shadow','gift','siddhi'])." },
+          "range": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": { "min": { "type": "number" }, "max": { "type": "number" } },
+            "description": "Numeric range for the axis coordinate."
+          }
+        }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 64,
+      "maxItems": 64,
+      "description": "The 64 gates of the lattice. Exactly 64.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gateId", "axisIds"],
+        "properties": {
+          "gateId": { "type": "string", "pattern": "^gate_(0[1-9]|[1-5][0-9]|6[0-4])$", "description": "Stable gate identifier gate_01..gate_64." },
+          "label": { "type": "string", "description": "Optional human-readable name of the gate's quality." },
+          "axisIds": { "type": "array", "items": { "type": "string", "enum": ["shadowGift", "blockedOpen", "ascendingDescending"] }, "description": "Which inner axes this gate carries." }
+        }
+      }
+    },
+    "projections": {
+      "type": "array",
+      "description": "One-way presentation views onto the spine. Projections render the spine into another tradition's vocabulary; they are never sources of truth and are never writable.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["traditionId", "oneWay", "sourceOfTruth"],
+        "properties": {
+          "traditionId": { "type": "string", "enum": ["zodiac", "sefirot", "enneagram", "chakra", "twelve-senses"], "description": "The tradition this view renders into." },
+          "oneWay": { "const": true, "description": "Projections only read the spine outward; they never write back. Always true." },
+          "sourceOfTruth": { "const": false, "description": "A projection is presentation only and is never authoritative. Always false." },
+          "symbolic": { "const": true, "description": "The mapping is symbolic/cultural, not a measured or physically derived value. Always true." },
+          "view": {
+            "type": "array",
+            "description": "Per-gate mapping into the tradition's symbol set.",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["gateRef", "symbol"],
+              "properties": {
+                "gateRef": { "type": "string", "pattern": "^gate_(0[1-9]|[1-5][0-9]|6[0-4])$" },
+                "symbol": { "type": "string", "description": "The tradition-local symbol this gate projects to (e.g. a zodiac sign, a sefira, an enneatype)." }
+              }
+            }
+          }
+        }
+      }
+    },
+    "privacyClass": {
+      "type": "string",
+      "enum": ["public-shared"],
+      "description": "The spine DEFINITION is a public shared standard. Per-subject state (DigitalSoulIdentity) carries its own, stricter privacy class."
+    }
+  }
+}
