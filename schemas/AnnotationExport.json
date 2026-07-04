@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:AnnotationExport",
+  "title": "AnnotationExport",
+  "type": "object",
+  "required": ["exportId", "target", "format", "annotations"],
+  "properties": {
+    "exportId": {"type": "string"},
+    "target": {"type": "string"},
+    "format": {"type": "string", "enum": ["w3c-web-annotation", "rdf-jsonld"]},
+    "annotations": {"type": "array", "items": {"type": "object"}},
+    "exportedAt": {"type": ["string", "null"], "format": "date-time"}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:PublishDecision",
+  "title": "PublishDecision",
+  "type": "object",
+  "required": ["decisionId", "artifactId", "knowledge", "value", "ecosystem"],
+  "properties": {
+    "decisionId": {"type": "string"},
+    "artifactId": {"type": "string"},
+    "knowledge": {"type": "string", "enum": ["open", "restricted", "sealed"]},
+    "value": {"type": "string", "enum": ["open", "restricted", "sealed"]},
+    "ecosystem": {"type": "string", "enum": ["open", "restricted", "sealed"]},
+    "decidedAt": {"type": ["string", "null"], "format": "date-time"}
+  },
+  "additionalProperties": false
+}

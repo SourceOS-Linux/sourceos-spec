@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EnrollmentProfile.json",
+  "title": "EnrollmentProfile",
+  "description": "A profile that describes how an installed or activated system should register, enroll, and receive content after boot or first-run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "registrationMode"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:enrollment-profile:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:enrollment-profile:<local-id>"
+    },
+    "type": {
+      "const": "EnrollmentProfile",
+      "description": "Discriminator constant — always \"EnrollmentProfile\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable enrollment profile name."
+    },
+    "activationKeyRef": {
+      "type": ["string", "null"],
+      "description": "Optional activation or registration-key reference."
+    },
+    "hostGroupRef": {
+      "type": ["string", "null"],
+      "description": "Optional host-group or grouping reference."
+    },
+    "lifecycleEnvironmentRef": {
+      "type": ["string", "null"],
+      "description": "Optional lifecycle environment ref such as dev, qa, or prod."
+    },
+    "bootstrapUrl": {
+      "type": ["string", "null"],
+      "description": "Optional bootstrap or enrollment URL."
+    },
+    "trustAnchorRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Trust anchors or certificate refs required for enrollment."
+    },
+    "registrationMode": {
+      "type": "string",
+      "enum": ["local_only", "online_registration", "bootstrap_token", "signed_intent"],
+      "description": "How the consumer enrolls or registers after boot/install."
+    },
+    "policyTags": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Governance or operational tags attached to the enrollment profile."
+    }
+  }
+}

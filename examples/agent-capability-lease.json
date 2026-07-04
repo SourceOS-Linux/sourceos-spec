@@ -1,0 +1,21 @@
+{
+  "leaseId": "urn:srcos:lease:demo-reviewer-001",
+  "agentId": "urn:srcos:agent:demo-reviewer",
+  "workspaceId": "urn:srcos:workspace:demo",
+  "grantedBy": "urn:srcos:user:demo-owner",
+  "capability": "agent.execute.review",
+  "scope": {
+    "repo": "SocioProphet/agent-registry",
+    "tools": [
+      "git.read"
+    ],
+    "duration": "PT30M"
+  },
+  "issuedAt": "2026-05-05T00:00:00Z",
+  "expiresAt": "2026-05-05T00:30:00Z",
+  "policyBundleHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "requiresHumanApproval": true,
+  "revocable": true,
+  "auditId": "urn:srcos:audit:lease-demo-001",
+  "signature": "demo-signature"
+}

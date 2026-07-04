@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LivenessProfile.json",
+  "title": "LivenessProfile",
+  "description": "Liveness challenge policy and calibration output for Proof-of-Self verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "mode",
+    "threshold",
+    "saltPolicy",
+    "antiReplayWindowSec"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:liveness-profile:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "LivenessProfile"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "face",
+        "voice",
+        "gesture",
+        "face_voice",
+        "voice_gesture",
+        "face_voice_gesture"
+      ]
+    },
+    "threshold": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "saltPolicy": {
+      "type": "string",
+      "enum": [
+        "fixed",
+        "rotating",
+        "per-issuance"
+      ]
+    },
+    "antiReplayWindowSec": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "challengeCount": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "eer": {
+      "type": ["number", "null"]
+    },
+    "far": {
+      "type": ["number", "null"]
+    },
+    "frr": {
+      "type": ["number", "null"]
+    },
+    "calibratedAt": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    }
+  }
+}

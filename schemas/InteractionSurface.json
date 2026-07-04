@@ -1,0 +1,210 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/InteractionSurface.json",
+  "title": "InteractionSurface",
+  "description": "A typed keyboard-first interaction surface that participates in the SourceOS / SociOS focus, host-boundary, and command-routing model across launcher, browser, shell, terminal, editor, and overlay contexts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "name",
+    "surfaceType",
+    "platform",
+    "modalities",
+    "focusPolicy",
+    "hostBoundaryPolicy",
+    "commandBinding"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:interaction-surface:"
+    },
+    "name": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "surfaceType": {
+      "type": "string",
+      "enum": [
+        "launcher",
+        "browser",
+        "editor",
+        "terminal",
+        "command-surface",
+        "shortcut-overlay",
+        "panel",
+        "workspace-controller",
+        "compositor"
+      ]
+    },
+    "platform": {
+      "type": "string",
+      "enum": [
+        "sourceos",
+        "socios-linux",
+        "linux",
+        "web",
+        "wayland",
+        "x11",
+        "gnome",
+        "pantheon",
+        "cross-platform"
+      ]
+    },
+    "modalities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "keyboard",
+          "pointer",
+          "touch",
+          "voice",
+          "hybrid"
+        ]
+      }
+    },
+    "focusPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "escapeBehavior",
+        "tabBehavior",
+        "multilineBoundaryHistory"
+      ],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "enum": [
+            "host",
+            "local-surface",
+            "shell-overlay",
+            "pass-through",
+            "completion-surface",
+            "modal-review"
+          ]
+        },
+        "escapeBehavior": {
+          "type": "string",
+          "enum": [
+            "layered-unwind",
+            "local-only",
+            "host-only"
+          ]
+        },
+        "tabBehavior": {
+          "type": "string",
+          "enum": [
+            "completion-first",
+            "focus-cycle",
+            "local-insert"
+          ]
+        },
+        "multilineBoundaryHistory": {
+          "type": "boolean"
+        },
+        "arrowKeyPolicy": {
+          "type": "string",
+          "enum": [
+            "local-region-navigation",
+            "caret-or-local",
+            "delegated"
+          ]
+        }
+      }
+    },
+    "hostBoundaryPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nativeShortcutPolicy",
+        "passThroughInput"
+      ],
+      "properties": {
+        "nativeShortcutPolicy": {
+          "type": "string",
+          "enum": [
+            "preserve",
+            "mirror",
+            "replace-opt-in"
+          ]
+        },
+        "passThroughInput": {
+          "type": "boolean"
+        },
+        "protectedNamespaces": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "commandBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "defaultInterpretation",
+        "scopePrefix",
+        "explicitCommandPrefix"
+      ],
+      "properties": {
+        "defaultInterpretation": {
+          "type": "string",
+          "enum": [
+            "search",
+            "literal-input",
+            "local-action"
+          ]
+        },
+        "scopePrefix": {
+          "type": "string"
+        },
+        "explicitCommandPrefix": {
+          "type": "string"
+        },
+        "commandBusRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "launcherRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "shortcutOverlayRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "keymapProfileRef": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/StagedDeployment.json",
+  "title": "StagedDeployment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "specVersion",
+    "hostRef",
+    "targetRef",
+    "stageLane",
+    "promotionPolicy",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:staged-deployment:[A-Za-z0-9._:-]+$"
+    },
+    "specVersion": { "type": "string" },
+    "hostRef": { "type": "string" },
+    "targetRef": { "type": "string" },
+    "bootSurfaceRef": { "type": "string" },
+    "storageSurfaceRef": { "type": "string" },
+    "stageLane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["environment", "candidateRef"],
+      "properties": {
+        "environment": {
+          "type": "string",
+          "enum": ["vm", "container", "nspawn", "remote"]
+        },
+        "candidateRef": { "type": "string" },
+        "mounts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["source", "target", "readOnly"],
+            "properties": {
+              "source": { "type": "string" },
+              "target": { "type": "string" },
+              "readOnly": { "type": "boolean" }
+            }
+          }
+        },
+        "smokeRef": { "type": "string" }
+      }
+    },
+    "promotionPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["requiresStagePass", "rollbackStrategy"],
+      "properties": {
+        "requiresStagePass": { "type": "boolean" },
+        "requiresHumanApproval": { "type": "boolean" },
+        "rollbackStrategy": {
+          "type": "string",
+          "enum": ["generation", "image_digest", "snapshot", "multi_layer"]
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "artifactDir": { "type": "string" },
+        "emit": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": ["stage", "promote", "rollback", "health"]
+          }
+        }
+      }
+    },
+    "status": {
+      "type": "string",
+      "enum": ["planned", "staged", "promoted", "rolled_back"]
+    }
+  }
+}

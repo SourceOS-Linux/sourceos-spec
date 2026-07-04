@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/BootReleaseSet.json",
+  "title": "BootReleaseSet",
+  "description": "Canonical BootReleaseSet schema. Wrapper that preserves legacy identifier while providing a stable srcos namespace for new references.",
+  "allOf": [
+    { "$ref": "./boot-release-set.schema.json" }
+  ]
+}

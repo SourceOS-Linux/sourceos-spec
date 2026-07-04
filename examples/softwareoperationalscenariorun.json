@@ -1,0 +1,31 @@
+{
+  "id": "urn:srcos:oprisk-scenario-run:devtools-agent-baseline-2026-q2",
+  "type": "SoftwareOperationalScenarioRun",
+  "specVersion": "2.0.0",
+  "generatedAt": "2026-04-20T23:20:00Z",
+  "subjectRef": "urn:srcos:service-portfolio:devtools-agent-stack",
+  "runKind": "baseline",
+  "method": "hybrid",
+  "modelVersion": "oprisk-model-v0.2",
+  "parameterSummary": {
+    "horizonDays": 365,
+    "currency": "USD",
+    "tailConfidence": 0.99,
+    "simulationCount": 10000
+  },
+  "incidentInputRefs": [
+    "urn:srcos:oprisk-incident:openai-codex-unresponsive-2026-03-09"
+  ],
+  "watchInputRefs": [
+    "urn:srcos:upstream-watch:socioprophet-agentplane-main",
+    "urn:srcos:upstream-watch:provider:openai-codex"
+  ],
+  "outputReportRefs": [
+    "urn:srcos:oprisk-reserve-report:devtools-agent-2026-q2"
+  ],
+  "tags": [
+    "baseline",
+    "scenario-run",
+    "oprisk"
+  ]
+}

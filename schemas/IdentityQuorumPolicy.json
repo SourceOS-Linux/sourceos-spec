@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/IdentityQuorumPolicy.json",
+  "title": "IdentityQuorumPolicy",
+  "description": "Threshold and validator-weight policy for genesis, renewal, recovery, and suspension.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "minHumanValidators",
+    "genesisThreshold",
+    "renewalThreshold",
+    "recoveryThreshold"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:identity-quorum-policy:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "IdentityQuorumPolicy"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "minHumanValidators": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "genesisThreshold": {
+      "type": "number",
+      "minimum": 0
+    },
+    "renewalThreshold": {
+      "type": "number",
+      "minimum": 0
+    },
+    "recoveryThreshold": {
+      "type": "number",
+      "minimum": 0
+    },
+    "sharedNonceRequired": {
+      "type": "boolean",
+      "default": true
+    },
+    "inPersonRequired": {
+      "type": "boolean",
+      "default": true
+    },
+    "timeoutSeconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "validatorWeights": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "number",
+        "minimum": 0
+      }
+    },
+    "overrideMode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "manual",
+        "emergency"
+      ]
+    }
+  }
+}

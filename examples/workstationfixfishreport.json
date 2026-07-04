@@ -1,0 +1,9 @@
+{
+  "kind": "sourceos.fix.fish",
+  "mode": "revert",
+  "ok": true,
+  "result": {
+    "file": "/home/user/.config/fish/config.fish",
+    "action": "reverted"
+  }
+}

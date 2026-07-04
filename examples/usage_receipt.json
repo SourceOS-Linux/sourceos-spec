@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:receipt:usage:index-qdrant-shard-20260416-01",
+  "type": "UsageReceipt",
+  "specVersion": "2.0.0",
+  "workOrderId": "urn:srcos:workorder:index-qdrant-shard-20260416-01",
+  "provider": {
+    "subjectId": "urn:srcos:subject:fog-worker-node-17",
+    "nodeId": "node-17"
+  },
+  "startedAt": "2026-04-16T02:20:00Z",
+  "endedAt": "2026-04-16T02:28:42Z",
+  "exit": {
+    "code": 0,
+    "status": "completed"
+  },
+  "usage": {
+    "cpuSeconds": 3812.41,
+    "memoryPeakBytes": 8912896000,
+    "ioReadBytes": 721420288,
+    "ioWriteBytes": 361758720,
+    "gpuSeconds": 0
+  },
+  "outputs": [
+    {
+      "digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "mediaType": "application/vnd.qdrant.snapshot",
+      "sizeBytes": 285212672
+    }
+  ],
+  "integrity": {
+    "receiptHash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "signature": "ed25519:example-signature-usage-receipt"
+  }
+}

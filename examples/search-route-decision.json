@@ -1,0 +1,7 @@
+{
+  "scope": "files",
+  "provider": "linux_files",
+  "query": "report.pdf",
+  "routedAt": "2026-04-16T22:10:00Z",
+  "redundantSearchPrevented": true
+}

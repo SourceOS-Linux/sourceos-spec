@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:enrollment-profile:default-workstation",
+  "type": "EnrollmentProfile",
+  "specVersion": "2.0.0",
+  "name": "Default SourceOS Workstation enrollment",
+  "activationKeyRef": "katello://SourceOS/activation-keys/sourceos-workstation-dev",
+  "hostGroupRef": "foreman://SourceOS/host-groups/sourceos-workstation",
+  "lifecycleEnvironmentRef": "katello://SourceOS/lifecycle/dev",
+  "bootstrapUrl": "https://enroll.sourceos.local/register",
+  "trustAnchorRefs": [
+    "urn:srcos:content-ref:sourceos-ca"
+  ],
+  "registrationMode": "bootstrap_token",
+  "policyTags": [
+    "sourceos.enrollment",
+    "katello.activation-key",
+    "short-lived-bootstrap"
+  ]
+}

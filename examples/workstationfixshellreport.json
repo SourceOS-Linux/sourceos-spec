@@ -1,0 +1,23 @@
+{
+  "kind": "sourceos.fix.shell",
+  "mode": "dry-run",
+  "ok": true,
+  "summary": {
+    "patched": 0,
+    "would_patch": 2,
+    "reverted": 0,
+    "already_patched": 0,
+    "no_patch": 0,
+    "missing_file": 0
+  },
+  "results": [
+    {
+      "file": "/home/user/.bashrc",
+      "action": "would_patch"
+    },
+    {
+      "file": "/home/user/.zshrc",
+      "action": "would_patch"
+    }
+  ]
+}

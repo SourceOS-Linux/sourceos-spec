@@ -1,0 +1,33 @@
+{
+  "id": "urn:srcos:factsheet:community_truth_demo_model",
+  "type": "Factsheet",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:model:community_truth_demo_candidate",
+  "factsheetKind": "model",
+  "summary": {
+    "name": "Community Truth Demo Model",
+    "purpose": "Classify factuality and annotation quality for the Lattice demo path.",
+    "ownerRef": "urn:srcos:community:lattice-demo",
+    "limitations": [
+      "Synthetic demo fixture only",
+      "Not approved for production use"
+    ]
+  },
+  "lineageRefs": [
+    "urn:srcos:data-product:community_truth_demo",
+    "urn:srcos:annotation-set:community_truth_demo_labels"
+  ],
+  "evaluationRefs": ["urn:srcos:evaluation-bundle:community_truth_demo_model_eval"],
+  "risk": {
+    "riskTier": "medium",
+    "riskRefs": ["urn:srcos:risk:demo-factuality-classifier"]
+  },
+  "approval": {
+    "state": "needs-review",
+    "workflowRef": "urn:srcos:workflow:model-review-demo",
+    "decidedAt": "2026-05-01T19:06:00Z",
+    "decisionRef": null
+  },
+  "policyRefs": ["urn:srcos:policy:model-eval-demo"],
+  "evidenceRefs": ["urn:srcos:evidence:community_truth_demo_factsheet"]
+}

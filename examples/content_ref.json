@@ -1,0 +1,9 @@
+{
+  "digest": "sha256:3d62e3b4c5dd6d04e3d1a2c765a809f0f76ad6f870d13dbb4d4ef7f77e4d2d10",
+  "sizeBytes": 1048576,
+  "mediaType": "application/vnd.srcos.fog.block+json",
+  "uris": [
+    "file:///srv/fog/topics/fog-cache-health/blocks/3d/62/e3b4",
+    "hyper://fog-cache-health/blocks/sha256-3d62e3b4c5dd6d04e3d1a2c765a809f0f76ad6f870d13dbb4d4ef7f77e4d2d10"
+  ]
+}

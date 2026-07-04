@@ -1,0 +1,45 @@
+{
+  "id": "urn:srcos:boot-proof:m2-sourceos-boot-2026-04-30",
+  "type": "BootProofRecord",
+  "specVersion": "2.0.0",
+  "bootPlanRef": "urn:srcos:nlboot-plan:m2-sourceos-main-2026-04-30",
+  "deviceRef": "urn:srcos:asset:fedora-asahi-m2",
+  "outcome": "success",
+  "bootedAt": "2026-04-30T10:00:00Z",
+  "stageProofs": [
+    {
+      "stageName": "m1n1",
+      "artifactRef": "urn:srcos:artifact-cache:m1n1-sha256-7a38f2d1",
+      "contentHash": "sha256:7a38f2d1e4b9c3a5d6e8f0b2c4a6d8e0f2b4c6a8d0e2f4b6c8a0d2e4f6b8c0a2",
+      "verdict": "verified",
+      "notes": null
+    },
+    {
+      "stageName": "u-boot",
+      "artifactRef": "urn:srcos:artifact-cache:uboot-sha256-2b4d6f8a",
+      "contentHash": "sha256:2b4d6f8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f6b8a0c2e4f",
+      "verdict": "verified",
+      "notes": null
+    },
+    {
+      "stageName": "kernel",
+      "artifactRef": "urn:srcos:artifact-cache:kernel-sha256-0f3b6d7f",
+      "contentHash": "sha256:0f3b6d7f1e2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c",
+      "verdict": "verified",
+      "notes": null
+    },
+    {
+      "stageName": "initrd",
+      "artifactRef": "urn:srcos:artifact-cache:initrd-sha256-08f4c82e",
+      "contentHash": "sha256:08f4c82e9d0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d",
+      "verdict": "verified",
+      "notes": null
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:attestation:m2-boot-evidence-2026-04-30"
+  ],
+  "policyDecisionRef": "urn:srcos:decision:boot-m2-demo-v1-2026-04-30",
+  "signature": null,
+  "notes": "Successful verified boot of SourceOS on M2 demo device via NLBoot Asahi path."
+}

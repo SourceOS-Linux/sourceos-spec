@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/IncidentEvent.json",
+  "title": "IncidentEvent",
+  "description": "Canonical IncidentEvent schema (srcos namespace). This wrapper preserves legacy consumers by allOf-wrapping the legacy incident-events.schema.json file.",
+  "allOf": [
+    { "$ref": "./incident-events.schema.json" }
+  ]
+}

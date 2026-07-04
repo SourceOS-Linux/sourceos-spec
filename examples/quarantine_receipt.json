@@ -1,0 +1,26 @@
+{
+  "id": "urn:srcos:quarantine:q001",
+  "type": "QuarantineReceipt",
+  "specVersion": "2.0.0",
+  "subjectId": "urn:srcos:session:s001",
+  "triggerType": "egress_policy_violation",
+  "isolationMode": "cgroup-ebpf",
+  "scope": {
+    "pids": [
+      4242
+    ],
+    "cgroup": "/sys/fs/cgroup/triune/quarantine/pid-4242",
+    "unit": null,
+    "hostRefs": [
+      "SourceOS.local"
+    ]
+  },
+  "triggerEvidenceRefs": [
+    "urn:srcos:audit-anchor:001"
+  ],
+  "startedAt": "2025-12-24T05:00:06Z",
+  "releasedAt": "2025-12-24T05:00:08Z",
+  "outcome": "released",
+  "restorationDecisionId": "urn:srcos:validator-decision:vd001",
+  "receiptHash": "sha256:9999999999999999999999999999999999999999999999999999999999999999"
+}

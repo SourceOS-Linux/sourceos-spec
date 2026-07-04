@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CompressionEvaluation.json",
+  "title": "CompressionEvaluation",
+  "description": "Immutable artifact-versus-baseline evaluation record.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "artifact",
+    "baseline",
+    "estimatorSet",
+    "metrics",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:compression-eval:",
+      "description": "Stable URN identifier."
+    },
+    "type": {
+      "const": "CompressionEvaluation",
+      "description": "Discriminator constant."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version string."
+    },
+    "artifact": {
+      "type": "object",
+      "description": "Artifact under evaluation.",
+      "additionalProperties": false,
+      "properties": {
+        "contentRef": { "$ref": "ContentRef.json" },
+        "dataRef": { "$ref": "DataRef.json" }
+      },
+      "anyOf": [
+        { "required": ["contentRef"] },
+        { "required": ["dataRef"] }
+      ]
+    },
+    "baseline": {
+      "type": "object",
+      "description": "Baseline used for comparison.",
+      "additionalProperties": false,
+      "properties": {
+        "contentRef": { "$ref": "ContentRef.json" },
+        "dataRef": { "$ref": "DataRef.json" }
+      },
+      "anyOf": [
+        { "required": ["contentRef"] },
+        { "required": ["dataRef"] }
+      ]
+    },
+    "purpose": {
+      "type": ["string", "null"],
+      "description": "Optional declared evaluation purpose."
+    },
+    "estimatorSet": {
+      "type": "object",
+      "description": "Versioned estimator configuration.",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "properties": {
+        "name": { "type": "string", "description": "Estimator name." },
+        "version": { "type": "string", "description": "Estimator version." },
+        "family": { "type": ["string", "null"], "description": "Optional family label." },
+        "params": { "type": "object", "additionalProperties": true, "description": "Replayable estimator parameters." }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "description": "Evaluation outputs.",
+      "additionalProperties": false,
+      "required": ["novelty", "redundancy"],
+      "properties": {
+        "novelty": { "type": "number", "description": "Primary novelty signal." },
+        "redundancy": { "type": "number", "description": "Primary redundancy signal." },
+        "confidence": { "type": ["number", "null"], "description": "Optional confidence score." },
+        "warnings": { "type": "array", "items": { "type": "string" }, "description": "Optional warnings." }
+      }
+    },
+    "policyDecisionRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:decision:",
+      "description": "Optional policy decision reference."
+    },
+    "runRecordRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:run:",
+      "description": "Optional evaluator run reference."
+    },
+    "provenanceRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:prov:",
+      "description": "Optional provenance reference."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Creation timestamp."
+    }
+  }
+}

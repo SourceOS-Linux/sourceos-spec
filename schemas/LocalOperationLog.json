@@ -1,0 +1,174 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LocalOperationLog.json",
+  "title": "LocalOperationLog",
+  "description": "Local-first operation log entry capturing a governed workspace operation (terminal command, browser capture, local agent execution, sync event, or file operation). Supports replay safety, durability tiers, and local-to-remote operation mapping.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "operationType",
+    "surface",
+    "occurredAt",
+    "actorRef",
+    "deviceRef",
+    "durabilityTier",
+    "replaySafe",
+    "payloadMode",
+    "policyDecisionRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:local-operation-log:",
+      "description": "Stable local-operation-log URN. Must be unique per log entry."
+    },
+    "type": { "const": "LocalOperationLog" },
+    "specVersion": { "type": "string" },
+    "operationType": {
+      "type": "string",
+      "enum": [
+        "terminal.command",
+        "browser.capture",
+        "browser.navigation",
+        "agent.execution",
+        "agent.delegation",
+        "sync.checkpoint",
+        "sync.conflict",
+        "file.read",
+        "file.write",
+        "file.delete",
+        "file.rename",
+        "policy.decision",
+        "session.start",
+        "session.end"
+      ],
+      "description": "Typed class of the workspace operation."
+    },
+    "surface": {
+      "type": "string",
+      "enum": [
+        "turtleterm",
+        "bearbrowser",
+        "agent-machine",
+        "sourceos-shell",
+        "sourceos-devtools",
+        "workstation-contracts",
+        "other"
+      ],
+      "description": "Product surface that emitted this log entry."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "actorRef": {
+      "type": "string",
+      "description": "Human subject, agent, or service authority reference."
+    },
+    "agentRegistryRef": {
+      "type": ["string", "null"],
+      "description": "Agent Registry identity ref for non-human actors."
+    },
+    "deviceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:device-identity:",
+      "description": "DeviceIdentity URN for the device emitting this log entry."
+    },
+    "sessionRef": {
+      "type": ["string", "null"],
+      "description": "Optional session URN for grouping related entries."
+    },
+    "workspaceRef": {
+      "type": ["string", "null"],
+      "description": "Optional workspace or workroom URN."
+    },
+    "durabilityTier": {
+      "type": "string",
+      "enum": ["ephemeral", "local-durable", "synced", "archived"],
+      "description": "Operation durability tier. ephemeral = memory-only; local-durable = persisted locally; synced = propagated to remote; archived = long-term governed storage."
+    },
+    "replaySafe": {
+      "type": "boolean",
+      "description": "Whether this operation can be safely replayed. Side-effecting operations (file writes, shell commands with mutations) must set this to false unless replay constraints are provided."
+    },
+    "replayConstraints": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Constraints governing safe replay of this operation, if replaySafe is true.",
+      "properties": {
+        "idempotencyKey": { "type": ["string", "null"] },
+        "maxReplayCount": { "type": ["integer", "null"], "minimum": 1 },
+        "replayWindowSeconds": { "type": ["integer", "null"], "minimum": 0 },
+        "requiresDeviceMatch": { "type": "boolean" },
+        "requiresActorMatch": { "type": "boolean" }
+      }
+    },
+    "payloadMode": {
+      "type": "string",
+      "enum": ["metadata-only", "summary", "ref-only", "inline-bounded", "redacted"],
+      "description": "Payload capture mode. Raw sensitive content is denied by default."
+    },
+    "payload": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "Optional bounded payload. Must not contain raw credentials, secrets, or unrestricted command output."
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^urn:srcos:local-artifact:" },
+      "default": [],
+      "description": "LocalArtifactRef URNs produced or consumed by this operation."
+    },
+    "remoteOperationRef": {
+      "type": ["string", "null"],
+      "description": "Remote WorkspaceOperation or OperationEvent URN for local-to-remote mapping."
+    },
+    "workspaceOperationRef": {
+      "type": ["string", "null"],
+      "description": "Prophet-core WorkspaceOperation URN if this entry maps to a canonical workspace operation."
+    },
+    "operationTaskRef": {
+      "type": ["string", "null"],
+      "description": "Prophet-core OperationTask URN if this entry maps to a canonical operation task."
+    },
+    "operationEventRef": {
+      "type": ["string", "null"],
+      "description": "Prophet-core OperationEvent URN if this entry maps to a canonical operation event."
+    },
+    "policyGateRecordRef": {
+      "type": ["string", "null"],
+      "description": "Prophet-core PolicyGateRecord URN if a policy gate was evaluated for this operation."
+    },
+    "encryptionProfileRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:local-encryption-profile:",
+      "description": "LocalEncryptionProfile URN if payload or artifacts are encrypted at rest."
+    },
+    "policyDecisionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Policy Fabric decision refs governing this operation."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "redactionRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "integrity": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "entryHash": { "type": ["string", "null"] },
+        "signature": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

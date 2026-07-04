@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LocalFirstServiceManifest.json",
+  "title": "LocalFirstServiceManifest",
+  "description": "Manifest for activatable local-first SourceOS services with durable state, named endpoints, subscription registration, and network-aware background posture.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["serviceId", "specVersion", "serviceName", "activation", "endpoints", "durableStore"],
+  "properties": {
+    "serviceId": {
+      "type": "string",
+      "pattern": "^urn:srcos:local-first-service:"
+    },
+    "specVersion": { "type": "string" },
+    "serviceName": {
+      "type": "string",
+      "description": "Linux user service identity, e.g. ops-historyd or bearhistoryd."
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode"],
+      "properties": {
+        "mode": {
+          "type": "string",
+          "enum": ["dbus", "socket", "timer", "manual", "composite"]
+        },
+        "systemdUserUnit": { "type": ["string", "null"] },
+        "idleStopSeconds": { "type": ["integer", "null"], "minimum": 0 },
+        "restartable": { "type": "boolean" }
+      }
+    },
+    "endpoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "purpose", "authorityRequired"],
+        "properties": {
+          "name": { "type": "string" },
+          "transport": { "type": "string", "enum": ["dbus", "unix-socket", "stdio", "http-local"] },
+          "purpose": {
+            "type": "string",
+            "enum": ["default", "push", "redaction", "context-pack", "export", "subscription-registration", "diagnostic"]
+          },
+          "authorityRequired": { "type": "boolean" }
+        }
+      }
+    },
+    "durableStore": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "encryptedAtRest"],
+      "properties": {
+        "kind": { "type": "string", "enum": ["sqlite", "libsql", "rocksdb", "postgres", "filesystem", "other"] },
+        "pathHint": { "type": ["string", "null"] },
+        "encryptedAtRest": { "type": "boolean" }
+      }
+    },
+    "network": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "requiresConnectivity": { "type": "boolean" },
+        "transferDirection": { "type": "string", "enum": ["none", "upload", "download", "bidirectional"] },
+        "offlineBehavior": { "type": "string", "enum": ["queue-local", "deny", "metadata-only", "ref-only"] },
+        "meteredAllowed": { "type": "boolean" },
+        "batteryAllowed": { "type": "boolean" }
+      }
+    },
+    "subscriptionRegistration": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "repeating": { "type": "boolean" },
+        "priority": { "type": "string", "enum": ["maintenance", "normal", "high", "critical"] },
+        "intervalSeconds": { "type": ["integer", "null"], "minimum": 0 },
+        "gracePeriodSeconds": { "type": ["integer", "null"], "minimum": 0 },
+        "topics": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "resourcePosture": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "processClass": { "type": "string", "enum": ["interactive", "standard", "maintenance", "background"] },
+        "pressureExitable": { "type": "boolean" },
+        "ordinarySyncPriority": { "type": "string", "enum": ["maintenance", "normal", "high", "critical"] },
+        "redactionPriority": { "type": "string", "enum": ["high", "critical"] }
+      }
+    },
+    "policyFabricRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "agentRegistryRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  }
+}

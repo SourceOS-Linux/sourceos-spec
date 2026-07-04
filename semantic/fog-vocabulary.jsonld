@@ -1,0 +1,21 @@
+{
+  "@context": {
+    "srcos": "https://schemas.srcos.ai/vocab#",
+    "Topic": "srcos:Topic",
+    "TopicEnvelope": "srcos:TopicEnvelope",
+    "ReplicationPolicy": "srcos:ReplicationPolicy",
+    "ContentRef": "srcos:ContentRef",
+    "Offer": "srcos:Offer",
+    "WorkOrder": "srcos:WorkOrder",
+    "UsageReceipt": "srcos:UsageReceipt",
+    "SettlementEvent": "srcos:SettlementEvent",
+    "topicId": "srcos:topicId",
+    "payloadType": "srcos:payloadType",
+    "replicas": "srcos:replicas",
+    "minAcks": "srcos:minAcks",
+    "digest": "srcos:digest",
+    "provider": "srcos:provider",
+    "workOrderId": "srcos:workOrderId",
+    "receiptId": "srcos:receiptId"
+  }
+}

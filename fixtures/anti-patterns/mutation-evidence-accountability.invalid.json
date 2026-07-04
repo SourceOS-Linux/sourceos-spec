@@ -1,0 +1,48 @@
+{
+  "anti_patterns": [
+    {
+      "name": "routing receipt without counts",
+      "event": {
+        "schema": "sourceos.routing_receipt.v0.1",
+        "event_id": "bad-routing-0001",
+        "timestamp": "2026-05-05T10:32:55Z",
+        "source": "performance",
+        "routing_policy": {
+          "claimed_by": "module",
+          "visible_in_standard_log": false,
+          "visible_in_evidence_store": true,
+          "retention_days": 30
+        },
+        "destinations": ["evidence_store"],
+        "evidence_quality": {
+          "status": "partial"
+        }
+      }
+    },
+    {
+      "name": "false clearance despite blind sensor",
+      "event": {
+        "schema": "sourceos.compromise_assessment.v0.1",
+        "assessment_id": "bad-assess-0001",
+        "timestamp": "2026-05-05T20:00:00Z",
+        "scope": {
+          "system": "test",
+          "time_window": "now"
+        },
+        "status": ["no_positive_compromise_evidence"],
+        "sensor_state": [
+          {
+            "sensor": "filesystem_monitor",
+            "state": "blind",
+            "reason": "permission denied"
+          }
+        ],
+        "evidence_quality": {
+          "status": "complete",
+          "confidence": "high"
+        },
+        "conclusion": "System is clear."
+      }
+    }
+  ]
+}

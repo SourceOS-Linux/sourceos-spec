@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:CommentSignal",
+  "title": "CommentSignal",
+  "type": "object",
+  "required": ["commentId", "genuineProb", "sarcasmProb", "experience"],
+  "properties": {
+    "commentId": {"type": "string"},
+    "genuineProb": {"type": "number", "minimum": 0, "maximum": 1},
+    "sarcasmProb": {"type": "number", "minimum": 0, "maximum": 1},
+    "experience": {"type": "string", "enum": ["new", "experienced"]},
+    "verified": {"type": ["boolean", "null"]}
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/IsolationProfile.json",
+  "title": "IsolationProfile",
+  "description": "Canonical IsolationProfile schema. Wrapper that preserves legacy identifier while providing a stable srcos namespace for new references.",
+  "allOf": [
+    { "$ref": "./isolation-profile.schema.json" }
+  ]
+}

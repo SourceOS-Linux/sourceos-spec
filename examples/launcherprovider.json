@@ -1,0 +1,17 @@
+{
+  "id": "urn:srcos:launcher-provider:sourceos-palette",
+  "type": "LauncherProvider",
+  "specVersion": "2.1.0",
+  "name": "SourceOS Palette",
+  "providerKind": "command-bus",
+  "trigger": "<Super>space",
+  "binary": "sourceos",
+  "scopes": {
+    "apps": "launcher",
+    "files": "linux-native-only",
+    "web": "browser-agent"
+  },
+  "invariants": [
+    "no_redundant_file_search"
+  ]
+}

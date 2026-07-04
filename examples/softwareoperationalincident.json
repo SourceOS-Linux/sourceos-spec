@@ -1,0 +1,36 @@
+{
+  "id": "urn:srcos:oprisk-incident:openai-codex-unresponsive-2026-03-09",
+  "type": "SoftwareOperationalIncident",
+  "specVersion": "2.0.0",
+  "incidentTitle": "Codex unresponsive",
+  "provider": "OpenAI",
+  "product": "Codex",
+  "eventFamily": "system_platform_disruption",
+  "affectedLayer": "model_provider",
+  "status": "resolved",
+  "severity": "high",
+  "startedAt": "2026-03-09T21:00:00Z",
+  "endedAt": "2026-03-11T18:00:00Z",
+  "durationMinutes": 2700,
+  "regions": [
+    "global"
+  ],
+  "affectedServices": [
+    "Codex"
+  ],
+  "rootCauseSummary": "Provider-reported service unresponsiveness affecting Codex availability.",
+  "evidenceGrade": "timing_scope_only",
+  "sourceRefs": [
+    {
+      "kind": "status_page",
+      "uri": "https://status.openai.com/incidents/01JNZR03S0YZD1K3E2M4X8J1E0",
+      "observedAt": "2026-04-15T22:00:00Z",
+      "note": "Illustrative example using official incident history."
+    }
+  ],
+  "tags": [
+    "codex",
+    "model-provider",
+    "availability"
+  ]
+}

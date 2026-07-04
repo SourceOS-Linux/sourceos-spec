@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:model-carry-ref:local-llama32-3b-office-assist",
+  "type": "SourceOSModelCarryRef",
+  "specVersion": "2.1.0",
+  "modelRef": "urn:prophet:model:llama32-3b-local-office-assist",
+  "governanceRef": "urn:prophet:model-release-decision:local-llama32-3b-office-assist-20260504",
+  "routerProfileRef": "urn:srcos:model-router-profile:local-first-office-assist",
+  "releaseSetRefs": ["urn:srcos:release-set:sourceos-workstation-m2-20260504"],
+  "launchProfileRefs": ["urn:srcos:model-launch-profile:llama-cpp-local-office-assist"],
+  "fallbackRefs": [],
+  "carryPolicy": "download-on-demand",
+  "cachePolicy": "weights-cache-allowed",
+  "mutableModelState": false,
+  "evidenceRefs": ["sha256:2e7f1c7f0a6a4bbd9ef000000000000000000000000000000000000000000"]
+}

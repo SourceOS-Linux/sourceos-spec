@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GenesisAttestationDocument.json",
+  "title": "GenesisAttestationDocument",
+  "description": "Canonical genesis ceremony record for initial Proof-of-Self issuance.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "issuedAt",
+    "aad",
+    "nonce",
+    "bundleHash",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:genesis-attestation:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "GenesisAttestationDocument"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectRef": {
+      "type": "string"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "aad": {
+      "type": "string"
+    },
+    "nonce": {
+      "type": "string"
+    },
+    "bundleHash": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "collecting",
+        "complete",
+        "superseded",
+        "failed"
+      ]
+    },
+    "attestationEvidenceRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "livenessProfileRef": {
+      "type": ["string", "null"]
+    },
+    "validatorPacketRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "validatorReceiptRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "quorumPolicyRef": {
+      "type": ["string", "null"]
+    }
+  }
+}

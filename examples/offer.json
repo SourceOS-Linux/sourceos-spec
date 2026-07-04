@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:offer:node-17-cpu-gpu-window-a",
+  "type": "Offer",
+  "specVersion": "2.0.0",
+  "provider": {
+    "subjectId": "urn:srcos:subject:fog-worker-node-17",
+    "nodeId": "node-17"
+  },
+  "resources": {
+    "cpuCores": 8,
+    "memoryBytes": 34359738368,
+    "gpu": {
+      "count": 1,
+      "model": "RTX-4090"
+    },
+    "storageBytes": 536870912000,
+    "networkMbps": 1000
+  },
+  "availability": {
+    "timeWindow": "2026-04-16T00:00:00Z/2026-04-16T08:00:00Z",
+    "maxJobSeconds": 21600
+  },
+  "pricing": {
+    "unit": "fog-credits",
+    "cpuSecond": 0.002,
+    "gpuSecond": 0.02,
+    "gbHour": 0.005
+  },
+  "policy": {
+    "allowWorkloadClasses": ["embedding", "indexing", "batch-inference"],
+    "privacyMode": "topic-encrypted-only",
+    "powerCapWatts": 350
+  }
+}

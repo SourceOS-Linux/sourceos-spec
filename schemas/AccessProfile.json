@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AccessProfile.json",
+  "title": "AccessProfile",
+  "description": "A reusable access and consumption profile describing who may consume or act on governed content in which environments and for which purposes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:access-profile:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:access-profile:<local-id>"
+    },
+    "type": {
+      "const": "AccessProfile",
+      "description": "Discriminator constant — always \"AccessProfile\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable access profile name."
+    },
+    "subjects": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Refs to subject classes, principals, groups, or identities covered by the profile."
+    },
+    "purposes": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Named purposes for which access is allowed."
+    },
+    "allowedContentRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Optional allowlist of content or release refs this profile governs."
+    },
+    "allowedEnvironments": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Named environments or rings in which the profile is valid."
+    },
+    "obligations": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Named obligations or control requirements attached to this profile."
+    },
+    "expiresAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "Optional ISO 8601 expiry for the profile or current issuance."
+    }
+  }
+}

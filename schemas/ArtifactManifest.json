@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:srcos:schema:ArtifactManifest",
+  "title": "ArtifactManifest",
+  "type": "object",
+  "required": ["artifactId", "source", "unsignedPdf", "sha256", "signed", "pdfa"],
+  "properties": {
+    "artifactId": {"type": "string"},
+    "source": {
+      "type": "object",
+      "required": ["path", "commit"],
+      "properties": {
+        "path": {"type": "string"},
+        "commit": {"type": "string"}
+      },
+      "additionalProperties": false
+    },
+    "unsignedPdf": {"type": "string"},
+    "signedPdf": {"type": ["string", "null"]},
+    "sha256": {"type": "string"},
+    "signed": {"type": "boolean"},
+    "pdfa": {"type": "boolean"},
+    "signer": {"type": ["string", "null"]},
+    "signature": {"type": ["object", "null"]}
+  },
+  "additionalProperties": false
+}

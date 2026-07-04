@@ -1,0 +1,47 @@
+{
+  "id": "urn:srcos:interaction-surface:emvi-shell",
+  "name": "EMVI Shell Surface",
+  "description": "Keyboard-first command and navigation surface spanning browser, shell, terminal, and overlay contexts while preserving host-native ownership where required.",
+  "surfaceType": "command-surface",
+  "platform": "socios-linux",
+  "modalities": [
+    "keyboard",
+    "hybrid"
+  ],
+  "focusPolicy": {
+    "owner": "shell-overlay",
+    "escapeBehavior": "layered-unwind",
+    "tabBehavior": "completion-first",
+    "multilineBoundaryHistory": true,
+    "arrowKeyPolicy": "local-region-navigation"
+  },
+  "hostBoundaryPolicy": {
+    "nativeShortcutPolicy": "preserve",
+    "passThroughInput": true,
+    "protectedNamespaces": [
+      "terminal.pass-through",
+      "editor.insert",
+      "browser.text-field",
+      "password-field",
+      "accessibility"
+    ]
+  },
+  "commandBinding": {
+    "defaultInterpretation": "search",
+    "scopePrefix": "/",
+    "explicitCommandPrefix": ">",
+    "commandBusRef": "urn:srcos:command-bus:emvi",
+    "launcherRef": null,
+    "shortcutOverlayRef": "urn:srcos:interaction-surface:shortcut-overlay",
+    "keymapProfileRef": "urn:srcos:keymap-profile:mac-linux-primary"
+  },
+  "evidenceRefs": [
+    "urn:srcos:session:emvi-proof-slice"
+  ],
+  "tags": [
+    "keyboard-nav",
+    "cross-surface",
+    "host-boundary",
+    "command-bus"
+  ]
+}

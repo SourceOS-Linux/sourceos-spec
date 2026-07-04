@@ -1,0 +1,40 @@
+{
+  "id": "urn:srcos:staged-deployment:fedora-asahi-m2-2026-04-15-a",
+  "specVersion": "2.1.0-alpha.1",
+  "hostRef": "urn:srcos:asset:fedora-asahi-m2",
+  "targetRef": "urn:srcos:dataset:sourceos-substrate-profile-fedora-asahi-m2",
+  "bootSurfaceRef": "urn:srcos:boot-surface:fedora-asahi-m2-main",
+  "storageSurfaceRef": "urn:srcos:storage-surface:fedora-asahi-m2-main",
+  "stageLane": {
+    "environment": "vm",
+    "candidateRef": "github:SourceOS/substrate#asahi-fedora-m2",
+    "mounts": [
+      {
+        "source": "/srv/sourceos/config",
+        "target": "/mnt/config",
+        "readOnly": true
+      },
+      {
+        "source": "/srv/sourceos/state/hn-tick",
+        "target": "/mnt/state/hn-tick",
+        "readOnly": false
+      },
+      {
+        "source": "/srv/sourceos/evidence",
+        "target": "/mnt/evidence",
+        "readOnly": false
+      }
+    ],
+    "smokeRef": "agentplane:bundles/sourceos-asahi-stage/smoke.sh"
+  },
+  "promotionPolicy": {
+    "requiresStagePass": true,
+    "requiresHumanApproval": true,
+    "rollbackStrategy": "multi_layer"
+  },
+  "evidence": {
+    "artifactDir": "/srv/sourceos/evidence/staged/2026-04-15-a",
+    "emit": ["stage", "promote", "rollback", "health"]
+  },
+  "status": "planned"
+}

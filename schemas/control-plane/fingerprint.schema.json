@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/control-plane/fingerprint.schema.json",
+  "title": "Fingerprint",
+  "description": "Post-apply attestation snapshot used to compare realized state against a local-first release assignment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "fingerprint_id",
+    "subject",
+    "release_set_ref",
+    "observed_at",
+    "compliance"
+  ],
+  "properties": {
+    "fingerprint_id": { "type": "string", "minLength": 1 },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "id"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["device", "host", "session"]
+        },
+        "id": { "type": "string", "minLength": 1 }
+      }
+    },
+    "release_set_ref": { "type": "string", "minLength": 1 },
+    "experience_profile_ref": { "type": ["string", "null"] },
+    "isolation_profile_ref": { "type": ["string", "null"] },
+    "observed_at": { "type": "string", "format": "date-time" },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "boot_release_set_ref": { "type": ["string", "null"] },
+        "image_ref": { "type": ["string", "null"] },
+        "store_closure_hash": { "type": ["string", "null"] },
+        "boot_entry_label": { "type": ["string", "null"] }
+      }
+    },
+    "compliance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["compliant", "drifted", "unknown", "failed"]
+        },
+        "notes": { "type": ["string", "null"] }
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    }
+  }
+}

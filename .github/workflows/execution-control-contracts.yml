@@ -1,0 +1,56 @@
+name: Execution Control Contracts
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "docs/execution-control-reconciliation-v0.3.md"
+      - "schemas/ExecutionFork.json"
+      - "schemas/RoutingContract.json"
+      - "schemas/ToolExposurePolicy.json"
+      - "schemas/QuotaPolicy.json"
+      - "schemas/RunnerGroup.json"
+      - "schemas/ProtocolWorkbench.json"
+      - "examples/execution_fork.json"
+      - "examples/routing_contract.json"
+      - "examples/tool_exposure_policy.json"
+      - "examples/quota_policy.json"
+      - "examples/runner_group.json"
+      - "examples/protocol_workbench.json"
+      - "tools/validate_execution_control_examples.py"
+      - ".github/workflows/execution-control-contracts.yml"
+  push:
+    branches: ["main", "replay/s104-current"]
+    paths:
+      - "docs/execution-control-reconciliation-v0.3.md"
+      - "schemas/ExecutionFork.json"
+      - "schemas/RoutingContract.json"
+      - "schemas/ToolExposurePolicy.json"
+      - "schemas/QuotaPolicy.json"
+      - "schemas/RunnerGroup.json"
+      - "schemas/ProtocolWorkbench.json"
+      - "examples/execution_fork.json"
+      - "examples/routing_contract.json"
+      - "examples/tool_exposure_policy.json"
+      - "examples/quota_policy.json"
+      - "examples/runner_group.json"
+      - "examples/protocol_workbench.json"
+      - "tools/validate_execution_control_examples.py"
+      - ".github/workflows/execution-control-contracts.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-execution-control-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install validator dependencies
+        run: python -m pip install --upgrade pip jsonschema
+      - name: Validate execution control examples
+        run: python tools/validate_execution_control_examples.py

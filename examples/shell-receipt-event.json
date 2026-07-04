@@ -1,0 +1,26 @@
+{
+  "eventId": "urn:srcos:shell-receipt-event:command-request-demo-0001",
+  "specVersion": "2.0.0",
+  "eventClass": "command-request",
+  "occurredAt": "2026-05-04T17:45:00Z",
+  "actorRef": "urn:srcos:subject:operator-demo",
+  "agentRegistryRef": null,
+  "sessionRef": "urn:srcos:shell-session:demo-0001",
+  "workroomRef": "urn:srcos:workroom:professional-intelligence-demo",
+  "payloadMode": "metadata-only",
+  "contentCaptureEnabled": false,
+  "payload": {
+    "commandClass": "validation",
+    "commandHashRef": "urn:srcos:content-ref:sha256-demo-command",
+    "rawCommandIncluded": false,
+    "rawOutputIncluded": false
+  },
+  "artifactRefs": [],
+  "policyDecisionRefs": [
+    "urn:srcos:policy-decision:shell-event-export-metadata-only-0001"
+  ],
+  "evidenceRefs": [
+    "urn:srcos:evidence:shell-receipt-demo-0001"
+  ],
+  "redactionRefs": []
+}

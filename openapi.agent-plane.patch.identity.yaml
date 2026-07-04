@@ -1,0 +1,98 @@
+paths:
+  /v2/identity/genesis-packets:
+    post:
+      summary: Create a validator packet for genesis or renewal
+      operationId: createIdentityGenesisPacket
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatorPacket'
+      responses:
+        '201':
+          description: ValidatorPacket created
+
+  /v2/identity/validator-receipts:
+    post:
+      summary: Submit a validator receipt
+      operationId: submitIdentityValidatorReceipt
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ValidatorReceipt'
+      responses:
+        '201':
+          description: ValidatorReceipt accepted
+
+  /v2/identity/posts:
+    post:
+      summary: Issue a Proof-of-Self token
+      operationId: issueProofOfSelfToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProofOfSelfToken'
+      responses:
+        '201':
+          description: ProofOfSelfToken issued
+
+  /v2/identity/recoveries:
+    post:
+      summary: Record a recovery ceremony
+      operationId: recordRecoveryCeremony
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecoveryCeremony'
+      responses:
+        '201':
+          description: RecoveryCeremony recorded
+
+  /v2/identity/revocations:
+    post:
+      summary: Append a revocation entry
+      operationId: appendRevocationEntry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RevocationEntry'
+      responses:
+        '201':
+          description: RevocationEntry appended
+
+  /v2/identity/attestations:
+    post:
+      summary: Record attestation evidence
+      operationId: recordAttestationEvidence
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AttestationEvidence'
+      responses:
+        '201':
+          description: AttestationEvidence recorded
+
+  /v2/identity/quorum-policies:
+    post:
+      summary: Create or update an identity quorum policy
+      operationId: upsertIdentityQuorumPolicy
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IdentityQuorumPolicy'
+      responses:
+        '201':
+          description: IdentityQuorumPolicy stored

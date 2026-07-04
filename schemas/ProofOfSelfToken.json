@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ProofOfSelfToken.json",
+  "title": "ProofOfSelfToken",
+  "description": "Canonical Proof-of-Self token issued after successful genesis or renewal.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "issuedAt",
+    "expiresAt",
+    "state",
+    "gadRef"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:proof-of-self:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "ProofOfSelfToken"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectRef": {
+      "type": "string"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "active",
+        "suspended",
+        "revoked",
+        "expired"
+      ]
+    },
+    "gadRef": {
+      "type": "string"
+    },
+    "validatorReceiptRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "trustRootRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "binding": {
+      "type": "object"
+    },
+    "revocationStatus": {
+      "type": "object"
+    },
+    "transportHints": {
+      "type": "object"
+    }
+  }
+}

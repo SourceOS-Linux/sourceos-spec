@@ -1,0 +1,18 @@
+{
+  "id": "urn:srcos:package-manifest:workstation-v0",
+  "type": "PackageManifest",
+  "specVersion": "2.1.0",
+  "name": "workstation-v0",
+  "layers": {
+    "system": {
+      "rpm_ostree": ["git", "podman", "toolbox", "wl-clipboard", "fuzzel", "input-remapper"],
+      "dnf": ["git", "podman", "toolbox", "wl-clipboard", "fuzzel", "input-remapper"]
+    },
+    "user": {
+      "brew": ["fzf", "atuin", "bat", "zoxide", "yazi", "eza", "direnv", "tmux", "lazygit", "rclone", "minio-mc", "rsync"]
+    },
+    "toolbox": {
+      "aur": ["ruby-fusuma"]
+    }
+  }
+}

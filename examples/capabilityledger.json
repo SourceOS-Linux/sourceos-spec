@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:capability-ledger:runtime-observability-0001",
+  "type": "CapabilityLedger",
+  "specVersion": "0.1.0",
+  "capabilityRef": "urn:srcos:capability:browser-automation@0.1.0",
+  "sessionRef": "urn:srcos:session:runtime-observability-demo-0001",
+  "agentMachineReceiptRef": "urn:srcos:agent-machine-receipt:runtime-probe-0001",
+  "declaredBy": ["config", "ui"],
+  "negotiatedBy": ["runtime", "server", "plugin", "policy", "schema", "transport"],
+  "effectiveState": "enabled",
+  "stateReason": "All planes agreed on the requested browser automation capability under policy.",
+  "ownerRefs": ["urn:srcos:agent:bearbrowser-demo-agent"],
+  "conflictRefs": [],
+  "causalRefs": ["urn:srcos:event:runtime-capability-negotiation-0001"],
+  "policyDecisionRef": "urn:srcos:decision:runtime-observability-policy-0001",
+  "evidenceRefs": [
+    "urn:srcos:evidence:runtime-observability-capability-handshake-0001",
+    "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  ],
+  "capturedAt": "2026-05-06T04:30:00Z"
+}

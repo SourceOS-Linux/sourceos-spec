@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReplayEnvelope.json",
+  "title": "ReplayEnvelope",
+  "description": "A canonical, replayable digest envelope for a runtime action. It captures the hashed inputs, environment, dependencies, seeds, and determinism bounds required to verify or reproduce a call outcome.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "callId",
+    "issuedAt",
+    "determinismMode",
+    "inputsDigest",
+    "environmentDigest",
+    "dependenciesDigest",
+    "envelopeHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:replay:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:replay:<local-id>"
+    },
+    "type": {
+      "const": "ReplayEnvelope",
+      "description": "Discriminator constant — always \"ReplayEnvelope\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "callId": {
+      "type": "string",
+      "description": "Identifier of the runtime call or state transition this envelope replays."
+    },
+    "policyDecisionId": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:decision:",
+      "description": "Optional URN of the PolicyDecision that authorized this replayable action."
+    },
+    "capabilityTokenId": {
+      "type": ["string", "null"],
+      "description": "Optional capability token identifier active during the original action."
+    },
+    "determinismMode": {
+      "enum": ["strict", "bounded", "best-effort"],
+      "description": "Determinism class for this replay: strict (bitwise stable), bounded (stable within declared tolerances), or best-effort (auditable but not fully deterministic)."
+    },
+    "inputsDigest": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed digest of the canonicalized runtime inputs."
+    },
+    "environmentDigest": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed digest of the canonicalized runtime environment, including policy and sandbox posture."
+    },
+    "dependenciesDigest": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed digest of binaries, libraries, and declared dependency set used by the action."
+    },
+    "seedDigest": {
+      "type": ["string", "null"],
+      "pattern": "^sha256:",
+      "description": "Optional sha256: prefixed digest of the randomness seed material used to bound replay."
+    },
+    "bounds": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "clockSkewMs": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Maximum tolerated wall-clock skew in milliseconds during replay verification."
+        },
+        "networkMode": {
+          "enum": ["none", "allowlist", "full"],
+          "description": "Replay-time network posture used to interpret determinism bounds."
+        },
+        "notes": {
+          "type": ["string", "null"],
+          "description": "Optional human-readable notes about replay caveats or deterministic tolerances."
+        }
+      },
+      "description": "Optional replay bounds that explain the permitted tolerance window."
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this envelope was produced."
+    },
+    "envelopeHash": {
+      "type": "string",
+      "pattern": "^sha256:",
+      "description": "sha256: prefixed digest over the full canonical envelope content."
+    }
+  }
+}

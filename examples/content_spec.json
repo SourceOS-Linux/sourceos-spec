@@ -1,0 +1,26 @@
+{
+  "id": "urn:srcos:content-spec:sourceos-workstation",
+  "type": "ContentSpec",
+  "specVersion": "2.0.0",
+  "name": "SourceOS Workstation",
+  "kind": "os-flavor",
+  "sourceRefs": [
+    "github://SociOS-Linux/SourceOS/flavors/sourceos-workstation.example.yaml@main"
+  ],
+  "ownerRef": "urn:srcos:party:sourceos-linux",
+  "labels": {
+    "family": "workstation",
+    "substrate": "fcos",
+    "releaseLane": "dev"
+  },
+  "policyTags": [
+    "sourceos.substrate",
+    "fcos.thin-personalization",
+    "agentplane.execution-boundary"
+  ],
+  "targetSurfaces": [
+    "sourceos-live-usb",
+    "sourceos-pxe",
+    "agentplane-bundle"
+  ]
+}

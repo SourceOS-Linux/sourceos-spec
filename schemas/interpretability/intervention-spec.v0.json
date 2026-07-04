@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/interpretability/intervention-spec.v0.json",
+  "title": "Interpretability Intervention Spec v0.1",
+  "description": "Typed intervention contract for feature steering, activation capping, ReFT, circuit ablations, and LORSA QK interventions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "intervention_kind",
+    "intervention_id",
+    "source_lock_ref",
+    "site_type"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "intervention_id": {"type": "string", "pattern": "^urn:srcos:interpretability:intervention:[A-Za-z0-9._:-]+$"},
+    "source_lock_ref": {"type": "string", "pattern": "^urn:srcos:interpretability:source-lock:[A-Za-z0-9._:-]+$"},
+    "intervention_kind": {
+      "type": "string",
+      "enum": [
+        "feature_steering",
+        "activation_patching",
+        "activation_cap",
+        "reft_finetuning",
+        "prompt_only_blackbox",
+        "circuit_ablation",
+        "lorsa_qk_intervention",
+        "none"
+      ]
+    },
+    "site_type": {
+      "type": "string",
+      "enum": ["residual_stream", "residual_mid", "residual_post", "attention_out", "attention_qk_ov", "mlp", "mlp_post", "embedding", "not_applicable"]
+    },
+    "feature_ref": {"type": "string"},
+    "direction_ref": {"type": "string"},
+    "cap_value": {"type": "number"},
+    "cap_direction_ref": {"type": "string"},
+    "cap_layer": {"type": "integer", "minimum": 0},
+    "cap_site_type": {
+      "type": "string",
+      "enum": ["residual_stream", "residual_mid", "residual_post", "attention_out", "attention_qk_ov", "mlp", "mlp_post", "embedding"]
+    },
+    "reft_method_class": {"type": "string"},
+    "finetuning_data_ref": {"type": "string"},
+    "training_steps": {"type": "integer", "minimum": 1},
+    "query_position": {"type": "string"},
+    "key_position": {"type": "string"},
+    "lorsa_feature_ref": {"type": "string"},
+    "ablation_target_ref": {"type": "string"},
+    "steering_strength": {"type": "number"},
+    "expected_behavior_delta": {"type": "string"},
+    "safety_scope": {"type": "string"},
+    "notes": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"intervention_kind": {"const": "activation_cap"}}, "required": ["intervention_kind"]},
+      "then": {"required": ["cap_value", "cap_direction_ref", "cap_layer", "cap_site_type"]}
+    },
+    {
+      "if": {"properties": {"intervention_kind": {"const": "reft_finetuning"}}, "required": ["intervention_kind"]},
+      "then": {"required": ["reft_method_class", "finetuning_data_ref", "training_steps"]}
+    },
+    {
+      "if": {"properties": {"intervention_kind": {"const": "lorsa_qk_intervention"}}, "required": ["intervention_kind"]},
+      "then": {
+        "required": ["query_position", "key_position", "lorsa_feature_ref"],
+        "properties": {"site_type": {"const": "attention_qk_ov"}}
+      }
+    },
+    {
+      "if": {"properties": {"intervention_kind": {"const": "feature_steering"}}, "required": ["intervention_kind"]},
+      "then": {"required": ["feature_ref", "direction_ref", "steering_strength"]}
+    },
+    {
+      "if": {"properties": {"intervention_kind": {"const": "circuit_ablation"}}, "required": ["intervention_kind"]},
+      "then": {"required": ["ablation_target_ref"]}
+    },
+    {
+      "if": {"properties": {"intervention_kind": {"const": "none"}}, "required": ["intervention_kind"]},
+      "then": {"properties": {"site_type": {"const": "not_applicable"}}}
+    }
+  ]
+}

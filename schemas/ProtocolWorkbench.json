@@ -7,53 +7,24 @@
   "additionalProperties": false,
   "required": ["id", "type", "specVersion", "name", "protocol", "executionForkRef", "serverUnderTest"],
   "properties": {
-    "id": {
-      "type": "string",
-      "pattern": "^urn:srcos:workbench:",
-      "description": "Stable URN identifier. Pattern: urn:srcos:workbench:<local-id>."
-    },
-    "type": {
-      "const": "ProtocolWorkbench",
-      "description": "Discriminator constant — always \"ProtocolWorkbench\"."
-    },
-    "specVersion": {
-      "type": "string",
-      "description": "Spec version of this document, e.g. \"2.0.0\"."
-    },
-    "name": {
-      "type": "string",
-      "description": "Human-readable protocol workbench name."
-    },
-    "protocol": {
-      "type": "string",
-      "enum": ["mcp", "a2a", "tritrpc", "http_api", "grpc"],
-      "description": "Primary protocol surface under test."
-    },
-    "executionForkRef": {
-      "type": "string",
-      "pattern": "^urn:srcos:execution-fork:",
-      "description": "Execution fork used to host or exercise the server under test."
-    },
-    "routingContractRef": {
-      "type": ["string", "null"],
-      "pattern": "^urn:srcos:routing-contract:",
-      "description": "Optional routing contract used by the workbench."
-    },
+    "id": { "type": "string", "pattern": "^urn:srcos:workbench:" },
+    "type": { "const": "ProtocolWorkbench" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "protocol": { "type": "string", "enum": ["mcp", "a2a", "tritrpc", "http_api", "grpc"] },
+    "executionForkRef": { "type": "string", "pattern": "^urn:srcos:execution-fork:" },
+    "routingContractRef": { "type": ["string", "null"], "pattern": "^urn:srcos:routing-contract:" },
     "serverUnderTest": {
       "type": "object",
       "additionalProperties": false,
       "required": ["entrypoint"],
       "properties": {
-        "entrypoint": { "type": "string", "description": "Entrypoint, command, or service reference for the server under test." },
-        "localMapping": { "type": "boolean", "description": "Whether the server under test is mapped from a local workstation path or process." },
-        "previewUrlEnabled": { "type": "boolean", "description": "Whether the workbench emits a preview URL for human review." }
+        "entrypoint": { "type": "string" },
+        "localMapping": { "type": "boolean" },
+        "previewUrlEnabled": { "type": "boolean" }
       }
     },
-    "clientProfiles": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "Named client profiles used to exercise the server under test."
-    },
+    "clientProfiles": { "type": "array", "items": { "type": "string" } },
     "trafficCapture": {
       "type": "object",
       "additionalProperties": false,
@@ -62,23 +33,13 @@
         "captureResponses": { "type": "boolean" },
         "captureToolCalls": { "type": "boolean" },
         "redactSensitiveFields": { "type": "boolean" }
-      },
-      "description": "Traffic and transcript capture settings for the workbench."
+      }
     },
-    "transcriptMode": {
-      "type": "string",
-      "enum": ["request_response", "tool_call", "mixed"],
-      "description": "Transcript style emitted by this workbench."
-    },
-    "validationRefs": {
-      "type": "array",
-      "items": { "type": "string" },
-      "description": "References to workflows, skills, or validation bundles exercised by this workbench."
-    },
+    "transcriptMode": { "type": "string", "enum": ["request_response", "tool_call", "mixed"] },
+    "validationRefs": { "type": "array", "items": { "type": "string" } },
     "artifactClasses": {
       "type": "array",
-      "items": { "type": "string", "enum": ["transcript", "screenshot", "request_log", "response_log", "schema_diff", "tool_trace", "preview_link"] },
-      "description": "Artifact classes expected from this workbench."
+      "items": { "type": "string", "enum": ["transcript", "screenshot", "request_log", "response_log", "schema_diff", "tool_trace", "preview_link"] }
     }
   }
 }

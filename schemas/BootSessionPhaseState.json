@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/BootSessionPhaseState.json",
+  "title": "BootSessionPhaseState",
+  "description": "A boot/session phase record used to gate services that require user unlock, keyrings, portals, desktop brokers, or recovery-mode boundaries before execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "observedAt",
+    "bootId",
+    "sessionId",
+    "phase",
+    "phaseVerdict",
+    "allowedComponents",
+    "blockedComponents"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:boot-session-phase:" },
+    "type": { "const": "BootSessionPhaseState" },
+    "specVersion": { "type": "string" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "bootId": { "type": "string", "minLength": 1 },
+    "sessionId": { "type": "string", "minLength": 1 },
+    "phase": { "enum": ["sealed-boot", "pre-login", "post-login-locked", "unlocked-user-session", "degraded-session", "recovery-session", "unknown"] },
+    "phaseVerdict": { "enum": ["ready", "not-ready", "degraded", "recovery-only", "unknown"] },
+    "availableKeyrings": { "type": "array", "items": { "type": "string" } },
+    "availablePortals": { "type": "array", "items": { "type": "string" } },
+    "allowedComponents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["componentRef", "state"],
+        "properties": {
+          "componentRef": { "type": "string" },
+          "state": { "enum": ["allowed", "allowed-degraded", "unknown"] },
+          "reason": { "type": "string" }
+        }
+      }
+    },
+    "blockedComponents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["componentRef", "requiredPhase", "state"],
+        "properties": {
+          "componentRef": { "type": "string" },
+          "requiredPhase": { "enum": ["sealed-boot", "pre-login", "post-login-locked", "unlocked-user-session", "degraded-session", "recovery-session", "unknown"] },
+          "state": { "enum": ["blocked", "deferred", "quarantined", "unknown"] },
+          "reason": { "type": "string" },
+          "remediationHint": { "type": "string" }
+        }
+      }
+    },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleSummary": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}

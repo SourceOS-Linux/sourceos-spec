@@ -1,0 +1,21 @@
+{
+  "id": "urn:srcos:proof-of-self:demo-post-001",
+  "type": "ProofOfSelfToken",
+  "specVersion": "2.1.0",
+  "subjectRef": "urn:srcos:subject:demo",
+  "issuedAt": "2026-04-14T12:00:00Z",
+  "expiresAt": "2027-04-14T12:00:00Z",
+  "state": "active",
+  "gadRef": "urn:srcos:genesis-attestation:demo-001",
+  "validatorReceiptRefs": [
+    "urn:srcos:validator-receipt:v1",
+    "urn:srcos:validator-receipt:v2",
+    "urn:srcos:validator-receipt:v3"
+  ],
+  "trustRootRefs": [
+    "urn:srcos:validator-trust-root:root-001"
+  ],
+  "binding": {},
+  "revocationStatus": {},
+  "transportHints": {}
+}
