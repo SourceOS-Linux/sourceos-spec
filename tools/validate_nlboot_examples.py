@@ -12,6 +12,7 @@ PAIRS = [
     (ROOT / "schemas" / "NLBootPlan.json", ROOT / "examples" / "nlboot_plan.json"),
     (ROOT / "schemas" / "ArtifactCacheRecord.json", ROOT / "examples" / "artifact_cache_record.json"),
     (ROOT / "schemas" / "BootProofRecord.json", ROOT / "examples" / "boot_proof_record.json"),
+    (ROOT / "schemas" / "DeviceIdentity.json", ROOT / "examples" / "device_identity.json"),
     (ROOT / "schemas" / "AppleSiliconAdapterEvidence.json", ROOT / "examples" / "apple_silicon_adapter_evidence.json"),
     # Release and build lifecycle objects
     (ROOT / "schemas" / "ReleaseSet.json", ROOT / "examples" / "release_set.json"),

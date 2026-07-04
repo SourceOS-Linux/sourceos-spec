@@ -1,0 +1,35 @@
+name: validate-ops-history
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - ops-history-spec-hardening
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate-ops-history:
+    name: Validate OpsHistory contracts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Validate OpsHistory schema examples
+        run: |
+          python3 -m pip install jsonschema
+          python3 tools/validate_ops_history_examples.py
+
+      - name: Validate all repo examples through Makefile
+        run: make validate

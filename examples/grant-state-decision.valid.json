@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.1.0",
+  "decision_kind": "grant-state-decision",
+  "decision_id": "grant-state-decision:agent-alpha-review-001",
+  "ts_decided": "2026-05-27T00:52:00Z",
+  "grant_ref": "agent-grant:agent-alpha-001",
+  "subject_ref": "agent://agent-alpha",
+  "authority_decision": "reduced",
+  "decision_actor_ref": "service://sourceos-policy-adjudicator",
+  "authorization_policy_ref": "policy://sourceos/grant-state-v1.1",
+  "authorization_evidence_refs": ["policy-decision:agent-alpha-review-001", "evidence://sourceos/grant-state/agent-alpha-review-001"],
+  "effective_at": "2026-05-27T00:53:00Z",
+  "authority_effects": {
+    "tool_access": "reduced",
+    "memory_access": "unchanged",
+    "event_write": "reduced",
+    "bridge_export": "suspended",
+    "runtime_dispatch": "reduced"
+  },
+  "source_policy_decision_ref": "policy-decision:agent-alpha-review-001",
+  "source_runtime_effect_decision_ref": null,
+  "restoration_allowed": true,
+  "restoration_conditions": ["fresh policy pass", "grant not expired", "no revocation ref present"],
+  "evidence_refs": ["evidence://sourceos/grant-state/agent-alpha-review-001"],
+  "explanation": "Policy review requires reduced authority; grant state change is recorded separately from policy and runtime effect decisions."
+}

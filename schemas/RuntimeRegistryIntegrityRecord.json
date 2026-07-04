@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RuntimeRegistryIntegrityRecord.json",
+  "title": "RuntimeRegistryIntegrityRecord",
+  "description": "An integrity record for runtime registries such as package receipts, extension records, broker registrations, manifests, and desktop-service records.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "observedAt",
+    "componentRef",
+    "verificationVerdict",
+    "registryRecords"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:runtime-registry-integrity:" },
+    "type": { "const": "RuntimeRegistryIntegrityRecord" },
+    "specVersion": { "type": "string" },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "componentRef": { "type": "string", "minLength": 1 },
+    "bundleOrPackageIdentity": { "type": "string" },
+    "manifestDigest": { "type": "string" },
+    "verificationVerdict": { "enum": ["valid", "degraded", "missing", "invalid", "quarantined", "unknown"] },
+    "registryRecords": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["recordKind", "state"],
+        "properties": {
+          "recordKind": { "enum": ["receipt", "extension-record", "extension-point", "broker-record", "package-manifest", "launch-record", "profile-record", "namespace-descriptor", "unknown"] },
+          "recordRef": { "type": "string" },
+          "state": { "enum": ["present", "missing", "invalid", "stale", "quarantined", "unknown"] },
+          "errorCode": { "type": "string" },
+          "userVisibleImpact": { "type": "string" },
+          "remediationHint": { "type": "string" }
+        }
+      }
+    },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleSummary": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}

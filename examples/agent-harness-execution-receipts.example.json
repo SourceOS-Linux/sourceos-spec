@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "v0.1",
+  "kind": "AgentHarnessExecutionReceipts",
+  "localAgentRuntimeReceipt": {
+    "receiptId": "local-runtime-agent-harness-baseline-v0.1",
+    "runtimeProfile": "sourceos-local-agent-runtime",
+    "agentIdentityRef": "agent-registry://agent/agent-harness-baseline",
+    "policyAdmissionRef": "github://SocioProphet/policy-fabric/pull/60",
+    "activationDecisionRef": "sourceos://activation/agent-harness-baseline",
+    "modelCarryRefs": ["sourceos://model-carry/local-default"],
+    "memoryMountRefs": ["github://SocioProphet/memory-mesh/pull/23"],
+    "networkProfile": "local-only",
+    "filesystemScopes": ["workspace://SocioProphet/agentplane"],
+    "secretScopes": [],
+    "hostMutationPolicy": "dry-run-only",
+    "agentplaneRunRef": "github://SocioProphet/agentplane/pull/107",
+    "exitState": "planned"
+  },
+  "shellReceiptEvent": {
+    "commandId": "command-validate-agent-harness-runtime-contracts",
+    "commandHash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "workingDirectory": "~/dev/agentplane",
+    "actorRef": "github://mdheller",
+    "environmentProfile": "sourceos-local-dev",
+    "stdoutPointerRef": "artifact://sha256/cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "stderrPointerRef": "artifact://sha256/dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+    "exitCode": 0,
+    "fileMutationSummary": "no host mutation",
+    "policyDecisionRef": "github://SocioProphet/policy-fabric/pull/60",
+    "replayEligible": true
+  },
+  "browserActionReceipt": {
+    "browserSessionRef": "bearbrowser://session/agent-harness-baseline",
+    "url": "https://github.com/SocioProphet/delivery-excellence/pull/9",
+    "actionType": "navigate",
+    "credentialUse": false,
+    "artifactPointerRefs": [],
+    "policyDecisionRef": "github://SocioProphet/policy-fabric/pull/60",
+    "sideEffectClass": "read-only",
+    "replayEligible": true
+  },
+  "hostMutationBoundaryReceipt": {
+    "mutationClass": "none",
+    "targetScope": "local-workspace",
+    "mode": "dry-run",
+    "approvalRef": "",
+    "policyDecisionRef": "github://SocioProphet/policy-fabric/pull/60",
+    "rollbackRef": "",
+    "mutatedHost": false,
+    "deniedOperationRefs": []
+  },
+  "downloadArtifactReceipt": {
+    "artifactRef": "artifact://sha256/eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "sourceRef": "github://SocioProphet/delivery-excellence-automation/pull/7",
+    "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "mediaType": "application/json",
+    "sizeBytes": 1024,
+    "quarantineState": "not-required",
+    "scanRefs": [],
+    "retentionClass": "run-retained",
+    "memoryMeshPointerRef": "github://SocioProphet/memory-mesh/pull/23"
+  }
+}
