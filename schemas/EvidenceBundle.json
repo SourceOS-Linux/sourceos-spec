@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EvidenceBundle.json",
+  "title": "EvidenceBundle",
+  "description": "A bundle of evidence refs, receipts, and logs attached to a subject object such as a release, run, export, or promotion decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "subjectRef", "generatedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:evidence-bundle:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:evidence-bundle:<local-id>"
+    },
+    "type": {
+      "const": "EvidenceBundle",
+      "description": "Discriminator constant — always \"EvidenceBundle\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "subjectRef": {
+      "type": "string",
+      "description": "Ref to the object this evidence bundle supports."
+    },
+    "artifactRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Refs to build outputs, manifests, or related artifacts."
+    },
+    "receiptRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Refs to receipts, attestations, or signature outputs."
+    },
+    "logRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Refs to logs, event streams, or trace bundles."
+    },
+    "decisionRefs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Refs to policy, promotion, or execution decisions."
+    },
+    "generatedBy": {
+      "type": ["string", "null"],
+      "description": "Optional subject or service that generated the evidence bundle."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the evidence bundle was generated."
+    }
+  }
+}

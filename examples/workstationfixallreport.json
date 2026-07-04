@@ -1,0 +1,39 @@
+{
+  "kind": "sourceos.fix.all",
+  "mode": "apply",
+  "ok": true,
+  "results": {
+    "shell": {
+      "kind": "sourceos.fix.shell",
+      "mode": "apply",
+      "ok": true,
+      "summary": {
+        "patched": 2,
+        "would_patch": 0,
+        "reverted": 0,
+        "already_patched": 0,
+        "no_patch": 0,
+        "missing_file": 0
+      },
+      "results": [
+        {
+          "file": "~/.bashrc",
+          "action": "patched"
+        },
+        {
+          "file": "~/.zshrc",
+          "action": "patched"
+        }
+      ]
+    },
+    "fish": {
+      "kind": "sourceos.fix.fish",
+      "mode": "apply",
+      "ok": true,
+      "result": {
+        "file": "~/.config/fish/config.fish",
+        "action": "patched"
+      }
+    }
+  }
+}

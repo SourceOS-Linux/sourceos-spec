@@ -1,0 +1,51 @@
+{
+  "id": "urn:srcos:runtime-identity-graph:synthetic-browser-001",
+  "type": "RuntimeIdentityGraph",
+  "specVersion": "2.0.0",
+  "observedAt": "2026-05-06T22:37:03Z",
+  "rootComponentRef": "urn:srcos:component:synthetic-browser-surface",
+  "identityVerdict": "degraded",
+  "nodes": [
+    {
+      "nodeId": "app.synthetic-browser",
+      "nodeKind": "app",
+      "displayName": "Synthetic Browser Surface",
+      "processId": 1000,
+      "bundleOrPackageId": "application.example.synthetic-browser",
+      "verificationVerdict": "valid"
+    },
+    {
+      "nodeId": "child.synthetic-content.1001",
+      "nodeKind": "browser-child",
+      "displayName": "Synthetic Content Surface",
+      "processId": 1001,
+      "bundleOrPackageId": "application.example.synthetic-content",
+      "verificationVerdict": "degraded"
+    },
+    {
+      "nodeId": "audit.synthetic-content.1001",
+      "nodeKind": "audit-token",
+      "displayName": "Synthetic content audit token",
+      "auditIdentity": "audit-token-unresolved",
+      "verificationVerdict": "ambiguous"
+    }
+  ],
+  "edges": [
+    {
+      "from": "app.synthetic-browser",
+      "to": "child.synthetic-content.1001",
+      "relationship": "spawned"
+    },
+    {
+      "from": "child.synthetic-content.1001",
+      "to": "audit.synthetic-content.1001",
+      "relationship": "observed-as"
+    }
+  ],
+  "evidenceRefs": [
+    "urn:srcos:telemetry:synthetic-identity-degraded",
+    "urn:srcos:telemetry:synthetic-audit-token-unresolved"
+  ],
+  "userVisibleImpact": "A synthetic child surface launched, but its runtime identity could not be fully resolved.",
+  "remediationHint": "Verify child-surface package identity, audit-token mapping, and broker registration before allowing page load."
+}

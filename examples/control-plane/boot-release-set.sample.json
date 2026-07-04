@@ -1,0 +1,13 @@
+{
+  "boot_release_set_id": "brs_local_0001",
+  "base_release_set_ref": "rs_local_0001",
+  "boot_mode": "recovery",
+  "status": "ready",
+  "artifacts": {
+    "kernel_ref": "artifact://boot/kernel/local-0001",
+    "initrd_ref": "artifact://boot/initrd/local-0001",
+    "rootfs_ref": "artifact://boot/rootfs/local-0001"
+  },
+  "created_at": "2026-04-15T22:05:00Z",
+  "notes": "Recovery boot artifacts for the assigned local release."
+}

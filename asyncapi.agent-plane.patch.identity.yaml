@@ -1,0 +1,35 @@
+channels:
+  srcos.v2.identity.packet.requested:
+    publish:
+      message:
+        $ref: '#/components/messages/ValidatorPacketMessage'
+
+  srcos.v2.identity.packet.signed:
+    publish:
+      message:
+        $ref: '#/components/messages/ValidatorReceiptMessage'
+
+  srcos.v2.identity.post.issued:
+    publish:
+      message:
+        $ref: '#/components/messages/ProofOfSelfTokenMessage'
+
+  srcos.v2.identity.post.renewed:
+    publish:
+      message:
+        $ref: '#/components/messages/ProofOfSelfTokenMessage'
+
+  srcos.v2.identity.post.revoked:
+    publish:
+      message:
+        $ref: '#/components/messages/RevocationEntryMessage'
+
+  srcos.v2.identity.attestation.drift:
+    publish:
+      message:
+        $ref: '#/components/messages/AttestationEvidenceMessage'
+
+  srcos.v2.identity.recovery.completed:
+    publish:
+      message:
+        $ref: '#/components/messages/RecoveryCeremonyMessage'

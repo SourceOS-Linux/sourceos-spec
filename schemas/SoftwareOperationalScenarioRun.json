@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SoftwareOperationalScenarioRun.json",
+  "title": "SoftwareOperationalScenarioRun",
+  "description": "A typed envelope describing one software operational-risk modeling run, its typed inputs, and its produced report outputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "generatedAt",
+    "subjectRef",
+    "runKind",
+    "method",
+    "incidentInputRefs",
+    "watchInputRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:oprisk-scenario-run:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:oprisk-scenario-run:<local-id>"
+    },
+    "type": {
+      "const": "SoftwareOperationalScenarioRun",
+      "description": "Discriminator constant — always \"SoftwareOperationalScenarioRun\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the scenario run was executed."
+    },
+    "subjectRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to the assessed company, service, or portfolio."
+    },
+    "runKind": {
+      "type": "string",
+      "enum": [
+        "baseline",
+        "target",
+        "stress",
+        "backtest"
+      ],
+      "description": "Semantic mode of the scenario run."
+    },
+    "method": {
+      "type": "string",
+      "enum": [
+        "parametric",
+        "monte_carlo",
+        "hybrid",
+        "benchmark_only"
+      ],
+      "description": "Primary modeling method used for the run."
+    },
+    "modelVersion": {
+      "type": "string",
+      "description": "Optional model version label for reproducibility."
+    },
+    "parameterSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "horizonDays": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "tailConfidence": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "exclusiveMaximum": 1
+        },
+        "simulationCount": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "description": "Optional model parameter summary for reproducibility and audit."
+    },
+    "incidentInputRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:oprisk-incident:"
+      },
+      "description": "Typed incident inputs used by this run."
+    },
+    "watchInputRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:upstream-watch:"
+      },
+      "description": "Typed upstream watch inputs used by this run."
+    },
+    "outputReportRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:oprisk-reserve-report:"
+      },
+      "description": "Typed reserve or scenario report outputs produced by this run."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional normalized tags for filtering and clustering."
+    }
+  }
+}

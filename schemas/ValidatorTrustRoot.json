@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ValidatorTrustRoot.json",
+  "title": "ValidatorTrustRoot",
+  "description": "Trust-root entry for validator identity resolution and verification.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "kind",
+    "status",
+    "kid"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:validator-trust-root:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "ValidatorTrustRoot"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "spki",
+        "x509",
+        "ssh",
+        "cose"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "suspended",
+        "retired"
+      ]
+    },
+    "kid": {
+      "type": "string"
+    },
+    "spkiSha256": {
+      "type": ["string", "null"]
+    },
+    "x5tS256": {
+      "type": ["string", "null"]
+    },
+    "pem": {
+      "type": ["string", "null"]
+    },
+    "x5chain": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "validFrom": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "validTo": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "issuer": {
+      "type": ["string", "null"]
+    }
+  }
+}

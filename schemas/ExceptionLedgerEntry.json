@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExceptionLedgerEntry.json",
+  "title": "ExceptionLedgerEntry",
+  "description": "A signed, time-boxed exception ledger record that temporarily permits a bounded bypass or egress allowance under explicit review and expiry.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subject",
+    "reason",
+    "scope",
+    "approvedBy",
+    "issuedAt",
+    "expiresAt",
+    "status",
+    "signature"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:exception-ledger:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:exception-ledger:<local-id>"
+    },
+    "type": {
+      "const": "ExceptionLedgerEntry",
+      "description": "Discriminator constant — always \"ExceptionLedgerEntry\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "linkedPolicyId": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:policy:",
+      "description": "Optional URN of the policy whose normal behavior is being temporarily relaxed."
+    },
+    "subject": {
+      "type": "string",
+      "description": "Stable identifier of the subject or subsystem receiving the exception."
+    },
+    "reason": {
+      "type": "string",
+      "description": "Human-readable explanation of why this temporary exception is allowed."
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["domains", "cidrs", "ports", "capabilities"],
+      "properties": {
+        "domains": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Hostnames allowed by the exception."
+        },
+        "cidrs": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "CIDR ranges allowed by the exception."
+        },
+        "ports": {
+          "type": "array",
+          "items": {"type": "integer", "minimum": 1, "maximum": 65535},
+          "description": "Ports allowed by the exception."
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {"type": "string"},
+          "description": "Capability identifiers or capability classes authorized during the exception window."
+        },
+        "notes": {
+          "type": ["string", "null"],
+          "description": "Optional explanatory notes or human review instructions."
+        }
+      },
+      "description": "Structured scope of the temporary exception."
+    },
+    "approvedBy": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Signer or reviewer identifiers who approved the exception."
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the exception became active."
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when the exception expires."
+    },
+    "status": {
+      "enum": ["active", "expired", "revoked"],
+      "description": "Current lifecycle state of the exception entry."
+    },
+    "signature": {
+      "type": "string",
+      "pattern": "^sig:",
+      "description": "Detached signature or signature reference proving approval of this exception."
+    }
+  }
+}

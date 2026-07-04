@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RevocationEntry.json",
+  "title": "RevocationEntry",
+  "description": "CRL-style revocation or suspension entry for an identity token or trust root.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "targetRef",
+    "reasonCode",
+    "effectiveAt",
+    "issuerRef"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:revocation:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "RevocationEntry"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "targetRef": {
+      "type": "string"
+    },
+    "reasonCode": {
+      "type": "string",
+      "enum": [
+        "key_compromise",
+        "validator_withdrawal",
+        "device_compromise",
+        "policy_violation",
+        "recovery_rotation",
+        "expired"
+      ]
+    },
+    "effectiveAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "issuerRef": {
+      "type": "string"
+    },
+    "scope": {
+      "type": "string",
+      "enum": [
+        "token",
+        "trust_root",
+        "validator",
+        "subject"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "notes": {
+      "type": ["string", "null"]
+    }
+  }
+}

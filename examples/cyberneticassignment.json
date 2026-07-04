@@ -1,0 +1,37 @@
+{
+  "id": "urn:srcos:cyberassign:edge-gateway-na-use1-001",
+  "type": "CyberneticAssignment",
+  "specVersion": "2.1.0",
+  "nodeRef": "urn:srcos:node:edge-gateway-na-use1-001",
+  "principalRef": "urn:srcos:principal:edge-gateway-na-use1-001",
+  "controlProfileRef": "urn:srcos:control-profile:regional-sensor-hub",
+  "serviceIdentity": {
+    "namespace": "socioprophet.edge",
+    "name": "gateway-control",
+    "instanceId": "edge-gateway-na-use1-001"
+  },
+  "deploymentEnvironmentName": "production",
+  "policyRefs": [
+    "urn:srcos:policy:edge-guardrails-v1"
+  ],
+  "relations": {
+    "reports_to": [
+      "urn:srcos:council:regional-ops"
+    ],
+    "observes": [
+      "urn:srcos:signal:market-edge-demand"
+    ],
+    "acts_on": [
+      "urn:srcos:workflow:route-shift"
+    ],
+    "governed_by": [
+      "urn:srcos:policy:edge-guardrails-v1"
+    ]
+  },
+  "objectives": [
+    {
+      "name": "routing-latency-p95",
+      "target": "<=200ms"
+    }
+  ]
+}

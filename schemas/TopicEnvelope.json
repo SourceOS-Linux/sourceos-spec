@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TopicEnvelope.json",
+  "title": "TopicEnvelope",
+  "description": "A FogVault append-only topic entry envelope. This is intentionally generic; concrete payload typing is expressed via specVersion + payloadType.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["entryId", "topicId", "specVersion", "occurredAt", "payloadType", "payload"],
+  "properties": {
+    "entryId": {
+      "type": "string",
+      "pattern": "^urn:srcos:topic-entry:",
+      "description": "Stable URN identifier for this entry. Pattern: urn:srcos:topic-entry:<local-id>"
+    },
+    "topicId": {
+      "type": "string",
+      "pattern": "^urn:srcos:topic:",
+      "description": "Topic URN."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time when this entry was produced."
+    },
+    "author": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "subjectId": {"type": "string"},
+        "nodeId": {"type": ["string", "null"]}
+      },
+      "description": "Producer identity (subject and optional node)."
+    },
+    "payloadType": {
+      "type": "string",
+      "description": "Typed discriminator for the payload (e.g. PutBlob, Link, IndexHint, OfferUpserted)."
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Payload object typed by payloadType."
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "content": {"$ref": "ContentRef.json"},
+        "payloadHash": {
+          "type": ["string", "null"],
+          "description": "Optional hash of canonical payload bytes."
+        },
+        "signature": {
+          "type": ["string", "null"],
+          "description": "Optional signature over payloadHash."
+        }
+      },
+      "description": "Optional integrity envelope (hash and signature)."
+    },
+    "encryption": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cipherSuite": {"type": ["string", "null"]},
+        "keyEpoch": {"type": ["integer", "null"], "minimum": 0},
+        "aad": {"type": ["string", "null"], "description": "Optional external AAD binding (encoded)."}
+      },
+      "description": "Optional encryption metadata for encrypted payloads."
+    }
+  }
+}

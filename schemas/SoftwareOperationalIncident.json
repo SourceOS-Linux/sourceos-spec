@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SoftwareOperationalIncident.json",
+  "title": "SoftwareOperationalIncident",
+  "description": "A normalized outage, degradation, integrity, or upstream-related operational incident affecting a software-dependent critical service.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "incidentTitle",
+    "provider",
+    "eventFamily",
+    "status",
+    "startedAt",
+    "evidenceGrade",
+    "sourceRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:oprisk-incident:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:oprisk-incident:<local-id>"
+    },
+    "type": {
+      "const": "SoftwareOperationalIncident",
+      "description": "Discriminator constant — always \"SoftwareOperationalIncident\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "incidentTitle": {
+      "type": "string",
+      "minLength": 3,
+      "description": "Human-readable incident title."
+    },
+    "provider": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Primary provider, operator, or service owner associated with the incident."
+    },
+    "product": {
+      "type": "string",
+      "description": "Affected product or service family, if known."
+    },
+    "eventFamily": {
+      "type": "string",
+      "enum": [
+        "execution_process_failure",
+        "system_platform_disruption",
+        "supply_chain_upstream_failure",
+        "integrity_trust_failure",
+        "external_event",
+        "concentration_common_mode_failure",
+        "upstream_drift_integration_misalignment"
+      ],
+      "description": "Canonical software operational risk event family."
+    },
+    "affectedLayer": {
+      "type": "string",
+      "enum": [
+        "control_plane",
+        "runtime",
+        "registry",
+        "package_manager",
+        "ci_cd",
+        "identity",
+        "network",
+        "storage",
+        "model_provider",
+        "tool_server",
+        "unknown"
+      ],
+      "description": "Primary affected technical layer."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "investigating",
+        "identified",
+        "monitoring",
+        "resolved",
+        "archived"
+      ],
+      "description": "Operational state of the incident record."
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ],
+      "description": "Optional normalized severity level."
+    },
+    "startedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Incident start time in ISO 8601 format."
+    },
+    "endedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Incident resolution time in ISO 8601 format, if known."
+    },
+    "detectedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time the incident was first externally or internally observed, if distinct from start time."
+    },
+    "durationMinutes": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Normalized duration in minutes, if known."
+    },
+    "regions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Affected regions, availability zones, or tenant segments, if known."
+    },
+    "affectedServices": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Named products, APIs, or service surfaces affected by the incident."
+    },
+    "rootCauseSummary": {
+      "type": "string",
+      "description": "Provider-stated or normalized root-cause summary."
+    },
+    "evidenceGrade": {
+      "type": "string",
+      "enum": [
+        "L1_disclosed_loss",
+        "L2_modeled_estimate",
+        "L3_cost_bearing_evidence",
+        "L4_benchmark_imputation",
+        "timing_scope_only"
+      ],
+      "description": "Evidence grade for financial interpretation and source quality."
+    },
+    "sourceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "uri",
+          "observedAt"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "status_page",
+              "postmortem",
+              "filing",
+              "earnings_call",
+              "insurer_estimate",
+              "news",
+              "benchmark",
+              "other"
+            ]
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "observedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Canonical sources used to build or normalize the incident record."
+    },
+    "financialImpact": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "disclosed_loss",
+            "modeled_estimate",
+            "reimbursement_or_claim",
+            "benchmark_imputation"
+          ]
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "description": "Optional financial impact object used when cost evidence exists."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional normalized tags for downstream filtering and clustering."
+    }
+  }
+}

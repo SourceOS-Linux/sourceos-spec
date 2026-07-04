@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ToolExposurePolicy.json",
+  "title": "ToolExposurePolicy",
+  "description": "A presentation-layer policy describing which tools or toolsets are exposed on an interaction surface. It can only reduce visibility relative to authority granted by existing policy and capability-token flows.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "version", "transport", "exposureMode"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:tool-exposure:" },
+    "type": { "const": "ToolExposurePolicy" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "transport": { "type": "string", "enum": ["mcp", "tritrpc", "cli", "api"] },
+    "exposureMode": { "type": "string", "enum": ["full", "read_only", "allow_list", "deny_list", "consent_gated"] },
+    "policyRefs": { "type": "array", "items": { "type": "string" } },
+    "defaultToolsets": { "type": "array", "items": { "type": "string" } },
+    "includeTools": { "type": "array", "items": { "type": "string" } },
+    "excludeTools": { "type": "array", "items": { "type": "string" } },
+    "requireMutationConsent": { "type": "boolean" },
+    "sensitiveDataMode": { "type": "string", "enum": ["blocked", "redacted", "allowed"] },
+    "lockdownMode": { "type": "boolean" }
+  }
+}

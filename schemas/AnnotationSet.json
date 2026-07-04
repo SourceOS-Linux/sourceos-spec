@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AnnotationSet.json",
+  "title": "AnnotationSet",
+  "description": "A governed set of community, reviewer, or model annotations that can seed training and evaluation datasets.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "subjectRefs", "labelingProjectRef", "annotations", "governance", "evidenceRef"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:annotation-set:" },
+    "type": { "const": "AnnotationSet" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "subjectRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "labelingProjectRef": { "type": "string", "minLength": 1 },
+    "annotations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["annotationId", "targetRef", "label", "sourceRef", "createdAt"],
+        "properties": {
+          "annotationId": { "type": "string", "minLength": 1 },
+          "targetRef": { "type": "string", "minLength": 1 },
+          "label": { "type": "string", "minLength": 1 },
+          "value": { "type": ["string", "number", "boolean", "null"] },
+          "span": {
+            "type": ["object", "null"],
+            "additionalProperties": false,
+            "properties": {
+              "start": { "type": "integer", "minimum": 0 },
+              "end": { "type": "integer", "minimum": 0 }
+            }
+          },
+          "sourceRef": { "type": "string", "minLength": 1 },
+          "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trainingAllowed", "evaluationAllowed", "policyRef"],
+      "properties": {
+        "trainingAllowed": { "type": "boolean" },
+        "evaluationAllowed": { "type": "boolean" },
+        "policyRef": { "type": "string", "minLength": 1 },
+        "licensePolicyRef": { "type": ["string", "null"] },
+        "annotationReliabilityScore": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "derivedDatasetRefs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evidenceRef": { "type": "string", "minLength": 1 }
+  }
+}

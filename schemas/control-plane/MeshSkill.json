@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/control-plane/MeshSkill.json",
+  "title": "MeshSkill",
+  "description": "Canonical MeshSkill schema. Wrapper that preserves legacy identifier while providing a stable srcos namespace for new references.",
+  "allOf": [
+    { "$ref": "./mesh-skill.schema.json" }
+  ]
+}

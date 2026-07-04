@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OrphanEventReceipt.json",
+  "title": "OrphanEventReceipt",
+  "description": "Receipt for lifecycle events that could not initially attach to a known session DAG node and were recovered or quarantined with evidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "eventRef", "eventClass", "observedAt", "sessionResolution", "ttl", "policyDecisionRef", "evidenceRefs", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:receipt:orphan-event:" },
+    "type": { "const": "OrphanEventReceipt" },
+    "specVersion": { "type": "string" },
+    "eventRef": { "type": "string", "pattern": "^urn:srcos:event:" },
+    "eventClass": { "type": "string", "enum": ["agent_lifecycle", "runtime_lifecycle", "browser_automation", "terminal_workspace", "plugin", "transport", "unknown"] },
+    "observedAt": { "type": "string", "format": "date-time" },
+    "rawEventDigest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$" },
+    "sessionResolution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "candidateSessionRefs", "recoveredSessionRef", "recoveredDagNodeRef", "reconciledAt", "quarantinedAt"],
+      "properties": {
+        "state": { "type": "string", "enum": ["queued", "recovered", "quarantined", "discarded_duplicate"] },
+        "candidateSessionRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:session:" } },
+        "recoveredSessionRef": { "type": ["string", "null"], "pattern": "^urn:srcos:session:" },
+        "recoveredDagNodeRef": { "type": ["string", "null"], "pattern": "^urn:srcos:session-dag-node:" },
+        "reconciledAt": { "type": ["string", "null"], "format": "date-time" },
+        "quarantinedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    },
+    "ttl": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["expiresAt", "expired"],
+      "properties": {
+        "expiresAt": { "type": "string", "format": "date-time" },
+        "expired": { "type": "boolean" }
+      }
+    },
+    "correlationKeys": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conversationId": { "type": ["string", "null"] },
+        "parentId": { "type": ["string", "null"] },
+        "workspaceRef": { "type": ["string", "null"], "pattern": "^urn:srcos:workspace:" },
+        "taskRef": { "type": ["string", "null"] }
+      }
+    },
+    "causalRefs": { "type": "array", "items": { "type": "string" } },
+    "policyDecisionRef": { "type": "string", "pattern": "^urn:srcos:decision:" },
+    "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/UpstreamWatchItem.json",
+  "title": "UpstreamWatchItem",
+  "description": "A normalized watchlist item describing the live state of an upstream dependency surface and its drift or concentration implications.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectType",
+    "subjectKey",
+    "observedAt",
+    "riskState",
+    "signals"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:upstream-watch:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:upstream-watch:<local-id>"
+    },
+    "type": {
+      "const": "UpstreamWatchItem",
+      "description": "Discriminator constant — always \"UpstreamWatchItem\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "subjectType": {
+      "type": "string",
+      "enum": [
+        "github_repository",
+        "git_branch",
+        "package",
+        "registry",
+        "cloud_service",
+        "model_provider",
+        "status_page",
+        "tool_server",
+        "other"
+      ],
+      "description": "Primary type of upstream surface being watched."
+    },
+    "subjectKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical lookup key, such as owner/repo, package name, provider/service, or URL-derived key."
+    },
+    "displayName": {
+      "type": "string",
+      "description": "Optional human-readable label."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Owning org, vendor, or provider, if applicable."
+    },
+    "defaultBranch": {
+      "type": "string",
+      "description": "Default branch when the watched object is a repository."
+    },
+    "currentVersion": {
+      "type": "string",
+      "description": "Current observed version, tag, or release label, if applicable."
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time the watch item was last refreshed."
+    },
+    "riskState": {
+      "type": "string",
+      "enum": [
+        "normal",
+        "watch",
+        "elevated",
+        "critical"
+      ],
+      "description": "Normalized operational-risk state for the watched upstream surface."
+    },
+    "signals": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "signalType",
+          "value"
+        ],
+        "properties": {
+          "signalType": {
+            "type": "string",
+            "enum": [
+              "open_pr_count",
+              "open_issue_count",
+              "release_gap",
+              "package_version_gap",
+              "recent_incident_count",
+              "branch_divergence",
+              "concentration_score",
+              "custom"
+            ]
+          },
+          "value": {
+            "type": [
+              "number",
+              "string",
+              "boolean"
+            ]
+          },
+          "unit": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Observed drift, concentration, or freshness signals attached to this watch item."
+    },
+    "linkedIncidentRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:oprisk-incident:"
+      },
+      "description": "Optional links to normalized operational incidents relevant to this watch item."
+    },
+    "sourceRefs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "uri"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "github",
+              "package_registry",
+              "status_page",
+              "api",
+              "other"
+            ]
+          },
+          "uri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Sources used to refresh this watch item."
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional normalized tags for filtering and clustering."
+    }
+  }
+}

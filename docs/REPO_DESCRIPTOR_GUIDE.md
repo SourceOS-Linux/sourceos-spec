@@ -58,6 +58,7 @@ The descriptor should reference this shared context and vocabulary rather than r
 - `roleOSSubstrate`
 - `rolePublicDocsSurface`
 - `roleStarterScaffold`
+- `roleDeveloperToolchain`
 
 ## Current rule of use
 
@@ -76,3 +77,4 @@ Next we should add one real `semantic/repo.jsonld` file to each core repo:
 - `SociOS-Linux/SourceOS`
 - `SociOS-Linux/socios`
 - `SociOS-Linux/socioslinux-web`
+- `SourceOS-Linux/sourceos-devtools`

@@ -1,6 +1,6 @@
 # Semantic Overlay
 
-This directory provides the JSON-LD and Hydra semantic overlay for the SourceOS/SociOS specification.  These files make the schema types and REST API self-describing to Linked Data tooling.
+This directory provides the JSON-LD and Hydra semantic overlay for the SourceOS/SociOS specification. These files make the schema types and REST API self-describing to Linked Data tooling.
 
 ---
 
@@ -8,8 +8,58 @@ This directory provides the JSON-LD and Hydra semantic overlay for the SourceOS/
 
 | File | Purpose |
 |------|---------|
-| `context.jsonld` | JSON-LD `@context` mapping all 54 schema type names to stable IRIs under `https://schemas.srcos.ai/v2/` |
+| `context.jsonld` | JSON-LD `@context` mapping schema type names to stable IRIs under `https://schemas.srcos.ai/v2/` |
 | `hydra.jsonld` | A `hydra:ApiDocumentation` document describing the REST API's supported classes and operations |
+| `fog-vocabulary.jsonld` | Additive fog vocabulary seed for FogVault / FogCompute types and key predicates |
+| `agent-machine-model-carry-context.jsonld` | Additive context slice for SourceOS model carry and Agent Machine runtime facts/receipts |
+| `agent-machine-model-carry-hydra.jsonld` | Additive Hydra slice for SourceOS model carry and Agent Machine runtime classes |
+| `sourceos-onboarding-vocabulary.jsonld` | Additive onboarding/control-plane vocabulary seed for workspace scopes, trust modes, capability packs, connector action scopes, automation templates, and onboarding receipts |
+
+---
+
+## Recent additions — Onboarding control-plane vocabulary
+
+The onboarding control-plane slice currently contributes an additive semantic vocabulary covering:
+
+- `WorkspaceScope`
+- `TrustMode`
+- `CapabilityPack`
+- `ConnectorActionScope`
+- `AutomationTemplate`
+- `OnboardingReceipt`
+- key predicates such as `workspaceKind`, `mountMode`, `riskLevel`, `receiptRequired`, `requiresExplicitApproval`, `enabledCapabilityPack`, `enabledConnectorActionScope`, `enabledAutomationTemplate`, `trialTask`, and `revocation`
+
+This vocabulary is intentionally staged as an additive slice file so Ontogenesis can attach RDF/OWL/SHACL semantics before these terms are folded into the global `context.jsonld` and `hydra.jsonld` files.
+
+---
+
+## Recent additions — Agent Machine / Model Carry vocabulary
+
+The Agent Machine / Model Carry slice currently contributes an additive semantic vocabulary covering:
+
+- `SourceOSModelCarryRef`
+- `InferenceProvider`
+- `ModelResidency`
+- `PlacementFact`
+- `AgentMachineReceipt`
+
+This vocabulary is intentionally staged as additive slice files so it can be reviewed independently before being folded into the global `context.jsonld` and `hydra.jsonld` files.
+
+---
+
+## Recent additions — Fog vocabulary
+
+The fog layer currently contributes a seed semantic vocabulary in `fog-vocabulary.jsonld` covering:
+- `Topic`
+- `TopicEnvelope`
+- `ReplicationPolicy`
+- `ContentRef`
+- `Offer`
+- `WorkOrder`
+- `UsageReceipt`
+- `SettlementEvent`
+
+This vocabulary is intentionally lightweight and is expected to be folded into the broader semantic overlay as the fog contract family stabilizes.
 
 ---
 
@@ -21,8 +71,7 @@ Include the context in any JSON document to make it a JSON-LD document:
 {
   "@context": "https://schemas.srcos.ai/v2/context.jsonld",
   "@type": "Dataset",
-  "id": "urn:srcos:dataset:health_obs",
-  ...
+  "id": "urn:srcos:dataset:health_obs"
 }
 ```
 
@@ -40,14 +89,14 @@ Or embed the context inline:
 The context maps:
 - `id` → `@id` (every `id` field becomes the node's IRI)
 - `type` → `@type` (every `type` field becomes the node's RDF type)
-- All 54 schema type names to `srcos:<TypeName>` IRIs
-- Selected cross-vocabulary terms: `prov:wasGeneratedBy`, `prov:used`, `prov:wasAssociatedWith`
+- schema type names to `srcos:<TypeName>` IRIs
+- selected cross-vocabulary terms such as `prov:wasGeneratedBy`, `prov:used`, `prov:wasAssociatedWith`
 
 ---
 
 ## `hydra.jsonld` — Hydra API documentation
 
-The Hydra document is a machine-readable API description that extends the JSON-LD context.  It can be served at `/.well-known/hydra` to make the API self-describing.
+The Hydra document is a machine-readable API description that extends the JSON-LD context. It can be served at `/.well-known/hydra` to make the API self-describing.
 
 The document lists every resource class supported by the API with its supported operations (HTTP methods), expected inputs, and returned types.
 
@@ -82,7 +131,7 @@ When adding a new first-class schema type:
 
 1. Add a mapping to `context.jsonld`: `"NewType": "srcos:NewType"`
 2. Add a `hydra:supportedClass` entry to `hydra.jsonld` with at minimum `hydra:title`, `hydra:description`, and the applicable `hydra:supportedOperation` entries.
-3. Update this README's file table.
+3. Update this README's file table and any additive vocabulary seeds if the new type is being staged incrementally.
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md#6-update-the-semantic-context-if-needed) for the full guide.
 

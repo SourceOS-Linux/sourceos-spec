@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PackageManifest.json",
+  "title": "PackageManifest",
+  "description": "A layered workstation package manifest describing system, user, and toolbox package sets.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "layers"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:package-manifest:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:package-manifest:<local-id>."
+    },
+    "type": {
+      "const": "PackageManifest",
+      "description": "Discriminator constant — always \"PackageManifest\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable manifest name."
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "system": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "description": "Host/system layer grouped by package backend."
+        },
+        "user": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "description": "User-space package layer grouped by package backend."
+        },
+        "toolbox": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "description": "Toolbox/container build-space package layer grouped by backend."
+        }
+      },
+      "description": "Package layers for workstation realization."
+    }
+  }
+}

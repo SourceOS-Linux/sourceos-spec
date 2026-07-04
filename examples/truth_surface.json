@@ -1,0 +1,45 @@
+{
+  "id": "urn:srcos:truth-surface:ts_0001",
+  "type": "TruthSurface",
+  "specVersion": "2.0.0",
+  "plane": "system.sealed",
+  "createdAt": "2026-04-14T21:35:00Z",
+  "merkleRoot": "sha256:REPLACE_ME",
+  "signer": "sourceos-truth-surface",
+  "signature": "sig:REPLACE_ME",
+  "refs": {
+    "policyDecisionRefs": ["urn:srcos:decision:aa11bb22"],
+    "capabilityTokenIds": ["tok_123"],
+    "runRecordRefs": ["urn:srcos:run:77cc88dd"],
+    "provenanceRefs": ["urn:srcos:prov:001"],
+    "telemetryRefs": ["urn:srcos:telemetry:t001"],
+    "evidenceBundleRefs": ["artifact://evidence/run_77cc88dd"],
+    "cairnBeforeRef": "cairn://system/sealed/before/ts_0000",
+    "cairnAfterRef": "cairn://system/sealed/after/ts_0001"
+  },
+  "evidence": {
+    "required": ["logs", "traces", "metrics", "policy_decision"],
+    "present": ["logs", "policy_decision"],
+    "missing": ["traces", "metrics"]
+  },
+  "semantics": {
+    "anchors": ["B1", "B4"],
+    "glossary": ["urn:srcos:glossary:dob"],
+    "topics": ["boot.integrity", "policy.posture"]
+  },
+  "runtime": {
+    "integrity": {
+      "measuredBoot": "ok",
+      "ima": "enabled"
+    },
+    "processSummary": {
+      "processCount": 243,
+      "suspicious": 0
+    }
+  },
+  "governance": {
+    "policyPackDigest": "sha256:REPLACE_ME",
+    "riskScore": 12,
+    "humanApprovalRequired": false
+  }
+}

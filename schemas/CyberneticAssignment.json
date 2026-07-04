@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CyberneticAssignment.json",
+  "title": "CyberneticAssignment",
+  "description": "Runtime identity, policy, telemetry, relation, and control semantics assigned after image selection and node binding.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "nodeRef",
+    "serviceIdentity",
+    "deploymentEnvironmentName",
+    "policyRefs",
+    "relations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:cyberassign:[a-z0-9][a-z0-9._-]*$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:cyberassign:<local-id>."
+    },
+    "type": {
+      "const": "CyberneticAssignment",
+      "description": "Discriminator constant — always \"CyberneticAssignment\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.1.0\"."
+    },
+    "nodeRef": {
+      "type": "string",
+      "description": "URN reference to the node receiving this runtime assignment."
+    },
+    "principalRef": {
+      "type": "string",
+      "description": "Optional URN reference to the active runtime principal or DID-backed identity."
+    },
+    "controlProfileRef": {
+      "type": "string",
+      "description": "Optional URN reference to the higher-order control profile applied to the node."
+    },
+    "serviceIdentity": {
+      "type": "object",
+      "description": "OpenTelemetry-style service identity assigned at runtime.",
+      "additionalProperties": false,
+      "required": [
+        "namespace",
+        "name"
+      ],
+      "properties": {
+        "namespace": {
+          "type": "string",
+          "description": "Logical service namespace."
+        },
+        "name": {
+          "type": "string",
+          "description": "Logical service name."
+        },
+        "instanceId": {
+          "type": "string",
+          "description": "Optional runtime instance identifier."
+        }
+      }
+    },
+    "deploymentEnvironmentName": {
+      "type": "string",
+      "description": "Deployment environment name for runtime identity projection, such as production or staging."
+    },
+    "policyRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "Policy reference string."
+      },
+      "description": "Policy references constraining runtime behavior and authorization."
+    },
+    "relations": {
+      "type": "object",
+      "description": "Graph edges binding the node into the runtime control system.",
+      "additionalProperties": true,
+      "properties": {
+        "reports_to": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Relation target reference."
+          },
+          "description": "Targets to which this node or runtime reports."
+        },
+        "observes": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Relation target reference."
+          },
+          "description": "Signals or entities observed by this runtime."
+        },
+        "acts_on": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Relation target reference."
+          },
+          "description": "Targets or workflows acted on by this runtime."
+        },
+        "governed_by": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "Relation target reference."
+          },
+          "description": "Governance or policy targets controlling this runtime."
+        }
+      }
+    },
+    "objectives": {
+      "type": "array",
+      "description": "Optional objective set for the runtime control loop.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "target"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Objective name."
+          },
+          "target": {
+            "type": "string",
+            "description": "Human-readable target expression for the objective."
+          }
+        }
+      }
+    }
+  }
+}

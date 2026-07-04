@@ -1,0 +1,36 @@
+{
+  "id": "urn:srcos:external-model-provider-profile:user-openai-compatible",
+  "type": "ExternalModelProviderProfile",
+  "specVersion": "2.2.0",
+  "name": "User BYOM OpenAI-compatible endpoint",
+  "providerClass": "openai-compatible",
+  "owner": "user",
+  "endpoint": {
+    "baseUrlRef": "secret://user/model-provider/base-url",
+    "authRef": "secret://user/model-provider/api-key",
+    "tlsPolicyRef": "urn:srcos:tls-policy:user-model-provider-default",
+    "networkAccessProfileRef": "urn:srcos:network-access-profile:enterprise-and-user-default",
+    "firewallBindingRef": "urn:srcos:firewall-binding-profile:macos-lulu-user-default",
+    "meshBindingRef": null
+  },
+  "routing": {
+    "modelRouterBindingRef": "urn:socioprophet:model-router-binding:demo-user-local-llama32",
+    "taskClasses": ["summarization", "rewrite", "office-assist", "complex-reasoning"],
+    "fallbackOrder": ["local-llama32-1b", "local-llama32-3b", "user-openai-compatible"],
+    "hostedFallbackRequiresPolicy": true
+  },
+  "policy": {
+    "promptEgressDefault": "allow-with-policy",
+    "storePrompts": false,
+    "storeCompletions": false,
+    "allowTrainingUse": false,
+    "requiresDpaOrEnterpriseTerms": false,
+    "requiresUserConsentForPersonalData": true
+  },
+  "evidence": {
+    "emitRouteDecision": true,
+    "emitNetworkDecision": true,
+    "emitProviderHealth": true,
+    "promptHashOnly": true
+  }
+}

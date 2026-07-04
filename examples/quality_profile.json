@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:quality-profile:community_truth_demo",
+  "type": "QualityProfile",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:data-product:community_truth_demo",
+  "dimensions": [
+    {
+      "name": "completeness",
+      "score": 0.91,
+      "status": "pass",
+      "evidenceRef": "urn:srcos:evidence:quality-completeness"
+    },
+    {
+      "name": "freshness",
+      "score": 0.72,
+      "status": "warn",
+      "evidenceRef": "urn:srcos:evidence:quality-freshness"
+    }
+  ],
+  "overallScore": 0.82,
+  "evaluatedAt": "2026-05-01T19:00:00Z",
+  "profileStatsRefs": ["urn:srcos:profile-stats:community_truth_demo"],
+  "lineageRefs": ["urn:srcos:prov:community_truth_demo_quality"]
+}

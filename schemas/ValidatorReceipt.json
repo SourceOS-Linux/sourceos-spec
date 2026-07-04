@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ValidatorReceipt.json",
+  "title": "ValidatorReceipt",
+  "description": "Signed validator response to a ValidatorPacket.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "packetRef",
+    "validatorRef",
+    "receivedAt",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:validator-receipt:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "ValidatorReceipt"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "packetRef": {
+      "type": "string"
+    },
+    "validatorRef": {
+      "type": "string"
+    },
+    "receivedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "approved",
+        "denied",
+        "expired",
+        "invalid"
+      ]
+    },
+    "coseEnvelopeRef": {
+      "type": ["string", "null"]
+    },
+    "receiptHash": {
+      "type": ["string", "null"]
+    },
+    "trustRootRef": {
+      "type": ["string", "null"]
+    },
+    "decision": {
+      "type": "string"
+    },
+    "notes": {
+      "type": ["string", "null"]
+    }
+  }
+}

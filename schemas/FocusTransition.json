@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/FocusTransition.json",
+  "title": "FocusTransition",
+  "description": "A typed transition between two keyboard-focus ownership states in SourceOS / SociOS interaction flows.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "fromStateRef",
+    "toStateRef",
+    "trigger",
+    "priority",
+    "allowed"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:focus-transition:"
+    },
+    "fromStateRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:focus-state:"
+    },
+    "toStateRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:focus-state:"
+    },
+    "trigger": {
+      "type": "string",
+      "enum": [
+        "summon",
+        "dismiss",
+        "select-result",
+        "open-preview",
+        "enter-insert",
+        "enter-pass-through",
+        "start-completion",
+        "accept-completion",
+        "cancel-completion",
+        "request-confirmation",
+        "accept-confirmation",
+        "cancel-confirmation",
+        "escape",
+        "tab",
+        "shift-tab",
+        "return"
+      ]
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "allowed": {
+      "type": "boolean"
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ownershipEffect": {
+      "type": "string",
+      "enum": [
+        "retain-owner",
+        "handoff-to-local",
+        "handoff-to-shell",
+        "return-to-host"
+      ]
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

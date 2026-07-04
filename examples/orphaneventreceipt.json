@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:receipt:orphan-event:runtime-observability-0001",
+  "type": "OrphanEventReceipt",
+  "specVersion": "0.1.0",
+  "eventRef": "urn:srcos:event:turn-started-before-session-registry-0001",
+  "eventClass": "agent_lifecycle",
+  "observedAt": "2026-05-06T04:33:00Z",
+  "rawEventDigest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+  "sessionResolution": {
+    "state": "recovered",
+    "candidateSessionRefs": [
+      "urn:srcos:session:runtime-observability-demo-0001"
+    ],
+    "recoveredSessionRef": "urn:srcos:session:runtime-observability-demo-0001",
+    "recoveredDagNodeRef": "urn:srcos:session-dag-node:runtime-observability-demo-turn-started-0001",
+    "reconciledAt": "2026-05-06T04:33:10Z",
+    "quarantinedAt": null
+  },
+  "ttl": {
+    "expiresAt": "2026-05-06T04:38:00Z",
+    "expired": false
+  },
+  "correlationKeys": {
+    "conversationId": "runtime-observability-demo-conversation",
+    "parentId": null,
+    "workspaceRef": "urn:srcos:workspace:runtime-observability-demo",
+    "taskRef": "urn:srcos:task:runtime-observability-demo-0001"
+  },
+  "causalRefs": [
+    "urn:srcos:event:runtime-session-bootstrap-0001",
+    "urn:srcos:capability-ledger:runtime-observability-0001"
+  ],
+  "policyDecisionRef": "urn:srcos:decision:runtime-observability-policy-0001",
+  "evidenceRefs": [
+    "urn:srcos:evidence:orphan-event-reconciliation-0001",
+    "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  ],
+  "capturedAt": "2026-05-06T04:33:15Z"
+}

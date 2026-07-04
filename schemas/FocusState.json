@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/FocusState.json",
+  "title": "FocusState",
+  "description": "A typed focus/ownership state for keyboard-first interaction across SourceOS / SociOS surfaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "surfaceRef",
+    "owner",
+    "mode",
+    "printableInputOwner",
+    "escapeBehavior",
+    "tabBehavior"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:focus-state:"
+    },
+    "surfaceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:interaction-surface:"
+    },
+    "owner": {
+      "type": "string",
+      "enum": [
+        "host",
+        "local-surface",
+        "shell-overlay",
+        "pass-through",
+        "completion-surface",
+        "modal-review"
+      ]
+    },
+    "mode": {
+      "type": "string",
+      "enum": [
+        "idle",
+        "input",
+        "results",
+        "preview",
+        "action-sheet",
+        "insert",
+        "normal",
+        "pass-through",
+        "completion",
+        "confirmation",
+        "plan-review"
+      ]
+    },
+    "printableInputOwner": {
+      "type": "string",
+      "enum": [
+        "host",
+        "local-surface",
+        "pass-through",
+        "shell-overlay"
+      ]
+    },
+    "escapeBehavior": {
+      "type": "string",
+      "enum": [
+        "layered-unwind",
+        "local-only",
+        "host-only"
+      ]
+    },
+    "tabBehavior": {
+      "type": "string",
+      "enum": [
+        "completion-first",
+        "focus-cycle",
+        "local-insert"
+      ]
+    },
+    "arrowKeyPolicy": {
+      "type": "string",
+      "enum": [
+        "local-region-navigation",
+        "caret-or-local",
+        "delegated"
+      ]
+    },
+    "multilineBoundaryHistory": {
+      "type": "boolean"
+    },
+    "completionActive": {
+      "type": "boolean"
+    },
+    "selectionActive": {
+      "type": "boolean"
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+name: SourceOS Interaction Codegen
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - "schemas/SourceOSInteractionEvent.json"
+      - "generated/typescript/sourceos-interaction-event.ts"
+      - "generated/python/sourceos_interaction_event.py"
+      - "tools/generate_sourceos_interaction_types.py"
+      - ".github/workflows/sourceos-interaction-codegen.yml"
+      - "docs/contract-additions/sourceos-interaction-catalog.md"
+  push:
+    branches: ["main", "work/interaction-codegen-116"]
+    paths:
+      - "schemas/SourceOSInteractionEvent.json"
+      - "generated/typescript/sourceos-interaction-event.ts"
+      - "generated/python/sourceos_interaction_event.py"
+      - "tools/generate_sourceos_interaction_types.py"
+      - ".github/workflows/sourceos-interaction-codegen.yml"
+      - "docs/contract-additions/sourceos-interaction-catalog.md"
+
+permissions:
+  contents: read
+
+jobs:
+  validate-interaction-codegen:
+    name: Validate generated interaction types
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Check generated files are current
+        run: python tools/generate_sourceos_interaction_types.py --check
+
+      - name: Compile generated Python type module
+        run: python -m py_compile generated/python/sourceos_interaction_event.py

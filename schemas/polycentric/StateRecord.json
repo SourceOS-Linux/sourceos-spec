@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "StateRecord",
+  "type": "object",
+  "required": ["schema_version","state_id","subject_entity_id","state_class","scope","authority_ref","provenance_refs"],
+  "properties": {
+    "schema_version": { "const": "0.3" },
+    "state_id": { "type": "string", "pattern": "^state:[A-Za-z0-9._-]+$" },
+    "subject_entity_id": { "type": "string", "pattern": "^ent:[A-Za-z0-9._-]+$" },
+    "state_class": { "type": "string", "enum": ["authoritative","desired","observed","believed","planned","effected","cached","projected","redacted","tombstoned"] },
+    "scope": { "type": "string", "enum": ["thread","user","app","workspace","environment","pipeline","fleet","artifact","global","other"] },
+    "authority_ref": { "type": "string", "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$" },
+    "value_ref": { "type": ["string","null"], "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$" },
+    "value_inline": { "type": ["object","array","string","number","boolean","null"] },
+    "provenance_refs": { "type": "array", "items": { "type": "string", "pattern": "^(ent|int|state|view|obs|ev|clm|inf|act|eff|art|pdec|racc|bcx|lbl|att|flow|ct|ret):[A-Za-z0-9._-]+$" } },
+    "time": {
+      "type": "object",
+      "properties": {
+        "event_time": { "type": ["string","null"], "format": "date-time" },
+        "observed_time": { "type": ["string","null"], "format": "date-time" },
+        "decided_time": { "type": ["string","null"], "format": "date-time" },
+        "processed_time": { "type": ["string","null"], "format": "date-time" },
+        "valid_from": { "type": ["string","null"], "format": "date-time" },
+        "valid_to": { "type": ["string","null"], "format": "date-time" },
+        "committed_time": { "type": ["string","null"], "format": "date-time" },
+        "fresh_until": { "type": ["string","null"], "format": "date-time" }
+      },
+      "additionalProperties": false
+    },
+    "policy_label_refs": { "type": "array", "items": { "type": "string", "pattern": "^lbl:[A-Za-z0-9._-]+$" } },
+    "retention_policy_ref": { "type": ["string","null"], "pattern": "^ret:[A-Za-z0-9._-]+$" }
+  },
+  "additionalProperties": false
+}

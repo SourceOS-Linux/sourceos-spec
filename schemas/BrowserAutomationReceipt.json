@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/BrowserAutomationReceipt.json",
+  "title": "BrowserAutomationReceipt",
+  "description": "Receipt for a user-visible, revocable browser automation session with explicit owner, transport, permission scope, policy decision, and evidence references.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "sessionRef", "capabilityLedgerRef", "ownerRef", "transport", "permissionScope", "origin", "userVisible", "revocable", "startedAt", "policyDecisionRef", "evidenceRefs", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:receipt:browser-automation:" },
+    "type": { "const": "BrowserAutomationReceipt" },
+    "specVersion": { "type": "string" },
+    "sessionRef": { "type": "string", "pattern": "^urn:srcos:session:" },
+    "capabilityLedgerRef": { "type": "string", "pattern": "^urn:srcos:capability-ledger:" },
+    "ownerRef": { "type": "string" },
+    "transport": { "type": "string", "enum": ["native_pipe", "cdp", "webdriver", "extension", "accessibility"] },
+    "permissionScope": { "type": "array", "minItems": 1, "items": { "type": "string", "enum": ["read_page", "activate_control", "enter_text", "download_file", "upload_file", "observe_network_metadata", "managed_identity_delegate", "capture_screenshot", "navigate", "clipboard_read", "clipboard_write"] } },
+    "origin": { "type": "string", "enum": ["local", "remote", "workspace"] },
+    "controlledScope": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "properties": {
+        "windowRef": { "type": ["string", "null"] },
+        "tabRef": { "type": ["string", "null"] },
+        "urlOrigin": { "type": ["string", "null"] },
+        "workspaceRef": { "type": ["string", "null"], "pattern": "^urn:srcos:workspace:" }
+      }
+    },
+    "userVisible": { "type": "boolean", "const": true },
+    "revocable": { "type": "boolean", "const": true },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "revokedAt": { "type": ["string", "null"], "format": "date-time" },
+    "terminalState": { "type": "string", "enum": ["active", "revoked", "completed", "failed", "denied"] },
+    "causalRefs": { "type": "array", "items": { "type": "string" } },
+    "policyDecisionRef": { "type": "string", "pattern": "^urn:srcos:decision:" },
+    "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "capturedAt": { "type": "string", "format": "date-time" }
+  }
+}

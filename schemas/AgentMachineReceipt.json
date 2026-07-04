@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentMachineReceipt.json",
+  "title": "AgentMachineReceipt",
+  "description": "Runtime evidence emitted by Agent Machine after probing, placement, execution, cache reuse, model load/unload, or policy-mediated side-effect handling.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "machineRef", "receiptClass", "issuedAt", "placementFactRefs", "policyDecisionRef", "verdict"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:agent-machine-receipt:", "description": "Stable URN identifier. Pattern: urn:srcos:agent-machine-receipt:<local-id>" },
+    "type": { "const": "AgentMachineReceipt", "description": "Discriminator constant — always \"AgentMachineReceipt\"." },
+    "specVersion": { "type": "string", "description": "Spec version of this document, e.g. \"2.1.0\"." },
+    "machineRef": { "type": "string", "pattern": "^urn:srcos:agent-machine:", "description": "Agent Machine URN that emitted the receipt." },
+    "receiptClass": { "type": "string", "enum": ["probe", "placement", "execution", "cache-reuse", "model-load", "model-unload", "side-effect"], "description": "Class of runtime event this receipt records." },
+    "issuedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the receipt was issued." },
+    "taskRef": { "type": ["string", "null"], "description": "Optional AgentPlane task, run, or work item reference associated with this receipt." },
+    "agentPodRef": { "type": ["string", "null"], "pattern": "^urn:srcos:agent-pod:", "description": "Optional AgentPod URN associated with the runtime placement." },
+    "placementFactRefs": { "type": "array", "minItems": 1, "description": "PlacementFact URNs used for this receipt.", "items": { "type": "string", "pattern": "^urn:srcos:placement-fact:" } },
+    "modelResidencyRefs": { "type": "array", "description": "ModelResidency URNs observed or changed during this receipt.", "items": { "type": "string", "pattern": "^urn:srcos:model-residency:" } },
+    "inferenceProviderRefs": { "type": "array", "description": "InferenceProvider URNs used or probed during this receipt.", "items": { "type": "string", "pattern": "^urn:srcos:inference-provider:" } },
+    "policyDecisionRef": { "type": "string", "pattern": "^urn:srcos:decision:", "description": "PolicyDecision URN authorizing, denying, or constraining this runtime action." },
+    "verdict": { "type": "string", "enum": ["allowed", "denied", "deferred", "failed", "observed"], "description": "Receipt outcome." },
+    "metrics": { "type": "object", "description": "Optional runtime metrics captured by the receipt.", "additionalProperties": { "type": ["string", "number", "integer", "boolean", "null"] } },
+    "evidenceHash": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Hash of the canonical receipt evidence payload or bundle." },
+    "evidenceRefs": { "type": "array", "description": "Additional evidence URNs or hashes for logs, probes, run capsules, and artifacts.", "items": { "type": "string" } }
+  }
+}

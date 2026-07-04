@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AttestationEvidence.json",
+  "title": "AttestationEvidence",
+  "description": "Measured-boot and host-attestation evidence for a SourceOS workstation or edge node.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "capturedAt",
+    "deviceRef",
+    "nonce",
+    "evidenceKind",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:attestation:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "AttestationEvidence"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "capturedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "deviceRef": {
+      "type": "string"
+    },
+    "nonce": {
+      "type": "string"
+    },
+    "evidenceKind": {
+      "type": "string",
+      "enum": [
+        "tpm_quote",
+        "ima_runtime",
+        "secure_boot",
+        "firmware",
+        "bundle"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "captured",
+        "validated",
+        "failed",
+        "stale"
+      ]
+    },
+    "pcrs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "tpmQuote": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "imaAggregate": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "secureBootState": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "firmwareHash": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "collector": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "diagnostics": {
+      "type": "object"
+    }
+  }
+}

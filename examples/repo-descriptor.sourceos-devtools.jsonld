@@ -1,0 +1,25 @@
+{
+  "@context": "../semantic/context.jsonld",
+  "@id": "urn:sourceos:repo:SourceOS-Linux:sourceos-devtools",
+  "@type": ["RepoDescriptor", "Repository"],
+  "name": "sourceos-devtools",
+  "description": "SourceOS Developer Tools: Linux-native developer tooling, lab profile selection, Nix/devshell orchestration, release tooling, local AI governance utilities, and SourceOS workstation bootstrap.",
+  "repositoryFullName": "SourceOS-Linux/sourceos-devtools",
+  "repoUrl": "https://github.com/SourceOS-Linux/sourceos-devtools",
+  "organization": "SourceOS-Linux",
+  "defaultBranch": "main",
+  "semanticDescriptorVersion": "0.1.0",
+  "topologyRole": "roleDeveloperToolchain",
+  "connectsTo": [
+    "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+    "urn:sourceos:repo:SociOS-Linux:agentos-spine",
+    "urn:sourceos:repo:SociOS-Linux:SourceOS"
+  ],
+  "consumesVocabularyFrom": "urn:sourceos:repo:SourceOS-Linux:sourceos-spec",
+  "notThisRepo": [
+    "typed-contract registry",
+    "immutable OS substrate",
+    "public docs site",
+    "platform workspace controller"
+  ]
+}

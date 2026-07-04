@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorkstationFixShellReport.json",
+  "title": "WorkstationFixShellReport",
+  "description": "Typed report envelope emitted by the SourceOS shell rc fix helper.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "kind",
+    "mode",
+    "ok",
+    "summary",
+    "results"
+  ],
+  "properties": {
+    "kind": {
+      "const": "sourceos.fix.shell",
+      "description": "Compatibility discriminator emitted by the shell fix surface."
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["apply", "dry-run", "revert"]
+    },
+    "ok": {
+      "type": "boolean"
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["patched", "would_patch", "reverted", "already_patched", "no_patch", "missing_file"],
+      "properties": {
+        "patched": { "type": "integer", "minimum": 0 },
+        "would_patch": { "type": "integer", "minimum": 0 },
+        "reverted": { "type": "integer", "minimum": 0 },
+        "already_patched": { "type": "integer", "minimum": 0 },
+        "no_patch": { "type": "integer", "minimum": 0 },
+        "missing_file": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["file", "action"],
+        "properties": {
+          "file": { "type": "string", "minLength": 1 },
+          "action": {
+            "type": "string",
+            "enum": ["patched", "would_patch", "reverted", "already_patched", "no_patch", "missing_file"]
+          }
+        }
+      }
+    }
+  }
+}

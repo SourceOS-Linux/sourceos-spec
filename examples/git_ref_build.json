@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:git-ref-build:m2-demo-main-2026-04-26",
+  "type": "GitRefBuild",
+  "specVersion": "2.0.0",
+  "repoUri": "https://github.com/SourceOS-Linux/sourceos",
+  "gitRef": "refs/heads/main",
+  "gitCommit": "9f49e42af46d84c189b6313f5c8962c6ecd5076b",
+  "outputs": [
+    {
+      "outputKind": "oci",
+      "artifactRef": "oci://registry.example.invalid/sourceos/m2-system@sha256:8b3f06c9090ccf926fe6ddc6f3b4f49a13d4b8bb4cb4f5cf78e2d12e31b55aa1",
+      "contentHash": "sha256:8b3f06c9090ccf926fe6ddc6f3b4f49a13d4b8bb4cb4f5cf78e2d12e31b55aa1"
+    },
+    {
+      "outputKind": "ostree",
+      "artifactRef": "urn:srcos:artifact:m2-demo-ostree-sha256-4e2b2e2c",
+      "contentHash": "sha256:4e2b2e2c6a843f8b8cf38f7b47c8f875f1f9e4c4206e1f8e9c9f0ec9a0f7a001"
+    }
+  ],
+  "releaseSetRef": "urn:srcos:release-set:m2-demo-2026-04-26",
+  "configSourceRef": "urn:srcos:config-source:sourceos-main-boot-config-2026-04-26",
+  "triggeredBy": "urn:srcos:party:sourceos-ci-bot",
+  "triggeredAt": "2026-04-26T13:00:00Z",
+  "completedAt": "2026-04-26T14:10:00Z",
+  "status": "succeeded",
+  "notes": "M2 demo build from main branch. Produced OCI image and ostree commit for the local-first demo release."
+}

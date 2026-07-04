@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/AgentHarnessExecutionReceipts.json",
+  "title": "AgentHarnessExecutionReceipts",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "kind", "localAgentRuntimeReceipt", "shellReceiptEvent", "browserActionReceipt", "hostMutationBoundaryReceipt", "downloadArtifactReceipt"],
+  "properties": {
+    "schemaVersion": { "const": "v0.1" },
+    "kind": { "const": "AgentHarnessExecutionReceipts" },
+    "localAgentRuntimeReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receiptId", "runtimeProfile", "agentIdentityRef", "policyAdmissionRef", "activationDecisionRef", "networkProfile", "filesystemScopes", "hostMutationPolicy", "agentplaneRunRef"],
+      "properties": {
+        "receiptId": { "type": "string" },
+        "runtimeProfile": { "type": "string" },
+        "agentIdentityRef": { "type": "string" },
+        "policyAdmissionRef": { "type": "string" },
+        "activationDecisionRef": { "type": "string" },
+        "modelCarryRefs": { "type": "array", "items": { "type": "string" } },
+        "memoryMountRefs": { "type": "array", "items": { "type": "string" } },
+        "networkProfile": { "type": "string" },
+        "filesystemScopes": { "type": "array", "items": { "type": "string" } },
+        "secretScopes": { "type": "array", "items": { "type": "string" } },
+        "hostMutationPolicy": { "type": "string", "enum": ["deny", "dry-run-only", "approval-required", "preapproved"] },
+        "agentplaneRunRef": { "type": "string" },
+        "exitState": { "type": "string", "enum": ["planned", "running", "completed", "failed", "cancelled"] }
+      }
+    },
+    "shellReceiptEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["commandId", "commandHash", "workingDirectory", "actorRef", "environmentProfile", "exitCode", "policyDecisionRef", "replayEligible"],
+      "properties": {
+        "commandId": { "type": "string" },
+        "commandHash": { "type": "string" },
+        "workingDirectory": { "type": "string" },
+        "actorRef": { "type": "string" },
+        "environmentProfile": { "type": "string" },
+        "stdoutPointerRef": { "type": "string" },
+        "stderrPointerRef": { "type": "string" },
+        "exitCode": { "type": "integer" },
+        "fileMutationSummary": { "type": "string" },
+        "policyDecisionRef": { "type": "string" },
+        "replayEligible": { "type": "boolean" }
+      }
+    },
+    "browserActionReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["browserSessionRef", "url", "actionType", "credentialUse", "policyDecisionRef", "sideEffectClass", "replayEligible"],
+      "properties": {
+        "browserSessionRef": { "type": "string" },
+        "url": { "type": "string" },
+        "actionType": { "type": "string", "enum": ["navigate", "click", "type", "extract", "screenshot", "download", "upload", "form-submit", "login", "credential-use", "account-setting-change", "message-send", "purchase-or-order", "ticket-or-record-create"] },
+        "credentialUse": { "type": "boolean" },
+        "artifactPointerRefs": { "type": "array", "items": { "type": "string" } },
+        "policyDecisionRef": { "type": "string" },
+        "sideEffectClass": { "type": "string", "enum": ["none", "read-only", "external-write", "credential", "download", "upload"] },
+        "replayEligible": { "type": "boolean" }
+      }
+    },
+    "hostMutationBoundaryReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mutationClass", "targetScope", "mode", "policyDecisionRef", "mutatedHost"],
+      "properties": {
+        "mutationClass": { "type": "string" },
+        "targetScope": { "type": "string" },
+        "mode": { "type": "string", "enum": ["dry-run", "live"] },
+        "approvalRef": { "type": "string" },
+        "policyDecisionRef": { "type": "string" },
+        "rollbackRef": { "type": "string" },
+        "mutatedHost": { "type": "boolean" },
+        "deniedOperationRefs": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "downloadArtifactReceipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifactRef", "sha256", "mediaType", "sizeBytes", "quarantineState", "retentionClass", "memoryMeshPointerRef"],
+      "properties": {
+        "artifactRef": { "type": "string" },
+        "sourceRef": { "type": "string" },
+        "sha256": { "type": "string" },
+        "mediaType": { "type": "string" },
+        "sizeBytes": { "type": "integer" },
+        "quarantineState": { "type": "string", "enum": ["not-required", "quarantined", "released", "blocked"] },
+        "scanRefs": { "type": "array", "items": { "type": "string" } },
+        "retentionClass": { "type": "string", "enum": ["ephemeral", "run-retained", "customer-proof-retained"] },
+        "memoryMeshPointerRef": { "type": "string" }
+      }
+    }
+  }
+}
