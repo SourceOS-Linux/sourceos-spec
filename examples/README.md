@@ -6,6 +6,9 @@ This directory contains one conforming JSON example payload for each top-level s
 
 ## What the examples show
 
+The examples are designed to tell a coherent end-to-end story: a personal health dataset is catalogued, governed, transformed by an obfuscation workload, and released — all within an agent session. They share cross-reference URNs so you can trace the full lifecycle.
+
+The example set now also includes shell/document/publication objects so the same storyline can extend into artifact derivation, signing, validation, annotation export, run reporting, publish decisions, and mirror receipts.
 The examples are designed to tell coherent end-to-end stories. The original example set catalogs, governs, transforms, and releases a personal health dataset within an agent session. Newer SourceOS examples show a SourceOS Workstation artifact flowing from content intent through overlays, build request, release manifest, evidence bundle, catalog entry, and access profile. The control-plane examples add the local-first lifecycle proof path: a `ReleaseSet` assigned to an M2 demo device, a `BootReleaseSet` for the recovery/provisioning lane, an `EnrollmentToken` authorizing one-time recovery access, and a `Fingerprint` reporting the realized post-apply state. Compression Commons examples add an artifact-versus-baseline evaluation record that references existing governance, execution, provenance, and content-reference contracts. SourceOS Interaction examples add the noetic/chat/task event projection shared by Noetica and AgentTerm.
 
 Desktop/workstation examples may include bounded Mac-on-Linux polish metadata. These are contract signals only: concrete implementation authority remains in `SociOS-Linux/source-os`, and the examples do not claim full macOS parity.
@@ -40,6 +43,14 @@ agent_session.json  ──►  execution_decision.json  ──►  session_recei
                                                           ▼
                                                    session_review.json
 
+artifact-manifest.json  ──►  signed-artifact.json
+         │                          │
+         ▼                          ▼
+pdf-validation-report.json    publish-decision.json
+         │                          │
+         └──────────────► mirror-receipt.json
+
+annotation-export.json ──► run-report.json ──► noether-diagnostic.json
 sourceos-interaction-event.json ──► Noetica / AgentTerm governance trace
 
 content_spec.json ──► overlay_bundle.json ──► build_request.json ──► release_manifest.json
@@ -157,6 +168,8 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `access_profile.json` | AccessProfile | Access profile for SourceOS build operators and agentplane executor obligations |
 | `agreement.json` | Agreement | Default personal-data agreement |
 | `agent_session.json` | AgentSession | An executor session running the obfuscation workflow |
+| `annotation-export.json` | AnnotationExport | Export bundle for annotations captured from review surfaces |
+| `artifact-manifest.json` | ArtifactManifest | Manifest describing a derived shell/document artifact |
 | `apple_silicon_adapter_evidence.json` | AppleSiliconAdapterEvidence | Apple Silicon adapter evidence for an M2 device running SourceOS via Asahi |
 | `artifact_cache_record.json` | ArtifactCacheRecord | Cached Linux kernel artifact for the M2 demo device |
 | `asset.json` | PhysicalAsset | Lakehouse asset for curated health observations |
@@ -164,6 +177,7 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `boot_release_set.json` | BootReleaseSet | SourceOS Recovery Environment boot artifact set for secure recovery/provisioning |
 | `build_request.json` | BuildRequest | SourceOS Workstation build request with agentplane and Katello refs |
 | `capability_token.json` | CapabilityToken | Access token scoped to the health dataset export operation |
+| `comment-signal.json` | CommentSignal | Example author/reviewer signal payload |
 | `catalog_entry.json` | CatalogEntry | Catalog entry for the SourceOS Workstation dev release |
 | `comment.json` | Comment | A review note on a field mapping |
 | `community.json` | Community | The data-governance team community |
@@ -186,22 +200,29 @@ These examples illustrate the shared object family used by SourceOS artifact bui
 | `glossary.json` | GlossaryTerm | Glossary term for "Date of Birth" |
 | `mapping.json` | MappingSpec | A field mapping between two dataset fields |
 | `memory_entry.json` | MemoryEntry | A learned memory entry from an agent session |
+| `mirror-receipt.json` | MirrorReceipt | Receipt for a mirrored artifact publication |
+| `noether-diagnostic.json` | NoetherDiagnostic | Example conservation/invariance diagnostic reading |
+| `pdf-validation-report.json` | PdfValidationReport | Validation results for a derived PDF artifact |
 | `nlboot_plan.json` | NLBootPlan | NLBoot boot plan for SourceOS M2 demo device via Asahi path |
 | `offer.json` | Offer | FogCompute provider offer |
 | `overlay_bundle.json` | OverlayBundle | Customer branding overlay applied to the workstation flavor |
 | `policy.json` | Policy | Health export must be obfuscated |
 | `policy_decision.json` | PolicyDecision | An `export` permit decision with an obfuscation obligation |
 | `provenance.json` | ProvenanceRecord | Provenance record for the obfuscation run |
+| `publish-decision.json` | PublishDecision | Publish-lane decision across openness dimensions |
 | `rating.json` | Rating | A 5-star rating on the health observations dataset |
 | `release_manifest.json` | ReleaseManifest | Draft release manifest with Katello artifact refs and agentplane evidence refs |
 | `release_receipt.json` | ReleaseReceipt | Release receipt for spec version 2.0.0 |
 | `release_set.json` | ReleaseSet | Assigned M2 demo release set with source, targets, profile refs, and artifact refs |
 | `replication_policy.json` | ReplicationPolicy | Fog topic replication/retention policy example |
 | `rollout_policy.json` | RolloutPolicy | Rollout rules for the obfuscation experiment flag |
+| `run-report.json` | RunReport | Publication-oriented summary of a completed run |
 | `run.json` | RunRecord | The obfuscation workload run record |
 | `schema.json` | SchemaDefinition | The schema for health observations |
+| `search-route-decision.json` | SearchRouteDecision | Scope-based shell routing decision |
 | `session_receipt.json` | SessionReceipt | Receipt for the completed agent session |
 | `session_review.json` | SessionReview | Post-session learning review |
+| `signed-artifact.json` | SignedArtifact | Signature metadata for a signed artifact |
 | `settlement_event.json` | Optional receipt-to-settlement mapping |
 | `skill_manifest.json` | SkillManifest | The obfuscation skill manifest |
 | `sourceos-interaction-event.json` | SourceOSInteractionEvent | Noetica standalone provider completion event with governance trace fields consumable by AgentTerm |
@@ -233,6 +254,7 @@ make validate-control-plane-examples
 ## Adding a new example
 
 See [CONTRIBUTING.md](../CONTRIBUTING.md#writing-examples) for the full guide. Key rules:
+1. The filename must be the schema `title` lowercased or the established example naming convention, e.g. `AgentSession` → `agent_session.json`.
 1. The filename should match the schema title in the repository’s naming convention.
 2. All required fields must be present and valid.
 3. Use coherent cross-reference URNs where possible so the example set stays navigable.
