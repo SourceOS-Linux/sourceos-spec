@@ -2,8 +2,8 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/control-plane/Fingerprint.json",
   "title": "Fingerprint",
-  "description": "Canonical Fingerprint schema. Wrapper that preserves legacy identifier while providing a stable srcos namespace for new references.",
+  "description": "Canonical Fingerprint schema. Control-plane wrapper that delegates to the canonical v2 Fingerprint contract (camelCase envelope), keeping a stable srcos control-plane namespace.",
   "allOf": [
-    { "$ref": "./fingerprint.schema.json" }
+    { "$ref": "../Fingerprint.json" }
   ]
 }
