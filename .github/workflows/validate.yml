@@ -42,11 +42,11 @@ jobs:
           done
           exit $failed
 
-      - name: Guardrail: detect duplicate schema $id values
+      - name: "Guardrail: detect duplicate schema $id values"
         run: |
           python3 scripts/check_duplicate_schema_ids.py
 
-      - name: Guardrail: control-plane canonical wrapper $id resolution
+      - name: "Guardrail: control-plane canonical wrapper $id resolution"
         run: |
           python3 scripts/validate_control_plane_wrapper_ids.py
 
