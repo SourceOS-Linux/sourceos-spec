@@ -1,0 +1,25 @@
+{
+  "id": "urn:srcos:reasoning-assay:superconscious-demo-ok",
+  "type": "ReasoningAssay",
+  "specVersion": "2.0.0",
+  "runRef": "urn:srcos:reasoning-run:superconscious-demo",
+  "claimRef": "sha256:claim-computed-answer",
+  "method": "computed",
+  "binding": "inline",
+  "verifier": {
+    "verifierId": "urn:srcos:verifier:narration-fidelity",
+    "calibrationRef": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0"
+  },
+  "agreement": {
+    "arms": 3,
+    "correlation": 0.18,
+    "effectiveVotes": 2.6
+  },
+  "authority": {
+    "actorRef": "urn:srcos:agent:superconscious",
+    "channel": "tool",
+    "integrityVerified": true
+  },
+  "projectedState": "ok",
+  "assayedAt": "2026-07-05T00:00:01Z"
+}

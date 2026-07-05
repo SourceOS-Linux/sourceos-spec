@@ -1,7 +1,11 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples
 	@echo "OK: validate"
+
+validate-reasoning-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_reasoning_examples.py
 
 validate-agentic-os-examples:
 	python3 -m pip install --user jsonschema >/dev/null

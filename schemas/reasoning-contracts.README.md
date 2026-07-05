@@ -13,6 +13,8 @@ These contracts were introduced to move the Superconscious reference loop out of
 | `ReasoningReceipt.json` | `urn:srcos:receipt:reasoning:` | Final receipt for a reasoning run. |
 | `ReasoningReplayPlan.json` | `urn:srcos:reasoning-replay-plan:` | Replay classification and replay input/constraint record. |
 | `ReasoningBenchmark.json` | `urn:srcos:reasoning-benchmark:` | Benchmark result for a reasoning run. |
+| `ReasoningAssay.json` | `urn:srcos:reasoning-assay:` | Typed epistemic verdict on a claim; ok/sad/bad is a render-time projection of five orthogonal axes. |
+| `AssayStandard.json` | `urn:srcos:assay-standard:` | Measured, versioned reliability of a verifier — the calibration reference every assay is checked against. |
 
 ## Examples
 
@@ -23,10 +25,34 @@ These contracts were introduced to move the Superconscious reference loop out of
 | `examples/reasoning_receipt.json` | `ReasoningReceipt` |
 | `examples/reasoning_replay_plan.json` | `ReasoningReplayPlan` |
 | `examples/reasoning_benchmark.json` | `ReasoningBenchmark` |
+| `examples/assay_standard.json` | `AssayStandard` |
+| `examples/reasoning_assay.json` | `ReasoningAssay` (projects `ok`) |
+| `examples/reasoning_assay.unassayed.json` | `ReasoningAssay` (projects `sad`) |
+| `examples/reasoning_assay.refuted.json` | `ReasoningAssay` (projects `bad`) |
 
 ## Design intent
 
 Reasoning contracts expose safe operational traces and evidence-backed coordination records. They do not depend on raw private reasoning content.
+
+### The Assay: verdicts are projections, not scalars
+
+`ReasoningAssay` records an epistemic verdict on a claim. Confidence, authenticity, and
+verification-vs-generation are **orthogonal axes**, not points on one severity scale, so they are
+stored separately and the `ok`/`sad`/`bad` readout is a render-time **projection** (`projectedState`),
+never a stored opinion. The five axes:
+
+1. **method** — `computed` / `retrieved` / `generated` (categorical; these behave as decorrelated classes).
+2. **binding** — `inline` / `post-hoc` (was evidence produced with the computation, or attached after?).
+3. **verifier** — points at an `AssayStandard` (the judge's *measured* reliability). A verdict without a
+   calibration reference cannot project above `sad`.
+4. **agreement** — decorrelation-weighted; correlated arms fail together, so `effectiveVotes` discounts raw arm count.
+5. **authority** — authenticity as a property of the actor/channel (mirrors `EventEnvelope.actor`/`integrity`),
+   never of the content.
+
+Because the axes are stored, a verdict is **re-projectable**: when a verifier's `AssayStandard` improves,
+historical assays re-project without mutating their records — the same discipline as keeping every benchmark
+arm rather than only its current winner. `tools/validate_reasoning_examples.py` enforces this: it recomputes
+`assay()` from the stored axes and fails CI if the recorded `projectedState` does not follow from them.
 
 Expected consumers:
 
