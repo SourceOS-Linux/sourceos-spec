@@ -1,0 +1,25 @@
+{
+  "id": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0",
+  "type": "AssayStandard",
+  "specVersion": "2.0.0",
+  "verifierId": "urn:srcos:verifier:narration-fidelity",
+  "version": "0.2.0",
+  "confusionMatrix": {
+    "truePositive": 41,
+    "falsePositive": 12,
+    "trueNegative": 38,
+    "falseNegative": 9
+  },
+  "metrics": {
+    "f1": 0.8,
+    "precision": 0.77,
+    "recall": 0.82
+  },
+  "interRaterAgreement": {
+    "kappa": 0.68,
+    "interpretation": "substantial"
+  },
+  "sampleSize": 100,
+  "calibrated": true,
+  "measuredAt": "2026-07-05T00:00:00Z"
+}

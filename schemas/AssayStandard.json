@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AssayStandard.json",
+  "title": "AssayStandard",
+  "description": "The measured, versioned reliability of a verifier ('judge') — the calibrated reference every ReasoningAssay is checked against. Answers 'who verifies the verifier' mechanically: a verdict may only claim 'ok' when it points at a standard whose reliability was actually measured. Re-measuring publishes a new version; historical assays that reference an older version can be re-projected against the newer one.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "verifierId", "version", "confusionMatrix", "sampleSize", "measuredAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:assay-standard:",
+      "description": "Stable URN for this measured standard. Pattern: urn:srcos:assay-standard:<verifier-slug>:<version>."
+    },
+    "type": { "const": "AssayStandard" },
+    "specVersion": { "type": "string", "description": "Spec version, e.g. \"2.0.0\"." },
+    "verifierId": {
+      "type": "string",
+      "description": "URN or stable identifier of the verifier/judge whose reliability this standard records."
+    },
+    "version": {
+      "type": "string",
+      "description": "Version of the verifier at the time of measurement. A new measurement of the same verifier yields a new AssayStandard with a bumped version."
+    },
+    "confusionMatrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["truePositive", "falsePositive", "trueNegative", "falseNegative"],
+      "description": "Raw counts from the calibration run. Facts, not interpretation — metrics below are derived from these and may be recomputed.",
+      "properties": {
+        "truePositive": { "type": "integer", "minimum": 0 },
+        "falsePositive": { "type": "integer", "minimum": 0 },
+        "trueNegative": { "type": "integer", "minimum": 0 },
+        "falseNegative": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional derived scores (recomputable from confusionMatrix). Present as a convenience; the matrix is authoritative.",
+      "properties": {
+        "f1": { "type": "number", "minimum": 0, "maximum": 1 },
+        "precision": { "type": "number", "minimum": 0, "maximum": 1 },
+        "recall": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "interRaterAgreement": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional inter-rater reliability when the standard was set against multiple human/reference judges.",
+      "properties": {
+        "kappa": { "type": "number", "minimum": -1, "maximum": 1 },
+        "interpretation": {
+          "enum": ["poor", "slight", "fair", "moderate", "substantial", "almost-perfect"]
+        }
+      }
+    },
+    "sampleSize": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Number of labelled items the standard was measured over. A standard measured on too few items is itself weak evidence."
+    },
+    "calibrated": {
+      "type": "boolean",
+      "description": "Whether this standard clears the project's minimum bar to let a referencing assay project to 'ok'. Uncalibrated standards can still be recorded — a referencing assay then projects no better than 'sad'."
+    },
+    "measuredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the measurement was taken. Standards are perishable; consumers may treat an old measurement as stale."
+    }
+  }
+}
