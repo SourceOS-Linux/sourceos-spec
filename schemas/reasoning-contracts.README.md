@@ -54,6 +54,14 @@ historical assays re-project without mutating their records — the same discipl
 arm rather than only its current winner. `tools/validate_reasoning_examples.py` enforces this: it recomputes
 `assay()` from the stored axes and fails CI if the recorded `projectedState` does not follow from them.
 
+`ReasoningReceipt.assay` is the reserved receipt landing spot: a run-level, render-time summary that
+**references** its run's `ReasoningAssay` records by URN (`assayRefs`) rather than embedding them — so each
+verdict stays independently re-projectable — and surfaces the projected `overallState`, the weakest-link
+`binding`, the verifier `calibrationRef`, per-state `counts`, and `projectedAt`. It is a cache, never
+authoritative over the assays themselves, and optional so existing receipts remain valid. The `authority`
+axis of each assay mirrors `EventEnvelope.actor`/`integrity`, so authenticity is corroborated from the
+envelope the claim arrived on rather than asserted by the content — the envelope needs no structural change.
+
 Expected consumers:
 
 - `SocioProphet/superconscious` as the reference governed cognition loop;

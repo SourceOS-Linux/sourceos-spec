@@ -12,6 +12,14 @@
     "memory": "proposal-only",
     "approval": "not-required"
   },
+  "assay": {
+    "assayRefs": ["urn:srcos:reasoning-assay:superconscious-demo-ok"],
+    "overallState": "ok",
+    "binding": "inline",
+    "calibrationRef": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0",
+    "counts": { "ok": 1, "sad": 0, "bad": 0 },
+    "projectedAt": "2026-07-05T00:00:02Z"
+  },
   "replayClass": "exact",
   "capturedAt": "2026-05-05T00:00:01Z"
 }

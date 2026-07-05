@@ -18,6 +18,46 @@
       "type": "object",
       "additionalProperties": true
     },
+    "assay": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Run-level epistemic posture: a render-time summary projected from the run's ReasoningAssay records. A cache, not the source of truth — re-derivable by re-projecting the referenced assays against the current AssayStandard, so it is optional and never authoritative over the assays themselves. The reserved receipt landing spot for binding + verifier calibration.",
+      "properties": {
+        "assayRefs": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^urn:srcos:reasoning-assay:" },
+          "description": "URNs of the ReasoningAssay records covering this run's claims. Referenced, not embedded, so each verdict stays independently re-projectable."
+        },
+        "overallState": {
+          "enum": ["ok", "sad", "bad"],
+          "description": "assay() projection for the run's overall answer AT projectedAt — the weakest-link readout across the referenced assays. A cache of the tuple, not a stored severity."
+        },
+        "binding": {
+          "enum": ["inline", "post-hoc"],
+          "description": "Weakest evidence binding across the run's assays. A single post-hoc claim pulls the run's binding to post-hoc; recorded so a post-hoc 'verified' run is not mistaken for an inline one."
+        },
+        "calibrationRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:assay-standard:",
+          "description": "The AssayStandard the overall verdict rests on. An absent or uncalibrated reference caps overallState at 'sad'."
+        },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Tally of the referenced assays by projected state at projectedAt.",
+          "properties": {
+            "ok": { "type": "integer", "minimum": 0 },
+            "sad": { "type": "integer", "minimum": 0 },
+            "bad": { "type": "integer", "minimum": 0 }
+          }
+        },
+        "projectedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When this summary was projected. Re-projection against a newer AssayStandard yields a later summary rather than mutating this one."
+        }
+      }
+    },
     "replayClass": { "enum": ["exact", "best-effort", "evidence-only", "non-replayable-side-effect"] },
     "capturedAt": { "type": "string", "format": "date-time" }
   }
