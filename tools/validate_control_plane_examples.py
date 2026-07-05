@@ -19,7 +19,9 @@ def validate_pair(schema_path: Path, example_path: Path) -> None:
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     jsonschema.validators.validator_for(schema).check_schema(schema)
     legacy_ref = schema.get("allOf", [{}])[0].get("$ref")
-    validation_schema_path = schema_path.with_name(legacy_ref) if legacy_ref else schema_path
+    # The wrapper schema delegates validation to the legacy sibling schema it $refs
+    # (a relative path like "./release-set.schema.json"), so resolve it against the
+    # wrapper's directory. (Path.with_name rejects names containing "/".)
     validation_schema_path = (schema_path.parent / legacy_ref).resolve() if legacy_ref else schema_path
     validation_schema = json.loads(validation_schema_path.read_text(encoding="utf-8"))
     example = json.loads(example_path.read_text(encoding="utf-8"))
