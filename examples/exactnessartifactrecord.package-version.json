@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:exactness-artifact:noetica-pkg-version-0-4-23",
+  "type": "ExactnessArtifactRecord",
+  "specVersion": "v0.1",
+  "artifactKind": "version",
+  "value": "0.4.23",
+  "sourceKind": "package-db",
+  "verifierRef": "urn:srcos:validator-receipt:brew-info-noetica-0-4-23",
+  "admissionPolicy": "verifier-required",
+  "validityInterval": {
+    "validFrom": "2026-07-01T00:00:00Z",
+    "refreshPolicy": "on-package-update"
+  },
+  "stalenessRisk": "none",
+  "contextObjectRef": "urn:srcos:package:noetica"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "urn:srcos:stale-state:agent-machine-bin-checksum-mismatch-20260718",
+  "type": "StaleStateRecord",
+  "specVersion": "v0.1",
+  "objectRef": "urn:srcos:artifact:agent-machine-bin-0-3-1",
+  "stalenessClass": "checksum-mismatch",
+  "observedAt": "2026-07-18T14:30:00Z",
+  "eventTime": "2026-07-18T14:25:00Z",
+  "validFrom": "2026-07-01T00:00:00Z",
+  "repairPlanRef": "urn:srcos:repair-plan:re-download-agent-machine-bin",
+  "autoRepairEligible": true,
+  "evidenceRefs": ["urn:srcos:validator-receipt:sha256-check-agent-machine-bin-20260718"]
+}

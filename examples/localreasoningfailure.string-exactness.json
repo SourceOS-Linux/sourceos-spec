@@ -1,0 +1,20 @@
+{
+  "id": "urn:srcos:local-reasoning-failure:model-hallucinated-package-name-20260718",
+  "type": "LocalReasoningFailure",
+  "specVersion": "v0.1",
+  "failureClass": "string-exactness-violation",
+  "affectedObjectRef": "urn:srcos:package:noetica",
+  "affectedField": "name",
+  "incorrectValue": "noetica-ai",
+  "expectedValueHint": "noetica (verified via brew info noetica)",
+  "detectedAt": "2026-07-18T14:00:00Z",
+  "detectedBy": "urn:srcos:component:sourceos-devtools-validator",
+  "contextHydrationBoundary": {
+    "contextWindowId": "ctx-turn-42",
+    "staleSinceEventTime": "2026-07-10T00:00:00Z",
+    "hydrationSource": "model-cache",
+    "boundaryViolated": true
+  },
+  "verifierRef": "urn:srcos:validator-receipt:brew-name-check-noetica",
+  "suppressMutation": true
+}

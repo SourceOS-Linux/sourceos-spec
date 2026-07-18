@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:capability-contract:bearbrowser-main-v0-1",
+  "type": "CapabilityContract",
+  "specVersion": "v0.1",
+  "componentRef": "ai.socioprophet.BearBrowser",
+  "componentKind": "app",
+  "declaredCapabilities": [
+    {
+      "capability": "full-disk-access",
+      "requiredFor": "indexing user documents for local search",
+      "fallback": "degraded",
+      "userVisibleImpact": "Document search will not index files outside the browser download directory."
+    },
+    {
+      "capability": "pasteboard",
+      "requiredFor": "copy/paste between browser and native apps",
+      "fallback": "skip",
+      "userVisibleImpact": "Clipboard integration will be unavailable."
+    },
+    {
+      "capability": "network",
+      "requiredFor": "web browsing and mesh connectivity",
+      "fallback": "degraded",
+      "userVisibleImpact": "Browser will operate in offline/local-only mode."
+    }
+  ],
+  "requiredBrokers": ["com.apple.TCC", "com.apple.lsd"],
+  "minimumBootPhase": "unlocked-user-session",
+  "degradedModePolicy": "continue-limited",
+  "userVisibleImpact": "Some BearBrowser features will be unavailable if capabilities are not granted.",
+  "evidenceRefs": ["urn:srcos:diagnostic-storm:bearbrowser-tcc-denials-2025-q4"]
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityGrantState.json",
+  "title": "CapabilityGrantState",
+  "description": "Captures the observed runtime grant state for each declared capability in a CapabilityContract, enabling policy audit and repair-plan linkage.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "contractRef",
+    "observedAt",
+    "bootId",
+    "capabilityStates"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URN of this grant state record. Format: urn:srcos:capability-grant-state:<slug>",
+      "pattern": "^urn:srcos:capability-grant-state:.+"
+    },
+    "type": {
+      "type": "string",
+      "const": "CapabilityGrantState"
+    },
+    "specVersion": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "contractRef": {
+      "type": "string",
+      "description": "URN of the CapabilityContract this record evaluates."
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this grant state was observed."
+    },
+    "bootId": {
+      "type": "string",
+      "description": "Boot session identifier."
+    },
+    "sessionId": {
+      "type": "string",
+      "description": "User session identifier."
+    },
+    "permissionEpoch": {
+      "type": "string",
+      "description": "Opaque epoch token representing the permission state at observation time."
+    },
+    "capabilityStates": {
+      "type": "array",
+      "description": "Per-capability observed grant outcome.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability", "decision"],
+        "properties": {
+          "capability": {
+            "type": "string",
+            "description": "Capability identifier matching the CapabilityContract."
+          },
+          "requestedOperation": {
+            "type": "string",
+            "description": "Specific operation attempted (read, write, open, connect, etc.)."
+          },
+          "subjectRef": {
+            "type": "string",
+            "description": "Component or process requesting the capability."
+          },
+          "objectRef": {
+            "type": "string",
+            "description": "Resource or service targeted."
+          },
+          "grantSource": {
+            "type": "string",
+            "enum": ["policy", "user-consent", "broker", "ambient-host", "kernel", "portal", "inherited", "unavailable"],
+            "description": "How the grant was (or was not) obtained."
+          },
+          "decision": {
+            "type": "string",
+            "enum": ["granted", "denied", "ask", "degraded", "unavailable", "unknown"],
+            "description": "Observed grant decision."
+          },
+          "policyRuleRef": {
+            "type": "string",
+            "description": "URN of the policy rule that produced this decision."
+          },
+          "fallback": {
+            "type": "string",
+            "enum": ["degraded", "unavailable", "skip"],
+            "description": "Actual fallback applied."
+          },
+          "userVisibleImpact": {
+            "type": "string",
+            "description": "What the user observed as a result."
+          },
+          "remediationHint": {
+            "type": "string",
+            "description": "Actionable hint for restoring the capability."
+          }
+        }
+      }
+    }
+  }
+}

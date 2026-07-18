@@ -1,0 +1,90 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExactnessArtifactRecord.json",
+  "title": "ExactnessArtifactRecord",
+  "description": "Metadata record for an exactness-sensitive artifact (ID, filename, checksum, signature, version, package name, config field, boot/release ref) that must not be derived from model text alone. Carries the deterministic verifier receipt that authorized its value.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "artifactKind",
+    "value",
+    "verifierRef",
+    "admissionPolicy"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URN of this exactness record. Format: urn:srcos:exactness-artifact:<slug>",
+      "pattern": "^urn:srcos:exactness-artifact:.+"
+    },
+    "type": {
+      "type": "string",
+      "const": "ExactnessArtifactRecord"
+    },
+    "specVersion": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "artifactKind": {
+      "type": "string",
+      "description": "Class of exactness-sensitive artifact.",
+      "enum": [
+        "id",
+        "filename",
+        "checksum",
+        "signature",
+        "version",
+        "package-name",
+        "yaml-field",
+        "toml-field",
+        "json-field",
+        "config-field",
+        "boot-ref",
+        "release-ref",
+        "schema-ref"
+      ]
+    },
+    "value": {
+      "type": "string",
+      "description": "The exact string value. Must originate from a deterministic source, not model inference."
+    },
+    "sourceKind": {
+      "type": "string",
+      "enum": ["filesystem", "package-db", "registry", "network", "user-input", "cryptographic"],
+      "description": "How the value was obtained."
+    },
+    "verifierRef": {
+      "type": "string",
+      "description": "URN of the ValidatorReceipt that confirmed this value by deterministic check."
+    },
+    "admissionPolicy": {
+      "type": "string",
+      "enum": ["verifier-required", "user-confirmed", "cryptographic-proof"],
+      "description": "Policy governing how this value may be admitted into mutable state."
+    },
+    "validityInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "validFrom": { "type": "string", "format": "date-time" },
+        "validUntil": { "type": "string", "format": "date-time" },
+        "refreshPolicy": {
+          "type": "string",
+          "enum": ["never", "on-boot", "on-package-update", "on-network-change", "ttl-based"]
+        }
+      }
+    },
+    "stalenessRisk": {
+      "type": "string",
+      "enum": ["none", "low", "medium", "high", "stale"],
+      "description": "Current staleness assessment."
+    },
+    "contextObjectRef": {
+      "type": "string",
+      "description": "URN of the parent object (file, package, config) this artifact belongs to."
+    }
+  }
+}

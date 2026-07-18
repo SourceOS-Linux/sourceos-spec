@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/StaleStateRecord.json",
+  "title": "StaleStateRecord",
+  "description": "Records stale-state and validity-interval metadata for a SourceOS local object, distinguishing observed time, event time, and valid time, and linking to any repair plan.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "objectRef",
+    "stalenessClass",
+    "observedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URN of this stale-state record. Format: urn:srcos:stale-state:<slug>",
+      "pattern": "^urn:srcos:stale-state:.+"
+    },
+    "type": {
+      "type": "string",
+      "const": "StaleStateRecord"
+    },
+    "specVersion": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "objectRef": {
+      "type": "string",
+      "description": "URN of the object whose state is stale."
+    },
+    "stalenessClass": {
+      "type": "string",
+      "enum": [
+        "validity-expired",
+        "checksum-mismatch",
+        "source-newer",
+        "conflict-detected",
+        "repair-pending",
+        "unresolvable"
+      ],
+      "description": "Why this object is considered stale."
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the staleness was observed (observed time)."
+    },
+    "eventTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the underlying event that caused staleness occurred."
+    },
+    "validFrom": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Start of the validity interval for the recorded state."
+    },
+    "validUntil": {
+      "type": "string",
+      "format": "date-time",
+      "description": "End of the validity interval. Null means indefinite."
+    },
+    "conflictRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Local-first contradiction record when two sources disagree.",
+      "properties": {
+        "localValue": { "type": "string" },
+        "remoteValue": { "type": "string" },
+        "conflictingSourceRef": { "type": "string" },
+        "resolutionPolicy": {
+          "type": "string",
+          "enum": ["local-wins", "remote-wins", "manual-review", "verifier-arbitrates"]
+        }
+      }
+    },
+    "repairPlanRef": {
+      "type": "string",
+      "description": "URN of the repair plan that addresses this stale-state record."
+    },
+    "autoRepairEligible": {
+      "type": "boolean",
+      "description": "Whether the stale state can be repaired without human review."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "URNs of evidence artifacts that detected or described the staleness."
+    }
+  }
+}

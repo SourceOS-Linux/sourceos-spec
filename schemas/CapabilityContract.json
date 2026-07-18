@@ -1,0 +1,113 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityContract.json",
+  "title": "CapabilityContract",
+  "description": "Declares what capabilities a SourceOS component requires before runtime, enabling policy-governed preflight checks and degraded-mode fallback planning.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "componentRef",
+    "componentKind",
+    "declaredCapabilities",
+    "minimumBootPhase",
+    "degradedModePolicy"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URN of this contract. Format: urn:srcos:capability-contract:<slug>",
+      "pattern": "^urn:srcos:capability-contract:.+"
+    },
+    "type": {
+      "type": "string",
+      "const": "CapabilityContract"
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Schema version.",
+      "const": "v0.1"
+    },
+    "componentRef": {
+      "type": "string",
+      "description": "URN or bundle identifier of the component this contract covers."
+    },
+    "componentKind": {
+      "type": "string",
+      "description": "Kind of component.",
+      "enum": [
+        "app",
+        "daemon",
+        "agent",
+        "browser-child",
+        "terminal-helper",
+        "network-observer",
+        "file-monitor",
+        "extension-host",
+        "indexer",
+        "broker"
+      ]
+    },
+    "declaredCapabilities": {
+      "type": "array",
+      "description": "All capabilities this component may request at runtime.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability", "requiredFor", "fallback"],
+        "properties": {
+          "capability": {
+            "type": "string",
+            "description": "Capability identifier, e.g. full-disk-access, network, pasteboard, keychain."
+          },
+          "requiredFor": {
+            "type": "string",
+            "description": "Human-readable description of what feature needs this capability."
+          },
+          "fallback": {
+            "type": "string",
+            "enum": ["degraded", "unavailable", "skip"],
+            "description": "Behavior when capability is not granted."
+          },
+          "userVisibleImpact": {
+            "type": "string",
+            "description": "What the user observes when this capability is denied."
+          }
+        }
+      }
+    },
+    "requiredBrokers": {
+      "type": "array",
+      "description": "Broker services this component depends on.",
+      "items": { "type": "string" }
+    },
+    "minimumBootPhase": {
+      "type": "string",
+      "description": "Earliest boot/session phase in which this component may activate.",
+      "enum": [
+        "sealed-boot",
+        "pre-login",
+        "post-login-locked",
+        "unlocked-user-session",
+        "degraded-session",
+        "recovery-session"
+      ]
+    },
+    "degradedModePolicy": {
+      "type": "string",
+      "enum": ["continue-limited", "refuse-start", "emit-receipt-and-exit"],
+      "description": "What the component does when required capabilities are unavailable."
+    },
+    "userVisibleImpact": {
+      "type": "string",
+      "description": "Top-level user-visible impact summary when any required capability is denied."
+    },
+    "evidenceRefs": {
+      "type": "array",
+      "description": "URNs of evidence or incidents that informed this contract.",
+      "items": { "type": "string" }
+    }
+  }
+}
