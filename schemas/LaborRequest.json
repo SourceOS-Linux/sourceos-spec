@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LaborRequest.json",
+  "title": "LaborRequest",
+  "description": "A structured labor request — the primary unit of the request-and-fulfillment network. NOT a generic post. Every request declares objective, outcome, compensation, schedule, deadline, and evaluation criteria (LN-003); compensation transparency is mandatory except volunteer/mutual-aid/exploratory (LN-004).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "requestType",
+    "requesterRef",
+    "objective",
+    "outcome",
+    "compensation",
+    "responseDeadline",
+    "evaluationCriteria"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:labor-request:",
+      "description": "Stable URN. Pattern: urn:srcos:labor-request:<local-id>"
+    },
+    "type": {
+      "const": "LaborRequest",
+      "description": "Discriminator — always \"LaborRequest\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "requestType": {
+      "type": "string",
+      "enum": [
+        "RFI",
+        "RFP",
+        "RFQ",
+        "role",
+        "collaboration",
+        "apprenticeship",
+        "review",
+        "availability"
+      ],
+      "description": "Typed ask: RFI/RFP/RFQ/role/collaboration/apprenticeship/review/availability (LN-002)."
+    },
+    "requesterRef": {
+      "type": "string",
+      "description": "The requester (introduces demand)."
+    },
+    "objective": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Expected deliverable or outcome."
+    },
+    "compensation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "transparency"
+      ],
+      "properties": {
+        "transparency": {
+          "type": "string",
+          "enum": [
+            "disclosed",
+            "exempt"
+          ],
+          "description": "Compensation SHALL be disclosed except where the request is volunteer, mutual-aid, or exploratory (LN-004)."
+        },
+        "exemptReason": {
+          "type": "string",
+          "enum": [
+            "volunteer",
+            "mutual-aid",
+            "exploratory"
+          ],
+          "description": "Required when transparency=exempt."
+        },
+        "model": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "hourly",
+            "milestone",
+            "equity",
+            "stipend"
+          ]
+        },
+        "minAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "maxAmount": {
+          "type": "number",
+          "minimum": 0
+        },
+        "currency": {
+          "type": "string"
+        }
+      }
+    },
+    "schedule": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Schedule expectations."
+    },
+    "responseDeadline": {
+      "type": "string",
+      "description": "ISO-8601 response deadline."
+    },
+    "evaluationCriteria": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "How responses are evaluated (fit, not popularity)."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "open",
+        "shortlisting",
+        "awarded",
+        "closed",
+        "withdrawn"
+      ]
+    }
+  }
+}

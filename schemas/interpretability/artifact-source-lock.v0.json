@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/interpretability/artifact-source-lock.v0.json",
+  "title": "Interpretability Artifact Source Lock v0.1",
+  "description": "Source lock for SAE, transcoder, sparse-native, and related interpretability artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "lock_kind",
+    "lock_id",
+    "model_ref",
+    "artifact_ref",
+    "decomposition_type",
+    "site_type",
+    "base_model_class",
+    "embedded_decomposition",
+    "cross_layer",
+    "neuronpedia_source_id",
+    "manifest_digest_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "lock_kind": {"const": "interpretability-artifact-source-lock"},
+    "lock_id": {"type": "string", "pattern": "^urn:srcos:interpretability:source-lock:[A-Za-z0-9._:-]+$"},
+    "model_ref": {"type": "string", "minLength": 1},
+    "artifact_ref": {"type": "string", "minLength": 1},
+    "decomposition_type": {
+      "type": "string",
+      "enum": [
+        "standard_sae",
+        "transcoder_clt",
+        "weight_sparse_native",
+        "lorsa_attention",
+        "matryoshka_sae",
+        "temporal_sae",
+        "multi_topk_sae",
+        "batch_topk_sae",
+        "feature_splitting_study",
+        "compound_decomposition"
+      ]
+    },
+    "sae_training_method": {
+      "type": "string",
+      "enum": ["relu", "topk", "batch_topk", "multi_topk", "gated", "jumprelu", "matryoshka_topk", "lorsa", "weight_sparse_native", "transcoder", "other"]
+    },
+    "site_type": {
+      "type": "string",
+      "enum": ["residual_stream", "residual_mid", "residual_post", "attention_out", "attention_qk_ov", "mlp", "mlp_post", "embedding"]
+    },
+    "base_model_class": {
+      "type": "string",
+      "enum": ["pretrained_base", "instruction_tuned", "rlhf_aligned", "reasoning_distilled", "sparse_trained_native"]
+    },
+    "embedded_decomposition": {"type": "boolean"},
+    "cross_layer": {"type": "boolean"},
+    "nested_widths": {
+      "type": "array",
+      "items": {"type": "integer", "minimum": 1},
+      "uniqueItems": true
+    },
+    "temporal_window": {"type": "integer", "minimum": 1},
+    "compound_decompositions": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "decoder_ref": {"type": "string"},
+    "neuronpedia_source_id": {"type": "string", "minLength": 1},
+    "layer": {"type": "integer", "minimum": 0},
+    "width": {"type": "integer", "minimum": 1},
+    "manifest_digest_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "notes": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"decomposition_type": {"const": "matryoshka_sae"}}, "required": ["decomposition_type"]},
+      "then": {"required": ["nested_widths"], "properties": {"nested_widths": {"minItems": 1}}}
+    },
+    {
+      "if": {"properties": {"decomposition_type": {"const": "temporal_sae"}}, "required": ["decomposition_type"]},
+      "then": {"required": ["temporal_window"]}
+    },
+    {
+      "if": {"properties": {"decomposition_type": {"const": "lorsa_attention"}}, "required": ["decomposition_type"]},
+      "then": {"properties": {"site_type": {"enum": ["attention_out", "attention_qk_ov"]}}}
+    },
+    {
+      "if": {"properties": {"decomposition_type": {"const": "compound_decomposition"}}, "required": ["decomposition_type"]},
+      "then": {"required": ["compound_decompositions"], "properties": {"compound_decompositions": {"minItems": 2}}}
+    },
+    {
+      "if": {"properties": {"decomposition_type": {"const": "weight_sparse_native"}}, "required": ["decomposition_type"]},
+      "then": {
+        "properties": {
+          "embedded_decomposition": {"const": true},
+          "sae_training_method": {"const": "weight_sparse_native"}
+        },
+        "not": {"required": ["decoder_ref"]}
+      }
+    }
+  ]
+}

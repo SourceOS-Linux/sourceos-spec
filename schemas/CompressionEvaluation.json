@@ -79,8 +79,14 @@
       "properties": {
         "novelty": { "type": "number", "description": "Primary novelty signal." },
         "redundancy": { "type": "number", "description": "Primary redundancy signal." },
+        "supportingMetrics": {
+          "type": ["object", "null"],
+          "additionalProperties": { "type": "number" },
+          "description": "Optional named supporting metrics (e.g. support, stability)."
+        },
         "confidence": { "type": ["number", "null"], "description": "Optional confidence score." },
-        "warnings": { "type": "array", "items": { "type": "string" }, "description": "Optional warnings." }
+        "warnings": { "type": "array", "items": { "type": "string" }, "description": "Optional warnings." },
+        "normalizationVersion": { "type": ["string", "null"], "description": "Optional version of the metric normalization applied." }
       }
     },
     "policyDecisionRef": {
@@ -97,6 +103,31 @@
       "type": ["string", "null"],
       "pattern": "^urn:srcos:prov:",
       "description": "Optional provenance reference."
+    },
+    "truthSurfaceRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:truth-surface:",
+      "description": "Optional reference to the truth surface this evaluation is grounded against."
+    },
+    "deltaSurfaceRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:delta-surface:",
+      "description": "Optional reference to the delta surface produced by this evaluation."
+    },
+    "integrity": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "description": "Optional signed integrity envelope for the evaluation record.",
+      "properties": {
+        "evaluationHash": { "type": "string", "description": "Content hash of the evaluation." },
+        "signer": { "type": ["string", "null"], "description": "Identity of the signer." },
+        "signature": { "type": ["string", "null"], "description": "Detached signature over the evaluation hash." },
+        "signedAt": { "type": ["string", "null"], "format": "date-time", "description": "Signing timestamp." }
+      }
+    },
+    "notes": {
+      "type": ["string", "null"],
+      "description": "Optional human-readable notes."
     },
     "createdAt": {
       "type": "string",

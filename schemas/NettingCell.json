@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/NettingCell.json",
+  "title": "NettingCell",
+  "description": "A governed triparty netting cell — the smallest local clearing object that couples value, proof, authority, and disclosure. Cancels interior circulation across three legs and governs release/refund/export by policy rather than confidence alone.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "legs",
+    "stage",
+    "truthClass",
+    "admissibility"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:netting-cell:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:netting-cell:<local-id>"
+    },
+    "type": {
+      "const": "NettingCell",
+      "description": "Discriminator constant — always \"NettingCell\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "legs": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "party",
+          "role"
+        ],
+        "properties": {
+          "party": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Party URN / identifier for this leg."
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "A",
+              "B",
+              "C"
+            ],
+            "description": "Triparty leg role (A, B are counterparties; C is the clearing/verifier leg)."
+          },
+          "valueRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The monetary/asset value this leg carries into the cell."
+          },
+          "capabilityRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The capability right this leg carries (from the CapabilityRegistry) — kept distinct from value."
+          },
+          "proofRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The proof/attestation this leg carries (Truth Engine) — evidence distinct from permission."
+          }
+        }
+      },
+      "description": "The three triparty legs (A, B counterparties; C clearing/verifier)."
+    },
+    "stage": {
+      "type": "string",
+      "enum": [
+        "Observed",
+        "Proposed",
+        "Ready",
+        "Escrowed",
+        "Filled",
+        "Verified",
+        "Released",
+        "Exported",
+        "Refunded",
+        "Reversed"
+      ],
+      "description": "Lifecycle stage: Observed→Proposed→Ready→Escrowed→Filled→Verified→Released→(Exported); or Refunded/Reversed."
+    },
+    "truthClass": {
+      "type": "string",
+      "enum": [
+        "PROVEN",
+        "ATTESTED",
+        "INFERRED",
+        "REPUTED"
+      ],
+      "description": "Truth class of the cell's current state (constitution): PROVEN⊐ATTESTED⊐INFERRED⊐REPUTED."
+    },
+    "admissibility": {
+      "type": "string",
+      "enum": [
+        "evidence",
+        "admit",
+        "release",
+        "export"
+      ],
+      "description": "Current admissibility ceiling on the lattice evidence⊇admit⊇release⊇export. Export is stricter than local validity."
+    },
+    "bundleRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^urn:srcos:triparty-bundle:"
+      },
+      "description": "The typed bundles that moved this cell through its lifecycle."
+    },
+    "policyKernelRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The PolicyKernel that disposes release/refund/export (policy disposes; evidence proposes; proof preserves)."
+    },
+    "reserveRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "ReserveManager reference backing settlement."
+    },
+    "netAmount": {
+      "type": [
+        "number",
+        "null"
+      ],
+      "description": "Net residual after interior cancellation."
+    },
+    "asset": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Settlement asset / token (e.g. ASI/FET)."
+    },
+    "supplyChainRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional hg: / node ref when this cell clears a supply-chain trade."
+    }
+  }
+}

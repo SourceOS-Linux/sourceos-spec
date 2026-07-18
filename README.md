@@ -15,6 +15,7 @@ A metadata governance platform can only unify data meaning, policy, provenance, 
 - **Validators** — AJV (Node.js) or `jsonschema` (Python) loaded from `schemas/`.
 - **Code generators** — TypeScript types via [quicktype](https://quicktype.io); Python models via [datamodel-code-generator](https://github.com/koxudaxi/datamodel-code-generator).
 - **Semantic tooling** — JSON-LD context + Hydra API documentation in `semantic/`, including additive vocabulary seeds such as `semantic/fog-vocabulary.jsonld`.
+- **SVF workspace discovery** — SourceOS contract validation Plans declared in `svf/` for Sociosphere selection and advisory validation routing.
 
 ---
 
@@ -35,6 +36,7 @@ sourceos-spec/
 ├── asyncapi.agent-plane.patch.yaml   # Agent-plane event channels
 ├── asyncapi.fog.patch.yaml           # Fog-layer event channels
 │
+├── schemas/                          # 64 JSON Schema (draft 2020-12) files
 ├── schemas/                          # Top-level JSON Schema files (draft 2020-12)
 │   └── README.md                     # Schema catalog and URN patterns
 │
@@ -45,15 +47,71 @@ sourceos-spec/
 │   ├── README.md
 │   └── fog-vocabulary.jsonld         # Additive fog vocabulary seed
 │
+├── svf/                              # Sovereign Validation Fabric contract declarations
+│   └── sourceos-contract-validation-basic.json
+│
 └── docs/
+    ├── architecture/                 # Architecture specs and system models
+    ├── security/                     # Threat models and security requirements
+    ├── specs/                        # Contract-level specs outside schema files
+    ├── integration/                  # Cross-repository estate integration maps
     ├── adr/                          # Architecture Decision Records
-    └── contract-additions/           # Discoverability notes for additive families
+    ├── contract-additions/           # Discoverability notes for additive families
+    └── SVF-OS-VALIDATION-PROFILES.md # SVF OS validation profile doctrine
+```
+
+---
+
+## Agentic graph foundation
+
+The local-first agentic graph foundation extends the existing contract layer so SourceOS and SociOS components share one governed model for workspace state, sync, agents, memory, policy, terminals, browsers, relays, and audit.
+
+Start here:
+
+- [Local-First Agentic Graph Architecture](docs/architecture/local-first-agentic-graph.md)
+- [Agentic Sync Threat Model](docs/security/agentic-sync-threat-model.md)
+- [Sync Engine Registry Specification](docs/specs/sync-engine-registry.md)
+- [SourceChannel Bridge Contract](docs/specs/sourcechannel.md)
+- [Estate Integration Repo Map](docs/integration/repo-map.md)
+- [SVF OS Validation Profiles](docs/SVF-OS-VALIDATION-PROFILES.md)
+
+New machine-readable contracts:
+
+- `schemas/SourceOSRepoManifest.json`
+- `schemas/SyncEngineManifest.json`
+- `schemas/SourceChannelEnvelope.json`
+- `schemas/SourceGraphWrite.json`
+- `schemas/AgentCapabilityLease.json`
+- `schemas/AuditEvent.json`
+- `svf/sourceos-contract-validation-basic.json`
+
+---
+
+## SourceOS interaction substrate
+
+The SourceOS interaction substrate defines the governed noetic/chat/task event path shared by Noetica, AgentTerm, Superconscious, and AgentPlane.
+
+Start here:
+
+- [SourceOS Interaction Substrate Catalog](docs/contract-additions/sourceos-interaction-catalog.md)
+- [SourceOS Interaction Reference Flow](docs/contract-additions/sourceos-interaction-reference-flow.md)
+- [SourceOS Interaction Top-Level Index](docs/contract-additions/sourceos-interaction-top-level-index.md)
+- `schemas/SourceOSInteractionEvent.json`
+- `examples/interaction-flow/noetica-superconscious-agentplane-agentterm.flow.json`
+
+Validate locally:
+
+```bash
+python tools/validate_sourceos_interaction_examples.py
+python tools/generate_sourceos_interaction_types.py --check
+python tools/validate_interaction_flow_reference.py
 ```
 
 ---
 
 ## Schema families
 
+The current schema set is organised into families that map directly to the platform layers and exchange surfaces:
 The schemas are organised into domain-oriented families that map to the SourceOS / SociOS contract surface:
 
 | # | Family | Key schemas |
@@ -61,13 +119,36 @@ The schemas are organised into domain-oriented families that map to the SourceOS
 | 1 | **Physical Assets** | `Connector`, `PhysicalAsset` |
 | 2 | **Glossary** | `GlossaryTerm`, `AuthorityLink` |
 | 3 | **Governance** | `Policy`, `Rule`, `PolicyCondition`, `PolicyDecision`, `CapabilityToken`, `Obligation`, `Exception` |
-| 4 | **Collaboration** | `Comment`, `Rating`, `Community` |
+| 4 | **Collaboration** | `Comment`, `Rating`, `Community`, `CommentSignal` |
 | 5 | **Models / Schemas** | `SchemaDefinition`, `EntityField`, `Field`, `ValidValues`, `TagAssignment`, `QualityMetric`, `ProfileStats` |
 | 6 | **Agreements** | `Agreement`, `Party` |
 | + | **Execution / Provenance** | `Dataset`, `RunRecord`, `WorkflowSpec`, `WorkflowNode`, `WorkflowEdge`, `WorkloadSpec`, `DataSphere`, `ProvenanceRecord`, `EventEnvelope`, `MappingSpec` |
 | + | **Agent Plane** | `AgentSession`, `ExecutionDecision`, `ExecutionSurface`, `SkillManifest`, `MemoryEntry`, `SessionReceipt`, `SessionReview`, `TelemetryEvent`, `FrustrationSignal` |
 | + | **Release / Experiments** | `ExperimentFlag`, `RolloutPolicy`, `ReleaseReceipt` |
+| + | **Shell / Document / Publication** | `ArtifactManifest`, `SignedArtifact`, `PdfValidationReport`, `AnnotationExport`, `RunReport`, `NoetherDiagnostic`, `PublishDecision`, `MirrorReceipt`, `SearchRouteDecision` |
 | + | **Fog Layer** | `Topic`, `TopicEnvelope`, `ReplicationPolicy`, `ContentRef`, `Offer`, `WorkOrder`, `UsageReceipt`, `SettlementEvent` |
+| + | **Agentic Graph Foundation** | `SourceOSRepoManifest`, `SyncEngineManifest`, `SourceChannelEnvelope`, `SourceGraphWrite`, `AgentCapabilityLease`, `AuditEvent` |
+| + | **Interaction Substrate** | `SourceOSInteractionEvent` |
+
+---
+
+## SVF validation lane
+
+The SourceOS SVF lane declares advisory validation over the existing SourceOS contract/example checks. It does not build an OS image, validate bootability, sign artifacts, publish releases, deploy updates, or certify hardware compatibility.
+
+Validate locally:
+
+```bash
+make validate-svf-contracts
+```
+
+`make validate` includes this lane.
+
+Relevant files:
+
+- `docs/SVF-OS-VALIDATION-PROFILES.md`
+- `svf/sourceos-contract-validation-basic.json`
+- `tools/validate_svf_contracts.py`
 
 ---
 

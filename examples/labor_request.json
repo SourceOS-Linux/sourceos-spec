@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:labor-request:smelter-audit-0001",
+  "type": "LaborRequest",
+  "specVersion": "2.0.0",
+  "requestType": "review",
+  "requesterRef": "urn:srcos:party:chuquicamata-smelter",
+  "objective": "Independent audit of smelter emissions controls before the next regulatory window.",
+  "outcome": "Signed audit report + remediation punch-list.",
+  "compensation": {
+    "transparency": "disclosed",
+    "model": "fixed",
+    "minAmount": 40000,
+    "maxAmount": 60000,
+    "currency": "USD"
+  },
+  "schedule": "3-week engagement",
+  "responseDeadline": "2026-07-20T00:00:00Z",
+  "evaluationCriteria": [
+    "domain competence",
+    "independence",
+    "turnaround"
+  ],
+  "status": "shortlisting"
+}

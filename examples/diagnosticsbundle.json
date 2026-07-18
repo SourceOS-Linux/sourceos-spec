@@ -1,0 +1,100 @@
+{
+  "id": "urn:srcos:diag-bundle:hosttag-20260416t034500z",
+  "type": "DiagnosticsBundle",
+  "specVersion": "2.0.0",
+  "generatedAt": "2026-04-16T03:45:00Z",
+  "hostTag": "a1b2c3d4e5f6",
+  "bootSelector": "-0",
+  "sinceWindow": "24 hours ago",
+  "tiersEnabled": [
+    0,
+    1
+  ],
+  "capturedBy": {
+    "toolName": "socios-diagkit",
+    "toolVersion": "0.1.0"
+  },
+  "platform": {
+    "osRelease": "Fedora Linux 42.20260415.0 (Silverblue)",
+    "kernel": "6.13.8-200.fc42.x86_64"
+  },
+  "probeRecords": [
+    {
+      "name": "journal_boot",
+      "tier": 0,
+      "timeoutSeconds": 25,
+      "command": "journalctl --boot -0 --no-pager -o short-iso",
+      "exitCode": 0,
+      "timeoutHit": false,
+      "durationMs": 412,
+      "stdout": {
+        "path": "raw/0/journal_boot.out",
+        "bytes": 18442,
+        "sha256": "1111111111111111111111111111111111111111111111111111111111111111"
+      },
+      "stderr": {
+        "path": "raw/0/journal_boot.err",
+        "bytes": 0,
+        "sha256": "2222222222222222222222222222222222222222222222222222222222222222"
+      },
+      "rssMaxKb": 2048
+    },
+    {
+      "name": "ss_listen",
+      "tier": 0,
+      "timeoutSeconds": 5,
+      "command": "ss -tulpn",
+      "exitCode": 0,
+      "timeoutHit": false,
+      "durationMs": 37,
+      "stdout": {
+        "path": "raw/0/ss_listen.out",
+        "bytes": 2271,
+        "sha256": "3333333333333333333333333333333333333333333333333333333333333333"
+      },
+      "stderr": {
+        "path": "raw/0/ss_listen.err",
+        "bytes": 0,
+        "sha256": "4444444444444444444444444444444444444444444444444444444444444444"
+      },
+      "rssMaxKb": 512
+    }
+  ],
+  "summary": {
+    "probeCount": 2,
+    "failedCount": 0,
+    "timeoutCount": 0
+  },
+  "artifacts": {
+    "rawTreeSha256": "5555555555555555555555555555555555555555555555555555555555555555",
+    "sharedTreeSha256": "6666666666666666666666666666666666666666666666666666666666666666",
+    "tarballSha256": "7777777777777777777777777777777777777777777777777777777777777777"
+  },
+  "redactionPolicy": {
+    "mode": "raw-and-share",
+    "rawArtifactRetained": true,
+    "sharedArtifactGenerated": true,
+    "deterministicMasking": true,
+    "maskedClasses": [
+      "authorizationBearer",
+      "cookie",
+      "apiKey",
+      "token",
+      "email",
+      "privateIp",
+      "macAddress"
+    ],
+    "privateIpMasked": true,
+    "publicIpMasked": false,
+    "macAddressMasked": true,
+    "notes": "Default share-safe policy for operator export; public IPs remain visible for network triage unless explicitly overridden."
+  },
+  "relatedRunRefs": [
+    "urn:srcos:run:diag-capture-20260416"
+  ],
+  "integrity": {
+    "manifestSha256": "8888888888888888888888888888888888888888888888888888888888888888",
+    "bundleHash": "9999999999999999999999999999999999999999999999999999999999999999",
+    "signature": "sigstore:rekor:example-entry-0001"
+  }
+}

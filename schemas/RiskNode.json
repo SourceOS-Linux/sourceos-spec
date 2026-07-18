@@ -1,0 +1,176 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RiskNode.json",
+  "title": "RiskNode",
+  "description": "Operational-risk assessment of a single supply-chain node. Inherent risk factors (criticality, privilege, execution, opacity, concentration, velocity) combine to an inherent score; control efficacy across six control families reduces it to a residual score + rating. Aligns to BIAN Operational Risk Models.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "nodeRef",
+    "inherent",
+    "inherentScore",
+    "residualScore",
+    "rating"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:risk-node:",
+      "description": "Stable URN. Pattern: urn:srcos:risk-node:<local-id>"
+    },
+    "type": {
+      "const": "RiskNode",
+      "description": "Discriminator — always \"RiskNode\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "nodeRef": {
+      "type": "string",
+      "description": "The supply-chain node/facility/route this assesses (e.g. an hg: ref)."
+    },
+    "criticalService": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "The critical service this node participates in."
+    },
+    "inherent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "criticality",
+        "privilege",
+        "execution",
+        "opacity",
+        "concentration",
+        "velocity"
+      ],
+      "properties": {
+        "criticality": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "K — how critical the node is to a critical service."
+        },
+        "privilege": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "P — authority/privilege the node holds."
+        },
+        "execution": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "E — code/execution exposure."
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "O — how opaque/unverifiable the node is."
+        },
+        "concentration": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "C — single-point / concentration."
+        },
+        "velocity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "V — change velocity / blast speed."
+        }
+      }
+    },
+    "inherentScore": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Weighted inherent risk (0..1)."
+    },
+    "controls": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "governance",
+        "identityPublish",
+        "provenance",
+        "integrity",
+        "distribution",
+        "monitoring"
+      ],
+      "properties": {
+        "governance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "governance control efficacy (0=none, 1=strong)."
+        },
+        "identityPublish": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "identityPublish control efficacy (0=none, 1=strong)."
+        },
+        "provenance": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "provenance control efficacy (0=none, 1=strong)."
+        },
+        "integrity": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "integrity control efficacy (0=none, 1=strong)."
+        },
+        "distribution": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "distribution control efficacy (0=none, 1=strong)."
+        },
+        "monitoring": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "monitoring control efficacy (0=none, 1=strong)."
+        }
+      }
+    },
+    "residualScore": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Residual risk after control efficacy (0..1)."
+    },
+    "rating": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ]
+    },
+    "controlGaps": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Control families below tier-0 minimum evidence."
+    },
+    "note": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PortableReputationClaim.json",
+  "title": "PortableReputationClaim",
+  "description": "The only thing that leaves a holder's custody, and only by the holder's deliberate act. A minimal, signed, selectively disclosed projection of chosen SacredCapitalLedger entries, optionally including a single witnessed 'ascension' claim about movement along an inner axis. A claim references works-evidence (receipts) and a neighbourhood issuer; it carries no field able to hold given identity inputs, so disclosing reputation can never leak who the holder was born as. Default behavior is that no claim is emitted; minting one is always an explicit, holder-initiated choice.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "holderRef", "issuedByNeighbourhood", "claimedDimensions", "disclosureScope", "holderMinted", "signature"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:reputation-claim:", "description": "Stable URN identifier for this claim." },
+    "type": { "const": "PortableReputationClaim", "description": "Type discriminator; always 'PortableReputationClaim'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when the claim was minted." },
+    "holderRef": { "type": "string", "description": "Pseudonymous, agent-centric reference to the holder making the claim." },
+    "issuedByNeighbourhood": { "type": "string", "description": "The neighbourhood whose dimensions witness the claimed values." },
+    "claimedDimensions": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The subset of capital the holder chooses to disclose.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimensionRef", "value", "evidenceRefs"],
+        "properties": {
+          "dimensionRef": { "type": "string", "pattern": "^urn:srcos:reputation-dimension:" },
+          "value": { "description": "Disclosed value on that dimension." },
+          "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" }, "description": "Works-receipts substantiating the disclosed value." }
+        }
+      }
+    },
+    "ascensionClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gateRef", "axisId", "fromValue", "toValue", "evidenceRefs"],
+      "description": "Optional, holder-minted witnessed ascension: a single disclosed movement along an inner axis, substantiated by community works-receipts. This is the only path by which inner state reaches the outside world.",
+      "properties": {
+        "gateRef": { "type": "string", "pattern": "^gate_(0[1-9]|[1-5][0-9]|6[0-4])$" },
+        "axisId": { "type": "string", "enum": ["shadowGift", "blockedOpen", "ascendingDescending"] },
+        "fromValue": { "type": "number" },
+        "toValue": { "type": "number" },
+        "evidenceRefs": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" } }
+      }
+    },
+    "disclosureScope": { "type": "string", "description": "Who/what the holder is disclosing this claim to (audience, app, or neighbourhood)." },
+    "holderMinted": { "const": true, "description": "A claim is always minted deliberately by the holder, never auto-generated. Always true." },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["alg", "value"],
+      "description": "Holder signature over the claim.",
+      "properties": {
+        "alg": { "type": "string", "description": "Signature algorithm." },
+        "value": { "type": "string", "description": "Signature value." },
+        "keyRef": { "type": "string", "description": "Reference to the holder key used." }
+      }
+    }
+  }
+}

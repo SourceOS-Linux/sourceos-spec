@@ -1,0 +1,75 @@
+{
+  "serviceId": "urn:srcos:local-first-service:ops-historyd",
+  "specVersion": "2.0.0",
+  "serviceName": "ops-historyd",
+  "activation": {
+    "mode": "composite",
+    "systemdUserUnit": "ops-historyd.service",
+    "idleStopSeconds": 300,
+    "restartable": true
+  },
+  "endpoints": [
+    {
+      "name": "org.sourceos.OpsHistory",
+      "transport": "dbus",
+      "purpose": "default",
+      "authorityRequired": true
+    },
+    {
+      "name": "org.sourceos.OpsHistory.Push",
+      "transport": "dbus",
+      "purpose": "push",
+      "authorityRequired": true
+    },
+    {
+      "name": "org.sourceos.OpsHistory.Redaction",
+      "transport": "dbus",
+      "purpose": "redaction",
+      "authorityRequired": true
+    },
+    {
+      "name": "org.sourceos.OpsHistory.ContextPack",
+      "transport": "dbus",
+      "purpose": "context-pack",
+      "authorityRequired": true
+    }
+  ],
+  "durableStore": {
+    "kind": "sqlite",
+    "pathHint": "~/.local/share/sourceos/ops-history/ops-history.sqlite3",
+    "encryptedAtRest": true
+  },
+  "network": {
+    "requiresConnectivity": false,
+    "transferDirection": "bidirectional",
+    "offlineBehavior": "queue-local",
+    "meteredAllowed": false,
+    "batteryAllowed": true
+  },
+  "subscriptionRegistration": {
+    "enabled": true,
+    "repeating": false,
+    "priority": "maintenance",
+    "intervalSeconds": 10,
+    "gracePeriodSeconds": 1,
+    "topics": [
+      "matrix.room.events",
+      "sourceos.workroom.events",
+      "policyfabric.policy-updates",
+      "memorymesh.context-pack-invalidations",
+      "agentplane.evidence-events"
+    ]
+  },
+  "resourcePosture": {
+    "processClass": "maintenance",
+    "pressureExitable": true,
+    "ordinarySyncPriority": "maintenance",
+    "redactionPriority": "critical"
+  },
+  "policyFabricRefs": [
+    "urn:srcos:policy-family:ops-history"
+  ],
+  "agentRegistryRefs": [
+    "urn:srcos:agent-registry-scope:ops-history-endpoints"
+  ]
+}

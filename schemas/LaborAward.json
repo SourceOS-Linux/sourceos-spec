@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LaborAward.json",
+  "title": "LaborAward",
+  "description": "The accepted working arrangement — records the selected response, terms, milestones, payment model, and obligations, and anchors the work ledger that tracks fulfillment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "requestRef",
+    "responseRef",
+    "terms",
+    "paymentModel"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:labor-award:",
+      "description": "Stable URN. Pattern: urn:srcos:labor-award:<local-id>"
+    },
+    "type": {
+      "const": "LaborAward",
+      "description": "Discriminator — always \"LaborAward\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "requestRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:labor-request:"
+    },
+    "responseRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:labor-response:"
+    },
+    "terms": {
+      "type": "string",
+      "minLength": 1
+    },
+    "paymentModel": {
+      "type": "string",
+      "enum": [
+        "fixed",
+        "hourly",
+        "milestone",
+        "equity",
+        "stipend"
+      ]
+    },
+    "milestones": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "title",
+          "status"
+        ],
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "in_progress",
+              "delivered",
+              "approved",
+              "disputed"
+            ]
+          },
+          "proofRef": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "obligations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Obligations both parties accept."
+    },
+    "trustEventRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^urn:srcos:trust-event:"
+      },
+      "description": "Trust events emitted over the life of the award."
+    }
+  }
+}

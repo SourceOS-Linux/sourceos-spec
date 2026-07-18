@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:triparty-bundle:cu-trade-0001-verify",
+  "type": "TripartyBundle",
+  "specVersion": "2.0.0",
+  "kind": "verification",
+  "cellRef": "urn:srcos:netting-cell:cu-trade-0001",
+  "payload": {
+    "verifier": "clearing-verifier",
+    "result": "delivery-confirmed",
+    "scope": "route-anf-sha"
+  },
+  "proofRef": "urn:srcos:proof:cu-trade-0001/state",
+  "attestationRef": "urn:srcos:attestation:route-anf-sha/delivery",
+  "truthClass": "ATTESTED",
+  "issuedAt": "2026-07-03T18:00:00Z"
+}

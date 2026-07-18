@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RecommendationObject.json",
+  "title": "RecommendationObject",
+  "description": "A governed, replayable proposed action over marketing/prospecting/SEO surfaces: binds evidence to an action with explicit risk, guardrails, rollback, and validation, and chains into the reasoning-evidence fabric so every actuation is auditable. Cannot actuate without an autonomy admission receipt.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "createdAt",
+    "scope",
+    "action",
+    "risk",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:recommendation-object:",
+      "description": "Stable URN identifier for this recommendation object."
+    },
+    "type": {
+      "const": "RecommendationObject",
+      "description": "Type discriminator; always 'RecommendationObject'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the contract this document conforms to."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Timestamp when the recommendation object was created."
+    },
+    "title": {
+      "type": "string",
+      "description": "Short human-readable summary of the proposed action."
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Which properties, surfaces, and audience tags this recommendation affects.",
+      "properties": {
+        "properties": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Publisher/platform property identifiers in scope."
+        },
+        "surfaces": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Surface identifiers (e.g. ServiceManifest surface URNs) in scope."
+        },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Audience tag identifiers in scope."
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Windowed metrics, bias-corrected estimates, and audit findings that justify the action (e.g. site-audit buckets, backlink toxicity, curvature findings)."
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "The proposed change to a control surface (e.g. publish file, shift budget, disavow domain, adjust exploration entropy)."
+    },
+    "risk": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Risk-rubric scores (0=none .. 3=severe) bounding the action against the persuasion-machine and compliance risks.",
+      "properties": {
+        "policyCompliance": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Platform/legal policy violation risk." },
+        "privacy": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Re-identification / sensitive-inference / data-minimization risk." },
+        "brandSafety": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Adjacency to harmful/misinformation content." },
+        "outcomeQuality": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Risk of high engagement but low downstream value." },
+        "volatility": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Spiky / controversy-driven instability risk." },
+        "manipulation": { "type": "integer", "minimum": 0, "maximum": 3, "description": "Bot/fraud/inorganic-behavior susceptibility." }
+      }
+    },
+    "guardrails": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Hard constraints enforced during execution (e.g. spend caps, frequency caps, blocklists)."
+    },
+    "rollback": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "How to safely undo the action (e.g. revert-to prior config hash)."
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Experiment design and success metrics used to validate the action's effect."
+    },
+    "status": {
+      "enum": ["proposed", "admitted", "actuated", "validated", "rolled-back", "rejected"],
+      "description": "Lifecycle state of the recommendation object."
+    },
+    "autonomyLevel": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 5,
+      "description": "Autonomy ladder level (L0-L5) required to actuate this recommendation."
+    },
+    "admissionReceiptRef": {
+      "type": ["string", "null"],
+      "description": "URN of the autonomy admission receipt that authorized actuation; null until admitted. Actuation is fail-closed without it."
+    },
+    "runRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:reasoning-run:",
+      "description": "Optional reference to the reasoning run that produced this recommendation."
+    },
+    "receiptRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:receipt:reasoning:",
+      "description": "Optional reference to the reasoning receipt emitted on actuation."
+    },
+    "replayClass": {
+      "enum": ["exact", "best-effort", "evidence-only", "non-replayable-side-effect"],
+      "description": "Replay fidelity class for the action, matching the reasoning-evidence fabric."
+    },
+    "traceHash": {
+      "type": "string",
+      "description": "Hash of the serialized recommendation object plus prior digest, for forensic hash-chaining onto the evidence spine."
+    }
+  }
+}

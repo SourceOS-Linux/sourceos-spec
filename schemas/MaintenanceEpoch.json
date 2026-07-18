@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MaintenanceEpoch.json",
+  "title": "MaintenanceEpoch",
+  "description": "A bounded record for background maintenance sweeps such as cleanup, cache deletion, indexing, backup, plugin scans, cloud purge, and experiment/config refresh.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "startedAt",
+    "epochKind",
+    "state",
+    "sourceComponent",
+    "allowedDuringInteractiveLaunch",
+    "emissionBudget"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:maintenance-epoch:" },
+    "type": { "const": "MaintenanceEpoch" },
+    "specVersion": { "type": "string" },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "endedAt": { "type": "string", "format": "date-time" },
+    "epochKind": { "enum": ["cleanup", "cache-delete", "indexing", "backup", "plugin-scan", "cloud-purge", "experiment-refresh", "registry-sweep", "unknown"] },
+    "state": { "enum": ["running", "completed", "failed", "degraded", "suppressed", "unknown"] },
+    "sourceComponent": { "type": "string", "minLength": 1 },
+    "allowedDuringInteractiveLaunch": { "type": "boolean" },
+    "bootPhaseRequirement": { "enum": ["sealed-boot", "pre-login", "post-login-locked", "unlocked-user-session", "degraded-session", "recovery-session", "unknown"] },
+    "lockRequirements": { "type": "array", "items": { "type": "string" } },
+    "emissionBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxEventsPerMinute", "onBudgetExceeded"],
+      "properties": {
+        "maxEventsPerMinute": { "type": "integer", "minimum": 1 },
+        "onBudgetExceeded": { "enum": ["summarize", "suppress", "quarantine", "escalate", "unknown"] }
+      }
+    },
+    "observedStormRefs": { "type": "array", "items": { "type": "string" } },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleSummary": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}

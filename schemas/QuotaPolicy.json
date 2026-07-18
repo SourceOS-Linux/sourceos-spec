@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/QuotaPolicy.json",
+  "title": "QuotaPolicy",
+  "description": "A typed quota and resource allocation policy for execution forks, runs, protocol workbenches, and artifact retention windows.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "name", "version", "scope", "limits", "behaviorOnExceed"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:quota:" },
+    "type": { "const": "QuotaPolicy" },
+    "specVersion": { "type": "string" },
+    "name": { "type": "string" },
+    "version": { "type": "string" },
+    "scope": { "type": "string", "enum": ["organization", "team", "actor", "mission", "repo", "environment_class"] },
+    "selectors": { "type": "object", "additionalProperties": true },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "sandboxesCreatedPerWindow": { "type": "integer", "minimum": 0 },
+        "concurrentExecutionForks": { "type": "integer", "minimum": 0 },
+        "concurrentProtocolWorkbenches": { "type": "integer", "minimum": 0 },
+        "concurrentGovernedRuns": { "type": "integer", "minimum": 0 },
+        "testInvocationsPerWindow": { "type": "integer", "minimum": 0 },
+        "artifactStorageBytes": { "type": "integer", "minimum": 0 },
+        "logRetentionHours": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "window": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "unit": { "type": "string", "enum": ["hour", "day", "week", "month"] },
+        "value": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "behaviorOnExceed": { "type": "string", "enum": ["reject", "queue", "degrade_read_only", "require_human_approval"] },
+    "accountingMode": { "type": "string", "enum": ["admission_only", "admission_and_runtime"] }
+  }
+}

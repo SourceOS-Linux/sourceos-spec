@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AudienceTag.json",
+  "title": "AudienceTag",
+  "description": "An atomic, stable audience-segmentation tag (role, affiliation, intent, capability, network position, or context) that personas are composed from. Distinct from TagAssignment, which classifies data fields; AudienceTag classifies reachable audiences for governed prospecting.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "family", "label", "definition", "privacyRisk"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:audience-tag:", "description": "Stable URN identifier for this audience tag." },
+    "type": { "const": "AudienceTag", "description": "Type discriminator; always 'AudienceTag'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "family": {
+      "enum": ["IDENTITY_ROLE", "ORG_AFFILIATION", "DOMAIN_INTEREST", "INTENT_STAGE", "CAPABILITY_STACK", "NETWORK_ROLE", "CONTEXT_CHANNEL", "VALUES_MISSION"],
+      "description": "Tag family the tag belongs to."
+    },
+    "label": { "type": "string", "description": "Human-readable label, e.g. 'K-12 teacher'." },
+    "definition": { "type": "string", "description": "One-sentence definition of inclusion." },
+    "privacyRisk": { "type": "integer", "minimum": 0, "maximum": 4, "description": "Privacy-risk rating (0=aggregate-safe .. 4=sensitive inference)." },
+    "inclusionSignals": { "type": "array", "items": { "type": "string" }, "description": "Signals that qualify a member for this tag." },
+    "exclusionRules": { "type": "array", "items": { "type": "string" }, "description": "Rules that disqualify a member." },
+    "activationChannels": { "type": "array", "items": { "type": "string" }, "description": "Channels through which this tag is reachable." },
+    "primaryMetrics": { "type": "array", "items": { "type": "string" }, "description": "Success metrics most predictive for this tag." }
+  }
+}

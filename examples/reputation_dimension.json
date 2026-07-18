@@ -1,0 +1,38 @@
+{
+  "id": "urn:srcos:reputation-dimension:math-commons:proof-rigor:v1",
+  "type": "ReputationDimension",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-06-29T00:00:00Z",
+  "dimensionId": "proof-rigor",
+  "neighbourhoodId": "nh:math-commons",
+  "label": "Proof rigor",
+  "description": "Soundness and completeness of contributed proofs, as judged by the math commons.",
+  "range": {
+    "kind": "ordinal",
+    "min": 0,
+    "max": 5
+  },
+  "computedOver": {
+    "receiptKinds": [
+      "reasoning-receipt"
+    ],
+    "eventTypes": [
+      "reasoning.step.verified"
+    ]
+  },
+  "subjective": true,
+  "latticeBinding": {
+    "spineRef": "urn:srcos:identity-spine:yi-globe:v1",
+    "target": {
+      "axisId": "shadowGift"
+    },
+    "mapping": {
+      "kind": "monotone"
+    },
+    "confidence": "authored"
+  },
+  "portability": {
+    "travelsWithHolder": true,
+    "foreignReadableIf": "lattice-binding-present"
+  }
+}

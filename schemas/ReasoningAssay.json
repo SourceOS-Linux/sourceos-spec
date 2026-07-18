@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReasoningAssay.json",
+  "title": "ReasoningAssay",
+  "description": "A typed epistemic verdict on a claim produced during a reasoning run. Replaces a flat confidence scalar: confidence, authenticity, and verification-vs-generation are ORTHOGONAL axes, so they are recorded separately and the ok/sad/bad readout is a render-time PROJECTION of the tuple, not a stored severity. Because the axes are stored, a verdict can be re-projected when the verifier's AssayStandard improves — the same discipline as keeping every benchmark arm rather than only its current winner.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "runRef", "method", "binding", "verifier", "assayedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:reasoning-assay:",
+      "description": "Stable URN for this assay. Pattern: urn:srcos:reasoning-assay:<local-id>."
+    },
+    "type": { "const": "ReasoningAssay" },
+    "specVersion": { "type": "string", "description": "Spec version, e.g. \"2.0.0\"." },
+    "runRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:reasoning-run:",
+      "description": "The reasoning run this claim was produced in."
+    },
+    "claimRef": {
+      "type": "string",
+      "description": "Optional URN or content hash of the specific claim being assayed. Absent when the assay covers the run's overall answer."
+    },
+    "method": {
+      "enum": ["computed", "retrieved", "generated"],
+      "description": "AXIS 1 — how the claim was produced. Categorical, not a severity: computed (deterministic/executed), retrieved (grounded in a source), or generated (model-authored). These behave as decorrelated classes, not points on one scale."
+    },
+    "binding": {
+      "enum": ["inline", "post-hoc"],
+      "description": "AXIS 2 — when the supporting evidence was produced. inline: emitted as part of the computation. post-hoc: attached after the fact. A post-hoc 'verified' is a weaker animal than an inline one; the difference must be recorded, not collapsed."
+    },
+    "verifier": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["calibrationRef"],
+      "description": "AXIS 3 — who judged, and how reliable that judge is measured to be. A verdict is unanchored unless it points at the verifier's own measured reliability.",
+      "properties": {
+        "verifierId": { "type": "string", "description": "Identifier of the judge that issued this verdict." },
+        "calibrationRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:assay-standard:",
+          "description": "The AssayStandard recording this verifier's measured reliability. Required — a verdict without a calibration reference cannot project above 'sad'."
+        }
+      }
+    },
+    "agreement": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "AXIS 4 — decorrelation-weighted concurrence across arms. Raw arm count overstates confidence when arms are correlated (they fail together); effectiveVotes discounts for that.",
+      "properties": {
+        "arms": { "type": "integer", "minimum": 1, "description": "Number of arms/methods that weighed in." },
+        "correlation": { "type": "number", "minimum": 0, "maximum": 1, "description": "Measured pairwise correlation among the arms." },
+        "effectiveVotes": { "type": "number", "minimum": 0, "description": "Decorrelation-adjusted vote count; approaches 1 as arms become correlated." }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "AXIS 5 — authenticity as a property of the actor and channel, never of the content. A confident-sounding answer cannot launder its own authority. Corroborated across tiers (telemetry / substrate / peripheral) rather than asserted.",
+      "properties": {
+        "actorRef": { "type": "string", "description": "URN of the actor that produced the claim (mirrors EventEnvelope.actor.subjectId)." },
+        "channel": { "type": "string", "description": "The channel the claim arrived over (e.g. sdk, typed, tool)." },
+        "integrityVerified": { "type": "boolean", "description": "Whether the envelope integrity (hash/signature) checked out for this claim." }
+      }
+    },
+    "projectedState": {
+      "enum": ["ok", "sad", "bad"],
+      "description": "The render-time projection assay() produced from the axes AT assayedAt. A cache, not the source of truth: 'ok' = inline-bound + computed/attested + calibrated verifier; 'sad' = unassayed/unresolved (post-hoc, generated-with-citations, uncalibrated verifier, or correlated-arm agreement); 'bad' = refuted, failed, or authority-broken. Re-derivable from the stored axes at any time."
+    },
+    "unassayedReason": {
+      "type": "string",
+      "description": "When projectedState is 'sad', the specific unresolved condition (e.g. 'uncalibrated-verifier', 'post-hoc-binding', 'correlated-arms'). Frames amber as honest pending-work, not soft failure."
+    },
+    "assayedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this assay was produced. Re-projection against a newer AssayStandard yields a later assay rather than mutating this record."
+    }
+  }
+}

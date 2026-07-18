@@ -1,0 +1,7 @@
+{
+  "runId": "run-001",
+  "workflowId": "wf-search-summarize",
+  "artifacts": ["demo-report", "demo-report.signed.pdf"],
+  "generatedAt": "2026-04-18T01:31:00Z",
+  "summary": "Search and summarize run completed successfully."
+}

@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DigitalSoulIdentity.json",
+  "title": "DigitalSoulIdentity",
+  "description": "A person's private, agent-held digital soul: the given identity layer. Compiles given inputs (birthdate, faith, personality) onto the canonical IdentitySpine and holds the per-subject inner-axis state of each gate. This document is PRIVATE and agent-held; its default disclosure is none. The given inputs MUST NEVER be copied into any reputation document (ReputationDimension, SacredCapitalLedger, PortableReputationClaim) — those schemas deliberately provide no field able to carry them, so the privacy boundary is enforced by construction.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "subjectRef", "spineRef", "privacyClass", "disclosureDefault"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:digital-soul:", "description": "Stable URN identifier for this per-subject soul object." },
+    "type": { "const": "DigitalSoulIdentity", "description": "Type discriminator; always 'DigitalSoulIdentity'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract this document conforms to." },
+    "createdAt": { "type": "string", "format": "date-time", "description": "Timestamp when this soul object was created." },
+    "subjectRef": { "type": "string", "description": "Pseudonymous, agent-centric reference to the subject. Holds no real-world identifier." },
+    "spineRef": { "type": "string", "pattern": "^urn:srcos:identity-spine:", "description": "The IdentitySpine this soul is projected onto." },
+    "proofOfSelfRef": { "type": "string", "pattern": "^urn:srcos:proof-of-self:", "description": "Optional anchor to the verified-identity plane (ProofOfSelfToken). Binds this constitutional soul to a verified, pseudonymous subject so reputation can be sybil-resistant — without exposing given inputs. The anchor is pseudonymous and carries no given-identity data." },
+    "givenInputs": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The GIVEN, PRIVATE inputs that compile the soul. Never earned, never disclosed, never serialized into reputation. Present only inside this private document.",
+      "properties": {
+        "birthdate": { "type": "string", "description": "Private. Used only to compile spine placement on the holder's device." },
+        "faith": { "type": "string", "description": "Private. Declared faith/belief tradition." },
+        "personalityProfile": { "type": "object", "additionalProperties": true, "description": "Private. Result of a standard personality instrument." }
+      },
+      "x-privacy": "never-disclose"
+    },
+    "gateState": {
+      "type": "array",
+      "minItems": 64,
+      "maxItems": 64,
+      "description": "Current inner-axis coordinates for each of the 64 gates. Updated only by an on-device AscensionReading; append-only history may be retained out of band.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["gateRef", "axisValues"],
+        "properties": {
+          "gateRef": { "type": "string", "pattern": "^gate_(0[1-9]|[1-5][0-9]|6[0-4])$" },
+          "axisValues": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Coordinate on each inner axis the gate carries.",
+            "properties": {
+              "shadowGift": { "type": "number", "description": "Position on the shadow..gift..siddhi axis." },
+              "blockedOpen": { "type": "number", "description": "Position on the blocked..open axis." },
+              "ascendingDescending": { "type": "number", "description": "Signed developmental direction." }
+            }
+          }
+        }
+      }
+    },
+    "privacyClass": { "type": "string", "enum": ["agent-held-private"], "description": "This document is held by the subject's own agent and is private." },
+    "disclosureDefault": { "type": "string", "enum": ["none"], "description": "Nothing in this document is disclosed by default. Disclosure happens only by the holder minting a PortableReputationClaim." }
+  }
+}

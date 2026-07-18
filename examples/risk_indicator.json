@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:risk-indicator:tier0-provenance",
+  "type": "RiskIndicator",
+  "specVersion": "2.0.0",
+  "indicatorType": "KRI",
+  "metric": "Tier-0 nodes with verified provenance",
+  "definition": "Share of tier-0 supply-chain nodes with verified provenance attached before admission.",
+  "value": 0.82,
+  "green": ">=95%",
+  "amber": "80-94.9%",
+  "red": "<80%",
+  "band": "amber",
+  "frequency": "Weekly",
+  "owner": "Supply Chain Risk"
+}

@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DiagnosticsRedactionPolicy.json",
+  "title": "DiagnosticsRedactionPolicy",
+  "description": "Declares how a DiagnosticsBundle was transformed from raw local artifacts into a share-safe artifact set.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "mode",
+    "rawArtifactRetained",
+    "sharedArtifactGenerated",
+    "deterministicMasking",
+    "maskedClasses",
+    "privateIpMasked",
+    "publicIpMasked",
+    "macAddressMasked"
+  ],
+  "properties": {
+    "mode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "share-only",
+        "raw-and-share"
+      ],
+      "description": "Overall redaction mode used for the bundle capture and export flow."
+    },
+    "rawArtifactRetained": {
+      "type": "boolean",
+      "description": "Whether the unredacted raw artifact set was retained locally after capture."
+    },
+    "sharedArtifactGenerated": {
+      "type": "boolean",
+      "description": "Whether a redacted share-safe artifact set was generated from the raw bundle."
+    },
+    "deterministicMasking": {
+      "type": "boolean",
+      "description": "Whether masking was deterministic for repeated occurrences of the same secret or identifier within the bundle."
+    },
+    "maskedClasses": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "authorizationBearer",
+          "cookie",
+          "apiKey",
+          "token",
+          "email",
+          "privateIp",
+          "publicIp",
+          "macAddress"
+        ]
+      },
+      "description": "Sensitive value classes the redaction pass was configured to mask."
+    },
+    "privateIpMasked": {
+      "type": "boolean",
+      "description": "Whether RFC1918 and similar local/private IP addresses were masked in the shared artifact set."
+    },
+    "publicIpMasked": {
+      "type": "boolean",
+      "description": "Whether public IP addresses were masked in the shared artifact set."
+    },
+    "macAddressMasked": {
+      "type": "boolean",
+      "description": "Whether MAC addresses were masked in the shared artifact set."
+    },
+    "notes": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Optional operator note describing any bundle-specific masking deviations or caveats."
+    }
+  }
+}

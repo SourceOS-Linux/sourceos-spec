@@ -1,0 +1,59 @@
+{
+  "@context": {
+    "srcos": "https://schemas.srcos.ai/v2/",
+    "hydra": "http://www.w3.org/ns/hydra/core#",
+    "id": "@id",
+    "type": "@type",
+    "SourceOSModelCarryRef": "srcos:SourceOSModelCarryRef",
+    "InferenceProvider": "srcos:InferenceProvider",
+    "ModelResidency": "srcos:ModelResidency",
+    "PlacementFact": "srcos:PlacementFact",
+    "AgentMachineReceipt": "srcos:AgentMachineReceipt"
+  },
+  "@id": "https://api.srcos.local/v2/agent-machine-model-carry",
+  "@type": "hydra:ApiDocumentation",
+  "hydra:title": "Agent Machine / Model Carry Semantic Slice",
+  "hydra:description": "Additive Hydra vocabulary seed for SourceOS model carry references, Agent Machine provider facts, model residency, placement facts, and runtime receipts.",
+  "hydra:supportedClass": [
+    {
+      "@id": "srcos:SourceOSModelCarryRef",
+      "hydra:title": "SourceOSModelCarryRef",
+      "hydra:description": "Approved on-device reference to a governed model or model-service profile carried by SourceOS without embedding mutable model state.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "upsertSourceOSModelCarryRef", "hydra:description": "Creates or updates an approved SourceOS model carry reference." }
+      ]
+    },
+    {
+      "@id": "srcos:InferenceProvider",
+      "hydra:title": "InferenceProvider",
+      "hydra:description": "Backend-neutral local, clustered, or governed remote inference provider description.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "upsertInferenceProvider", "hydra:description": "Creates or updates an inference provider description." }
+      ]
+    },
+    {
+      "@id": "srcos:ModelResidency",
+      "hydra:title": "ModelResidency",
+      "hydra:description": "Point-in-time evidence that a governed model reference is available, cached, loaded, warm, pinned, evictable, or unavailable on an Agent Machine.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "recordModelResidency", "hydra:description": "Records observed model residency evidence." }
+      ]
+    },
+    {
+      "@id": "srcos:PlacementFact",
+      "hydra:title": "PlacementFact",
+      "hydra:description": "Machine-local scheduling and policy fact for model, agent, cache, isolation, and runtime placement decisions.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "recordPlacementFact", "hydra:description": "Records an Agent Machine placement fact." }
+      ]
+    },
+    {
+      "@id": "srcos:AgentMachineReceipt",
+      "hydra:title": "AgentMachineReceipt",
+      "hydra:description": "Runtime evidence emitted by Agent Machine after probing, placement, execution, cache reuse, model load/unload, or policy-mediated side effects.",
+      "hydra:supportedOperation": [
+        { "hydra:method": "POST", "hydra:title": "recordAgentMachineReceipt", "hydra:description": "Records an Agent Machine runtime receipt." }
+      ]
+    }
+  ]
+}
