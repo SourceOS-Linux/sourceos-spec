@@ -1,0 +1,43 @@
+{
+  "id": "urn:srcos:capability-grant-state:bearbrowser-main-v0-1-boot-20260101",
+  "type": "CapabilityGrantState",
+  "specVersion": "v0.1",
+  "contractRef": "urn:srcos:capability-contract:bearbrowser-main-v0-1",
+  "observedAt": "2026-01-01T09:00:00Z",
+  "bootId": "boot-20260101-abc123",
+  "sessionId": "session-mdheller-001",
+  "permissionEpoch": "tcc-epoch-2026-01-01",
+  "capabilityStates": [
+    {
+      "capability": "full-disk-access",
+      "requestedOperation": "read",
+      "subjectRef": "ai.socioprophet.BearBrowser",
+      "objectRef": "/Users/mdheller/Documents",
+      "grantSource": "user-consent",
+      "decision": "denied",
+      "policyRuleRef": "urn:srcos:policy:tcc-default-deny",
+      "fallback": "degraded",
+      "userVisibleImpact": "Document search limited to ~/Downloads.",
+      "remediationHint": "Grant Full Disk Access in System Settings > Privacy & Security."
+    },
+    {
+      "capability": "pasteboard",
+      "requestedOperation": "read",
+      "subjectRef": "ai.socioprophet.BearBrowser.WebContent",
+      "objectRef": "com.apple.pasteboard",
+      "grantSource": "broker",
+      "decision": "denied",
+      "fallback": "skip",
+      "userVisibleImpact": "Clipboard paste from web pages unavailable.",
+      "remediationHint": "This is a sandboxed child process limitation."
+    },
+    {
+      "capability": "network",
+      "requestedOperation": "connect",
+      "subjectRef": "ai.socioprophet.BearBrowser.Networking",
+      "objectRef": "mesh.socioprophet.ai",
+      "grantSource": "ambient-host",
+      "decision": "granted"
+    }
+  ]
+}

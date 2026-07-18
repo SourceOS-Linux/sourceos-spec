@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LocalReasoningFailure.json",
+  "title": "LocalReasoningFailure",
+  "description": "Records a local-first reasoning failure: a case where a model-derived value was presented as authoritative for an exactness-sensitive field, or where stale/contaminated context produced an incorrect output. Links to repair evidence and prevents the failure from being silently overwritten.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "failureClass",
+    "affectedObjectRef",
+    "detectedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "URN of this failure record. Format: urn:srcos:local-reasoning-failure:<slug>",
+      "pattern": "^urn:srcos:local-reasoning-failure:.+"
+    },
+    "type": {
+      "type": "string",
+      "const": "LocalReasoningFailure"
+    },
+    "specVersion": {
+      "type": "string",
+      "const": "v0.1"
+    },
+    "failureClass": {
+      "type": "string",
+      "enum": [
+        "string-exactness-violation",
+        "checksum-mismatch",
+        "stale-context-injection",
+        "memory-contamination",
+        "conflicting-local-facts",
+        "schema-drift",
+        "counting-error",
+        "policy-inference-bypass"
+      ],
+      "description": "Class of reasoning failure."
+    },
+    "affectedObjectRef": {
+      "type": "string",
+      "description": "URN of the object or artifact affected by the failure."
+    },
+    "affectedField": {
+      "type": "string",
+      "description": "Specific field within the object that contains the erroneous value."
+    },
+    "incorrectValue": {
+      "type": "string",
+      "description": "The model-derived or stale value that was incorrectly admitted."
+    },
+    "expectedValueHint": {
+      "type": "string",
+      "description": "The correct value if known, or a pointer to where it can be determined."
+    },
+    "detectedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the failure was detected."
+    },
+    "detectedBy": {
+      "type": "string",
+      "description": "Component or verifier that detected the failure."
+    },
+    "contextHydrationBoundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Memory/context hydration boundary metadata — what context was in scope when the failure occurred.",
+      "properties": {
+        "contextWindowId": { "type": "string" },
+        "staleSinceEventTime": { "type": "string", "format": "date-time" },
+        "hydrationSource": { "type": "string", "enum": ["memory-mesh", "local-index", "model-cache", "session-state", "unknown"] },
+        "boundaryViolated": { "type": "boolean" }
+      }
+    },
+    "repairPlanRef": {
+      "type": "string",
+      "description": "URN of repair plan that addresses this failure."
+    },
+    "verifierRef": {
+      "type": "string",
+      "description": "URN of the deterministic verifier that confirmed the failure."
+    },
+    "sourceChannelRef": {
+      "type": "string",
+      "description": "URN of the SourceChannelEnvelope that carried this failure for propagation."
+    },
+    "suppressMutation": {
+      "type": "boolean",
+      "description": "When true, downstream components must not apply the incorrect value to durable state.",
+      "default": true
+    }
+  }
+}
