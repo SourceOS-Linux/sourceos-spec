@@ -1,0 +1,49 @@
+{
+  "id": "urn:srcos:ascension-reading:abc123:2026-06-29",
+  "type": "AscensionReading",
+  "specVersion": "2.0.0",
+  "capturedAt": "2026-06-29T00:00:00Z",
+  "subjectRef": "subject:pseudo:abc123",
+  "computedOn": "holder-device",
+  "networkServiceProhibited": true,
+  "inputs": {
+    "spineRef": "urn:srcos:identity-spine:yi-globe:v1",
+    "worksReceiptRefs": [
+      "urn:srcos:reasoning-receipt:work-1",
+      "urn:srcos:reasoning-receipt:work-2"
+    ]
+  },
+  "steps": [
+    {
+      "receiptRef": "urn:srcos:reasoning-receipt:work-1",
+      "gateRef": "gate_25",
+      "axisId": "shadowGift",
+      "fromValue": -1,
+      "toValue": 0,
+      "deterministic": true
+    },
+    {
+      "receiptRef": "urn:srcos:reasoning-receipt:work-2",
+      "gateRef": "gate_25",
+      "axisId": "shadowGift",
+      "fromValue": 0,
+      "toValue": 1,
+      "deterministic": true
+    }
+  ],
+  "replayPlanRef": "urn:srcos:reasoning-replay-plan:abc123-asc-1",
+  "result": {
+    "netAscension": [
+      {
+        "axisId": "shadowGift",
+        "delta": 2
+      }
+    ]
+  },
+  "directionality": {
+    "worksToInnerAxes": "allowed",
+    "identityInputsToReputation": "forbidden",
+    "innerToOutsideRequiresClaim": true
+  },
+  "privacyClass": "agent-held-private"
+}

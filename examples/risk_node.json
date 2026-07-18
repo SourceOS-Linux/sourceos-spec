@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:risk-node:escondida",
+  "type": "RiskNode",
+  "specVersion": "2.0.0",
+  "nodeRef": "hg:facility/escondida",
+  "criticalService": "Copper cathode supply",
+  "inherent": {
+    "criticality": 0.9,
+    "privilege": 0.4,
+    "execution": 0.2,
+    "opacity": 0.5,
+    "concentration": 0.8,
+    "velocity": 0.3
+  },
+  "inherentScore": 0.62,
+  "controls": {
+    "governance": 0.7,
+    "identityPublish": 0.5,
+    "provenance": 0.6,
+    "integrity": 0.6,
+    "distribution": 0.4,
+    "monitoring": 0.6
+  },
+  "residualScore": 0.34,
+  "rating": "Medium",
+  "controlGaps": [
+    "distribution"
+  ],
+  "note": "World's largest copper mine — high criticality + concentration; water is the swing risk."
+}

@@ -6,14 +6,8 @@
   "endpointMode": "local-http",
   "executionProfile": "cpu-arm64",
   "trustPosture": "local-sandboxed",
-  "supportedModalities": [
-    "text",
-    "code",
-    "embedding"
-  ],
+  "supportedModalities": ["text", "code", "embedding"],
   "openAICompatible": true,
   "requiresNetwork": false,
-  "evidenceRefs": [
-    "sha256:1111111111111111111111111111111111111111111111111111111111111111"
-  ]
+  "evidenceRefs": ["sha256:1111111111111111111111111111111111111111111111111111111111111111"]
 }

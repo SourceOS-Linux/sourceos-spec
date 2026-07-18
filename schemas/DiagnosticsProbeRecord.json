@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DiagnosticsProbeRecord.json",
+  "title": "DiagnosticsProbeRecord",
+  "description": "A single timed command or probe execution captured inside a DiagnosticsBundle manifest.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "tier",
+    "timeoutSeconds",
+    "command",
+    "exitCode",
+    "timeoutHit",
+    "durationMs",
+    "stdout",
+    "stderr"
+  ],
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable probe name within the diagnostics bundle."
+    },
+    "tier": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Capture tier for this probe, where 0 is the lowest-risk baseline and higher numbers are progressively more invasive."
+    },
+    "timeoutSeconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Maximum allowed runtime budget for this probe, in seconds."
+    },
+    "command": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Exact shell command or equivalent invocation executed for this probe."
+    },
+    "exitCode": {
+      "type": "integer",
+      "description": "Process exit code returned by the probe."
+    },
+    "timeoutHit": {
+      "type": "boolean",
+      "description": "Whether the probe exceeded its timeout budget and was terminated or otherwise classified as timed out."
+    },
+    "durationMs": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Observed wall-clock runtime for this probe, in milliseconds."
+    },
+    "stdout": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Relative path of the captured stdout artifact within the bundle."
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Byte size of the stdout artifact."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 digest of the stdout artifact."
+        }
+      },
+      "description": "Integrity and location metadata for the probe's stdout artifact."
+    },
+    "stderr": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Relative path of the captured stderr artifact within the bundle."
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Byte size of the stderr artifact."
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$",
+          "description": "SHA-256 digest of the stderr artifact."
+        }
+      },
+      "description": "Integrity and location metadata for the probe's stderr artifact."
+    },
+    "rssMaxKb": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 0,
+      "description": "Maximum resident set size recorded for the probe in kibibytes, if the runtime collector was able to observe it."
+    }
+  }
+}

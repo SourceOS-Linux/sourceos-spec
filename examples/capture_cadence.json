@@ -1,0 +1,33 @@
+{
+  "id": "urn:srcos:capture-cadence:standard-8wk",
+  "type": "CaptureCadence",
+  "specVersion": "2.0.0",
+  "name": "Standard 8-week capture sprint",
+  "currentWeek": 4,
+  "weeks": [
+    {
+      "week": 0,
+      "objective": "Intake + normalize",
+      "portfolioDeliverable": "update OS, partner map, pod coverage",
+      "cellDeliverable": "opportunity brief + buyer/problem memo",
+      "minReadiness": 0.2,
+      "exitDecision": "pursue / watch / pause"
+    },
+    {
+      "week": 4,
+      "objective": "Artifact pack v1",
+      "portfolioDeliverable": "synchronize all cell artifacts",
+      "cellDeliverable": "30-day artifact pack, storyboard, compliance skeleton",
+      "minReadiness": 0.5,
+      "exitDecision": "Gate 1 complete"
+    },
+    {
+      "week": 8,
+      "objective": "Delta sprint",
+      "portfolioDeliverable": "ingest live text and replan in <=72h",
+      "cellDeliverable": "delta memo, reprioritized backlog, owner resets",
+      "minReadiness": 0.8,
+      "exitDecision": "go-forward after delta"
+    }
+  ]
+}

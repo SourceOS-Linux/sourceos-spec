@@ -1,0 +1,143 @@
+{
+  "examples": [
+    {
+      "schema": "sourceos.write_accountability.v0.1",
+      "event_id": "evt-write-firefox-sqlite-0001",
+      "timestamp": "2026-05-05T19:00:00Z",
+      "boot_id": "boot-redacted-0001",
+      "session_id": "session-redacted-0001",
+      "actor": {
+        "kind": "browser_content_process",
+        "id": "pid:12814",
+        "name": "plugin-container",
+        "digest": null,
+        "coalition_id": "firefox-coalition-redacted",
+        "trust_zone": "user.desktop.browser"
+      },
+      "object": {
+        "class": "browser_profile_db",
+        "id": "profile_db:firefox.default.sqlite.redacted",
+        "path_class": "app_state",
+        "redaction": "stable_pseudonym"
+      },
+      "operation": "sqlite_wal_write",
+      "bytes": {
+        "written": 8589950000,
+        "dirtied": 8589950000,
+        "read": 0,
+        "write_amplification_ratio": null
+      },
+      "db": {
+        "engine": "sqlite",
+        "wal_bytes": null,
+        "checkpoint_count": null,
+        "fsync_count": null
+      },
+      "policy": {
+        "decision": "allow",
+        "policy_id": "browser.profile.daily.write.budget",
+        "classification": "allowed_but_budget_exceeded"
+      },
+      "evidence_quality": {
+        "status": "partial",
+        "missing_fields": ["exact_database_path", "tab_or_extension_actor", "service_worker_origin"],
+        "confidence": "medium"
+      },
+      "causal_parents": ["evt-network-resume-unknown", "evt-browser-active-session"]
+    },
+    {
+      "schema": "sourceos.routing_receipt.v0.1",
+      "event_id": "evt-routing-asl-claimed-0001",
+      "timestamp": "2026-05-05T10:32:55Z",
+      "source": "message_tracer",
+      "routing_policy": {
+        "claimed_by": "sourceos.log.module.message_tracer",
+        "visible_in_standard_log": false,
+        "visible_in_evidence_store": true,
+        "requires_privilege": false,
+        "redaction_profile": "local_default",
+        "retention_days": 30
+      },
+      "counts": {
+        "received": 100,
+        "written": 100,
+        "sampled": 0,
+        "dropped": 0,
+        "redacted": 12,
+        "diverted": 100
+      },
+      "destinations": ["evidence_store", "operator_topology_panel"],
+      "evidence_quality": {
+        "status": "partial",
+        "missing_fields": [],
+        "confidence": "high"
+      },
+      "explanation": "Messages claimed by this module are routed to the evidence store and may be omitted from the standard log view."
+    },
+    {
+      "schema": "sourceos.media_work.v0.1",
+      "event_id": "evt-media-hevc-0001",
+      "timestamp": "2026-05-05T09:13:57Z",
+      "component": "messages.media.hevc",
+      "operation": "tile_encode",
+      "trigger": "unknown",
+      "input": {
+        "artifact_class": "attachment",
+        "content_hash": null,
+        "bytes": null
+      },
+      "output": {
+        "artifact_class": "codec_temp",
+        "path_class": "tmp",
+        "bytes": null,
+        "cleanup_policy": "unknown"
+      },
+      "codec": {
+        "family": "HEVC",
+        "mode": "tile_session",
+        "input_count": 1,
+        "processed_count": 1,
+        "drop_count": 0
+      },
+      "policy": {
+        "decision": "allow",
+        "policy_id": "media.temp.default",
+        "classification": "opaque_but_allowed"
+      },
+      "evidence_quality": {
+        "status": "partial",
+        "missing_fields": ["user_object", "attachment_id", "output_bytes", "cleanup_status"],
+        "confidence": "medium"
+      }
+    },
+    {
+      "schema": "sourceos.compromise_assessment.v0.1",
+      "assessment_id": "assess-macos-artifacts-0001",
+      "timestamp": "2026-05-05T20:00:00Z",
+      "scope": {
+        "system": "macos-artifact-review",
+        "time_window": "2026-04-28/2026-05-05"
+      },
+      "status": ["no_positive_compromise_evidence", "cannot_exclude_compromise", "sensor_degraded", "evidence_inadequate"],
+      "sensor_state": [
+        {
+          "sensor": "BlockBlock-equivalent",
+          "state": "degraded",
+          "reason": "missing full disk access / privileged coverage"
+        },
+        {
+          "sensor": "browser_profile_attribution",
+          "state": "missing",
+          "reason": "no per-tab or per-extension write attribution"
+        }
+      ],
+      "evidence_quality": {
+        "status": "insufficient_for_clearance",
+        "missing_fields": ["network_flow_ledger", "browser_extension_audit", "tcc_history", "file_mutation_ledger"],
+        "confidence": "high"
+      },
+      "conclusion": "Available artifacts do not prove compromise and cannot clear compromise due to degraded sensors and insufficient causal evidence.",
+      "required_next_evidence": ["endpoint security event stream", "per-file write ledger", "browser extension inventory", "network flow ledger", "TCC/permission change history"]
+    }
+  ]
+}

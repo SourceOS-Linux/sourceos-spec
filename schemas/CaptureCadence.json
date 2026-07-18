@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CaptureCadence.json",
+  "title": "CaptureCadence",
+  "description": "The governed capture cadence: a fixed sprint of weeks, each with objectives, deliverables, a minimum-readiness gate, and an exit decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "weeks"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:capture-cadence:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:capture-cadence:<local-id>"
+    },
+    "type": {
+      "const": "CaptureCadence",
+      "description": "Discriminator constant — always \"CaptureCadence\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string"
+    },
+    "weeks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "week",
+          "objective",
+          "minReadiness",
+          "exitDecision"
+        ],
+        "properties": {
+          "week": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "objective": {
+            "type": "string"
+          },
+          "portfolioDeliverable": {
+            "type": "string"
+          },
+          "cellDeliverable": {
+            "type": "string"
+          },
+          "minReadiness": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "exitDecision": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Ordered cadence weeks."
+    },
+    "currentWeek": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Where the portfolio currently sits."
+    }
+  }
+}

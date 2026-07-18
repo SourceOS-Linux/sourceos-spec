@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SharedLibrary.json",
+  "title": "SharedLibrary",
+  "description": "A shared content/control library standardized once and inherited across objectives.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "standardizes",
+    "repoAnchors"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:shared-library:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:shared-library:<local-id>"
+    },
+    "type": {
+      "const": "SharedLibrary",
+      "description": "Discriminator constant — always \"SharedLibrary\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "standardizes": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What the library standardizes."
+    },
+    "repoAnchors": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "description": "Primary repositories the library is anchored in."
+    },
+    "usedBy": {
+      "type": "string",
+      "description": "Which objective families inherit it."
+    }
+  }
+}

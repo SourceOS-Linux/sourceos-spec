@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:receipt:browser-automation:runtime-observability-0001",
+  "type": "BrowserAutomationReceipt",
+  "specVersion": "0.1.0",
+  "sessionRef": "urn:srcos:session:runtime-observability-demo-0001",
+  "capabilityLedgerRef": "urn:srcos:capability-ledger:runtime-observability-0001",
+  "ownerRef": "urn:srcos:agent:bearbrowser-demo-agent",
+  "transport": "native_pipe",
+  "permissionScope": ["read_page", "activate_control", "enter_text", "navigate"],
+  "origin": "workspace",
+  "controlledScope": {
+    "windowRef": "urn:srcos:browser-window:demo-0001",
+    "tabRef": "urn:srcos:browser-tab:demo-0001",
+    "urlOrigin": "https://example.invalid",
+    "workspaceRef": "urn:srcos:workspace:runtime-observability-demo"
+  },
+  "userVisible": true,
+  "revocable": true,
+  "startedAt": "2026-05-06T04:31:00Z",
+  "revokedAt": null,
+  "terminalState": "active",
+  "causalRefs": [
+    "urn:srcos:capability-ledger:runtime-observability-0001",
+    "urn:srcos:event:browser-automation-started-0001"
+  ],
+  "policyDecisionRef": "urn:srcos:decision:runtime-observability-policy-0001",
+  "evidenceRefs": [
+    "urn:srcos:evidence:browser-automation-session-visible-0001",
+    "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  ],
+  "capturedAt": "2026-05-06T04:31:05Z"
+}

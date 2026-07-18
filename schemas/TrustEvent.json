@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TrustEvent.json",
+  "title": "TrustEvent",
+  "description": "Updates reputation through an evidenced event tied to a real request/award — reference, verification, completion, dispute, appeal, or correction. The reputation primitive is fulfillment history, not follower counts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "kind"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:trust-event:",
+      "description": "Stable URN. Pattern: urn:srcos:trust-event:<local-id>"
+    },
+    "type": {
+      "const": "TrustEvent",
+      "description": "Discriminator — always \"TrustEvent\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "subjectRef": {
+      "type": "string",
+      "description": "The party whose fulfillment history this updates."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "reference",
+        "verification",
+        "completion",
+        "dispute",
+        "appeal",
+        "correction"
+      ]
+    },
+    "requestRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:labor-request:",
+      "description": "The request/award this event is tied to — reputation is fulfillment-anchored."
+    },
+    "evidenceRef": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "issuedAt": {
+      "type": "string"
+    }
+  }
+}

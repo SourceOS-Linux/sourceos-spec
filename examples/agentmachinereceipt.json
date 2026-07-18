@@ -7,15 +7,9 @@
   "issuedAt": "2026-05-04T17:00:10Z",
   "taskRef": "urn:prophet:run-capsule:local-observation-20260504",
   "agentPodRef": "urn:srcos:agent-pod:local-observation-0001",
-  "placementFactRefs": [
-    "urn:srcos:placement-fact:m2-asahi-local-20260504t170000z"
-  ],
-  "modelResidencyRefs": [
-    "urn:srcos:model-residency:m2-local-llama32-3b-20260504t170000z"
-  ],
-  "inferenceProviderRefs": [
-    "urn:srcos:inference-provider:llama-cpp-cpu-arm64-local"
-  ],
+  "placementFactRefs": ["urn:srcos:placement-fact:m2-asahi-local-20260504t170000z"],
+  "modelResidencyRefs": ["urn:srcos:model-residency:m2-local-llama32-3b-20260504t170000z"],
+  "inferenceProviderRefs": ["urn:srcos:inference-provider:llama-cpp-cpu-arm64-local"],
   "policyDecisionRef": "urn:srcos:decision:runtime-observation-20260504",
   "verdict": "observed",
   "metrics": {
@@ -24,7 +18,5 @@
     "residentModelCount": 1
   },
   "evidenceHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
-  "evidenceRefs": [
-    "sha256:5555555555555555555555555555555555555555555555555555555555555555"
-  ]
+  "evidenceRefs": ["sha256:5555555555555555555555555555555555555555555555555555555555555555"]
 }

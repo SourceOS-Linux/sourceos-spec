@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DiagnosticStormRecord.json",
+  "title": "DiagnosticStormRecord",
+  "description": "A bounded diagnostic-storm summary that preserves repeated event signatures, timing, count, severity, representative samples, suppression state, terminal state, and linked incidents.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "signature",
+    "sourceComponent",
+    "normalizedFailureClass",
+    "firstSeen",
+    "lastSeen",
+    "repeatCount",
+    "severity",
+    "terminalState",
+    "suppressionPolicy"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:diagnostic-storm:" },
+    "type": { "const": "DiagnosticStormRecord" },
+    "specVersion": { "type": "string" },
+    "signature": { "type": "string", "minLength": 1 },
+    "sourceComponent": { "type": "string", "minLength": 1 },
+    "normalizedFailureClass": { "enum": ["capability-denial", "network-observer-failure", "security-verdict-unavailable", "registry-integrity-failure", "maintenance-sweep-failure", "browser-launch-failure", "identity-resolution-failure", "boot-phase-gate-failure", "unknown"] },
+    "firstSeen": { "type": "string", "format": "date-time" },
+    "lastSeen": { "type": "string", "format": "date-time" },
+    "repeatCount": { "type": "integer", "minimum": 1 },
+    "medianIntervalMs": { "type": "number", "minimum": 0 },
+    "maxEventsPerSecond": { "type": "integer", "minimum": 1 },
+    "severity": { "enum": ["debug", "info", "warn", "error", "critical"] },
+    "sampleEvents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["eventRef", "messageTemplate"],
+        "properties": {
+          "eventRef": { "type": "string" },
+          "messageTemplate": { "type": "string" },
+          "observedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "suppressionPolicy": { "enum": ["none", "deduplicate", "summarize", "suppress", "quarantine", "escalate", "unknown"] },
+    "terminalState": { "enum": ["resolved", "still-active", "suppressed", "quarantined", "escalated", "unknown"] },
+    "linkedIncidentRef": { "type": "string" },
+    "causalParentRef": { "type": "string" },
+    "evidenceRefs": { "type": "array", "items": { "type": "string" } },
+    "userVisibleSummary": { "type": "string" },
+    "remediationHint": { "type": "string" }
+  }
+}

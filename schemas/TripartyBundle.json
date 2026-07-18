@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TripartyBundle.json",
+  "title": "TripartyBundle",
+  "description": "A typed, proof-carrying bundle that moves a netting cell through one lifecycle step. Bundle kinds mirror the settlement flow; each carries payload + proof + attestation so release is a function of evidence, admissibility, and freshness — not confidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "kind",
+    "cellRef",
+    "payload",
+    "truthClass"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:triparty-bundle:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:triparty-bundle:<local-id>"
+    },
+    "type": {
+      "const": "TripartyBundle",
+      "description": "Discriminator constant — always \"TripartyBundle\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "intent",
+        "acceptance",
+        "escrow",
+        "fill",
+        "verification",
+        "export"
+      ],
+      "description": "Bundle kind: intent→acceptance→escrow→fill→verification→export."
+    },
+    "cellRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:netting-cell:",
+      "description": "The netting cell this bundle advances."
+    },
+    "payload": {
+      "type": "object",
+      "description": "Kind-specific payload (terms, fill metadata, verification result, export scope)."
+    },
+    "proofRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Packet/state proof (freshness, replay-safety)."
+    },
+    "attestationRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Witness/attestation (provenance + independence) — the Truth Record backing this bundle."
+    },
+    "truthClass": {
+      "type": "string",
+      "enum": [
+        "PROVEN",
+        "ATTESTED",
+        "INFERRED",
+        "REPUTED"
+      ],
+      "description": "Truth class this bundle asserts."
+    },
+    "issuedAt": {
+      "type": "string",
+      "description": "ISO-8601 issue time (freshness)."
+    }
+  }
+}

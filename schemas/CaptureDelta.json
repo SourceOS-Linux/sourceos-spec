@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CaptureDelta.json",
+  "title": "CaptureDelta",
+  "description": "A standing delta-control monitor for an objective: an event source watched under an SLA, with a required response artifact.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "opportunityRef",
+    "kind",
+    "monitorSource",
+    "status",
+    "requiredOutput"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:capture-delta:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:capture-delta:<local-id>"
+    },
+    "type": {
+      "const": "CaptureDelta",
+      "description": "Discriminator constant — always \"CaptureDelta\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "opportunityRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:opportunity:"
+    },
+    "kind": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Delta type, e.g. \"Industry-day Q&A\", \"Draft RFP\", \"Amendment\"."
+    },
+    "monitorSource": {
+      "type": "string",
+      "minLength": 1
+    },
+    "expected": {
+      "type": "string",
+      "description": "Expected/observed date (ISO date or \"TBD\")."
+    },
+    "responseSlaHours": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Response SLA in hours once the delta lands."
+    },
+    "requiredOutput": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "Open",
+        "Watching",
+        "Ingested"
+      ]
+    }
+  }
+}

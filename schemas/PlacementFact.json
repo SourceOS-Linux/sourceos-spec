@@ -12,29 +12,8 @@
     "specVersion": { "type": "string", "description": "Spec version of this document, e.g. \"2.1.0\"." },
     "machineRef": { "type": "string", "pattern": "^urn:srcos:agent-machine:", "description": "Agent Machine URN that emitted the placement fact." },
     "observedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the placement fact was observed." },
-    "hardware": {
-      "type": "object",
-      "description": "Hardware and runtime capacity summary relevant to scheduling.",
-      "additionalProperties": false,
-      "required": ["arch", "accelerators", "memoryBytes"],
-      "properties": {
-        "arch": { "type": "string", "description": "Host architecture such as aarch64, x86_64, or riscv64." },
-        "accelerators": { "type": "array", "description": "Detected accelerators or acceleration APIs available to runtime providers.", "items": { "type": "string" } },
-        "memoryBytes": { "type": "integer", "minimum": 0, "description": "Approximate host memory available for placement reasoning." },
-        "storageBytesAvailable": { "type": ["integer", "null"], "minimum": 0, "description": "Approximate local storage bytes available for cache/model/scratch placement, or null when unknown." }
-      }
-    },
-    "isolation": {
-      "type": "object",
-      "description": "Isolation posture available for the workload.",
-      "additionalProperties": false,
-      "required": ["runtime", "networkDefault", "filesystemDefault"],
-      "properties": {
-        "runtime": { "type": "string", "enum": ["process", "bubblewrap", "rootless-podman", "toolbox", "systemd", "quadlet", "kubernetes-pod", "vm"], "description": "Primary runtime isolation mechanism." },
-        "networkDefault": { "type": "string", "enum": ["deny", "loopback-only", "policy-gated", "allow"], "description": "Default network posture for workloads on this placement surface." },
-        "filesystemDefault": { "type": "string", "enum": ["read-only", "workspace-scoped-rw", "policy-gated-rw", "host-rw"], "description": "Default filesystem posture for workloads on this placement surface." }
-      }
-    },
+    "hardware": { "type": "object", "description": "Hardware and runtime capacity summary relevant to scheduling.", "additionalProperties": false, "required": ["arch", "accelerators", "memoryBytes"], "properties": { "arch": { "type": "string", "description": "Host architecture such as aarch64, x86_64, or riscv64." }, "accelerators": { "type": "array", "description": "Detected accelerators or acceleration APIs available to runtime providers.", "items": { "type": "string" } }, "memoryBytes": { "type": "integer", "minimum": 0, "description": "Approximate host memory available for placement reasoning." }, "storageBytesAvailable": { "type": ["integer", "null"], "minimum": 0, "description": "Approximate local storage bytes available for cache/model/scratch placement, or null when unknown." } } },
+    "isolation": { "type": "object", "description": "Isolation posture available for the workload.", "additionalProperties": false, "required": ["runtime", "networkDefault", "filesystemDefault"], "properties": { "runtime": { "type": "string", "enum": ["process", "bubblewrap", "rootless-podman", "toolbox", "systemd", "quadlet", "kubernetes-pod", "vm"], "description": "Primary runtime isolation mechanism." }, "networkDefault": { "type": "string", "enum": ["deny", "loopback-only", "policy-gated", "allow"], "description": "Default network posture for workloads on this placement surface." }, "filesystemDefault": { "type": "string", "enum": ["read-only", "workspace-scoped-rw", "policy-gated-rw", "host-rw"], "description": "Default filesystem posture for workloads on this placement surface." } } },
     "trustPosture": { "type": "string", "enum": ["trusted-local", "sandboxed-local", "cluster-governed", "remote-governed", "untrusted"], "description": "Trust posture attached to this placement fact." },
     "modelResidencyRefs": { "type": "array", "description": "ModelResidency URNs observed on this machine.", "items": { "type": "string", "pattern": "^urn:srcos:model-residency:" } },
     "providerRefs": { "type": "array", "description": "InferenceProvider URNs available on this machine.", "items": { "type": "string", "pattern": "^urn:srcos:inference-provider:" } },

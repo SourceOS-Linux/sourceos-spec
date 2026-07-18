@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/RiskPath.json",
+  "title": "RiskPath",
+  "description": "Critical-service path risk — accumulates node residual scores across a supply chain. A path is only as strong as its weakest admitted node; concentration along the path compounds risk.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "criticalService",
+    "nodeRefs",
+    "pathRisk",
+    "rating"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:risk-path:",
+      "description": "Stable URN. Pattern: urn:srcos:risk-path:<local-id>"
+    },
+    "type": {
+      "const": "RiskPath",
+      "description": "Discriminator — always \"RiskPath\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version, e.g. \"2.0.0\"."
+    },
+    "criticalService": {
+      "type": "string",
+      "minLength": 1
+    },
+    "serviceOwner": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nodeRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^urn:srcos:risk-node:"
+      },
+      "description": "Ordered nodes on the critical service path."
+    },
+    "pathRisk": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Accumulated path risk (0..1)."
+    },
+    "rating": {
+      "type": "string",
+      "enum": [
+        "Low",
+        "Medium",
+        "High",
+        "Critical"
+      ]
+    },
+    "impactTolerance": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Tolerance for disruption (e.g. \"< 4h\")."
+    }
+  }
+}

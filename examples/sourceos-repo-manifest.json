@@ -1,0 +1,30 @@
+{
+  "repo": "SourceOS-Linux/sourceos-spec",
+  "domain": "spec",
+  "specVersion": "0.1.0",
+  "ownedSchemas": [
+    "SourceOSRepoManifest",
+    "SyncEngineManifest",
+    "SourceChannelEnvelope",
+    "SourceGraphWrite",
+    "AgentCapabilityLease",
+    "AuditEvent"
+  ],
+  "syncEngines": [],
+  "sourceChannels": [],
+  "policyClasses": [
+    "critical"
+  ],
+  "auditEvents": [
+    "spec.schema.added",
+    "spec.contract.updated"
+  ],
+  "dangerousSurfaces": [
+    "spec.schema.breaking_change",
+    "spec.policy_contract.update"
+  ],
+  "authorityRepos": [
+    "SourceOS-Linux/sourceos-spec"
+  ],
+  "notes": "Canonical SourceOS/SociOS contract authority for the local-first agentic graph foundation."
+}

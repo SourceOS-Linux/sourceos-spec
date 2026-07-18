@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sourceos.dev/schemas/interpretability/provider-binding.v0.json",
+  "title": "Interpretability Provider Binding v0.1",
+  "description": "Authority, publication, access, and provider binding metadata for interpretability artifact releases.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "binding_kind",
+    "binding_id",
+    "source_lock_ref",
+    "author_class",
+    "publication_state",
+    "inference_endpoint_available",
+    "commercial_license_required",
+    "api_provider_class",
+    "deanonymization_pending"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "binding_kind": {"const": "interpretability-provider-binding"},
+    "binding_id": {"type": "string", "pattern": "^urn:srcos:interpretability:provider-binding:[A-Za-z0-9._:-]+$"},
+    "source_lock_ref": {"type": "string", "pattern": "^urn:srcos:interpretability:source-lock:[A-Za-z0-9._:-]+$"},
+    "provider_name": {"type": "string"},
+    "release_name": {"type": "string"},
+    "author_class": {
+      "type": "string",
+      "enum": ["model_author", "research_lab", "safety_research", "commercial_interp", "individual_researcher", "anonymous_review"]
+    },
+    "publication_state": {
+      "type": "string",
+      "enum": ["peer_reviewed", "preprint", "anonymous_review", "lesswrong", "blog_post", "commercial_release", "internal"]
+    },
+    "claim_type": {
+      "type": "string",
+      "enum": ["feature_set", "safety_finding", "method_innovation", "benchmark_critique", "circuit_construction", "feature_phenomenology"]
+    },
+    "inference_endpoint_available": {"type": "boolean"},
+    "commercial_license_required": {"type": "boolean"},
+    "api_provider_class": {
+      "type": "string",
+      "enum": ["open_weights", "hosted_api_inference", "hosted_api_features", "commercial_steering_api", "none"]
+    },
+    "deanonymization_pending": {"type": "boolean"},
+    "artifact_access_mode": {
+      "type": "string",
+      "enum": ["download_weights", "hosted_query", "hosted_feature_browser", "paper_only", "commercial_api", "unknown"]
+    },
+    "authority_chain_ref": {"type": "string"},
+    "license_ref": {"type": "string"},
+    "notes": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"commercial_license_required": {"const": true}}, "required": ["commercial_license_required"]},
+      "then": {"properties": {"api_provider_class": {"enum": ["commercial_steering_api", "hosted_api_features", "hosted_api_inference"]}}}
+    },
+    {
+      "if": {"properties": {"publication_state": {"const": "anonymous_review"}}, "required": ["publication_state"]},
+      "then": {"properties": {"deanonymization_pending": {"const": true}, "author_class": {"const": "anonymous_review"}}}
+    },
+    {
+      "if": {"properties": {"author_class": {"const": "commercial_interp"}}, "required": ["author_class"]},
+      "then": {"properties": {"publication_state": {"enum": ["commercial_release", "blog_post", "preprint", "internal"]}}}
+    }
+  ]
+}

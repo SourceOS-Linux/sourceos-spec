@@ -1,0 +1,11 @@
+{
+  "id": "urn:srcos:reasoning-event:demo-created",
+  "type": "ReasoningEvent",
+  "specVersion": "2.0.0",
+  "runRef": "urn:srcos:reasoning-run:superconscious-demo",
+  "eventType": "reasoning.run.created",
+  "summary": "Created deterministic Superconscious reasoning run.",
+  "traceLevel": "public-safe",
+  "trustLevel": "trusted-control-input",
+  "capturedAt": "2026-05-05T00:00:00Z"
+}
