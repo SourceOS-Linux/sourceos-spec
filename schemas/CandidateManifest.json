@@ -1,0 +1,192 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CandidateManifest.json",
+  "title": "CandidateManifest",
+  "description": "SP-PATT-WARR-001 §4 (the ManifestAtom of §5). A proposed agent authority. INVARIANT SP-PW-I1: no evidence-derived score in this document grants authority; evidence determines only whether the manifest may be proposed and which quorum is required. Authority is granted exclusively by signed attestations meeting Q(C). consequenceClass is immutable post-declaration (anti warrant-laundering).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "patternRef",
+    "consequenceClass",
+    "capabilities",
+    "evidenceSetDigest",
+    "warrantAtDeclaration",
+    "falsificationRecord",
+    "consentExposure",
+    "attestations"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "manifestId (§4).",
+      "pattern": "^urn:srcos:manifest:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "CandidateManifest"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "patternRef": {
+      "type": "string",
+      "description": "HellGraph PatternAtom id.",
+      "pattern": "^urn:srcos:pattern:[A-Za-z0-9._~-]+$"
+    },
+    "consequenceClass": {
+      "description": "Axis B. Property of the manifest, not the pattern. Assigned at declaration, immutable thereafter; a class change requires a new manifest and a new quorum.",
+      "enum": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ]
+    },
+    "capabilities": {
+      "type": "array",
+      "description": "Per-capability class allows partial ceiling reduction under ZERO — the manifest degrades gracefully rather than wholesale.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "capability",
+          "scope",
+          "minConsequenceClass"
+        ],
+        "properties": {
+          "capability": {
+            "type": "string"
+          },
+          "scope": {
+            "type": "object"
+          },
+          "minConsequenceClass": {
+            "enum": [
+              "C0",
+              "C1",
+              "C2",
+              "C3"
+            ]
+          }
+        }
+      }
+    },
+    "evidenceSetDigest": {
+      "type": "string"
+    },
+    "warrantAtDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "epistemicLevel",
+        "H",
+        "k",
+        "computedAt"
+      ],
+      "properties": {
+        "epistemicLevel": {
+          "enum": [
+            "SPECULATIVE",
+            "EMPIRICAL",
+            "BOUNDED",
+            "PROVED"
+          ]
+        },
+        "H": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "computedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "falsificationRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "wouldFalsifyIf",
+        "testsRun",
+        "nearMisses"
+      ],
+      "properties": {
+        "wouldFalsifyIf": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "testsRun": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "testId",
+              "verdict"
+            ],
+            "properties": {
+              "testId": {
+                "type": "string"
+              },
+              "verdict": {
+                "enum": [
+                  "POS",
+                  "ZERO",
+                  "NEG"
+                ]
+              }
+            }
+          }
+        },
+        "nearMisses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "consentExposure": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "What this manifest loses if consent is withdrawn.",
+      "required": [
+        "tokenCount",
+        "revocableFraction",
+        "maxSingleTokenContribution"
+      ],
+      "properties": {
+        "tokenCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revocableFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "maxSingleTokenContribution": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "attestations": {
+      "type": "array",
+      "description": "AttestationAtom references meeting the quorum Q(consequenceClass). Q is independent of W_p: high warrant reduces neither the requirement nor the quorum.",
+      "items": {
+        "$ref": "https://schemas.srcos.ai/v2/AttestationAtom.json"
+      }
+    }
+  }
+}

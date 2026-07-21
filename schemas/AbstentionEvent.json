@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AbstentionEvent.json",
+  "title": "AbstentionEvent",
+  "description": "SP-PATT-WARR-001 §3.3 corollary. Emitted when an operation requires a consequence class above the manifest's current ceiling. An abstention is NOT an error and NOT a denial: it is reduced authority under live uncertainty (ternary ZERO). INVARIANT SP-PW-I2: this event must never be serialized or surfaced as NEG/deny. It carries the W_p value and evidence-set digest that produced the abstention.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "manifestRef",
+    "capability",
+    "requestedClass",
+    "ceilingClass",
+    "warrantAtDecision",
+    "ternary",
+    "evidenceSetDigest",
+    "decidedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:abstention:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "AbstentionEvent"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "manifestRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:manifest:[A-Za-z0-9._~-]+$"
+    },
+    "capability": {
+      "type": "string",
+      "description": "The specific capability abstained on; ceiling reduction is per-capability (§4)."
+    },
+    "requestedClass": {
+      "enum": ["C0", "C1", "C2", "C3"]
+    },
+    "ceilingClass": {
+      "enum": ["C0", "C1", "C2", "C3"],
+      "description": "max{ c : minW(c) <= W_p } at decision time."
+    },
+    "warrantAtDecision": {
+      "enum": ["SPECULATIVE", "EMPIRICAL", "BOUNDED", "PROVED"]
+    },
+    "ternary": {
+      "const": "ZERO",
+      "description": "Abstention is the ZERO response by construction; never POS, never NEG."
+    },
+    "evidenceSetDigest": {
+      "type": "string"
+    },
+    "decidedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

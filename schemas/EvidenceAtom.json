@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EvidenceAtom.json",
+  "title": "EvidenceAtom",
+  "description": "SP-PATT-WARR-001 §2.1. A provenance-addressed observation contributing to a pattern warrant. An observation is an addressable atom, never a counter increment. Every contribution to W_p (SP-PW-R1) must be traceable to a set of these.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "patternRef",
+    "principal",
+    "observedAt",
+    "channel",
+    "payloadDigest"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Content-hash / provenance address of this observation.",
+      "pattern": "^urn:srcos:evidence:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "EvidenceAtom"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "patternRef": {
+      "type": "string",
+      "description": "PatternAtom.id this evidence addresses.",
+      "pattern": "^urn:srcos:pattern:[A-Za-z0-9._~-]+$"
+    },
+    "principal": {
+      "type": "string",
+      "description": "PrincipalId that generated the observation. Drives the §2.2 concentration cap."
+    },
+    "consentToken": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "ConsentAtom token, or null for non-consent-derived system telemetry. Revocation (§2.3) removes all evidence bearing a revoked token."
+    },
+    "observedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "channel": {
+      "type": "string",
+      "enum": [
+        "query",
+        "workflow",
+        "doc_access",
+        "tool_call",
+        "system_telemetry"
+      ]
+    },
+    "payloadDigest": {
+      "type": "string",
+      "description": "Hash of the underlying payload; the payload itself is not carried."
+    },
+    "weightAtObservation": {
+      "type": "number",
+      "description": "Optional pre-decay weight; decay (§3.1) is applied by the scorer as a function of manifest class, not stored here.",
+      "minimum": 0
+    }
+  }
+}

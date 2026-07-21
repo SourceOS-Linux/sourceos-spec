@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PatternAtom.json",
+  "title": "PatternAtom",
+  "description": "SP-PATT-WARR-001 §5. The claim, in Mellumwork terms. A pattern is a falsifiable assertion over an evidence stream; its warrant W_p is a function of time, never a stored attribute.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "signature",
+    "channelSet",
+    "firstSeen"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:pattern:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "PatternAtom"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "signature": {
+      "type": "string",
+      "description": "Structural signature identifying the pattern claim."
+    },
+    "channelSet": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "query",
+          "workflow",
+          "doc_access",
+          "tool_call",
+          "system_telemetry"
+        ]
+      },
+      "minItems": 1
+    },
+    "firstSeen": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "machineDerived": {
+      "type": "boolean",
+      "default": false,
+      "description": "True when the pattern's invariant is machine-checkable and evidence-independent (§2.2 PROVED escape hatch): behavioral diversity is not required because no behavior is required."
+    }
+  }
+}

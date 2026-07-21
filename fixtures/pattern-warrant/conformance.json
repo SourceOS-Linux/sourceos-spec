@@ -1,0 +1,98 @@
+{
+  "spec": "SP-PATT-WARR-001",
+  "specVersion": "0.1.0",
+  "description": "§9 conformance vectors. Every implementing layer (L1-L7) MUST pass the vectors applicable to it. 'appliesTo' names the layers that must exercise the vector.",
+  "vectors": [
+    {
+      "id": "T1",
+      "title": "PROVED warrant without attestation does not grant",
+      "appliesTo": ["L2", "L4"],
+      "given": {
+        "warrant": "PROVED",
+        "consequenceClass": "C3",
+        "attestations": []
+      },
+      "expect": { "grant": false, "reason": "SP-PW-I1: no score authorizes; quorum unmet" }
+    },
+    {
+      "id": "T2",
+      "title": "Single-principal evidence capped at EMPIRICAL",
+      "appliesTo": ["L2"],
+      "given": {
+        "evidence": { "distinctPrincipals": 1, "volume": 100000, "H": 1.0 }
+      },
+      "expect": { "warrantCeiling": "EMPIRICAL", "reason": "§2.2 concentration cap" }
+    },
+    {
+      "id": "T3",
+      "title": "Consent revocation recomputes in O(1) token stats",
+      "appliesTo": ["L2", "L7"],
+      "given": {
+        "revoke": "topContributingToken",
+        "scorer": "decomposableAggregate"
+      },
+      "expect": {
+        "recomputeTouches": "O(revokedTokens)",
+        "withinSLA": true,
+        "reason": "SP-PW-R2 incremental sufficient statistics"
+      }
+    },
+    {
+      "id": "T4",
+      "title": "Decay past minW(C2) reduces ceiling to C1, abstains on C2 ops",
+      "appliesTo": ["L2", "L5", "L6"],
+      "given": {
+        "consequenceClass": "C2",
+        "warrantDecaysTo": "EMPIRICAL",
+        "operationRequires": "C2"
+      },
+      "expect": {
+        "ternary": "ZERO",
+        "ceilingClass": "C1",
+        "response": "AbstentionEvent",
+        "suspended": false,
+        "errorClass": false,
+        "reason": "§3.3 per-capability ceiling reduction, not suspension"
+      }
+    },
+    {
+      "id": "T5",
+      "title": "Attested NEG suspends and returns to declaration gate; attestations retained",
+      "appliesTo": ["L2", "L4", "L5"],
+      "given": {
+        "attestedVerdict": "NEG"
+      },
+      "expect": {
+        "suspended": true,
+        "returnedToDeclarationGate": true,
+        "attestationsDeleted": false,
+        "reason": "§3.3 NEG; §9 T5 monotone attestations"
+      }
+    },
+    {
+      "id": "T6",
+      "title": "Oscillating evidence at theta boundary does not flap the ceiling",
+      "appliesTo": ["L2"],
+      "given": {
+        "evidence": "oscillatingAtThetaBoundary"
+      },
+      "expect": {
+        "ceilingFlapping": false,
+        "reason": "§3.2 hysteresis dwell (d_up=7d, d_down=2d) honored"
+      }
+    },
+    {
+      "id": "T7",
+      "title": "ZERO is never serialized as NEG at PEP, log, or UI",
+      "appliesTo": ["L4", "L5", "L6"],
+      "given": {
+        "ternary": "ZERO"
+      },
+      "expect": {
+        "serializedAs": "ZERO",
+        "neverRenderedAs": "NEG",
+        "reason": "INVARIANT SP-PW-I2"
+      }
+    }
+  ]
+}

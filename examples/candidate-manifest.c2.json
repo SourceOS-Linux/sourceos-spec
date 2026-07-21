@@ -1,0 +1,69 @@
+{
+  "id": "urn:srcos:manifest:reconcile-invoices-c2-001",
+  "type": "CandidateManifest",
+  "specVersion": "SP-PATT-WARR-001/0.1.0",
+  "patternRef": "urn:srcos:pattern:invoice-reconciliation-request",
+  "consequenceClass": "C2",
+  "capabilities": [
+    {
+      "capability": "ledger.read",
+      "scope": { "namespace": "finance/ledger" },
+      "minConsequenceClass": "C0"
+    },
+    {
+      "capability": "ledger.reconcile",
+      "scope": { "namespace": "finance/ledger", "reversible": true },
+      "minConsequenceClass": "C2"
+    }
+  ],
+  "evidenceSetDigest": "sha256:2f0c9d1a6b4e8c7f5a3b2d1e0f9c8b7a6d5e4c3b2a1908f7e6d5c4b3a2f1e0d9c",
+  "warrantAtDeclaration": {
+    "epistemicLevel": "BOUNDED",
+    "H": 0.31,
+    "k": 6,
+    "computedAt": "2026-07-21T09:00:00Z"
+  },
+  "falsificationRecord": {
+    "wouldFalsifyIf": [
+      "reconciliation applied to a non-matching invoice/ledger pair",
+      "a reconciled entry that is not internally reversible within the SoR"
+    ],
+    "testsRun": [
+      { "testId": "urn:srcos:test:recon-match-precondition", "verdict": "POS" },
+      { "testId": "urn:srcos:test:recon-reversibility", "verdict": "POS" },
+      { "testId": "urn:srcos:test:recon-cross-tenant-leak", "verdict": "ZERO" }
+    ],
+    "nearMisses": [
+      "duplicate invoice id across two vendors nearly matched the wrong ledger row"
+    ]
+  },
+  "consentExposure": {
+    "tokenCount": 41,
+    "revocableFraction": 0.62,
+    "maxSingleTokenContribution": 0.09
+  },
+  "attestations": [
+    {
+      "id": "urn:srcos:attestation:owner-sig-001",
+      "type": "AttestationAtom",
+      "specVersion": "SP-PATT-WARR-001/0.1.0",
+      "attestor": "urn:srcos:principal:mdheller",
+      "quorumRole": "owner",
+      "manifestRef": "urn:srcos:manifest:reconcile-invoices-c2-001",
+      "evidenceSetDigest": "sha256:2f0c9d1a6b4e8c7f5a3b2d1e0f9c8b7a6d5e4c3b2a1908f7e6d5c4b3a2f1e0d9c",
+      "signature": "ed25519:PLACEHOLDER_SIGNATURE_OWNER",
+      "attestedAt": "2026-07-21T09:15:00Z"
+    },
+    {
+      "id": "urn:srcos:attestation:reviewer-sig-001",
+      "type": "AttestationAtom",
+      "specVersion": "SP-PATT-WARR-001/0.1.0",
+      "attestor": "urn:srcos:principal:reviewer-a",
+      "quorumRole": "reviewer",
+      "manifestRef": "urn:srcos:manifest:reconcile-invoices-c2-001",
+      "evidenceSetDigest": "sha256:2f0c9d1a6b4e8c7f5a3b2d1e0f9c8b7a6d5e4c3b2a1908f7e6d5c4b3a2f1e0d9c",
+      "signature": "ed25519:PLACEHOLDER_SIGNATURE_REVIEWER",
+      "attestedAt": "2026-07-21T09:40:00Z"
+    }
+  ]
+}

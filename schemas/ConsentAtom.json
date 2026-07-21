@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ConsentAtom.json",
+  "title": "ConsentAtom",
+  "description": "SP-PATT-WARR-001 §5. Consent grant governing admissibility of evidence. Revocation flips status to 'revoked'; edges bearing this token become inadmissible and W_p is recomputed (§2.3, P-04 binding).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "token",
+    "grantor",
+    "scope",
+    "status"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:consent:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "ConsentAtom"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "token": {
+      "type": "string",
+      "description": "ConsentTokenId referenced by EvidenceAtom.consentToken."
+    },
+    "grantor": {
+      "type": "string",
+      "description": "PrincipalId that granted the consent."
+    },
+    "scope": {
+      "type": "object",
+      "description": "Bounds of the grant (channels, purposes, expiry)."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "revoked",
+        "expired"
+      ]
+    },
+    "revokedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  }
+}

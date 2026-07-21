@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WarrantEdge.json",
+  "title": "WarrantEdge",
+  "description": "SP-PATT-WARR-001 §5. Time-indexed edge (PatternAtom -> ManifestAtom) recording W_p(t), the Mellumwork ternary verdict, and the operating ceiling. Full history is retained, making 'was this agent warranted at time t, and on whose data' answerable by traversal rather than log reconstruction.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "patternRef",
+    "manifestRef",
+    "computedAt",
+    "warrant",
+    "ternary",
+    "ceiling",
+    "evidenceSetDigest"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:warrantedge:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "WarrantEdge"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "patternRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:pattern:[A-Za-z0-9._~-]+$"
+    },
+    "manifestRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:manifest:[A-Za-z0-9._~-]+$"
+    },
+    "computedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "warrant": {
+      "type": "string",
+      "description": "W_p at computedAt, on the SCOPE-D epistemicLevel ordinal (Axis A).",
+      "enum": [
+        "SPECULATIVE",
+        "EMPIRICAL",
+        "BOUNDED",
+        "PROVED"
+      ]
+    },
+    "ternary": {
+      "type": "string",
+      "description": "Mellumwork verdict at computedAt. INVARIANT SP-PW-I2: ZERO must never be serialized or rendered as NEG at any surface (§9 T7). ZERO is reduced authority under live uncertainty; NEG is a falsifying test.",
+      "enum": [
+        "POS",
+        "ZERO",
+        "NEG"
+      ]
+    },
+    "ceiling": {
+      "type": "string",
+      "description": "The consequence class the manifest may operate at given warrant. Under ZERO this is max{ c : minW(c) <= W_p } (ceiling reduction, never suspension).",
+      "enum": [
+        "C0",
+        "C1",
+        "C2",
+        "C3"
+      ]
+    },
+    "evidenceSetDigest": {
+      "type": "string",
+      "description": "Digest of the admissible evidence set that produced this warrant value."
+    },
+    "concentration": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "§2.2 anti-Goodhart concentration state at computedAt.",
+      "properties": {
+        "H": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "topPrincipalShare": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "urn:srcos:warrantlattice:default-v1",
+  "type": "WarrantLattice",
+  "specVersion": "SP-PATT-WARR-001/0.1.0",
+  "minW": {
+    "C0": "SPECULATIVE",
+    "C1": "EMPIRICAL",
+    "C2": "BOUNDED",
+    "C3": "PROVED"
+  },
+  "quorum": {
+    "C0": { "minAttestors": 1, "roles": ["owner"] },
+    "C1": { "minAttestors": 1, "roles": ["owner"] },
+    "C2": { "minAttestors": 2, "roles": ["owner", "reviewer"] },
+    "C3": { "minAttestors": 3, "roles": ["owner", "reviewer", "control"] }
+  },
+  "decayHalfLifeDays": {
+    "C0": 180,
+    "C1": 90,
+    "C2": 30,
+    "C3": 14
+  },
+  "hysteresis": {
+    "dwellUpDays": 7,
+    "dwellDownDays": 2,
+    "thetaUp": {},
+    "thetaDown": {}
+  },
+  "concentrationCaps": [
+    {
+      "ceiling": "EMPIRICAL",
+      "maxHerfindahl": null,
+      "minDistinctPrincipals": null
+    },
+    {
+      "ceiling": "BOUNDED",
+      "maxHerfindahl": 0.5,
+      "minDistinctPrincipals": 3
+    },
+    {
+      "ceiling": "PROVED",
+      "maxHerfindahl": 0.25,
+      "minDistinctPrincipals": 8,
+      "machineDerivedExempt": true
+    }
+  ]
+}

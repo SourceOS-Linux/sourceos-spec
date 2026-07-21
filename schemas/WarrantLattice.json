@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WarrantLattice.json",
+  "title": "WarrantLattice",
+  "description": "SP-PATT-WARR-001 §1.3, §2.2, §3.1-3.2. The normative lattice binding consequence class C to the warrant floor minW(C), the attestation quorum Q(C), the evidence decay half-life, the hysteresis thresholds, and the concentration caps. Q is monotone non-decreasing in C and independent of W_p. Decay half-life shortens with C: higher consequence must be more freshly re-earned.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "minW",
+    "quorum",
+    "decayHalfLifeDays",
+    "hysteresis",
+    "concentrationCaps"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:warrantlattice:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "WarrantLattice"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "minW": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Floor on W_p required for a manifest at class C to remain live (Grant conjunct W_p >= minW(C)).",
+      "required": ["C0", "C1", "C2", "C3"],
+      "properties": {
+        "C0": { "const": "SPECULATIVE" },
+        "C1": { "const": "EMPIRICAL" },
+        "C2": { "const": "BOUNDED" },
+        "C3": { "const": "PROVED" }
+      }
+    },
+    "quorum": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Attestation quorum required at declaration per class. Monotone non-decreasing in C; independent of W_p.",
+      "required": ["C0", "C1", "C2", "C3"],
+      "properties": {
+        "C0": { "$ref": "#/$defs/quorumSpec" },
+        "C1": { "$ref": "#/$defs/quorumSpec" },
+        "C2": { "$ref": "#/$defs/quorumSpec" },
+        "C3": { "$ref": "#/$defs/quorumSpec" }
+      }
+    },
+    "decayHalfLifeDays": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "§3.1 tau_C. Evidence weight decays with half-life dependent on the manifest's class.",
+      "required": ["C0", "C1", "C2", "C3"],
+      "properties": {
+        "C0": { "type": "number", "exclusiveMinimum": 0 },
+        "C1": { "type": "number", "exclusiveMinimum": 0 },
+        "C2": { "type": "number", "exclusiveMinimum": 0 },
+        "C3": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "hysteresis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "§3.2 asymmetric promote/demote with dwell. theta_up(L) > theta_down(L) for all L; d_down < d_up by design.",
+      "required": ["dwellUpDays", "dwellDownDays"],
+      "properties": {
+        "dwellUpDays": { "type": "number", "exclusiveMinimum": 0 },
+        "dwellDownDays": { "type": "number", "exclusiveMinimum": 0 },
+        "thetaUp": {
+          "type": "object",
+          "description": "Promotion thresholds per target level. Placeholders pending scoring-function choice (OI-1)."
+        },
+        "thetaDown": {
+          "type": "object",
+          "description": "Demotion thresholds per level. Placeholders pending scoring-function choice (OI-1)."
+        }
+      }
+    },
+    "concentrationCaps": {
+      "type": "array",
+      "description": "§2.2 principal-concentration cap on W_p. A single principal or compromised session must not synthesize enough repetition to reach C2/C3 eligibility.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["ceiling"],
+        "properties": {
+          "ceiling": {
+            "enum": ["SPECULATIVE", "EMPIRICAL", "BOUNDED", "PROVED"]
+          },
+          "maxHerfindahl": {
+            "type": ["number", "null"],
+            "minimum": 0,
+            "maximum": 1
+          },
+          "minDistinctPrincipals": {
+            "type": ["integer", "null"],
+            "minimum": 0
+          },
+          "machineDerivedExempt": {
+            "type": "boolean",
+            "default": false,
+            "description": "When true, a machine-derived evidence-independent pattern satisfies this ceiling with no behavioral diversity."
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "quorumSpec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minAttestors", "roles"],
+      "properties": {
+        "minAttestors": { "type": "integer", "minimum": 0 },
+        "roles": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    }
+  }
+}

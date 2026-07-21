@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AttestationAtom.json",
+  "title": "AttestationAtom",
+  "description": "SP-PATT-WARR-001 §5. A signed reviewer attestation contributing to the quorum Q(C). Monotone and never deleted: on NEG suspension (§3.3) prior attestations are retained, not removed (§9 T5). The signature binds evidenceSetDigest so evidence cannot be substituted post-attestation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "attestor",
+    "quorumRole",
+    "manifestRef",
+    "evidenceSetDigest",
+    "signature",
+    "attestedAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:attestation:[A-Za-z0-9._~-]+$"
+    },
+    "type": {
+      "const": "AttestationAtom"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "attestor": {
+      "type": "string",
+      "description": "PrincipalId of the reviewer."
+    },
+    "quorumRole": {
+      "type": "string",
+      "description": "Role slot this attestation fills within the required quorum Q(C)."
+    },
+    "manifestRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:manifest:[A-Za-z0-9._~-]+$"
+    },
+    "evidenceSetDigest": {
+      "type": "string",
+      "description": "Digest of the evidence set as presented to the attestor; bound into the signed payload (threat: evidence-set substitution)."
+    },
+    "signature": {
+      "type": "string"
+    },
+    "attestedAt": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}
