@@ -16,12 +16,16 @@
     },
     "dataType": {
       "type": "string",
-      "description": "The logical data type (e.g. \"string\", \"integer\", \"date\", \"boolean\")."
+      "description": "LEGACY. The logical data type as a bare string (e.g. \"string\", \"integer\", \"date\"), constrained by nothing and documented only by the examples in this sentence. It cannot carry an element type, so an array is indistinguishable from a scalar, and no consumer can check it. Retained because existing fields carry it; prefer `valueType`, which composes and is checkable."
+    },
+    "valueType": {
+      "$ref": "ValueType.json",
+      "description": "Structural type for this field. When present it is authoritative, and `dataType`, if also present, must agree with its head constructor."
     },
     "nullable": {
       "type": "boolean",
       "default": true,
-      "description": "Whether this field may contain null values. Defaults to true."
+      "description": "LEGACY. Optionality as a sibling boolean, which can contradict the type beside it. Under `valueType`, absence is expressed by the `optional` wrapper instead, so there is one statement rather than two that can disagree."
     },
     "validValues": {
       "$ref": "ValidValues.json",
