@@ -1,0 +1,29 @@
+{
+  "id": "urn:srcos:update-transaction:noetica_a41_0007",
+  "type": "UpdateTransaction",
+  "specVersion": "0.1.0",
+  "targetRef": "urn:srcos:install:noetica_desktop_a41",
+  "fromSlot": "A",
+  "toSlot": "B",
+  "preservedPayloadDigest": "sha256:aa850dde865a39601a8b2f5af88cfb18878a59d91f4fc01b2e465826da90d356",
+  "candidatePayloadDigest": "sha256:22e07d29331b31e37a137ce875de35689ad1d719690cc7a0a6e592a76cb7fcb8",
+  "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+  "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+  "maxAttempts": 2,
+  "outcome": "promoted",
+  "rollbackReason": null,
+  "openedAt": "2026-07-28T09:02:00.000Z",
+  "settledAt": "2026-07-28T09:14:38.000Z",
+  "settledOnSlot": "B",
+  "receiptRef": "urn:srcos:reasoning:receipt:noetica_a41_update_0007",
+  "attempts": [
+    {
+      "attemptNumber": 1,
+      "startedAt": "2026-07-28T09:08:21.000Z",
+      "result": "pass",
+      "fellBackTo": null,
+      "triesRemainingAfter": 1,
+      "detail": "All five blocking checks passed on two consecutive sweeps, satisfying minConsecutivePasses; successful set by userspace."
+    }
+  ]
+}

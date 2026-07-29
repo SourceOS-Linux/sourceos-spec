@@ -5,6 +5,26 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — A/B Fallback Update Contract v0.1
+
+The dual-slot update contract adds the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `UpdateSlot.json` | UpdateSlot | `urn:srcos:update-slot:` |
+| `UpdateTransaction.json` | UpdateTransaction | `urn:srcos:update-transaction:` |
+| `UpdateHealthProbe.json` | UpdateHealthProbe | `urn:srcos:update-health-probe:` |
+
+These types support:
+- the A/B slot model the estate had nowhere: two slots carrying the GPT attribute triple (`bootPriority`, `triesRemaining`, `successful`) that a priority-boot selector reads, with `role` (active/candidate) and `currentlyRunning` deliberately separate so the fallback slot stays describable during a trial boot
+- **the invariant the family exists for — the currently-good slot is never overwritten by the update being applied.** Enforced by schema within a document (`UpdateTransaction`'s `not`/`anyOf` over the two illegal `(fromSlot, toSlot)` pairs; `UpdateSlot`'s `state: writing` ⇒ `role: candidate`), by schema on the settle path (`settledOnSlot` pinned to `fromSlot` on rollback/refusal), and across documents by the validator (`preservedPayloadDigest` still equals the active slot's `payloadDigest`)
+- automatic rollback with a bounded attempt budget: `triesRemaining` is decremented by the bootloader *before* control transfers, so a payload that hangs before userspace still consumes an attempt; `refused` is terminal and is what ends the boot loop
+- a digest-pinned promotion gate: `UpdateHealthProbe.definitionDigest` is recomputed by the validator from the probe's own check set, so a failing candidate cannot be promoted by weakening the gate it failed. Normative: promotion is evaluated in post-boot userspace only, an inconclusive probe is a `fail`, and a hardware+software watchdog pair is mandatory (two `contains` clauses) — software cannot fire through a wedged kernel, hardware cannot tell working from merely running
+
+Validation: `make validate-ab-update-examples` (schema conformance, tranche strictness bar, recomputed probe digest, cross-document invariants, and fourteen negative vectors under `fixtures/ab-update/`). Normative notes: `specs/ab-fallback-update-contract.md`. Reference implementation: `AbUpdateMachine` in `sourceos-boot`.
+
+---
+
 ## Recent additions — Knowledge Nugget + Semantic Action registry v0.1
 
 The L2 content-grain and typed-action-registry contracts add the following top-level schemas:

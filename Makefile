@@ -1,7 +1,18 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples validate-ab-update-examples validate-duplicate-schema-ids
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples validate-ab-update-examples validate-duplicate-schema-ids
 	@echo "OK: validate"
+
+validate-ab-update-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_ab_update_examples.py
+
+# The duplicate-$$id guardrail already runs in CI (.github/workflows/validate.yml)
+# but was not reachable from `make validate`, so a local run could not reproduce
+# the check that gates the PR. Wiring it in costs nothing and removes a way for
+# local and CI verdicts to disagree.
+validate-duplicate-schema-ids:
+	python3 scripts/check_duplicate_schema_ids.py
 
 validate-knowledge-nugget-examples:
 	python3 -m pip install --user jsonschema >/dev/null

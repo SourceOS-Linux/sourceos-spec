@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/UpdateHealthProbe.json",
+  "title": "UpdateHealthProbe",
+  "description": "The pinned definition of what a candidate slot must prove before it may be promoted. Separate from the transaction on purpose: the probe is authored and digest-pinned BEFORE the payload it gates, so an update cannot ship a weakened version of its own gate. Two detection surfaces are mandatory and they answer different questions. The check set answers 'does the payload work'. The watchdog pair answers 'is the payload alive' — and it takes both kinds, because a software watchdog cannot fire when the kernel wedges (the process that would notice is the process that is stuck), while a hardware watchdog only ever learns whether something petted it and so cannot distinguish a live-but-broken payload from a healthy one. Requiring one of each is what makes 'hung' and 'running but failing' terminate in the same automatic fallback.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "definitionDigest",
+    "evaluatedIn",
+    "onProbeUnavailable",
+    "timeoutSeconds",
+    "minConsecutivePasses",
+    "checks",
+    "watchdogs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:update-health-probe:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:update-health-probe:<local-id>"
+    },
+    "type": {
+      "const": "UpdateHealthProbe",
+      "description": "Discriminator constant — always \"UpdateHealthProbe\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "A/B fallback update contract version, pinned. Changing this const is a contract change."
+    },
+    "definitionDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content digest of the normative check set and watchdog configuration. An UpdateTransaction pins this value; if the probe definition is edited after a transaction is opened, the digests diverge and the family validator rejects the pair. This is what stops a failing candidate from being promoted by relaxing the gate it failed."
+    },
+    "evaluatedIn": {
+      "const": "post-boot-userspace",
+      "description": "Where the probe runs. Closed to post-boot userspace: the bootloader can observe that control transferred and nothing more, so it is structurally incapable of evaluating health. Any design that lets the boot path declare its own success has no gate at all."
+    },
+    "onProbeUnavailable": {
+      "const": "fail",
+      "description": "Verdict when the probe cannot be executed or returns inconclusive. Closed to fail. An update system that reads 'could not determine' as 'proceed' promotes broken payloads through probes that never ran — the declared-unenforced gap, applied to the one gate that stands between a target and a brick."
+    },
+    "timeoutSeconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Wall-clock budget for one full probe evaluation. Exceeding it is a fail, not a retry: a probe with no deadline holds the candidate in 'trying' forever, which is a boot loop wearing different clothes."
+    },
+    "minConsecutivePasses": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Consecutive passing evaluations required before successful may be set. Values above 1 buy protection against a payload that comes up briefly and then degrades; the cost is a longer window in which the target is running unpromoted."
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "The check set. Non-empty by construction — a probe with no checks passes everything, which is worse than having no probe because it produces a passing record.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "kind", "blocking"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 120,
+            "description": "Stable check name, unique within this probe."
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["process-liveness", "endpoint-health", "data-integrity", "connectivity", "rollback-capability"],
+            "description": "What the check exercises. rollback-capability is deliberately in the closed set: a candidate that cannot demonstrate it is still able to roll back must not be promoted, because promotion is the moment the previous payload stops being guaranteed."
+          },
+          "blocking": {
+            "type": "boolean",
+            "description": "Whether failing this check fails the probe. At least one check must be blocking (enforced by the family validator) — a probe composed entirely of advisory checks cannot gate anything."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What this check asserts and why it is part of the promotion gate."
+          }
+        }
+      }
+    },
+    "watchdogs": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "kind": { "const": "hardware" } },
+            "required": ["kind"]
+          }
+        },
+        {
+          "contains": {
+            "type": "object",
+            "properties": { "kind": { "const": "software" } },
+            "required": ["kind"]
+          }
+        }
+      ],
+      "description": "Liveness bounds armed for the trial boot. At least one hardware and one software watchdog are required (enforced by the two contains clauses). Neither kind alone closes the gap: software cannot fire through a wedged kernel, hardware cannot tell working from merely running.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "timeoutSeconds", "pettedBy", "expiryAction"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["hardware", "software"],
+            "description": "hardware = an independent timer (SoC/BMC/TPM-adjacent) that resets the target regardless of software state; software = a supervisor process that only pets while its checks pass."
+          },
+          "timeoutSeconds": {
+            "type": "number",
+            "exclusiveMinimum": 0,
+            "description": "Time without a pet before expiryAction fires. The hardware timeout must exceed the software timeout (enforced by the family validator) so the software watchdog gets the first, attributable word; inverted, every software-detectable fault is reported as an unexplained hardware reset."
+          },
+          "pettedBy": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The component that pets this watchdog. A software watchdog must be petted by something downstream of the health checks, not by a timer — a supervisor that pets on a schedule is a liveness signal for the supervisor, not for the payload."
+          },
+          "expiryAction": {
+            "type": "string",
+            "enum": ["reboot-to-fallback", "reboot"],
+            "description": "What expiry does. reboot-to-fallback additionally zeroes the candidate's remaining tries before resetting, converting a hang into an immediate fallback rather than one that costs the full attempt budget."
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "description": "What this watchdog covers and why its timeout is set where it is."
+          }
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What this probe gates and for which class of target."
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "urn:srcos:update-transaction:fog_edge_07_0042",
+  "type": "UpdateTransaction",
+  "specVersion": "0.1.0",
+  "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+  "fromSlot": "A",
+  "toSlot": "B",
+  "preservedPayloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e",
+  "candidatePayloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0",
+  "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+  "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+  "maxAttempts": 2,
+  "outcome": "refused",
+  "rollbackReason": "attempts-exhausted",
+  "openedAt": "2026-07-27T02:10:00.000Z",
+  "settledAt": "2026-07-27T02:31:44.000Z",
+  "settledOnSlot": "A",
+  "receiptRef": "urn:srcos:reasoning:receipt:fog_edge_07_update_0042",
+  "attempts": [
+    {
+      "attemptNumber": 1,
+      "startedAt": "2026-07-27T02:18:03.000Z",
+      "result": "probe-failed",
+      "fellBackTo": "A",
+      "triesRemainingAfter": 1,
+      "detail": "control-plane-reachable failed: no successful control-plane call within the 180s probe window."
+    },
+    {
+      "attemptNumber": 2,
+      "startedAt": "2026-07-27T02:26:12.000Z",
+      "result": "watchdog-expired",
+      "fellBackTo": "A",
+      "triesRemainingAfter": 0,
+      "detail": "software watchdog expired after 90s without a pet; expiryAction reboot-to-fallback zeroed the candidate's remaining tries."
+    }
+  ]
+}
