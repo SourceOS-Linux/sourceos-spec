@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MeshActionRegistry.json",
+  "title": "MeshActionRegistry",
+  "description": "A signed, mesh-wide catalogue of typed actions exposed by participating apps/repos. Apple's AppIntents surface is system-wide by default — any app on the device can register intents that any other app can invoke, and the entire catalogue is queryable via AppIntentSchemas.sqlite. This spec gives the estate the equivalent shape without the ambient trust: each participant's catalogue is referenced by its own signed manifest, the mesh registry is itself signed, and each entry declares the capabilityRef and consentRequired discipline enforced elsewhere in the spec (see ActionCatalogEntry, SourceOSRepoManifest, ArtifactConsentRecord). A consumer walks the mesh, pulls each participant's manifest, and gets a union view — a discovery pattern, not a shared executor. Execution stays governed by the origin app's own capability-ledger and consent gates.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "generatedAt", "registryDigest", "participants"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:mesh-action-registry:",
+      "description": "Stable URN of this registry snapshot."
+    },
+    "type": {
+      "const": "MeshActionRegistry"
+    },
+    "specVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)?(Z|[+-]\\d{2}:\\d{2})$",
+      "description": "When this snapshot was assembled. Registries are point-in-time; consumers pin the digest they read against. RFC-3339 date-time — pattern is present alongside format because jsonschema treats format as annotation-only by default, so relying on format alone would let 'yesterday' validate silently."
+    },
+    "registryDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "sha256 of the canonicalised participants array. Consumers verify this matches to detect tampering — the same discipline as sealed receipts elsewhere in the spec."
+    },
+    "signature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["keyRef", "algorithm", "signature"],
+      "description": "Optional detached signature over registryDigest, in the shape used by the rest of the spec's signed artefacts. Absent means the registry is unsigned — a consumer treating that as trusted is running the exact 'declared but empty' pattern this schema exists to catch.",
+      "properties": {
+        "keyRef": { "type": "string", "minLength": 1 },
+        "algorithm": { "enum": ["ed25519", "minisign", "cosign", "gpg"] },
+        "signature": { "type": "string", "minLength": 1 }
+      }
+    },
+    "participants": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "description": "One entry per participating app/repo. minItems:1 so a registry with no participants — which is nothing — fails on shape rather than validating vacuously.",
+      "items": { "$ref": "#/$defs/participant" }
+    }
+  },
+  "$defs": {
+    "participant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repo", "manifestRef", "catalogRef", "catalogDigest"],
+      "description": "One participant on the mesh. repo names it; manifestRef points at its .sourceos/manifest.json (so a consumer can check policyClasses before invoking); catalogRef points at its exported action catalogue (see Noetica's action-catalog-export); catalogDigest is what the consumer verifies against, so a swap of the catalogue file is visible as a digest mismatch.",
+      "properties": {
+        "repo": {
+          "type": "string",
+          "pattern": "^[a-zA-Z0-9._-]+/[a-zA-Z0-9._-]+$",
+          "description": "GitHub-style owner/repo identifier."
+        },
+        "manifestRef": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "Reference to the participant's .sourceos/manifest.json — path or URL. Consumers read this to see policyClasses and dangerousSurfaces before deciding whether to invoke."
+        },
+        "catalogRef": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "Reference to the participant's exported action catalogue. Content must conform to https://schemas.socioprophet.io/noetica/action-catalog-entry.schema.json (each item)."
+        },
+        "catalogDigest": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "sha256 of the catalogue file at snapshot time. A consumer that fetches catalogRef must confirm its digest matches this value before trusting its contents — a swapped catalogue is detectable, not silently trusted."
+        },
+        "verbOntologyRef": {
+          "type": "string",
+          "format": "uri-reference",
+          "description": "Optional pointer to the verb ontology the participant classifies against — see Noetica's verb-ontology.json. Absent means the participant does not classify its actions with verbs, which is a weaker claim (Apple's 4-primitive shape); present with a mismatched ontologyVersion is a decision the consumer must adjudicate."
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:mesh-action-registry:sociosphere:2026-07-29",
+  "type": "MeshActionRegistry",
+  "specVersion": "0.1.0",
+  "generatedAt": "2026-07-29T20:00:00Z",
+  "registryDigest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+  "signature": {
+    "keyRef": "urn:srcos:key:mesh-registry-signer:v1",
+    "algorithm": "ed25519",
+    "signature": "MEUCIQD-example-signature-not-real-do-not-verify=="
+  },
+  "participants": [
+    {
+      "repo": "SocioProphet/Noetica",
+      "manifestRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/.sourceos/manifest.json",
+      "catalogRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/agent-machine/lib/action-registry.ts",
+      "catalogDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "verbOntologyRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/agent-machine/data/verb-ontology.json"
+    },
+    {
+      "repo": "SourceOS-Linux/agent-machine",
+      "manifestRef": "https://raw.githubusercontent.com/SourceOS-Linux/agent-machine/main/.sourceos/manifest.json",
+      "catalogRef": "https://raw.githubusercontent.com/SourceOS-Linux/agent-machine/main/src/agent_machine/actions.py",
+      "catalogDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+    }
+  ]
+}
