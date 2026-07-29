@@ -1,0 +1,43 @@
+name: LawfulDispatchReceipt
+
+# Truth = Law × Evidence as an estate-wide CONTRACT. The conformance vectors are consumed
+# by every implementation (Noetica TypeScript, prophet-platform Python), so a change here
+# is a change to what a verdict MEANS on every surface — hence its own gate.
+
+on:
+  pull_request:
+    paths:
+      - 'schemas/LawfulDispatchReceipt.json'
+      - 'examples/lawful-dispatch-receipt.example.json'
+      - 'conformance/lawful-verdict-vectors.json'
+      - 'tools/validate_lawful_dispatch_receipt.py'
+      - '.github/workflows/lawful-dispatch-receipt.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'schemas/LawfulDispatchReceipt.json'
+      - 'examples/lawful-dispatch-receipt.example.json'
+      - 'conformance/lawful-verdict-vectors.json'
+      - 'tools/validate_lawful_dispatch_receipt.py'
+      - '.github/workflows/lawful-dispatch-receipt.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-lawful-dispatch-receipt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate LawfulDispatchReceipt schema, example and vectors
+        run: |
+          python3 -m pip install jsonschema
+          python3 tools/validate_lawful_dispatch_receipt.py
