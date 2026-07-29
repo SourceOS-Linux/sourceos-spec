@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:effect:place_order_acme_000117",
+  "type": "EffectRequest",
+  "specVersion": "0.1.0",
+  "requestedByEventRef": "urn:srcos:conversation-event:desk_alpha_msg_000117",
+  "requestedByActorRef": "urn:srcos:agent:strategy_momentum_7",
+  "workspaceRef": "urn:srcos:workspace:trading_demo",
+  "branchRef": "urn:srcos:branch:desk_alpha_main",
+  "effectKind": "execute",
+  "capability": "trading.order.place",
+  "target": {
+    "kind": "venue_order_gateway",
+    "identifier": "XNAS",
+    "location": "us-east"
+  },
+  "parameters": {
+    "instrument": "ACME.XNAS",
+    "side": "buy",
+    "quantity": "100",
+    "orderType": "limit",
+    "limitPrice": "184.20",
+    "timeInForce": "day"
+  },
+  "idempotencyKey": "place_order_acme_000117_v1",
+  "requiresHumanApproval": true,
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": ["notional:small"],
+  "requestedAt": "2026-07-28T13:30:00.300Z",
+  "notes": "Momentum entry proposed by strategy_momentum_7; desk approval required by policy."
+}

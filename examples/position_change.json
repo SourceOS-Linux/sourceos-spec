@@ -1,0 +1,29 @@
+{
+  "id": "urn:srcos:position-change:acme_desk_alpha_000120",
+  "type": "PositionChange",
+  "specVersion": "0.1.0",
+  "wallTime": "2026-07-28T13:30:02.600Z",
+  "logicalTime": 120,
+  "instrumentRef": "ACME.XNAS",
+  "accountRef": "acct_desk_alpha",
+  "positionDelta": "50",
+  "cashDelta": "-9209.00",
+  "feeDelta": "-1.25",
+  "realizedPnlDelta": null,
+  "unrealizedPnlSnapshot": "12.50",
+  "sourceExecutionRefs": ["urn:srcos:execution-report:xnas_fill_88231"],
+  "causalParents": ["urn:srcos:execution-report:xnas_fill_88231"],
+  "traceContext": {
+    "traceId": "trace_desk_alpha_0001",
+    "spanId": "span_position_0120"
+  },
+  "visibilityScope": ["shared"],
+  "provenanceLinks": [
+    {
+      "rel": "derived_from",
+      "ref": "urn:srcos:execution-report:xnas_fill_88231"
+    }
+  ],
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": []
+}

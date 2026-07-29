@@ -1,0 +1,46 @@
+{
+  "id": "urn:srcos:order-intent:acme_buy_000117",
+  "type": "OrderIntent",
+  "specVersion": "0.1.0",
+  "actorRef": "urn:srcos:agent:strategy_momentum_7",
+  "authorityContext": {
+    "principal": "agent",
+    "delegationChain": ["urn:srcos:subject:desk_operator_1"],
+    "capabilities": ["trading.order.propose"],
+    "approvalState": "approved",
+    "policyContext": ["urn:srcos:policy:desk_alpha_limits"]
+  },
+  "workspaceRef": "urn:srcos:workspace:trading_demo",
+  "branchRef": "urn:srcos:branch:desk_alpha_main",
+  "visibilityScope": ["shared"],
+  "wallTime": "2026-07-28T13:30:02.100Z",
+  "logicalTime": 118,
+  "causalParents": [
+    "urn:srcos:conversation-event:desk_alpha_msg_000117",
+    "urn:srcos:market-data-event:xnas_acme_quote_000042"
+  ],
+  "traceContext": {
+    "traceId": "trace_desk_alpha_0001",
+    "spanId": "span_intent_0118"
+  },
+  "strategyRef": "strat_momentum_7",
+  "instrumentRef": "ACME.XNAS",
+  "venueRef": "XNAS",
+  "intentKind": "new",
+  "side": "buy",
+  "orderType": "limit",
+  "quantity": "50",
+  "price": "184.20",
+  "timeInForce": "day",
+  "requestedEffectRef": "urn:srcos:effect:place_order_acme_000117",
+  "signalRefs": ["urn:srcos:market-data-event:xnas_acme_quote_000042"],
+  "provenanceLinks": [
+    {
+      "rel": "approved_by",
+      "ref": "urn:srcos:effect-decision:approve_place_order_acme_000117"
+    }
+  ],
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": ["notional:small"],
+  "notes": "Quantity reflects the approved (narrowed) effect shape, not the original proposal."
+}

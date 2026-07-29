@@ -1,0 +1,35 @@
+{
+  "id": "urn:srcos:reconciliation-record:eod_orders_2026-07-28_x1",
+  "type": "ReconciliationRecord",
+  "specVersion": "0.1.0",
+  "wallTime": "2026-07-28T20:10:00.000Z",
+  "logicalTime": 512,
+  "scopeKind": "order",
+  "scopeRef": "urn:srcos:order-intent:acme_buy_000117",
+  "status": "matched",
+  "expectedValue": {
+    "filledQuantity": "50",
+    "averagePrice": "184.18"
+  },
+  "observedValue": {
+    "filledQuantity": "50",
+    "averagePrice": "184.18"
+  },
+  "compensationRefs": [],
+  "causalParents": [
+    "urn:srcos:execution-report:xnas_fill_88231",
+    "urn:srcos:position-change:acme_desk_alpha_000120"
+  ],
+  "traceContext": {
+    "traceId": "trace_desk_alpha_eod_0001"
+  },
+  "visibilityScope": ["shared"],
+  "provenanceLinks": [
+    {
+      "rel": "reconciles",
+      "ref": "urn:srcos:order-intent:acme_buy_000117"
+    }
+  ],
+  "policyLabels": ["reconciliation:eod"],
+  "riskLabels": []
+}

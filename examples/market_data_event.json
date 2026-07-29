@@ -1,0 +1,41 @@
+{
+  "id": "urn:srcos:market-data-event:xnas_acme_quote_000042",
+  "type": "MarketDataEvent",
+  "specVersion": "0.1.0",
+  "wallTime": "2026-07-28T13:30:00.125Z",
+  "logicalTime": 42,
+  "instrumentRef": "ACME.XNAS",
+  "venueRef": "XNAS",
+  "eventKind": "quote",
+  "sequenceRef": 4711042,
+  "feedRef": "feed_xnas_l1_a",
+  "rawPayload": {
+    "b": "184.15",
+    "a": "184.20",
+    "bs": 300,
+    "as": 500
+  },
+  "canonicalPayload": {
+    "normalizationRegime": "mpcc-canonical-quote-v0",
+    "bidPrice": "184.15",
+    "askPrice": "184.20",
+    "bidSize": "300",
+    "askSize": "500"
+  },
+  "nullAbsenceRef": null,
+  "qualityFlags": [],
+  "causalParents": [],
+  "traceContext": {
+    "traceId": "trace_desk_alpha_0001",
+    "spanId": "span_feed_0042"
+  },
+  "visibilityScope": ["shared"],
+  "provenanceLinks": [
+    {
+      "rel": "source_feed",
+      "ref": "feed_xnas_l1_a"
+    }
+  ],
+  "policyLabels": ["market-data:realtime"],
+  "riskLabels": []
+}

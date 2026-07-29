@@ -1,0 +1,106 @@
+{
+  "description": "Negative conformance vectors for the MPCC event contract v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_mpcc_event_examples.py enforces this. These vectors keep the tranche-0001 strictness bar executable: closed objects, pinned contract version, mandatory idempotency keys, a closed absence taxonomy, and the effect-record authority invariant.",
+  "cases": [
+    {
+      "schema": "ConversationEvent.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:conversation-event:neg_unknown_prop",
+        "type": "ConversationEvent",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:strategy_momentum_7",
+        "workspaceRef": "urn:srcos:workspace:trading_demo",
+        "branchRef": "urn:srcos:branch:desk_alpha_main",
+        "wallTime": "2026-07-28T13:30:00.250Z",
+        "logicalTime": 117,
+        "modality": "text",
+        "rawPayload": "hello",
+        "canonicalPayload": "hello",
+        "surprise": true
+      }
+    },
+    {
+      "schema": "EffectRecord.json",
+      "reason": "Authority invariant: a record with neither effectDecisionRef nor autonomousPolicyRef must fail the anyOf.",
+      "document": {
+        "id": "urn:srcos:effect-record:neg_no_authority_basis",
+        "type": "EffectRecord",
+        "specVersion": "0.1.0",
+        "effectRequestRef": "urn:srcos:effect:place_order_acme_000117",
+        "effectDecisionRef": null,
+        "autonomousPolicyRef": null,
+        "status": "executed",
+        "idempotencyKey": "place_order_acme_000117_v1",
+        "resultRefs": [],
+        "policyLabels": [],
+        "riskLabels": []
+      }
+    },
+    {
+      "schema": "MarketDataEvent.json",
+      "reason": "specVersion is pinned: any value other than the 0.1.0 const must fail.",
+      "document": {
+        "id": "urn:srcos:market-data-event:neg_wrong_spec_version",
+        "type": "MarketDataEvent",
+        "specVersion": "0.2.0",
+        "wallTime": "2026-07-28T13:30:00.125Z",
+        "instrumentRef": "ACME.XNAS",
+        "venueRef": "XNAS",
+        "eventKind": "quote",
+        "rawPayload": {},
+        "canonicalPayload": {}
+      }
+    },
+    {
+      "schema": "EffectRequest.json",
+      "reason": "idempotencyKey is a required replay guard on every side-effecting request.",
+      "document": {
+        "id": "urn:srcos:effect:neg_missing_idempotency_key",
+        "type": "EffectRequest",
+        "specVersion": "0.1.0",
+        "requestedByEventRef": "urn:srcos:conversation-event:desk_alpha_msg_000117",
+        "effectKind": "execute",
+        "capability": "trading.order.place",
+        "target": {
+          "kind": "venue_order_gateway",
+          "identifier": "XNAS"
+        },
+        "parameters": {},
+        "requiresHumanApproval": true,
+        "policyLabels": [],
+        "riskLabels": [],
+        "requestedAt": "2026-07-28T13:30:00.300Z"
+      }
+    },
+    {
+      "schema": "NullAbsenceRecord.json",
+      "reason": "The 12-kind absence taxonomy is closed: kinds outside the enum must fail.",
+      "document": {
+        "id": "urn:srcos:null-absence:neg_unknown_kind",
+        "type": "NullAbsenceRecord",
+        "specVersion": "0.1.0",
+        "kind": "mysterious_silence",
+        "observedAt": "2026-07-28T13:31:15.000Z"
+      }
+    },
+    {
+      "schema": "OrderIntent.json",
+      "reason": "authorityContext, when present, must carry all five sub-fields so authority is never ambiguous.",
+      "document": {
+        "id": "urn:srcos:order-intent:neg_partial_authority_context",
+        "type": "OrderIntent",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:strategy_momentum_7",
+        "wallTime": "2026-07-28T13:30:02.100Z",
+        "strategyRef": "strat_momentum_7",
+        "instrumentRef": "ACME.XNAS",
+        "intentKind": "new",
+        "side": "buy",
+        "quantity": "50",
+        "authorityContext": {
+          "principal": "agent"
+        }
+      }
+    }
+  ]
+}

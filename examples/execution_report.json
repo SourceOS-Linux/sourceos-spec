@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:execution-report:xnas_fill_88231",
+  "type": "ExecutionReport",
+  "specVersion": "0.1.0",
+  "wallTime": "2026-07-28T13:30:02.480Z",
+  "logicalTime": 119,
+  "orderIntentRef": "urn:srcos:order-intent:acme_buy_000117",
+  "venueRef": "XNAS",
+  "reportKind": "fill",
+  "orderRef": "XNAS-99120031",
+  "fillQuantity": "50",
+  "fillPrice": "184.18",
+  "remainingQuantity": "0",
+  "sequenceRef": 4711187,
+  "causalParents": ["urn:srcos:order-intent:acme_buy_000117"],
+  "traceContext": {
+    "traceId": "trace_desk_alpha_0001",
+    "spanId": "span_report_0119"
+  },
+  "visibilityScope": ["shared"],
+  "provenanceLinks": [
+    {
+      "rel": "venue_report",
+      "ref": "drop_copy:xnas:session_a:88231"
+    }
+  ],
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": [],
+  "details": {
+    "liquidityFlag": "removed"
+  }
+}
