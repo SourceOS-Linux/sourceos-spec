@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:chunk-context:asx_gyg_annual_2026_p14_c02",
+  "type": "ChunkContext",
+  "specVersion": "0.1.0",
+  "docRef": "urn:srcos:doc:asx_gyg_annual_2026",
+  "docHash": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+  "chunkId": "p14_c02",
+  "chunkHash": "sha256:d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+  "contextText": "This chunk is from the risk-factors section of the FY2026 ASX annual report, discussing tariff exposure on imported ingredients and packaging for the group's supply chain.",
+  "indexTargets": [
+    "embedding",
+    "bm25"
+  ],
+  "generator": {
+    "modelRef": "claude-haiku-4-5",
+    "promptCacheKey": "doc:asx_gyg_annual_2026#v1"
+  },
+  "createdAt": "2026-07-29T14:20:00.000Z"
+}

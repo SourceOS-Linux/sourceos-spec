@@ -1,0 +1,25 @@
+{
+  "id": "urn:srcos:control-loop:governance_membrane_loop",
+  "type": "ControlLoop",
+  "specVersion": "0.1.0",
+  "name": "Guardrail governance loop",
+  "domain": "governance",
+  "policyRef": "urn:srcos:policy:guardrail_runtime_v1",
+  "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+  "failMode": "fail-closed",
+  "retryBudget": {
+    "maxAdjustmentsPerIncident": 3,
+    "escalationRef": "urn:srcos:workspace:ops_escalation_queue"
+  },
+  "hysteresis": {
+    "minSecondsBetweenAdjustments": 60
+  },
+  "schedulerArbitration": "single-entry",
+  "idleTickSeconds": 1200,
+  "provenanceLinks": [
+    {
+      "rel": "design_register",
+      "ref": "urn:srcos:design-register:epistemic_kernel"
+    }
+  ]
+}

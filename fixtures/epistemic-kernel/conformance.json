@@ -1,0 +1,165 @@
+{
+  "description": "Negative conformance vectors for the epistemic-kernel contract v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_epistemic_kernel_examples.py enforces this. These vectors keep the defect closures executable: closed objects, fail-open needs justification, work ticks need a membrane decision, causal edges need warrants, scored claims need verdicts, installation needs blessing, experiences need policy digests, and the index-target set is closed.",
+  "cases": [
+    {
+      "schema": "ControlLoop.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:control-loop:neg_unknown_prop",
+        "type": "ControlLoop",
+        "specVersion": "0.1.0",
+        "name": "Bad loop",
+        "domain": "compute",
+        "policyRef": "urn:srcos:policy:compute_loop_v1",
+        "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "failMode": "fail-closed",
+        "retryBudget": {
+          "maxAdjustmentsPerIncident": 3,
+          "escalationRef": "urn:srcos:workspace:ops_escalation_queue"
+        },
+        "schedulerArbitration": "single-entry",
+        "idleTickSeconds": 1200,
+        "surprise": true
+      }
+    },
+    {
+      "schema": "ControlLoop.json",
+      "reason": "Fail-open posture without failOpenJustification must fail the if/then invariant — fail-closed is the posture that needs no defense.",
+      "document": {
+        "id": "urn:srcos:control-loop:neg_fail_open_unjustified",
+        "type": "ControlLoop",
+        "specVersion": "0.1.0",
+        "name": "Unjustified fail-open loop",
+        "domain": "compute",
+        "policyRef": "urn:srcos:policy:compute_loop_v1",
+        "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "failMode": "fail-open",
+        "retryBudget": {
+          "maxAdjustmentsPerIncident": 3,
+          "escalationRef": "urn:srcos:workspace:ops_escalation_queue"
+        },
+        "schedulerArbitration": "single-entry",
+        "idleTickSeconds": 1200
+      }
+    },
+    {
+      "schema": "ControlLoopTick.json",
+      "reason": "A work tick without an executionDecisionRef must fail the if/then invariant — acting without a membrane decision is the bypass this contract forbids.",
+      "document": {
+        "id": "urn:srcos:control-loop-tick:neg_work_without_decision",
+        "type": "ControlLoopTick",
+        "specVersion": "0.1.0",
+        "loopRef": "urn:srcos:control-loop:governance_membrane_loop",
+        "tickNumber": 118,
+        "kind": "work",
+        "occurredAt": "2026-07-29T14:25:00.000Z",
+        "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "senseRefs": [],
+        "actRefs": [],
+        "verdict": "ok",
+        "receiptRef": "urn:srcos:reasoning:receipt:governance_membrane_loop_000118",
+        "anomaly": {
+          "detected": false,
+          "adjustmentCount": 0,
+          "escalated": false
+        },
+        "idempotencyKey": "governance_membrane_loop_tick_000118_v1"
+      }
+    },
+    {
+      "schema": "CausalEdge.json",
+      "reason": "Empty warrantRefs must be rejected (minItems: 1) — no unprovenance'd causality enters the graph.",
+      "document": {
+        "id": "urn:srcos:causal-edge:neg_unwarranted",
+        "type": "CausalEdge",
+        "specVersion": "0.1.0",
+        "graphRef": "urn:srcos:causal-graph:auto_parts_demo",
+        "fromRef": "urn:srcos:causal-hypothesis:auto_parts_demo_tariffs",
+        "toRef": "urn:srcos:causal-hypothesis:auto_parts_demo_revenue",
+        "sign": "negative",
+        "warrantRefs": []
+      }
+    },
+    {
+      "schema": "CausalHypothesis.json",
+      "reason": "claimStatus 'scored' without claimVerdictRef must fail the if/then invariant — a scored claim without its 5-axis verdict artifact is an unbacked score.",
+      "document": {
+        "id": "urn:srcos:causal-hypothesis:neg_scored_without_verdict",
+        "type": "CausalHypothesis",
+        "specVersion": "0.1.0",
+        "graphRef": "urn:srcos:causal-graph:auto_parts_demo",
+        "label": "Tariffs",
+        "hypothesis": "Tariff rates on imported product parts change materially.",
+        "topics": [],
+        "claimStatus": "scored",
+        "warrantRefs": [
+          "urn:srcos:evidence:atom_asx_gyg_tariff_2026_07"
+        ]
+      }
+    },
+    {
+      "schema": "GuardrailEvalReport.json",
+      "reason": "installApproved true without a blessing block must fail the if/then invariant — the human gate on the eval→policy feedback edge.",
+      "document": {
+        "id": "urn:srcos:guardrail-eval:neg_install_without_blessing",
+        "type": "GuardrailEvalReport",
+        "specVersion": "0.1.0",
+        "policyRef": "urn:srcos:policy:guardrail_runtime_v1",
+        "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+        "clauses": [
+          {
+            "clauseId": "input.injection_reject",
+            "enforcementTestRef": "urn:srcos:evidence:test_injection_vector_suite_v3",
+            "result": "pass"
+          }
+        ],
+        "coverage": {
+          "declaredClauses": 1,
+          "enforcedClauses": 1,
+          "negativeVectors": 4
+        },
+        "promotionEligible": true,
+        "installApproved": true,
+        "occurredAt": "2026-07-29T14:45:00.000Z"
+      }
+    },
+    {
+      "schema": "ExperienceRecord.json",
+      "reason": "Missing policyDigest must be rejected (required) — the staleness-attribution invariant.",
+      "document": {
+        "id": "urn:srcos:experience:neg_no_policy_digest",
+        "type": "ExperienceRecord",
+        "specVersion": "0.1.0",
+        "generatorRef": "urn:srcos:agent:board_arm_crag_gate",
+        "payload": {
+          "tier": "durable",
+          "uri": "s3://sovereign-experiences/2026/07/neg_no_policy_digest.json"
+        },
+        "receiptRef": "urn:srcos:reasoning:receipt:neg_no_policy_digest",
+        "occurredAt": "2026-07-29T14:10:00.000Z",
+        "idempotencyKey": "neg_no_policy_digest_v1"
+      }
+    },
+    {
+      "schema": "ChunkContext.json",
+      "reason": "indexTargets 'tf-idf' must be rejected (closed enum) — the contract pins BM25, not TF-IDF, per the published method it hardens.",
+      "document": {
+        "id": "urn:srcos:chunk-context:neg_tfidf_target",
+        "type": "ChunkContext",
+        "specVersion": "0.1.0",
+        "docRef": "urn:srcos:doc:asx_gyg_annual_2026",
+        "docHash": "sha256:c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3c3",
+        "chunkId": "p14_c03",
+        "chunkHash": "sha256:d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4d4",
+        "contextText": "This chunk is from the same risk-factors section.",
+        "indexTargets": [
+          "tf-idf"
+        ],
+        "generator": {
+          "modelRef": "claude-haiku-4-5"
+        },
+        "createdAt": "2026-07-29T14:20:00.000Z"
+      }
+    }
+  ]
+}

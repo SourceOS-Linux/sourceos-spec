@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CausalEdge.json",
+  "title": "CausalEdge",
+  "description": "A signed causal edge between two CausalHypothesis nodes. Polarity lives HERE and only here (positive|negative on the edge, direction-neutral text on the nodes). Hardened beyond the HOPE source model, which carries sign only: optional magnitude (weight), time structure (lagDays), and confidence — absent in the source and required for anything beyond a sales slide. Provenance invariant: warrantRefs is MANDATORY and non-empty — an unwarranted causal edge is inadmissible, which is what makes the graph scoreable by the provenance-fidelity eval. Self-loop invariant: fromRef must differ from toRef (family validator — JSON Schema cannot compare sibling values). Extraction provenance is digest-pinned so an edge is attributable to the exact extractor version that produced it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "graphRef",
+    "fromRef",
+    "toRef",
+    "sign",
+    "warrantRefs"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:causal-edge:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:causal-edge:<local-id>"
+    },
+    "type": {
+      "const": "CausalEdge",
+      "description": "Discriminator constant — always \"CausalEdge\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "graphRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:causal-graph:[A-Za-z0-9._~-]+$",
+      "description": "URN of the causal graph this edge belongs to. Invariant: both endpoints belong to the same graph."
+    },
+    "fromRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:causal-hypothesis:[A-Za-z0-9._~-]+$",
+      "description": "Cause-side CausalHypothesis URN."
+    },
+    "toRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:causal-hypothesis:[A-Za-z0-9._~-]+$",
+      "description": "Effect-side CausalHypothesis URN. Invariant: must differ from fromRef (validator-enforced)."
+    },
+    "sign": {
+      "type": "string",
+      "enum": ["positive", "negative"],
+      "description": "Causal polarity. The ONLY place direction lives."
+    },
+    "weight": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional effect magnitude in [0,1]; sign is carried separately so magnitude stays non-negative."
+    },
+    "lagDays": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Optional causal lag in days between cause and observable effect."
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Optional confidence in the edge's existence, distinct from its magnitude."
+    },
+    "warrantRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:",
+        "description": "URN of a warrant/evidence artifact (e.g. an EvidenceAtom) supporting this causal link."
+      },
+      "uniqueItems": true,
+      "minItems": 1,
+      "description": "Mandatory, non-empty warrants. No unprovenance'd causality enters the graph."
+    },
+    "extractor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["extractorRef", "extractorDigest"],
+      "properties": {
+        "extractorRef": {
+          "type": "string",
+          "minLength": 1,
+          "description": "URN or stable reference of the extraction pipeline that proposed this edge."
+        },
+        "extractorDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "Content digest of the exact extractor version."
+        }
+      },
+      "description": "Digest-pinned extraction provenance for machine-proposed edges; omitted for human-authored edges."
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:causal-edge:auto_parts_demo_tariffs_revenue",
+  "type": "CausalEdge",
+  "specVersion": "0.1.0",
+  "graphRef": "urn:srcos:causal-graph:auto_parts_demo",
+  "fromRef": "urn:srcos:causal-hypothesis:auto_parts_demo_tariffs",
+  "toRef": "urn:srcos:causal-hypothesis:auto_parts_demo_revenue",
+  "sign": "negative",
+  "weight": 0.6,
+  "lagDays": 90,
+  "confidence": 0.7,
+  "warrantRefs": [
+    "urn:srcos:evidence:atom_asx_gyg_tariff_2026_07"
+  ],
+  "extractor": {
+    "extractorRef": "urn:srcos:agent:ifm_causal_extractor",
+    "extractorDigest": "sha256:e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5e5"
+  }
+}

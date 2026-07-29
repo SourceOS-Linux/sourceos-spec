@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ChunkContext.json",
+  "title": "ChunkContext",
+  "description": "A contextual-retrieval situating context: the 50–100 tokens an LLM prepends to one chunk so the chunk stays interpretable outside its document. Invalidation invariant: the record is keyed by docHash — ANY change to the source document changes docHash and invalidates every ChunkContext carrying the old digest, forcing incremental regeneration rather than silent staleness. Index targets form a closed set (embedding, bm25) — BM25, not TF-IDF, per the published method this hardens. Generation provenance is digest-pinned (which model wrote the context) because contexts are model output and must remain attributable; scope honesty: contextual retrieval fixes chunk AMBIGUITY, not a corpus that lacks answer-facts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "docRef",
+    "docHash",
+    "chunkId",
+    "chunkHash",
+    "contextText",
+    "indexTargets",
+    "generator",
+    "createdAt"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:chunk-context:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:chunk-context:<local-id>"
+    },
+    "type": {
+      "const": "ChunkContext",
+      "description": "Discriminator constant — always \"ChunkContext\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "docRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URN or stable reference of the source document."
+    },
+    "docHash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content digest of the source document version this context was generated from. The invalidation key."
+    },
+    "chunkId": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable identifier of the chunk within the document version."
+    },
+    "chunkHash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content digest of the chunk text itself."
+    },
+    "contextText": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "The situating context prepended to the chunk before indexing. Bounded to keep contexts context-sized, not summaries."
+    },
+    "indexTargets": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["embedding", "bm25"],
+        "description": "An index this context+chunk pair is written to."
+      },
+      "uniqueItems": true,
+      "minItems": 1,
+      "description": "Closed set of destination indexes. Dual-indexing (embedding AND bm25) is the published method's shape; rank fusion and reranking live in the consumer, not this record."
+    },
+    "generator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["modelRef"],
+      "properties": {
+        "modelRef": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Model that generated the context."
+        },
+        "modelDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "Content digest of the model artifact when available."
+        },
+        "promptCacheKey": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Cache key of the shared document prefix, when prompt caching was used to amortize per-chunk generation cost."
+        }
+      },
+      "description": "Digest-pinned generation provenance."
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time the context was generated."
+    }
+  }
+}

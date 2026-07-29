@@ -1,0 +1,18 @@
+{
+  "id": "urn:srcos:experience:board_crag_gate_000042",
+  "type": "ExperienceRecord",
+  "specVersion": "0.1.0",
+  "generatorRef": "urn:srcos:agent:board_arm_crag_gate",
+  "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+  "modelDigest": "sha256:b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2b2",
+  "runRef": "urn:srcos:reasoning:run:board_2026_07_29",
+  "envRef": "urn:srcos:workspace:mmlu_board_subject_econometrics",
+  "payload": {
+    "tier": "durable",
+    "uri": "s3://sovereign-experiences/2026/07/board_crag_gate_000042.json",
+    "payloadHash": "sha256:f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6f6"
+  },
+  "receiptRef": "urn:srcos:reasoning:receipt:board_crag_gate_000042",
+  "occurredAt": "2026-07-29T14:10:00.000Z",
+  "idempotencyKey": "board_crag_gate_000042_v1"
+}

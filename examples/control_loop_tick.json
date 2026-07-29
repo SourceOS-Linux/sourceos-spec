@@ -1,0 +1,25 @@
+{
+  "id": "urn:srcos:control-loop-tick:governance_membrane_loop_000117",
+  "type": "ControlLoopTick",
+  "specVersion": "0.1.0",
+  "loopRef": "urn:srcos:control-loop:governance_membrane_loop",
+  "tickNumber": 117,
+  "kind": "work",
+  "occurredAt": "2026-07-29T14:05:00.000Z",
+  "policyDigest": "sha256:a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1",
+  "executionDecisionRef": "urn:srcos:execution-decision:governance_membrane_loop_000117",
+  "senseRefs": [
+    "urn:srcos:evidence:guardrail_metrics_window_000117"
+  ],
+  "actRefs": [
+    "urn:srcos:effect-record:guardrail_adjust_000117"
+  ],
+  "verdict": "ok",
+  "receiptRef": "urn:srcos:reasoning:receipt:governance_membrane_loop_000117",
+  "anomaly": {
+    "detected": true,
+    "adjustmentCount": 1,
+    "escalated": false
+  },
+  "idempotencyKey": "governance_membrane_loop_tick_000117_v1"
+}
