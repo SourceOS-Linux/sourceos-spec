@@ -1,0 +1,56 @@
+{
+  "id": "urn:srcos:device-reading:th100_bed2_humidity_000418",
+  "type": "DeviceReading",
+  "specVersion": "0.1.0",
+  "actorRef": "urn:srcos:agent:device_service",
+  "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+  "branchRef": "urn:srcos:branch:home_main",
+  "visibilityScope": [
+    "private"
+  ],
+  "wallTime": "2026-07-29T09:15:03.500Z",
+  "logicalTime": 418,
+  "causalParents": [
+    "urn:srcos:device-reading:th100_bed2_humidity_000417"
+  ],
+  "traceContext": {
+    "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+    "spanId": "1a2b3c4d5e6f7081"
+  },
+  "provenanceLinks": [
+    {
+      "rel": "declared_by",
+      "ref": "urn:srcos:device-profile:acme_th100_room_sensor_v1"
+    },
+    {
+      "rel": "produced_by",
+      "ref": "urn:srcos:device:th100_bed2"
+    },
+    {
+      "rel": "ingested_by",
+      "ref": "prophet-platform:apps/device-service"
+    }
+  ],
+  "policyLabels": [
+    "residence:interior",
+    "pii:none"
+  ],
+  "riskLabels": [],
+  "deviceRef": "urn:srcos:device:th100_bed2",
+  "deviceProfileRef": "urn:srcos:device-profile:acme_th100_room_sensor_v1",
+  "profileDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813",
+  "metric": "humidity.relative",
+  "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+  "value": null,
+  "unit": "%",
+  "quality": "unavailable",
+  "observedAt": "2026-07-29T09:15:03.000Z",
+  "receivedAt": "2026-07-29T09:15:03.500Z",
+  "sequenceRef": 418,
+  "nullAbsenceRef": "urn:srcos:null-absence:th100_bed2_notify_timeout_000418",
+  "qualityFlags": [
+    "notify_window_missed"
+  ],
+  "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+  "rawPayload": null
+}

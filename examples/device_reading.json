@@ -1,0 +1,57 @@
+{
+  "id": "urn:srcos:device-reading:room_sensor_01_temperature_000117",
+  "type": "DeviceReading",
+  "specVersion": "0.1.0",
+  "actorRef": "urn:srcos:agent:device_service",
+  "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+  "branchRef": "urn:srcos:branch:home_main",
+  "visibilityScope": [
+    "private"
+  ],
+  "wallTime": "2026-07-29T09:15:00.042Z",
+  "logicalTime": 117,
+  "causalParents": [],
+  "traceContext": {
+    "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+    "spanId": "00f067aa0ba902b7"
+  },
+  "provenanceLinks": [
+    {
+      "rel": "declared_by",
+      "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+    },
+    {
+      "rel": "produced_by",
+      "ref": "urn:srcos:device:room_sensor_01"
+    },
+    {
+      "rel": "ingested_by",
+      "ref": "prophet-platform:apps/device-service"
+    }
+  ],
+  "policyLabels": [
+    "synthetic:simulated-device"
+  ],
+  "riskLabels": [
+    "not-a-measurement"
+  ],
+  "deviceRef": "urn:srcos:device:room_sensor_01",
+  "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+  "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+  "metric": "temperature",
+  "sourceAddress": "virtual://room-sensor/temperature",
+  "value": 21.37,
+  "unit": "Cel",
+  "quality": "ok",
+  "observedAt": "2026-07-29T09:15:00.000Z",
+  "receivedAt": "2026-07-29T09:15:00.042Z",
+  "sequenceRef": 117,
+  "nullAbsenceRef": null,
+  "qualityFlags": [],
+  "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+  "rawPayload": {
+    "driver": "virtual",
+    "raw": 2137,
+    "scale": -2
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:null-absence:th100_bed2_notify_timeout_000418",
+  "type": "NullAbsenceRecord",
+  "specVersion": "0.1.0",
+  "kind": "timeout",
+  "observedAt": "2026-07-29T09:15:03.000Z",
+  "relatedEventRef": "urn:srcos:device-reading:th100_bed2_humidity_000418",
+  "relatedBranchRef": "urn:srcos:branch:home_main",
+  "relatedWorkspaceRef": "urn:srcos:workspace:citizen_home_demo",
+  "causalNotes": "GATT notification window for 00002a6f elapsed with no indication; the peripheral stayed connected, so this is a timeout and not a transport_failure. Recorded as a typed absence rather than re-reporting the prior humidity value, which would have been substituted data wearing an ok quality.",
+  "policyLabels": [
+    "residence:interior"
+  ],
+  "provenanceLinks": [
+    {
+      "rel": "detected_by",
+      "ref": "prophet-platform:apps/device-service#ble-gatt"
+    }
+  ],
+  "details": {
+    "expectedNextSequence": 419,
+    "notifyWindowMs": 3000
+  }
+}
