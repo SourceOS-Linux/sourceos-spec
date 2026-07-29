@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SourceLocator.json",
+  "title": "SourceLocator",
+  "description": "WHERE in a source a value was drawn from. payloadDigest answers 'is this the same payload'; it cannot answer 'which passage did this come from', so without a locator a reader cannot check a claim against its source without re-deriving the whole document. provenanceVersion states the grade actually carried, so a document-only locator is never mistaken for a located one. Absent means the emitter recorded no position at all — a weaker claim than recording 'document-only', because it is silent about whether a position was even available. Extracted from the pattern-warrant apparatus as a standalone type so any schema that carries a provenance reference can compose the same grade, not just EvidenceAtom.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["provenanceVersion", "sourceRef"],
+  "properties": {
+    "provenanceVersion": {
+      "enum": ["document-only", "chunk-ordinal", "character-span"],
+      "description": "document-only: the source is identified, the position within it is not. chunk-ordinal: an index into a chunking, which resolves only if that chunking is reproduced identically — it points into a derived artifact, not into the source. character-span: a half-open [start,end) range over the extracted text, resolvable without re-running the chunker."
+    },
+    "sourceRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Identifier of the source document the position is relative to."
+    },
+    "extractionDigest": {
+      "type": "string",
+      "description": "Digest of the extracted text the offsets index into. The same document extracted by a different pipeline yields different offsets, so a verifier must be able to confirm it holds the same extraction before trusting a span."
+    },
+    "page": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "chunkIndex": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "start": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "end": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "allOf": [
+    {
+      "if": { "required": ["provenanceVersion"], "properties": { "provenanceVersion": { "const": "character-span" } } },
+      "then": { "required": ["start", "end", "extractionDigest"] }
+    },
+    {
+      "if": { "required": ["provenanceVersion"], "properties": { "provenanceVersion": { "const": "chunk-ordinal" } } },
+      "then": { "required": ["chunkIndex"] }
+    }
+  ]
+}
