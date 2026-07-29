@@ -1,0 +1,49 @@
+{
+  "id": "urn:srcos:knowledge-nugget:gyg_fy2025_network_sales_quote_0001",
+  "type": "KnowledgeNugget",
+  "specVersion": "0.1.0",
+  "sourceRef": {
+    "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+    "span": {
+      "start": 48210,
+      "end": 48323,
+      "page": 74
+    },
+    "contentHash": "sha256-0d863a1cca056ffe7948415a29d795c2581fbfcda7e3e30f544cd078333d1337"
+  },
+  "warrant": {
+    "type": "direct-quote",
+    "evidence": [
+      "urn:srcos:prov:ifm_extract_run_000412"
+    ],
+    "confidence": 0.99
+  },
+  "text": "Network sales grew 22.6% to $1,138.9 million, with comparable sales growth of 9.4% across the Australian segment.",
+  "kkoTypeRefs": [
+    "http://kbpedia.org/kko/rc/Business",
+    "https://schemas.srcos.ai/ont/ifm/FilingMetricObservation"
+  ],
+  "canonicalPayload": {
+    "metric": "network_sales",
+    "value": 1138900000,
+    "unit": "AUD",
+    "growthPct": 22.6,
+    "normalizationRegime": "ifm-metric-v1"
+  },
+  "provenance": [
+    {
+      "rel": "derived_from",
+      "ref": "urn:srcos:dataset:gyg_asx_fy2025_annual_report"
+    },
+    {
+      "rel": "extracted_by",
+      "ref": "urn:srcos:run:ifm_extract_run_000412"
+    }
+  ],
+  "policyLabels": [
+    "source:public-filing"
+  ],
+  "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+  "wallTime": "2026-07-29T09:15:00.000Z",
+  "logicalTime": 4021
+}

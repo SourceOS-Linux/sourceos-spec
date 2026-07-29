@@ -1,0 +1,65 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExhaustRecord.json",
+  "title": "ExhaustRecord",
+  "description": "Metaphor→Mechanism W6.1 (design-register: exhaust-accounting). The ledger of what a compute DISCARDED — the thermodynamic exhaust of the intake→compression cycle. Every governed compute or compaction may emit one; the sealing receipt carries exhaust_sha = sha256 of this record's canonical JSON, binding the discard ledger to the proof spine without inlining content (items carry hashes and sizes, never payloads — exhaust must not become a data-exfiltration channel). INVARIANT EX-I1: an ExhaustRecord is append-only evidence; it never alters the compute's outputs. INVARIANT EX-I2: items reference content by sha256 only. The record exists so the exhaust→intake loop is possible at all: a consolidation job can mine discarded-but-later-needed items to tune retrieval and spaced repetition, which is the design's core idea — learning from what was thrown away.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "specVersion", "source", "counts", "bytesIn", "bytesOut"],
+  "properties": {
+    "type": {
+      "const": "ExhaustRecord"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "source": {
+      "enum": ["compute", "compaction", "retrieval", "deliberation"],
+      "description": "Which mechanism produced the exhaust: a governed compute (gateway), context compaction (agent-machine), a retrieval stage that fetched-then-dropped, or a deliberation loop that rejected candidates."
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "How much was discarded, by kind. All fields optional; absent means zero/not-tracked.",
+      "properties": {
+        "chunksDropped": { "type": "integer", "minimum": 0 },
+        "candidatesRejected": { "type": "integer", "minimum": 0 },
+        "toolCallsRejected": { "type": "integer", "minimum": 0 },
+        "tokensDropped": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "bytesIn": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Canonical-serialized size of what entered the stage. bytesOut/bytesIn is the v1 entropy proxy (compression ratio)."
+    },
+    "bytesOut": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Canonical-serialized size of what left the stage."
+    },
+    "items": {
+      "type": "array",
+      "description": "The discarded items, by reference only (EX-I2).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "sha256"],
+        "properties": {
+          "kind": {
+            "enum": ["chunk", "candidate", "tool_call", "context"]
+          },
+          "sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "size": { "type": "integer", "minimum": 0 }
+        }
+      }
+    },
+    "ts": {
+      "type": "number",
+      "description": "Unix seconds at emission."
+    }
+  }
+}

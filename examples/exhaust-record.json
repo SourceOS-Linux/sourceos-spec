@@ -1,0 +1,13 @@
+{
+  "type": "ExhaustRecord",
+  "specVersion": "2.0",
+  "source": "compute",
+  "counts": { "candidatesRejected": 2, "chunksDropped": 5 },
+  "bytesIn": 18432,
+  "bytesOut": 2048,
+  "items": [
+    { "kind": "candidate", "sha256": "9b74c9897bac770ffc029102a200c5de1d6d9c6db6a02f38a536dfa8ca8a1c1b", "size": 812 },
+    { "kind": "chunk", "sha256": "2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae", "size": 4096 }
+  ],
+  "ts": 1785300000.0
+}
