@@ -1,0 +1,106 @@
+{
+  "description": "Negative conformance vectors for the KnowledgeNugget contract v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_knowledge_nugget_examples.py enforces this. These vectors keep the content-grain bar executable: closed objects, pinned contract version, a closed warrant taxonomy, content-addressed sources, and the derivation-grounding invariant (computed/inferred warrants must cite evidence).",
+  "cases": [
+    {
+      "schema": "KnowledgeNugget.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:knowledge-nugget:neg_unknown_prop",
+        "type": "KnowledgeNugget",
+        "specVersion": "0.1.0",
+        "sourceRef": {
+          "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+          "span": { "start": 10, "end": 20 },
+          "contentHash": "sha256-0d863a1cca056ffe7948415a29d795c2581fbfcda7e3e30f544cd078333d1337"
+        },
+        "warrant": { "type": "direct-quote", "evidence": [], "confidence": 0.9 },
+        "text": "spanselect",
+        "policyLabels": [],
+        "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+        "wallTime": "2026-07-29T09:15:00.000Z",
+        "logicalTime": 4021,
+        "vibeScore": 11
+      }
+    },
+    {
+      "schema": "KnowledgeNugget.json",
+      "reason": "The warrant taxonomy is closed: warrant types outside the four-kind enum must fail.",
+      "document": {
+        "id": "urn:srcos:knowledge-nugget:neg_unknown_warrant_kind",
+        "type": "KnowledgeNugget",
+        "specVersion": "0.1.0",
+        "sourceRef": {
+          "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+          "span": { "start": 10, "end": 20 },
+          "contentHash": "sha256-0d863a1cca056ffe7948415a29d795c2581fbfcda7e3e30f544cd078333d1337"
+        },
+        "warrant": { "type": "hearsay", "evidence": [], "confidence": 0.5 },
+        "text": "spanselect",
+        "policyLabels": [],
+        "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+        "wallTime": "2026-07-29T09:15:00.000Z",
+        "logicalTime": 4021
+      }
+    },
+    {
+      "schema": "KnowledgeNugget.json",
+      "reason": "Derivation grounding: an inferred warrant with empty evidence must fail (computed/inferred require at least one evidence ref).",
+      "document": {
+        "id": "urn:srcos:knowledge-nugget:neg_ungrounded_inference",
+        "type": "KnowledgeNugget",
+        "specVersion": "0.1.0",
+        "sourceRef": {
+          "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+          "span": { "start": 10, "end": 20 },
+          "contentHash": "sha256-0d863a1cca056ffe7948415a29d795c2581fbfcda7e3e30f544cd078333d1337"
+        },
+        "warrant": { "type": "inferred", "evidence": [], "confidence": 0.8 },
+        "text": "Segment growth implies store-level margins expanded.",
+        "policyLabels": [],
+        "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+        "wallTime": "2026-07-29T09:15:00.000Z",
+        "logicalTime": 4021
+      }
+    },
+    {
+      "schema": "KnowledgeNugget.json",
+      "reason": "Content addressing is sha256-only: a non-sha256 contentHash must fail the anchored pattern.",
+      "document": {
+        "id": "urn:srcos:knowledge-nugget:neg_weak_content_hash",
+        "type": "KnowledgeNugget",
+        "specVersion": "0.1.0",
+        "sourceRef": {
+          "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+          "span": { "start": 10, "end": 20 },
+          "contentHash": "md5-d41d8cd98f00b204e9800998ecf8427e"
+        },
+        "warrant": { "type": "direct-quote", "evidence": [], "confidence": 0.9 },
+        "text": "spanselect",
+        "policyLabels": [],
+        "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+        "wallTime": "2026-07-29T09:15:00.000Z",
+        "logicalTime": 4021
+      }
+    },
+    {
+      "schema": "KnowledgeNugget.json",
+      "reason": "specVersion is pinned: any value other than the 0.1.0 const must fail.",
+      "document": {
+        "id": "urn:srcos:knowledge-nugget:neg_wrong_spec_version",
+        "type": "KnowledgeNugget",
+        "specVersion": "0.2.0",
+        "sourceRef": {
+          "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+          "span": { "start": 10, "end": 20 },
+          "contentHash": "sha256-0d863a1cca056ffe7948415a29d795c2581fbfcda7e3e30f544cd078333d1337"
+        },
+        "warrant": { "type": "direct-quote", "evidence": [], "confidence": 0.9 },
+        "text": "spanselect",
+        "policyLabels": [],
+        "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+        "wallTime": "2026-07-29T09:15:00.000Z",
+        "logicalTime": 4021
+      }
+    }
+  ]
+}

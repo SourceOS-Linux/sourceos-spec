@@ -1,0 +1,99 @@
+{
+  "description": "Negative conformance vectors for the SemanticAction contract v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_semantic_action_examples.py enforces this. These vectors keep the registry bar executable: closed objects, pinned contract version, a closed effect-posture vocabulary with no direct-mutation value, a closed constraint-kind taxonomy, and fully declared input signatures.",
+  "cases": [
+    {
+      "schema": "SemanticAction.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:semantic-action:neg_unknown_prop",
+        "type": "SemanticAction",
+        "specVersion": "0.1.0",
+        "name": "kb.lookup_filing_metric",
+        "version": "1.0.0",
+        "inputs": [],
+        "output": { "typeRef": "https://schemas.srcos.ai/ont/ifm/FilingMetricObservation", "cardinality": "many" },
+        "constraints": [],
+        "executorRef": "urn:srcos:skill:ifm_filing_metric_lookup",
+        "sideEffects": "none",
+        "registry": { "owner": "urn:srcos:party:ifm_platform_team", "deprecated": false },
+        "coolness": "maximal"
+      }
+    },
+    {
+      "schema": "SemanticAction.json",
+      "reason": "Search-time purity: there is no \"direct\" effect posture — world mutation outside the EffectRequest → EffectDecision lifecycle is unregistrable.",
+      "document": {
+        "id": "urn:srcos:semantic-action:neg_direct_mutation",
+        "type": "SemanticAction",
+        "specVersion": "0.1.0",
+        "name": "trading.place_order",
+        "version": "1.2.0",
+        "inputs": [
+          { "name": "instrument", "typeRef": "http://kbpedia.org/kko/rc/FinancialInstrument", "required": true, "cardinality": "one" }
+        ],
+        "output": { "typeRef": "https://schemas.srcos.ai/v2/EffectRequest.json", "cardinality": "one" },
+        "constraints": [],
+        "executorRef": "urn:srcos:skill:trading_order_gateway_adapter",
+        "sideEffects": "direct",
+        "registry": { "owner": "urn:srcos:party:desk_alpha_ops", "deprecated": false }
+      }
+    },
+    {
+      "schema": "SemanticAction.json",
+      "reason": "The constraint-kind taxonomy is closed: kinds outside subClassOf/instanceOf/sameAs must fail.",
+      "document": {
+        "id": "urn:srcos:semantic-action:neg_unknown_constraint_kind",
+        "type": "SemanticAction",
+        "specVersion": "0.1.0",
+        "name": "kb.lookup_filing_metric",
+        "version": "1.0.0",
+        "inputs": [
+          { "name": "company", "typeRef": "http://kbpedia.org/kko/rc/Business", "required": true, "cardinality": "one" }
+        ],
+        "output": { "typeRef": "https://schemas.srcos.ai/ont/ifm/FilingMetricObservation", "cardinality": "many" },
+        "constraints": [
+          { "kind": "broaderThan", "subject": "company", "typeRef": "http://kbpedia.org/kko/rc/Organization" }
+        ],
+        "executorRef": "urn:srcos:skill:ifm_filing_metric_lookup",
+        "sideEffects": "none",
+        "registry": { "owner": "urn:srcos:party:ifm_platform_team", "deprecated": false }
+      }
+    },
+    {
+      "schema": "SemanticAction.json",
+      "reason": "Signature completeness: an input slot missing cardinality must fail — planners need fully declared signatures.",
+      "document": {
+        "id": "urn:srcos:semantic-action:neg_partial_input",
+        "type": "SemanticAction",
+        "specVersion": "0.1.0",
+        "name": "kb.lookup_filing_metric",
+        "version": "1.0.0",
+        "inputs": [
+          { "name": "company", "typeRef": "http://kbpedia.org/kko/rc/Business", "required": true }
+        ],
+        "output": { "typeRef": "https://schemas.srcos.ai/ont/ifm/FilingMetricObservation", "cardinality": "many" },
+        "constraints": [],
+        "executorRef": "urn:srcos:skill:ifm_filing_metric_lookup",
+        "sideEffects": "none",
+        "registry": { "owner": "urn:srcos:party:ifm_platform_team", "deprecated": false }
+      }
+    },
+    {
+      "schema": "SemanticAction.json",
+      "reason": "Registry posture must be explicit: registry missing the deprecated flag must fail.",
+      "document": {
+        "id": "urn:srcos:semantic-action:neg_partial_registry",
+        "type": "SemanticAction",
+        "specVersion": "0.1.0",
+        "name": "kb.lookup_filing_metric",
+        "version": "1.0.0",
+        "inputs": [],
+        "output": { "typeRef": "https://schemas.srcos.ai/ont/ifm/FilingMetricObservation", "cardinality": "many" },
+        "constraints": [],
+        "executorRef": "urn:srcos:skill:ifm_filing_metric_lookup",
+        "sideEffects": "none",
+        "registry": { "owner": "urn:srcos:party:ifm_platform_team" }
+      }
+    }
+  ]
+}

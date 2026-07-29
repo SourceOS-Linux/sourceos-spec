@@ -1,0 +1,38 @@
+{
+  "id": "urn:srcos:semantic-action:trading_place_order_1.2.0",
+  "type": "SemanticAction",
+  "specVersion": "0.1.0",
+  "name": "trading.place_order",
+  "version": "1.2.0",
+  "inputs": [
+    {
+      "name": "instrument",
+      "typeRef": "http://kbpedia.org/kko/rc/FinancialInstrument",
+      "required": true,
+      "cardinality": "one"
+    },
+    {
+      "name": "orderParameters",
+      "typeRef": "https://schemas.srcos.ai/ont/trading/OrderParameters",
+      "required": true,
+      "cardinality": "one"
+    }
+  ],
+  "output": {
+    "typeRef": "https://schemas.srcos.ai/v2/EffectRequest.json",
+    "cardinality": "one"
+  },
+  "constraints": [
+    {
+      "kind": "subClassOf",
+      "subject": "output",
+      "typeRef": "https://schemas.srcos.ai/v2/EffectRequest.json"
+    }
+  ],
+  "executorRef": "urn:srcos:skill:trading_order_gateway_adapter",
+  "sideEffects": "effect-request",
+  "registry": {
+    "owner": "urn:srcos:party:desk_alpha_ops",
+    "deprecated": false
+  }
+}

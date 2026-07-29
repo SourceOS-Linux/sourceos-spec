@@ -5,6 +5,24 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — Knowledge Nugget + Semantic Action registry v0.1
+
+The L2 content-grain and typed-action-registry contracts add the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `KnowledgeNugget.json` | KnowledgeNugget | `urn:srcos:knowledge-nugget:` |
+| `SemanticAction.json` | SemanticAction | `urn:srcos:semantic-action:` |
+
+These types support:
+- the estate's L2 content grain: warrant-typed knowledge fragments (`direct-quote` / `computed` / `inferred` / `model-generated`) with content-addressed source spans (`sha256-` pinned), evidence refs, confidence, ontology type refs, and provenance chain links — generalizing the production IFM warrant-typed extraction. Normative: `model-generated` MUST stay visibly distinguishable downstream (admissibility discounting); `computed`/`inferred` must cite evidence (schema-enforced)
+- the declarative typed-action registry for the NL→plan compiler: ontology-typed inputs/output, `subClassOf`/`instanceOf`/`sameAs` constraints (polymorphism via subsumption), executor binding, and a two-value effect posture (`none` | `effect-request`) — actions are side-effect-free at plan-search time, and world-changing execution defers to the MPCC `EffectRequest` → `EffectDecision` lifecycle (no direct-mutation vocabulary exists)
+- `KnowledgeNugget.wallTime`/`logicalTime` carried verbatim from the `ConversationEvent` envelope, and `SemanticAction` slot types sharing the `kkoTypeRefs` URI vocabulary, so content grains bind directly as typed planner values
+
+Validation: `make validate-knowledge-nugget-examples` and `make validate-semantic-action-examples` (envelope parity, warrant soundness, binding/purity invariants, and negative vectors under `fixtures/knowledge-nugget/` and `fixtures/semantic-action/`). Normative notes: `specs/knowledge-nugget-contract.md`, `specs/semantic-action-contract.md`.
+
+---
+
 ## Recent additions — MPCC Event Contract v0.1 (conversation + trading event family)
 
 The MPCC (multi-party conversation control) event contract adds the following top-level schemas:

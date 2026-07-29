@@ -1,0 +1,184 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/SemanticAction.json",
+  "title": "SemanticAction",
+  "description": "A declarative, typed action registration for the NL→plan compiler: the planner discovers, instantiates, and composes actions by TYPE — ontology URIs over inputs and output, with subsumption constraints — never by executing them. Polymorphism works via subClassOf: a value is bindable to a slot when its type is a subclass of the slot's typeRef, and constraints add further subsumption requirements. Normative purity rule (search-time purity): actions are side-effect-free at plan-search time — search may bind and score an action with zero world change. Any world-changing execution MUST go through the MPCC effect lifecycle (EffectRequest → EffectDecision → EffectRecord; decision before action): sideEffects = \"effect-request\" declares that the registered executor emits an EffectRequest and defers to an EffectDecision rather than acting directly; sideEffects = \"none\" declares a pure lookup/computation. There is deliberately no vocabulary for direct world mutation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "version",
+    "inputs",
+    "output",
+    "constraints",
+    "executorRef",
+    "sideEffects",
+    "registry"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:semantic-action:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier of this action registration. Pattern: urn:srcos:semantic-action:<local-id>. Invariant: registration identity is stable and never reused; a changed signature is a new version, not a rewritten registration."
+    },
+    "type": {
+      "const": "SemanticAction",
+      "description": "Discriminator constant — always \"SemanticAction\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "SemanticAction contract version, pinned per the policy-integrity tranche-0001 discipline. This family is versioned independently of the v2 metadata-plane schemas; changing this const is a contract change."
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9_.]*$",
+      "description": "Stable machine name of the action within the registry (dot-namespaced lowercase, e.g. kb.lookup_filing_metric). Names are the human/registry handle; planners bind by id."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version of THIS action's signature (inputs, output, constraints, effect posture), independent of the family specVersion const. Any signature change bumps this version."
+    },
+    "inputs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "typeRef",
+          "required",
+          "cardinality"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$",
+            "description": "Bindable input name, unique within this action. Constraint subjects reference this name."
+          },
+          "typeRef": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "Ontology concept URI (KKO reference concepts recommended) typing the values bindable to this input. Binding rule: a value binds when its type is a subclass of (or equal to) this concept."
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether the planner must bind this input for the action to be applicable."
+          },
+          "cardinality": {
+            "type": "string",
+            "enum": [
+              "one",
+              "many"
+            ],
+            "description": "Whether this input binds exactly one value (one) or a set of values (many)."
+          }
+        },
+        "description": "One typed input slot of the action."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "The action's typed input slots. Required (empty allowed — generator actions may take no inputs) so the signature is always fully declared. Invariant: input names are unique within an action (enforced by the family validator across examples)."
+    },
+    "output": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "typeRef",
+        "cardinality"
+      ],
+      "properties": {
+        "typeRef": {
+          "type": "string",
+          "format": "uri",
+          "minLength": 1,
+          "description": "Ontology concept URI typing the action's output. For sideEffects = \"effect-request\" actions this is the proposal the executor emits (e.g. the EffectRequest contract URI), never the world state it might eventually change."
+        },
+        "cardinality": {
+          "type": "string",
+          "enum": [
+            "one",
+            "many"
+          ],
+          "description": "Whether the action produces exactly one value (one) or a set of values (many)."
+        }
+      },
+      "description": "The action's typed output. Exactly one output per action at v0.1; multi-output actions decompose into multiple registrations."
+    },
+    "constraints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "subject",
+          "typeRef"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "subClassOf",
+              "instanceOf",
+              "sameAs"
+            ],
+            "description": "Constraint kind. subClassOf: the subject's type must be a subclass of typeRef — this is how polymorphism works at plan-search time. instanceOf: the bound value must be an instance of typeRef. sameAs: the subject must denote the same ontology individual as typeRef. The kind taxonomy is closed at v0.1; widening it is a contract bump."
+          },
+          "subject": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The input name this constraint applies to, or the literal string \"output\" for the action's output. Resolution against declared input names is enforced by the family validator."
+          },
+          "typeRef": {
+            "type": "string",
+            "format": "uri",
+            "minLength": 1,
+            "description": "Ontology concept or individual URI the constraint holds against."
+          }
+        },
+        "description": "One typed applicability constraint, checked at plan-search time against the ontology — no execution involved."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Typed applicability constraints evaluated at plan-search time. Required (empty allowed) so producers state the constraint posture explicitly, per the tranche-0001 bar."
+    },
+    "executorRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:[a-z0-9-]+:[A-Za-z0-9._~-]+$",
+      "description": "URN of the executor bound to this action (e.g. a SkillManifest, Connector, or WorkloadSpec). The registration is declarative; the executor is where the declared sideEffects posture is realized and audited."
+    },
+    "sideEffects": {
+      "type": "string",
+      "enum": [
+        "none",
+        "effect-request"
+      ],
+      "description": "Effect posture of the registered executor. Actions are side-effect-free at plan-search time in both cases. \"none\": a pure lookup/computation — safe to execute without governance hops. \"effect-request\": the executor does NOT change the world itself; it emits an EffectRequest, and any actual change happens only after an EffectDecision approves it, recorded as an EffectRecord (decision before action). There is deliberately no \"direct\" value: an action that mutates the world without the effect lifecycle is unregistrable."
+    },
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner",
+        "deprecated"
+      ],
+      "properties": {
+        "owner": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Authority reference of the actor accountable for this registration (human subject, team, agent, or service). Subject or Agent Registry URNs are recommended; free-form identifiers are permitted in v0.1."
+        },
+        "deprecated": {
+          "type": "boolean",
+          "description": "Whether this registration is deprecated. Deprecated actions remain resolvable for replaying old plans but MUST NOT be offered to new plan searches."
+        }
+      },
+      "description": "Registry metadata: the accountable owner and the deprecation flag. Both required so ownership and lifecycle state are never ambiguous."
+    }
+  }
+}
