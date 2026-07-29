@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/PositionChange.json",
+  "title": "PositionChange",
+  "description": "A state delta over inventory, exposure, cash, fees, or realized/unrealized PnL, traceable to the execution reports it derives from. Accounting reality, distinct from intent, approval, and venue reports. Profile of the ConversationEvent envelope: shares the single MPCC identity/causality/governance vocabulary (specVersion, actorRef, workspaceRef, branchRef, visibilityScope, wallTime, logicalTime, causalParents, traceContext, provenanceLinks, policyLabels, riskLabels) — envelope parity is enforced by tools/validate_mpcc_event_examples.py. Provenance: SocioProphet/profit-mpcc schemas/position-change-event.schema.json and docs/trading-event-families.md, hardened to the policy-integrity tranche-0001 strictness bar.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "wallTime",
+    "instrumentRef",
+    "positionDelta"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:position-change:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:position-change:<local-id>. Invariant: event identity is stable and never reused."
+    },
+    "type": {
+      "const": "PositionChange",
+      "description": "Discriminator constant — always \"PositionChange\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "MPCC event-contract version, pinned per the profit-mpcc policy-integrity tranche-0001 discipline. This family is versioned independently of the v2 metadata-plane schemas; changing this const is a contract change."
+    },
+    "actorRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Authority reference of the actor that emitted this event (human subject, agent, service, or system). Subject or Agent Registry URNs are recommended; free-form identifiers are permitted in v0.1."
+    },
+    "workspaceRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Workspace scope this event belongs to. Free-form stable reference in v0.1; a typed workspace URN may narrow this in a later minor version."
+    },
+    "branchRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Conversation-fabric branch this event was appended to. Free-form stable reference in v0.1, pending adoption of the profit-mpcc branch-id contract."
+    },
+    "visibilityScope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A visibility scope label such as private, shared, public, or an audience URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Visibility scopes governing who may observe this event (e.g. private, shared, public, or audience URNs)."
+    },
+    "wallTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 wall-clock time of the event as observed by the producer. Family profiles map their primary domain timestamp onto this field."
+    },
+    "logicalTime": {
+      "type": [
+        "integer",
+        "string"
+      ],
+      "minimum": 0,
+      "minLength": 1,
+      "description": "Producer-scoped logical clock: a non-negative integer for scalar (Lamport-style) clocks, or a non-empty string for encoded vector/hybrid clocks. Invariant: causalParents must never point forward in logical time."
+    },
+    "causalParents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:[a-z0-9-]+:[A-Za-z0-9._~-]+$",
+        "description": "URN of a causally preceding event in any MPCC event family."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Event URNs this event causally depends on. Cross-family parents are permitted (e.g. an OrderIntent caused by a MarketDataEvent). Invariant: parents must never point forward in logical time."
+    },
+    "traceContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "traceId"
+      ],
+      "properties": {
+        "traceId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Distributed trace identifier."
+        },
+        "spanId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Span identifier within the trace."
+        },
+        "baggage": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "String-valued trace baggage entries."
+        }
+      },
+      "description": "Optional distributed-tracing correlation context."
+    },
+    "provenanceLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rel",
+          "ref"
+        ],
+        "properties": {
+          "rel": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Relation of the linked artifact to this event (e.g. derived_from, quotes, source_feed)."
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "URN or stable reference of the linked artifact."
+          }
+        },
+        "description": "A single provenance link (relation + reference)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Typed provenance links from this event to upstream artifacts, sources, or records."
+    },
+    "policyLabels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A policy label."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Policy labels attached to this event by producers or the policy fabric."
+    },
+    "riskLabels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A risk label."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Risk labels attached to this event by producers or risk controls."
+    },
+    "instrumentRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Instrument identifier whose position changed (symbology per the venue/feed contract)."
+    },
+    "accountRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Account or book the change applies to."
+    },
+    "positionDelta": {
+      "type": [
+        "number",
+        "string"
+      ],
+      "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+      "description": "Signed change in position quantity: a JSON number, or a signed decimal string for exact precision."
+    },
+    "cashDelta": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ],
+      "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+      "description": "Signed change in cash: a JSON number, or a signed decimal string; null when not applicable."
+    },
+    "feeDelta": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ],
+      "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+      "description": "Signed change in fees: a JSON number, or a signed decimal string; null when not applicable."
+    },
+    "realizedPnlDelta": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ],
+      "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+      "description": "Signed realized-PnL change: a JSON number, or a signed decimal string; null when not applicable."
+    },
+    "unrealizedPnlSnapshot": {
+      "type": [
+        "number",
+        "string",
+        "null"
+      ],
+      "pattern": "^-?[0-9]+(\\.[0-9]+)?$",
+      "description": "Unrealized-PnL snapshot at wallTime: a JSON number, or a signed decimal string; null when not computed."
+    },
+    "sourceExecutionRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:execution-report:[A-Za-z0-9._~-]+$",
+        "description": "ExecutionReport URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "ExecutionReport URNs this state delta derives from. Invariant: accounting changes must be traceable to venue reality or reconciliation."
+    },
+    "details": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Bounded family-specific detail payload for fields the v0.1 contract does not yet type. Producers should keep this minimal; recurring keys should be promoted to typed fields in a later minor version."
+    }
+  }
+}

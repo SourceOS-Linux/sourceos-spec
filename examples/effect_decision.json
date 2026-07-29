@@ -1,0 +1,43 @@
+{
+  "id": "urn:srcos:effect-decision:approve_place_order_acme_000117",
+  "type": "EffectDecision",
+  "specVersion": "0.1.0",
+  "effectRequestRef": "urn:srcos:effect:place_order_acme_000117",
+  "subjectEventRef": "urn:srcos:conversation-event:desk_alpha_msg_000117",
+  "decision": "approved",
+  "decidedByActorRef": "urn:srcos:subject:desk_operator_1",
+  "authorityContext": {
+    "principal": "user",
+    "delegationChain": [],
+    "capabilities": ["trading.order.approve"],
+    "approvalState": "approved",
+    "policyContext": ["urn:srcos:policy:desk_alpha_limits"]
+  },
+  "rationale": "Within desk limits; quantity narrowed from 100 to 50 under the open-notional exposure cap.",
+  "ruleRefs": ["rule:desk_alpha:max_open_notional"],
+  "policyDecisionRefs": ["urn:srcos:decision:pf_desk_alpha_7d21"],
+  "executionDecisionRef": null,
+  "approvedEffect": {
+    "effectKind": "execute",
+    "capability": "trading.order.place",
+    "target": {
+      "kind": "venue_order_gateway",
+      "identifier": "XNAS",
+      "location": "us-east"
+    },
+    "parameters": {
+      "instrument": "ACME.XNAS",
+      "side": "buy",
+      "quantity": "50",
+      "orderType": "limit",
+      "limitPrice": "184.20",
+      "timeInForce": "day"
+    }
+  },
+  "evidenceRefs": ["urn:srcos:market-data-event:xnas_acme_quote_000042"],
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": ["notional:small"],
+  "decidedAt": "2026-07-28T13:30:02.000Z",
+  "expiresAt": "2026-07-28T13:35:00.000Z",
+  "decisionHash": "sha256:9f2b4a8c1d3e5f7a9b1c3d5e7f9a1b3c5d7e9f1a3b5c7d9e1f3a5b7c9d1e3f5a"
+}

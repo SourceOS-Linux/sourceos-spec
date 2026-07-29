@@ -5,6 +5,33 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — MPCC Event Contract v0.1 (conversation + trading event family)
+
+The MPCC (multi-party conversation control) event contract adds the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `ConversationEvent.json` | ConversationEvent | `urn:srcos:conversation-event:` |
+| `EffectRequest.json` | EffectRequest | `urn:srcos:effect:` |
+| `EffectDecision.json` | EffectDecision | `urn:srcos:effect-decision:` |
+| `EffectRecord.json` | EffectRecord | `urn:srcos:effect-record:` |
+| `NullAbsenceRecord.json` | NullAbsenceRecord | `urn:srcos:null-absence:` |
+| `MarketDataEvent.json` | MarketDataEvent | `urn:srcos:market-data-event:` |
+| `OrderIntent.json` | OrderIntent | `urn:srcos:order-intent:` |
+| `ExecutionReport.json` | ExecutionReport | `urn:srcos:execution-report:` |
+| `PositionChange.json` | PositionChange | `urn:srcos:position-change:` |
+| `ReconciliationRecord.json` | ReconciliationRecord | `urn:srcos:reconciliation-record:` |
+
+These types support:
+- the canonical 26-field conversation-fabric event (causal parents, authority context with delegation chain, visibility scope, requested/approved/actual effect references, modality, speech act)
+- the requested → approved → actual → compensated effect lifecycle with idempotency keys (`EffectRequest` → `EffectDecision` → `EffectRecord`)
+- a 12-kind null/absence taxonomy so distinct kinds of "nothing" are never conflated
+- the real-time trading families (market data, order intent, execution report, position change, reconciliation) as profiles of the ConversationEvent envelope — one shared envelope vocabulary, with parity enforced by `tools/validate_mpcc_event_examples.py` (`make validate-mpcc-event-examples`)
+
+Provenance: imported from SocioProphet/profit-mpcc (`schemas/*.schema.json`, `docs/canonical-event-schema.md`, `docs/effect-approval-semantics.md`, `docs/null-absence-taxonomy.md`, `docs/trading-event-families.md`) and hardened to the policy-integrity tranche-0001 strictness bar (`additionalProperties: false`, pinned `specVersion` const, anchored URN id patterns, mandatory idempotency keys). These are domain objects: on AsyncAPI channels they ride inside `EventEnvelope` rather than replacing it, and they reference `PolicyDecision` / `ExecutionDecision` / `SourceOSInteractionEvent` instead of duplicating them.
+
+---
+
 ## Recent additions — SourceOS Interaction Substrate
 
 The SourceOS interaction substrate adds the following top-level schema:

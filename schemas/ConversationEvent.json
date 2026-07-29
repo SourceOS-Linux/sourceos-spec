@@ -1,0 +1,388 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ConversationEvent.json",
+  "title": "ConversationEvent",
+  "description": "The canonical 26-field MPCC conversation-fabric event: an immutable, causally ordered record of one communicative act (message, tool call, tool result, approval, redaction, summary, or artifact) inside a branched, policy-governed workspace. This is a domain object — it rides inside EventEnvelope on AsyncAPI channels rather than replacing it — and its identity/causality/governance envelope is the single shared vocabulary that the trading event families (MarketDataEvent, OrderIntent, ExecutionReport, PositionChange, ReconciliationRecord) profile. Provenance: SocioProphet/profit-mpcc schemas/event.schema.json and docs/canonical-event-schema.md, hardened to the policy-integrity tranche-0001 strictness bar.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "actorRef",
+    "workspaceRef",
+    "branchRef",
+    "wallTime",
+    "logicalTime",
+    "modality",
+    "rawPayload",
+    "canonicalPayload"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:conversation-event:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:conversation-event:<local-id>. Invariant: event identity is stable and never reused."
+    },
+    "type": {
+      "const": "ConversationEvent",
+      "description": "Discriminator constant — always \"ConversationEvent\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "MPCC event-contract version, pinned per the profit-mpcc policy-integrity tranche-0001 discipline. This family is versioned independently of the v2 metadata-plane schemas; changing this const is a contract change."
+    },
+    "actorRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Authority reference of the actor that emitted this event (human subject, agent, service, or system). Subject or Agent Registry URNs are recommended; free-form identifiers are permitted in v0.1."
+    },
+    "authorityContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "principal",
+        "delegationChain",
+        "capabilities",
+        "approvalState",
+        "policyContext"
+      ],
+      "properties": {
+        "principal": {
+          "type": "string",
+          "enum": [
+            "user",
+            "agent",
+            "system",
+            "tool"
+          ],
+          "description": "Class of principal exercising authority for this act."
+        },
+        "delegationChain": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Actor reference of one hop in the delegation chain."
+          },
+          "default": [],
+          "description": "Ordered delegation chain from the root principal to the acting principal; empty when the principal acts directly."
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A capability identifier."
+          },
+          "uniqueItems": true,
+          "default": [],
+          "description": "Capability identifiers the actor claims for this act."
+        },
+        "approvalState": {
+          "type": "string",
+          "enum": [
+            "none",
+            "pending",
+            "approved",
+            "denied"
+          ],
+          "description": "Approval state of the authority under which this act was performed."
+        },
+        "policyContext": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "description": "A policy reference."
+          },
+          "uniqueItems": true,
+          "default": [],
+          "description": "Policy references in force when this act was performed."
+        }
+      },
+      "description": "Authority context under which this act was performed: principal class, delegation chain, claimed capabilities, approval state, and policy context. All five sub-fields are required when the context is present so that authority is never ambiguous."
+    },
+    "workspaceRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Workspace scope this event belongs to. Free-form stable reference in v0.1; a typed workspace URN may narrow this in a later minor version."
+    },
+    "branchRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Conversation-fabric branch this event was appended to. Free-form stable reference in v0.1, pending adoption of the profit-mpcc branch-id contract."
+    },
+    "visibilityScope": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A visibility scope label such as private, shared, public, or an audience URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Visibility scopes governing who may observe this event (e.g. private, shared, public, or audience URNs)."
+    },
+    "wallTime": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 wall-clock time of the event as observed by the producer. Family profiles map their primary domain timestamp onto this field."
+    },
+    "logicalTime": {
+      "type": [
+        "integer",
+        "string"
+      ],
+      "minimum": 0,
+      "minLength": 1,
+      "description": "Producer-scoped logical clock: a non-negative integer for scalar (Lamport-style) clocks, or a non-empty string for encoded vector/hybrid clocks. Invariant: causalParents must never point forward in logical time."
+    },
+    "causalParents": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:[a-z0-9-]+:[A-Za-z0-9._~-]+$",
+        "description": "URN of a causally preceding event in any MPCC event family."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Event URNs this event causally depends on. Cross-family parents are permitted (e.g. an OrderIntent caused by a MarketDataEvent). Invariant: parents must never point forward in logical time."
+    },
+    "traceContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "traceId"
+      ],
+      "properties": {
+        "traceId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Distributed trace identifier."
+        },
+        "spanId": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Span identifier within the trace."
+        },
+        "baggage": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "String-valued trace baggage entries."
+        }
+      },
+      "description": "Optional distributed-tracing correlation context."
+    },
+    "modality": {
+      "type": "string",
+      "enum": [
+        "text",
+        "tool_call",
+        "tool_result",
+        "approval",
+        "redaction",
+        "summary",
+        "artifact"
+      ],
+      "description": "Communicative modality of this event."
+    },
+    "codec": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Encoding of rawPayload (e.g. utf-8) when payload bytes require codec interpretation."
+    },
+    "rawPayload": {
+      "type": [
+        "object",
+        "array",
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ],
+      "description": "The payload exactly as produced, before any normalization. May be any JSON value; use NullAbsenceRecord to type genuine absences rather than overloading null."
+    },
+    "canonicalPayload": {
+      "type": [
+        "object",
+        "array",
+        "string",
+        "number",
+        "boolean",
+        "null"
+      ],
+      "description": "The normalized payload. Invariant: the canonical form must declare the normalization regime used, and any lossy derived field must carry provenance and faithfulness metadata (via provenanceLinks)."
+    },
+    "signalStats": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "integer",
+          "boolean",
+          "null"
+        ]
+      },
+      "description": "Optional scalar signal statistics computed over the payload (e.g. token counts, confidence scores)."
+    },
+    "speechAct": {
+      "type": "string",
+      "enum": [
+        "assert",
+        "ask",
+        "request",
+        "command",
+        "delegate",
+        "promise",
+        "refuse",
+        "retract",
+        "quote",
+        "speculate"
+      ],
+      "description": "Speech-act classification of this event."
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Stable reference to a claim object."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "References to claim objects asserted or discussed by this event. Typed claim contracts are future work; v0.1 uses stable references rather than embedded anonymous objects."
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Stable reference to an entity."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "References to entities mentioned or acted on by this event. Typed entity contracts are future work; v0.1 uses stable references."
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Stable reference to a topic."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "References to topics this event participates in. Topic URNs (urn:srcos:topic:) may be used where the fog-layer Topic applies."
+    },
+    "requestedEffects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:effect:[A-Za-z0-9._~-]+$",
+        "description": "EffectRequest URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "EffectRequest URNs proposed by this event. A requested effect is a proposal only — not permission, not execution, not evidence that anything happened."
+    },
+    "approvedEffects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:effect-decision:[A-Za-z0-9._~-]+$",
+        "description": "EffectDecision URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "EffectDecision URNs governing this event's requested effects. Invariant: approved effects must be a subset of requested effects modulo explicit policy rewriting."
+    },
+    "actualEffects": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:effect-record:[A-Za-z0-9._~-]+$",
+        "description": "EffectRecord URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "EffectRecord URNs recording what actually happened. Invariant: every actual effect must be traceable to an explicit approval or to a first-class autonomous policy path."
+    },
+    "provenanceLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "rel",
+          "ref"
+        ],
+        "properties": {
+          "rel": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Relation of the linked artifact to this event (e.g. derived_from, quotes, source_feed)."
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "URN or stable reference of the linked artifact."
+          }
+        },
+        "description": "A single provenance link (relation + reference)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Typed provenance links from this event to upstream artifacts, sources, or records."
+    },
+    "policyLabels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A policy label."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Policy labels attached to this event by producers or the policy fabric."
+    },
+    "riskLabels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A risk label."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Risk labels attached to this event by producers or risk controls."
+    },
+    "evaluationMetrics": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "number",
+          "integer",
+          "boolean",
+          "null"
+        ]
+      },
+      "description": "Optional scalar evaluation metrics attached by downstream evaluators."
+    },
+    "interactionEventRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:interaction-event:[A-Za-z0-9._~-]+$",
+        "description": "SourceOSInteractionEvent URN."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "SourceOSInteractionEvent URNs that surfaced or rendered this fabric event. Bridges surface telemetry to the canonical conversation fabric by reference instead of duplicating it."
+    }
+  }
+}

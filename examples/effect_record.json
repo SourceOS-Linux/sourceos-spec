@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:effect-record:place_order_acme_000117_r1",
+  "type": "EffectRecord",
+  "specVersion": "0.1.0",
+  "effectRequestRef": "urn:srcos:effect:place_order_acme_000117",
+  "effectDecisionRef": "urn:srcos:effect-decision:approve_place_order_acme_000117",
+  "autonomousPolicyRef": null,
+  "status": "executed",
+  "executorRef": "urn:srcos:agent:execution_gateway_1",
+  "executionContext": {
+    "gateway": "fix44",
+    "session": "XNAS_A"
+  },
+  "actualEffect": {
+    "effectKind": "execute",
+    "capability": "trading.order.place",
+    "venueOrderRef": "XNAS-99120031",
+    "filledQuantity": "50",
+    "averagePrice": "184.18"
+  },
+  "idempotencyKey": "place_order_acme_000117_v1",
+  "startedAt": "2026-07-28T13:30:02.150Z",
+  "completedAt": "2026-07-28T13:30:02.500Z",
+  "resultRefs": ["urn:srcos:execution-report:xnas_fill_88231"],
+  "compensationRefs": [],
+  "provenanceLinks": [
+    {
+      "rel": "executes",
+      "ref": "urn:srcos:effect:place_order_acme_000117"
+    }
+  ],
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": []
+}

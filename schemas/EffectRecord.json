@@ -1,0 +1,170 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EffectRecord.json",
+  "title": "EffectRecord",
+  "description": "The record of what actually happened when an approved (or autonomously permitted) effect met execution reality. Must remain distinguishable from both the request and the approval. Authority invariant (enforced by anyOf): every record grounds its authority in either an explicit EffectDecision (effectDecisionRef) or a first-class autonomous policy path (autonomousPolicyRef) — no effect record may claim execution beyond delegated authority. Compensation appends history via compensationRefs; it never erases the original record. Provenance: SocioProphet/profit-mpcc schemas/effect-record.schema.json, docs/effect-approval-semantics.md, and exports/policy-integrity/tranche-0001/effect.schema.snapshot.json, hardened to the tranche-0001 strictness bar.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "effectRequestRef",
+    "status",
+    "idempotencyKey",
+    "resultRefs",
+    "policyLabels",
+    "riskLabels"
+  ],
+  "anyOf": [
+    {
+      "required": ["effectDecisionRef"],
+      "properties": {
+        "effectDecisionRef": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "required": ["autonomousPolicyRef"],
+      "properties": {
+        "autonomousPolicyRef": {
+          "type": "string"
+        }
+      }
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:effect-record:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:effect-record:<local-id>"
+    },
+    "type": {
+      "const": "EffectRecord",
+      "description": "Discriminator constant — always \"EffectRecord\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "MPCC event-contract version, pinned per the profit-mpcc policy-integrity tranche-0001 discipline. Changing this const is a contract change."
+    },
+    "effectRequestRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:effect:[A-Za-z0-9._~-]+$",
+      "description": "EffectRequest URN this record executes against."
+    },
+    "effectDecisionRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:effect-decision:[A-Za-z0-9._~-]+$",
+      "description": "EffectDecision URN authorizing this execution. Authority invariant: at least one of effectDecisionRef or autonomousPolicyRef must be a non-null reference (enforced by anyOf)."
+    },
+    "autonomousPolicyRef": {
+      "type": ["string", "null"],
+      "pattern": "^urn:srcos:policy:",
+      "description": "Policy URN of the predefined autonomous path permitting execution without a per-effect decision. The autonomous path is itself first-class — never implicit."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["simulated", "executed", "failed", "skipped", "compensated", "canceled"],
+      "description": "Execution outcome. Vocabulary merged from the profit-mpcc effect-record draft (executed, failed, skipped, compensated) and the tranche-0001 status set (simulated, canceled); \"authorized\" is deliberately excluded — authorization lives on EffectDecision."
+    },
+    "executorRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Authority reference of the component or actor that performed the execution."
+    },
+    "executionContext": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Bounded execution-environment context (e.g. gateway, session, region). Open by design at v0.1; keep minimal."
+    },
+    "actualEffect": {
+      "type": ["object", "null"],
+      "additionalProperties": true,
+      "description": "What actually happened, as an effect-shaped object. Must remain distinguishable from the request and the approval, and may not claim execution beyond delegated authority."
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Replay guard. Invariant: must equal the idempotencyKey of the EffectRequest it executes against."
+    },
+    "startedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 date-time when execution began; null when never started (e.g. skipped)."
+    },
+    "completedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "ISO 8601 date-time when execution reached a terminal state; null while in flight or never started."
+    },
+    "resultRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A result or evidence reference (e.g. an ExecutionReport URN)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "References to result artifacts and evidence produced by the execution. Required (empty allowed) so executors state their evidence posture explicitly, per the tranche-0001 bar."
+    },
+    "compensationRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:effect-record:[A-Za-z0-9._~-]+$",
+        "description": "EffectRecord URN of a compensating action."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "EffectRecord URNs of compensating actions raised for this record. Invariant: compensation appends history; it never erases the original effect record."
+    },
+    "provenanceLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rel", "ref"],
+        "properties": {
+          "rel": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Relation of the linked artifact to this event (e.g. derived_from, quotes, source_feed)."
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "URN or stable reference of the linked artifact."
+          }
+        },
+        "description": "A single provenance link (relation + reference)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Typed provenance links from this event to upstream artifacts, sources, or records."
+    },
+    "policyLabels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A policy label."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Policy labels attached to this record. Required (empty allowed) per the tranche-0001 bar."
+    },
+    "riskLabels": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "A risk label."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Risk labels attached to this record. Required (empty allowed) per the tranche-0001 bar."
+    }
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "urn:srcos:null-absence:xnas_feed_gap_000043",
+  "type": "NullAbsenceRecord",
+  "specVersion": "0.1.0",
+  "kind": "no_event_observed",
+  "observedAt": "2026-07-28T13:31:15.000Z",
+  "relatedEventRef": "urn:srcos:market-data-event:xnas_acme_quote_000042",
+  "relatedBranchRef": "urn:srcos:branch:desk_alpha_main",
+  "relatedWorkspaceRef": "urn:srcos:workspace:trading_demo",
+  "causalNotes": "Feed sequence gap after 4711042; venue heartbeat missed for 75 seconds. Recorded as no_event_observed, not transport_failure, until the feed handler attributes a cause.",
+  "policyLabels": ["feed:gap"],
+  "provenanceLinks": [
+    {
+      "rel": "detected_by",
+      "ref": "monitor:xnas_l1_a"
+    }
+  ],
+  "details": {
+    "expectedNextSequence": 4711043,
+    "gapSeconds": 75
+  }
+}

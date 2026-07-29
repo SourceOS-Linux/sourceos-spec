@@ -1,0 +1,70 @@
+{
+  "id": "urn:srcos:conversation-event:desk_alpha_msg_000117",
+  "type": "ConversationEvent",
+  "specVersion": "0.1.0",
+  "actorRef": "urn:srcos:agent:strategy_momentum_7",
+  "authorityContext": {
+    "principal": "agent",
+    "delegationChain": ["urn:srcos:subject:desk_operator_1"],
+    "capabilities": ["trading.order.propose"],
+    "approvalState": "pending",
+    "policyContext": ["urn:srcos:policy:desk_alpha_limits"]
+  },
+  "workspaceRef": "urn:srcos:workspace:trading_demo",
+  "branchRef": "urn:srcos:branch:desk_alpha_main",
+  "visibilityScope": ["shared"],
+  "wallTime": "2026-07-28T13:30:00.250Z",
+  "logicalTime": 117,
+  "causalParents": ["urn:srcos:market-data-event:xnas_acme_quote_000042"],
+  "traceContext": {
+    "traceId": "trace_desk_alpha_0001",
+    "spanId": "span_proposal_0117",
+    "baggage": {
+      "desk": "alpha"
+    }
+  },
+  "modality": "tool_call",
+  "codec": "utf-8",
+  "rawPayload": {
+    "tool": "propose_order",
+    "arguments": {
+      "instrument": "ACME.XNAS",
+      "side": "buy",
+      "quantity": "100",
+      "limitPrice": "184.20"
+    }
+  },
+  "canonicalPayload": {
+    "normalizationRegime": "mpcc-canonical-json-v0",
+    "proposal": {
+      "instrument": "ACME.XNAS",
+      "side": "buy",
+      "quantity": "100",
+      "limitPrice": "184.20",
+      "rationale": "momentum breakout above vwap"
+    }
+  },
+  "signalStats": {
+    "tokenCount": 42,
+    "proposalConfidence": 0.82
+  },
+  "speechAct": "request",
+  "claims": [],
+  "entities": ["ACME.XNAS"],
+  "topics": ["urn:srcos:topic:acme_momentum"],
+  "requestedEffects": ["urn:srcos:effect:place_order_acme_000117"],
+  "approvedEffects": ["urn:srcos:effect-decision:approve_place_order_acme_000117"],
+  "actualEffects": ["urn:srcos:effect-record:place_order_acme_000117_r1"],
+  "provenanceLinks": [
+    {
+      "rel": "source_feed",
+      "ref": "urn:srcos:market-data-event:xnas_acme_quote_000042"
+    }
+  ],
+  "policyLabels": ["desk:alpha"],
+  "riskLabels": [],
+  "evaluationMetrics": {
+    "latencyMs": 12
+  },
+  "interactionEventRefs": ["urn:srcos:interaction-event:noetica_msg_9f3a"]
+}
