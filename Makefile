@@ -1,6 +1,6 @@
-.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples
+.PHONY: validate validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples
 	@echo "OK: validate"
 
 validate-knowledge-nugget-examples:
@@ -10,6 +10,10 @@ validate-knowledge-nugget-examples:
 validate-semantic-action-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_semantic_action_examples.py
+
+validate-epistemic-kernel-examples:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_epistemic_kernel_examples.py
 
 validate-mpcc-event-examples:
 	python3 -m pip install --user jsonschema >/dev/null

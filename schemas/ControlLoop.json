@@ -1,0 +1,142 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ControlLoop.json",
+  "title": "ControlLoop",
+  "description": "Definition of one instantiation of the shared control-loop kernel: sense → decide under a digest-pinned policy → act through a gate → verify → record. One kernel, three sanctioned domains (compute, governance, learning). Deliberate closures of the source-diagram defects: the loop is a long-running service with first-class idle ticks and NO terminal End state; the anomaly path carries a bounded retry budget with a mandatory escalation target (no livelock); scheduling has exactly one arbitrated re-entry point (no racing feedback edges); the governing policy is pinned by digest, never by moving tag. Fail-mode invariant (enforced by if/then): fail-open requires an explicit recorded justification — fail-closed is the posture that needs no defense.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "name",
+    "domain",
+    "policyRef",
+    "policyDigest",
+    "failMode",
+    "retryBudget",
+    "schedulerArbitration",
+    "idleTickSeconds"
+  ],
+  "if": {
+    "properties": {
+      "failMode": {
+        "const": "fail-open"
+      }
+    }
+  },
+  "then": {
+    "required": ["failOpenJustification"]
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:control-loop:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:control-loop:<local-id>"
+    },
+    "type": {
+      "const": "ControlLoop",
+      "description": "Discriminator constant — always \"ControlLoop\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "Human-readable loop name."
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["compute", "governance", "learning"],
+      "description": "Which kernel instantiation this is: compute (federated resource loop), governance (guardrail runtime), or learning (trainer/rollout). Closed set at v0.1 — a fourth domain is a contract change, not a string."
+    },
+    "policyRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:policy:",
+      "description": "Policy URN governing decide-phase behavior."
+    },
+    "policyDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content digest of the exact policy version in force. Invariant: consumers pin by digest, never by tag or 'latest' — a moving policy reference is the moving-tag deployment trap restated."
+    },
+    "failMode": {
+      "type": "string",
+      "enum": ["fail-closed", "fail-open"],
+      "description": "Behavior when a decide- or verify-phase dependency is unavailable. fail-closed is the default posture; fail-open requires failOpenJustification (enforced by if/then)."
+    },
+    "failOpenJustification": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Recorded justification for a fail-open posture. Required when failMode is fail-open."
+    },
+    "retryBudget": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["maxAdjustmentsPerIncident", "escalationRef"],
+      "properties": {
+        "maxAdjustmentsPerIncident": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum automatic adjust-phase attempts for one incident before escalation is mandatory. Closes the source diagram's anomaly livelock (its anomaly path never re-reached an exit check)."
+        },
+        "escalationRef": {
+          "type": "string",
+          "minLength": 1,
+          "description": "URN or stable reference of the escalation target (human queue, incident channel). Mandatory — a retry budget without an escalation target is a declared-unenforced control."
+        }
+      },
+      "description": "Bounded automatic-adjustment budget with a mandatory escalation target."
+    },
+    "hysteresis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["minSecondsBetweenAdjustments"],
+      "properties": {
+        "minSecondsBetweenAdjustments": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Minimum wall-clock seconds between consecutive adjust actions."
+        }
+      },
+      "description": "Optional damping between adjustments so the loop cannot thrash the scheduler."
+    },
+    "schedulerArbitration": {
+      "type": "string",
+      "enum": ["single-entry"],
+      "description": "Re-entry discipline into the act/schedule phase. Closed to single-entry at v0.1: all feedback edges (adjustments, monitor feedback) merge through one arbitrated entry point. The source diagram's two uncoordinated scheduler re-entry edges are a race by construction."
+    },
+    "idleTickSeconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "description": "Idle-tick interval when no new data or work is available. The loop is a service: 'no new data' produces an idle ControlLoopTick, never a terminal End state."
+    },
+    "provenanceLinks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["rel", "ref"],
+        "properties": {
+          "rel": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Relation of the linked artifact to this loop (e.g. derived_from, design_register)."
+          },
+          "ref": {
+            "type": "string",
+            "minLength": 1,
+            "description": "URN or stable reference of the linked artifact."
+          }
+        },
+        "description": "A single provenance link (relation + reference)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Typed provenance links (e.g. to the DesignRegister entry that mechanized this loop)."
+    }
+  }
+}

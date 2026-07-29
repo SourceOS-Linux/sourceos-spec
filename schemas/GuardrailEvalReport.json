@@ -1,0 +1,138 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GuardrailEvalReport.json",
+  "title": "GuardrailEvalReport",
+  "description": "Machine-checkable closure of the declared-unenforced gap for one policy version: every declared policy clause must map to an enforcement test, and installation of the policy requires BOTH a passing eval and a human blessing. Invariants: coverage arithmetic must be internally consistent and promotionEligible may be true only when every clause has a passing enforcement test (family validator); installApproved=true requires a blessing block (enforced by if/then) — an eval loop that feeds back into policy without a human gate is a self-modifying policy pipeline, which this contract forbids. The policy is identified by digest: installing by tag is the moving-tag trap.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "policyRef",
+    "policyDigest",
+    "clauses",
+    "coverage",
+    "promotionEligible",
+    "installApproved",
+    "occurredAt"
+  ],
+  "if": {
+    "properties": {
+      "installApproved": {
+        "const": true
+      }
+    }
+  },
+  "then": {
+    "required": ["blessing"]
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:guardrail-eval:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:guardrail-eval:<local-id>"
+    },
+    "type": {
+      "const": "GuardrailEvalReport",
+      "description": "Discriminator constant — always \"GuardrailEvalReport\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "policyRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:policy:",
+      "description": "Policy URN this report evaluates."
+    },
+    "policyDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content digest of the exact policy version evaluated. Reports never apply to a moving reference."
+    },
+    "clauses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["clauseId", "result"],
+        "properties": {
+          "clauseId": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Stable identifier of the declared policy clause."
+          },
+          "enforcementTestRef": {
+            "type": "string",
+            "minLength": 1,
+            "description": "URN or stable reference of the test that exercises this clause with a violating input. A clause without one is declared-unenforced by definition."
+          },
+          "result": {
+            "type": "string",
+            "enum": ["pass", "fail", "untested"],
+            "description": "pass: the violating input was rejected; fail: it was admitted; untested: no enforcement test exists yet."
+          }
+        },
+        "description": "One declared clause and its enforcement evidence."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Per-clause enforcement results. Required (empty allowed) so a policy with no declared clauses states that explicitly."
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["declaredClauses", "enforcedClauses", "negativeVectors"],
+      "properties": {
+        "declaredClauses": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of clauses the policy declares."
+        },
+        "enforcedClauses": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Number of clauses with a passing enforcement test. Invariant (validator-enforced): never exceeds declaredClauses and must match the clauses array."
+        },
+        "negativeVectors": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Count of adversarial/red-team vectors run against this policy version. The red-team lane is a permanent input, not a phase."
+        }
+      },
+      "description": "Aggregate enforcement coverage for this policy version."
+    },
+    "promotionEligible": {
+      "type": "boolean",
+      "description": "Machine-side verdict: true only when enforcedClauses equals declaredClauses and every clause result is pass (validator-enforced). Eligibility is necessary but never sufficient for installation."
+    },
+    "installApproved": {
+      "type": "boolean",
+      "description": "Whether installation of this policy version was approved. Invariant (enforced by if/then): true requires a blessing block — the human gate on the eval→policy feedback edge."
+    },
+    "blessing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["blessedBy", "blessedAt"],
+      "properties": {
+        "blessedBy": {
+          "type": "string",
+          "pattern": "^urn:srcos:",
+          "description": "URN of the human approver."
+        },
+        "blessedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO 8601 date-time of approval."
+        }
+      },
+      "description": "Human approval record for installing this policy version."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time the eval completed."
+    }
+  }
+}

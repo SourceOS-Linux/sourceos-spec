@@ -1,0 +1,137 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ControlLoopTick.json",
+  "title": "ControlLoopTick",
+  "description": "Per-iteration record of a ControlLoop: what was sensed, what was decided under which exact policy digest, what was done through which ExecutionDecision, how it verified, and the receipt. Verdict vocabulary is the OPS ternary (ok/sad/bad) — ticks are operations; claim-shaped content is NEVER scored here (claims take the 5-axis verdict model on CausalHypothesis). Invariants: policyDigest must equal the referenced ControlLoop's policyDigest at tick time (cross-checked by the family validator); a work tick must carry an executionDecisionRef (enforced by if/then — acting without a gate decision is exactly the membrane bypass this contract exists to forbid); anomaly.escalated must be true whenever anomaly.adjustmentCount exceeds the loop's retry budget (validator-enforced).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "loopRef",
+    "tickNumber",
+    "kind",
+    "occurredAt",
+    "policyDigest",
+    "senseRefs",
+    "actRefs",
+    "verdict",
+    "receiptRef",
+    "anomaly",
+    "idempotencyKey"
+  ],
+  "if": {
+    "properties": {
+      "kind": {
+        "const": "work"
+      }
+    }
+  },
+  "then": {
+    "required": ["executionDecisionRef"]
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:control-loop-tick:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:control-loop-tick:<local-id>"
+    },
+    "type": {
+      "const": "ControlLoopTick",
+      "description": "Discriminator constant — always \"ControlLoopTick\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "loopRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:control-loop:[A-Za-z0-9._~-]+$",
+      "description": "ControlLoop URN this tick belongs to."
+    },
+    "tickNumber": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonic tick counter within the loop."
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["work", "idle", "escalation"],
+      "description": "Tick kind. idle ticks are first-class (the loop is a service with no End state); escalation ticks record hand-off to the loop's escalationRef after the retry budget is exhausted."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time of the tick."
+    },
+    "policyDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Digest of the policy actually in force during this tick. Invariant: must equal the referenced ControlLoop's policyDigest (family validator cross-check). This is the staleness-attribution linchpin — behavior is never attributed to an unversioned policy."
+    },
+    "executionDecisionRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "ExecutionDecision URN issued by the capability membrane authorizing this tick's act phase. Required for work ticks (enforced by if/then)."
+    },
+    "senseRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "URN or stable reference of a sensed input (metrics window, event batch, eval input)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "What the sense phase consumed. Required (empty allowed) so ticks state their evidence posture explicitly."
+    },
+    "actRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "description": "URN or stable reference of an action artifact (EffectRecord, schedule change, policy proposal)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "What the act phase produced. Required (empty allowed); idle ticks carry an empty array."
+    },
+    "verdict": {
+      "type": "string",
+      "enum": ["ok", "sad", "bad"],
+      "description": "Verify-phase outcome in the OPS ternary. ok: behaved as intended; sad: degraded but within budget; bad: violated an invariant or budget. Never used for claim-shaped content."
+    },
+    "receiptRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "URN of the sealed receipt for this tick (ReasoningReceipt, AgentMachineReceipt, or equivalent). Every tick is receipt-backed — an unreceipted tick is the silent failure the chaos fabric treats as a first-class defect."
+    },
+    "anomaly": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["detected", "adjustmentCount", "escalated"],
+      "properties": {
+        "detected": {
+          "type": "boolean",
+          "description": "Whether the verify phase detected an anomaly this tick."
+        },
+        "adjustmentCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Automatic adjustments already attempted for the current incident, including this tick."
+        },
+        "escalated": {
+          "type": "boolean",
+          "description": "Whether this incident has been escalated to the loop's escalationRef. Invariant (validator-enforced): must be true when adjustmentCount exceeds the loop's retryBudget.maxAdjustmentsPerIncident."
+        }
+      },
+      "description": "Anomaly bookkeeping that makes the retry budget auditable per tick."
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Replay guard for tick ingestion."
+    }
+  }
+}

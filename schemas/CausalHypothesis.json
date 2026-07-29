@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CausalHypothesis.json",
+  "title": "CausalHypothesis",
+  "description": "A node in a causal claims graph (HOPE-derived, hardened): a labeled, DIRECTION-NEUTRAL, falsifiable hypothesis with topic terms for evidence selection. Polarity NEVER lives in hypothesis text — it lives on CausalEdge.sign, closing the source notation's inconsistency ('will improve' baked into text vs dash-dot edges). Claim-shaped content takes the 5-axis claims verdict model, never the ops ternary. Template slots are typed fields, not literal '<<placeholders>>'. Invariants (enforced by allOf/if-then): claimStatus evidenced or scored requires at least one warrant; scored requires a claimVerdictRef. Deduplication: hypotheses extracted from multiple documents resolve through the entity-resolution spine via entityClusterRef, or the graph silently double-counts causes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "graphRef",
+    "label",
+    "hypothesis",
+    "topics",
+    "claimStatus",
+    "warrantRefs"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "claimStatus": {
+            "enum": ["evidenced", "scored"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "warrantRefs": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "claimStatus": {
+            "const": "scored"
+          }
+        }
+      },
+      "then": {
+        "required": ["claimVerdictRef"]
+      }
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:causal-hypothesis:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:causal-hypothesis:<local-id>"
+    },
+    "type": {
+      "const": "CausalHypothesis",
+      "description": "Discriminator constant — always \"CausalHypothesis\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "graphRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:causal-graph:[A-Za-z0-9._~-]+$",
+      "description": "URN of the causal graph (customer- or domain-parameterized model instance) this node belongs to."
+    },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120,
+      "description": "Short display label (e.g. 'Tariffs')."
+    },
+    "hypothesis": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Falsifiable, direction-neutral statement of the event/condition (e.g. 'Tariff rates on product parts change'). Polarity belongs on edges; a hypothesis whose text encodes direction is malformed even though text neutrality cannot be machine-checked here."
+    },
+    "topics": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["kind", "value"],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": ["literal", "template"],
+            "description": "literal: a concrete topic term used to select evidence articles; template: a typed slot name (e.g. customer_name) bound at graph instantiation."
+          },
+          "value": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The topic term or the slot name."
+          }
+        },
+        "description": "One topic entry."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Topic terms for evidence selection. Required (empty allowed — the source model permits topic-less events) so the selection posture is explicit."
+    },
+    "kkoTypeRef": {
+      "type": "string",
+      "pattern": "^kko:[A-Za-z0-9._~-]+$",
+      "description": "KBpedia Knowledge Ontology reference-concept typing this hypothesis. Optional at v0.1, but untyped nodes recreate the untyped-graph debt already paid down once."
+    },
+    "entityClusterRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:er:[A-Za-z0-9._~-]+$",
+      "description": "Entity-resolution cluster URN when this hypothesis has been resolved against the ER spine."
+    },
+    "claimStatus": {
+      "type": "string",
+      "enum": ["proposed", "evidenced", "scored"],
+      "description": "Lifecycle of the claim: proposed (no warrants yet), evidenced (warrant-backed), scored (5-axis verdict issued)."
+    },
+    "claimVerdictRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "URN of the 5-axis claims verdict artifact. Required when claimStatus is scored (enforced by if/then)."
+    },
+    "warrantRefs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:",
+        "description": "URN of a warrant/evidence artifact (e.g. an EvidenceAtom)."
+      },
+      "uniqueItems": true,
+      "default": [],
+      "description": "Warrants backing this hypothesis. Required (empty allowed only while proposed) so the evidence posture is always explicit."
+    }
+  }
+}

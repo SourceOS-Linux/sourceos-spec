@@ -1,0 +1,28 @@
+{
+  "id": "urn:srcos:causal-hypothesis:auto_parts_demo_tariffs",
+  "type": "CausalHypothesis",
+  "specVersion": "0.1.0",
+  "graphRef": "urn:srcos:causal-graph:auto_parts_demo",
+  "label": "Tariffs",
+  "hypothesis": "Tariff rates on imported product parts change materially.",
+  "topics": [
+    {
+      "kind": "literal",
+      "value": "tariffs"
+    },
+    {
+      "kind": "literal",
+      "value": "automotive"
+    },
+    {
+      "kind": "template",
+      "value": "customer_name"
+    }
+  ],
+  "kkoTypeRef": "kko:Tariff",
+  "entityClusterRef": "urn:srcos:er:cluster_auto_parts_tariffs",
+  "claimStatus": "evidenced",
+  "warrantRefs": [
+    "urn:srcos:evidence:atom_asx_gyg_tariff_2026_07"
+  ]
+}

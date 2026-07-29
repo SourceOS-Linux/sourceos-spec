@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:causal-hypothesis:auto_parts_demo_revenue",
+  "type": "CausalHypothesis",
+  "specVersion": "0.1.0",
+  "graphRef": "urn:srcos:causal-graph:auto_parts_demo",
+  "label": "Revenue",
+  "hypothesis": "Quarterly revenue for the modeled manufacturer changes materially.",
+  "topics": [
+    {
+      "kind": "template",
+      "value": "customer_name"
+    }
+  ],
+  "claimStatus": "proposed",
+  "warrantRefs": []
+}

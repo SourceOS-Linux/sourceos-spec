@@ -1,0 +1,102 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExperienceRecord.json",
+  "title": "ExperienceRecord",
+  "description": "One unit of experience produced by a rollout/eval worker for the learning loop: what was run, under EXACTLY which policy and model version, with what outcome, receipt-backed, and where the payload lives. Staleness-attribution invariant: policyDigest is mandatory — in a distributed trainer/rollout topology workers read policy from a store while the trainer updates it, so every experience must pin the digest it was generated under or the trainer consumes unattributable data. Storage tiers are a closed named set (durable, hot) with stated semantics; an open 'Others' backend list hides ordering/durability divergence and is deliberately excluded.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "generatorRef",
+    "policyDigest",
+    "payload",
+    "receiptRef",
+    "occurredAt",
+    "idempotencyKey"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:experience:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:experience:<local-id>"
+    },
+    "type": {
+      "const": "ExperienceRecord",
+      "description": "Discriminator constant — always \"ExperienceRecord\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Epistemic-kernel contract version, pinned. Changing this const is a contract change."
+    },
+    "loopRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:control-loop:[A-Za-z0-9._~-]+$",
+      "description": "ControlLoop URN when this experience was produced inside a learning loop; omitted for standalone board/eval runs."
+    },
+    "generatorRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URN or stable reference of the rollout worker, eval runner, or board arm that generated this experience."
+    },
+    "policyDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Digest of the exact policy version the generator was executing under. Mandatory — the staleness-attribution invariant."
+    },
+    "modelDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Digest of the model artifact in use, when the generator ran a model distinct from the policy."
+    },
+    "runRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "URN of the run this experience belongs to (e.g. a ReasoningRun or RunRecord)."
+    },
+    "envRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URN or stable reference of the environment/dataset/subject the generator interacted with."
+    },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier", "uri"],
+      "properties": {
+        "tier": {
+          "type": "string",
+          "enum": ["durable", "hot"],
+          "description": "Named storage tier with stated semantics: durable = ordered, persistent, replayable (object store); hot = low-latency, evictable, non-authoritative cache. Closed set at v0.1."
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Locator of the experience payload within the tier."
+        },
+        "payloadHash": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$",
+          "description": "Content digest of the payload, so a hot-tier copy is verifiable against the durable one."
+        }
+      },
+      "description": "Pointer to the experience payload. The record itself stays small; bulk data lives in the tiered store."
+    },
+    "receiptRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "URN of the sealed receipt covering the generation of this experience."
+    },
+    "occurredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 date-time the experience was generated."
+    },
+    "idempotencyKey": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Replay guard so re-delivered experiences never double-count in training or on the board."
+    }
+  }
+}
