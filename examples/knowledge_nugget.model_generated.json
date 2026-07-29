@@ -1,0 +1,39 @@
+{
+  "id": "urn:srcos:knowledge-nugget:gyg_fy2026_outlook_synthesis_0007",
+  "type": "KnowledgeNugget",
+  "specVersion": "0.1.0",
+  "sourceRef": {
+    "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+    "span": {
+      "start": 46800,
+      "end": 52400,
+      "page": 73
+    },
+    "contentHash": "sha256-b8b7fefebb4e8f612ea0a89fd6f465a9c0e57a09630ce7c565e9c5de86a7fc92"
+  },
+  "warrant": {
+    "type": "model-generated",
+    "evidence": [],
+    "confidence": 0.62
+  },
+  "text": "Management appears to expect continued store rollout to sustain double-digit network sales growth into FY2026.",
+  "kkoTypeRefs": [
+    "http://kbpedia.org/kko/rc/Business"
+  ],
+  "provenance": [
+    {
+      "rel": "conditioned_on",
+      "ref": "urn:srcos:dataset:gyg_asx_fy2025_annual_report"
+    },
+    {
+      "rel": "generated_by",
+      "ref": "urn:srcos:run:ifm_synthesis_run_000413"
+    }
+  ],
+  "policyLabels": [
+    "source:public-filing"
+  ],
+  "createdBy": "urn:srcos:agent:ifm_synthesizer_v1",
+  "wallTime": "2026-07-29T09:16:30.000Z",
+  "logicalTime": 4022
+}

@@ -1,0 +1,44 @@
+{
+  "id": "urn:srcos:semantic-action:kb_lookup_filing_metric_1.0.0",
+  "type": "SemanticAction",
+  "specVersion": "0.1.0",
+  "name": "kb.lookup_filing_metric",
+  "version": "1.0.0",
+  "inputs": [
+    {
+      "name": "company",
+      "typeRef": "http://kbpedia.org/kko/rc/Business",
+      "required": true,
+      "cardinality": "one"
+    },
+    {
+      "name": "metric",
+      "typeRef": "https://schemas.srcos.ai/ont/ifm/FilingMetricKind",
+      "required": true,
+      "cardinality": "one"
+    },
+    {
+      "name": "period",
+      "typeRef": "https://schemas.srcos.ai/ont/ifm/FiscalPeriod",
+      "required": false,
+      "cardinality": "one"
+    }
+  ],
+  "output": {
+    "typeRef": "https://schemas.srcos.ai/ont/ifm/FilingMetricObservation",
+    "cardinality": "many"
+  },
+  "constraints": [
+    {
+      "kind": "subClassOf",
+      "subject": "company",
+      "typeRef": "http://kbpedia.org/kko/rc/Organization"
+    }
+  ],
+  "executorRef": "urn:srcos:skill:ifm_filing_metric_lookup",
+  "sideEffects": "none",
+  "registry": {
+    "owner": "urn:srcos:party:ifm_platform_team",
+    "deprecated": false
+  }
+}
