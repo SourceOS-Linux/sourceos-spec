@@ -68,6 +68,8 @@
     },
     "policyClasses": {
       "type": "array",
+      "description": "One or more policy classifications carried by the repo. Required and non-empty: a repo declaring policyClasses:[] would satisfy required-key alone while asserting no classification, exactly the 'declared but empty' pattern the Apple diagnostic pass named as this estate's most frequent governance defect. minItems:1 with uniqueItems:true so 'the field is present' is the same statement as 'the field carries at least one class'.",
+      "minItems": 1,
       "items": {
         "type": "string",
         "enum": ["low", "medium", "high", "critical"]

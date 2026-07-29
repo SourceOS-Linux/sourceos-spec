@@ -1,0 +1,39 @@
+name: SourceOSRepoManifest
+
+on:
+  pull_request:
+    paths:
+      - 'schemas/SourceOSRepoManifest.json'
+      - 'examples/sourceos-repo-manifest.json'
+      - '.sourceos/manifest.json'
+      - 'tools/validate_sourceos_repo_manifest.py'
+      - '.github/workflows/sourceos-repo-manifest.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'schemas/SourceOSRepoManifest.json'
+      - 'examples/sourceos-repo-manifest.json'
+      - '.sourceos/manifest.json'
+      - 'tools/validate_sourceos_repo_manifest.py'
+      - '.github/workflows/sourceos-repo-manifest.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-sourceos-repo-manifest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate SourceOSRepoManifest schema and this repo's own manifest
+        run: |
+          python3 -m pip install jsonschema
+          python3 tools/validate_sourceos_repo_manifest.py
