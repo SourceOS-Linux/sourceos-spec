@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ValueType.json",
+  "title": "ValueType",
+  "description": "A structural, composable type for field and parameter values. Replaces the practice of naming a type with a bare string ('string', 'integer', 'date') documented only by prose example, which no consumer can check and no tool can compose. Constructors nest, so an optional array of person references is expressible as a single term rather than as a scalar name plus a sibling boolean plus a convention. Optionality in particular is a WRAPPER, not a flag: a nullable field and a field of optional type are the same statement, and keeping them as one term stops the two drifting apart.",
+  "$ref": "#/$defs/valueType",
+  "$defs": {
+    "valueType": {
+      "oneOf": [
+        { "$ref": "#/$defs/scalar" },
+        { "$ref": "#/$defs/optional" },
+        { "$ref": "#/$defs/array" },
+        { "$ref": "#/$defs/set" },
+        { "$ref": "#/$defs/enumeration" },
+        { "$ref": "#/$defs/entity" },
+        { "$ref": "#/$defs/measurement" },
+        { "$ref": "#/$defs/record" }
+      ]
+    },
+
+    "scalar": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "scalar"],
+      "description": "A leaf value. attributedString is distinct from string because rich text that round-trips as plain text silently loses its marks; person is a primitive rather than an entity because an actor reference appears in nearly every schema and giving each one its own entity type multiplies the vocabulary without adding meaning.",
+      "properties": {
+        "kind": { "const": "scalar" },
+        "scalar": {
+          "enum": [
+            "string",
+            "attributedString",
+            "int",
+            "double",
+            "bool",
+            "date",
+            "dateTime",
+            "duration",
+            "url",
+            "file",
+            "person",
+            "digest"
+          ]
+        },
+        "constraint": { "$ref": "ValidValues.json" }
+      }
+    },
+
+    "optional": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "of"],
+      "description": "Absence as part of the type, not a boolean beside it. `optional(optional(T))` is prohibited — a doubly-absent value is not a distinct state, and permitting it invites two encodings of the same thing.",
+      "properties": {
+        "kind": { "const": "optional" },
+        "of": {
+          "allOf": [
+            { "$ref": "#/$defs/valueType" },
+            { "not": { "properties": { "kind": { "const": "optional" } }, "required": ["kind"] } }
+          ]
+        }
+      }
+    },
+
+    "array": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "of"],
+      "description": "An ORDERED collection whose element type is carried. A collection whose element type is unstated is a collection nothing can validate.",
+      "properties": {
+        "kind": { "const": "array" },
+        "of": { "$ref": "#/$defs/valueType" },
+        "minItems": { "type": "integer", "minimum": 0 },
+        "maxItems": { "type": "integer", "minimum": 0 }
+      }
+    },
+
+    "set": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "of"],
+      "description": "An UNORDERED collection of distinct elements. Kept separate from array because order-insignificance is a semantic claim: two sets differing only in order are equal, and a consumer that cannot tell array from set cannot know whether a reordering is a change.",
+      "properties": {
+        "kind": { "const": "set" },
+        "of": { "$ref": "#/$defs/valueType" }
+      }
+    },
+
+    "enumeration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "cases"],
+      "description": "A closed set of named cases. Distinct from a string with an enumeration constraint in that the cases are the type, so widening them is visible as a type change.",
+      "properties": {
+        "kind": { "const": "enumeration" },
+        "cases": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
+        "enumRef": {
+          "type": "string",
+          "description": "URN of a shared enumeration, when the cases are defined once and referenced."
+        }
+      }
+    },
+
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "entityRef"],
+      "description": "A reference to another described entity. entityRef is required: an untyped entity reference conveys only that a value points somewhere.",
+      "properties": {
+        "kind": { "const": "entity" },
+        "entityRef": { "type": "string", "minLength": 1 },
+        "domain": { "type": "string" }
+      }
+    },
+
+    "measurement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "dimension"],
+      "description": "A quantity WITH its dimension. A bare number for a physical quantity is the defect this exists to prevent — unit confusion is not detectable after the fact, because the value looks correct.",
+      "properties": {
+        "kind": { "const": "measurement" },
+        "dimension": {
+          "enum": ["length", "mass", "duration", "temperature", "currency", "information", "energy", "angle", "ratio", "count"]
+        },
+        "unit": {
+          "type": "string",
+          "description": "Canonical unit the value is expressed in (e.g. \"m\", \"kg\", \"USD\", \"byte\")."
+        }
+      }
+    },
+
+    "record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "fields"],
+      "description": "An inline product of named, typed members, for shapes that do not warrant their own entity. Bounded deliberately: anything reused belongs in an entity rather than being restated at each site.",
+      "properties": {
+        "kind": { "const": "record" },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["name", "type"],
+            "properties": {
+              "name": { "type": "string", "minLength": 1 },
+              "title": { "type": "string" },
+              "description": { "type": "string" },
+              "type": { "$ref": "#/$defs/valueType" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

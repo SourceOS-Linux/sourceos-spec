@@ -14,6 +14,10 @@
     "taskRef": { "type": "string" },
     "status": { "enum": ["completed", "failed", "blocked", "cancelled"] },
     "traceHash": { "type": "string" },
+    "traceHashMethod": {
+      "enum": ["event-content-chain", "event-id-sequence"],
+      "description": "What traceHash actually commits to. 'event-content-chain' is a rolling hash over the emitted event bytes (h_0 = '', h_n = sha256(h_{n-1} + line_n)) and therefore covers content and order together. 'event-id-sequence' covers only the concatenated event identifiers and is invariant under any change to what the events said — it distinguishes a run from a different run, but does not detect a tampered or re-summarised trace. Absent means 'event-id-sequence' by construction: receipts written before this field existed carry the weaker guarantee, and a verifier must not read their traceHash as content integrity."
+    },
     "coordination": {
       "type": "object",
       "additionalProperties": true
