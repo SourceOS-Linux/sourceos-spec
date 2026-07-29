@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:update-slot:noetica_a41_a",
+  "type": "UpdateSlot",
+  "specVersion": "0.1.0",
+  "targetRef": "urn:srcos:install:noetica_desktop_a41",
+  "slot": "A",
+  "role": "candidate",
+  "state": "good",
+  "bootPriority": 14,
+  "triesRemaining": 0,
+  "successful": true,
+  "currentlyRunning": false,
+  "payloadDigest": "sha256:aa850dde865a39601a8b2f5af88cfb18878a59d91f4fc01b2e465826da90d356",
+  "payloadRef": "urn:srcos:release:noetica_desktop_1.8.2",
+  "version": "1.8.2",
+  "installedAt": "2026-06-30T18:22:40.000Z",
+  "lastBootedAt": "2026-07-28T09:01:12.000Z",
+  "lastProbeVerdict": "pass"
+}

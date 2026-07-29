@@ -1,0 +1,355 @@
+{
+  "description": "Negative conformance vectors for the A/B fallback update contract v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_ab_update_examples.py enforces this and fails the build if any of them validates. Every case is otherwise complete, so a failure is attributable to the named defect rather than to a missing required field. The vectors encode the failure modes that make an update irreversible: writing the slot you fall back to, settling on the slot that failed, promoting through a gate that cannot fail, an unbootable slot the selector will still pick, and a watchdog pair with only one kind in it.",
+  "cases": [
+    {
+      "schema": "UpdateTransaction.json",
+      "reason": "fromSlot == toSlot writes the known-good slot. This is the defect the whole family exists to prevent and it must be rejected by schema, not by a runtime check a caller can skip.",
+      "document": {
+        "id": "urn:srcos:update-transaction:neg_writes_active_slot",
+        "type": "UpdateTransaction",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "fromSlot": "A",
+        "toSlot": "A",
+        "preservedPayloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e",
+        "candidatePayloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0",
+        "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+        "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "maxAttempts": 2,
+        "outcome": "pending",
+        "rollbackReason": null,
+        "openedAt": "2026-07-27T02:10:00.000Z",
+        "settledAt": null,
+        "settledOnSlot": null,
+        "attempts": []
+      }
+    },
+    {
+      "schema": "UpdateTransaction.json",
+      "reason": "A refused transaction that settled on toSlot left the target running the candidate that exhausted its attempts. Refusal must return the target to fromSlot.",
+      "document": {
+        "id": "urn:srcos:update-transaction:neg_refused_on_candidate",
+        "type": "UpdateTransaction",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "fromSlot": "A",
+        "toSlot": "B",
+        "preservedPayloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e",
+        "candidatePayloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0",
+        "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+        "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "maxAttempts": 2,
+        "outcome": "refused",
+        "rollbackReason": "attempts-exhausted",
+        "openedAt": "2026-07-27T02:10:00.000Z",
+        "settledAt": "2026-07-27T02:31:44.000Z",
+        "settledOnSlot": "B",
+        "attempts": [
+          {
+            "attemptNumber": 1,
+            "startedAt": "2026-07-27T02:18:03.000Z",
+            "result": "probe-failed",
+            "fellBackTo": "A",
+            "triesRemainingAfter": 1
+          },
+          {
+            "attemptNumber": 2,
+            "startedAt": "2026-07-27T02:26:12.000Z",
+            "result": "watchdog-expired",
+            "fellBackTo": "A",
+            "triesRemainingAfter": 0
+          }
+        ]
+      }
+    },
+    {
+      "schema": "UpdateTransaction.json",
+      "reason": "A rolled-back transaction with a null rollbackReason is an unattributed rollback — indistinguishable from one that was never diagnosed.",
+      "document": {
+        "id": "urn:srcos:update-transaction:neg_rollback_unattributed",
+        "type": "UpdateTransaction",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "fromSlot": "A",
+        "toSlot": "B",
+        "preservedPayloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e",
+        "candidatePayloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0",
+        "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+        "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "maxAttempts": 2,
+        "outcome": "rolled-back",
+        "rollbackReason": null,
+        "openedAt": "2026-07-27T02:10:00.000Z",
+        "settledAt": "2026-07-27T02:20:00.000Z",
+        "settledOnSlot": "A",
+        "attempts": []
+      }
+    },
+    {
+      "schema": "UpdateTransaction.json",
+      "reason": "A promoted transaction carrying a rollbackReason claims both that the update succeeded and that it was rolled back.",
+      "document": {
+        "id": "urn:srcos:update-transaction:neg_promoted_with_reason",
+        "type": "UpdateTransaction",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:install:noetica_desktop_a41",
+        "fromSlot": "A",
+        "toSlot": "B",
+        "preservedPayloadDigest": "sha256:aa850dde865a39601a8b2f5af88cfb18878a59d91f4fc01b2e465826da90d356",
+        "candidatePayloadDigest": "sha256:22e07d29331b31e37a137ce875de35689ad1d719690cc7a0a6e592a76cb7fcb8",
+        "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+        "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "maxAttempts": 2,
+        "outcome": "promoted",
+        "rollbackReason": "probe-failed",
+        "openedAt": "2026-07-28T09:02:00.000Z",
+        "settledAt": "2026-07-28T09:14:38.000Z",
+        "settledOnSlot": "B",
+        "attempts": [
+          {
+            "attemptNumber": 1,
+            "startedAt": "2026-07-28T09:08:21.000Z",
+            "result": "pass",
+            "fellBackTo": null,
+            "triesRemainingAfter": 1
+          }
+        ]
+      }
+    },
+    {
+      "schema": "UpdateTransaction.json",
+      "reason": "maxAttempts above the GPT tries width is an attempt budget the on-device attribute cannot hold — in practice an unbounded retry, which is a boot loop.",
+      "document": {
+        "id": "urn:srcos:update-transaction:neg_unbounded_attempts",
+        "type": "UpdateTransaction",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "fromSlot": "A",
+        "toSlot": "B",
+        "preservedPayloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e",
+        "candidatePayloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0",
+        "healthProbeRef": "urn:srcos:update-health-probe:sourceos_node_v1",
+        "healthProbeDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "maxAttempts": 99,
+        "outcome": "pending",
+        "rollbackReason": null,
+        "openedAt": "2026-07-27T02:10:00.000Z",
+        "settledAt": null,
+        "settledOnSlot": null,
+        "attempts": []
+      }
+    },
+    {
+      "schema": "UpdateSlot.json",
+      "reason": "state 'writing' on the active slot is the write that destroys the way back. The if/then clause forbids it.",
+      "document": {
+        "id": "urn:srcos:update-slot:neg_writing_active",
+        "type": "UpdateSlot",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "slot": "A",
+        "role": "active",
+        "state": "writing",
+        "bootPriority": 15,
+        "triesRemaining": 0,
+        "successful": true,
+        "currentlyRunning": true,
+        "payloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e"
+      }
+    },
+    {
+      "schema": "UpdateSlot.json",
+      "reason": "An active slot with successful=false is a fallback that was never proven good — the target has nowhere safe to return to.",
+      "document": {
+        "id": "urn:srcos:update-slot:neg_active_unproven",
+        "type": "UpdateSlot",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "slot": "A",
+        "role": "active",
+        "state": "written",
+        "bootPriority": 15,
+        "triesRemaining": 1,
+        "successful": false,
+        "currentlyRunning": true,
+        "payloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e"
+      }
+    },
+    {
+      "schema": "UpdateSlot.json",
+      "reason": "An unbootable slot with a non-zero bootPriority is still selectable by the bootloader — the marking that makes fallback permanent was not applied.",
+      "document": {
+        "id": "urn:srcos:update-slot:neg_unbootable_selectable",
+        "type": "UpdateSlot",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "slot": "B",
+        "role": "candidate",
+        "state": "unbootable",
+        "bootPriority": 3,
+        "triesRemaining": 0,
+        "successful": false,
+        "currentlyRunning": false,
+        "payloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0"
+      }
+    },
+    {
+      "schema": "UpdateSlot.json",
+      "reason": "successful=true without a payloadDigest records a slot as good without pinning what was proven good.",
+      "document": {
+        "id": "urn:srcos:update-slot:neg_good_unpinned",
+        "type": "UpdateSlot",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "slot": "B",
+        "role": "candidate",
+        "state": "good",
+        "bootPriority": 14,
+        "triesRemaining": 0,
+        "successful": true,
+        "currentlyRunning": false
+      }
+    },
+    {
+      "schema": "UpdateSlot.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:update-slot:neg_unknown_prop",
+        "type": "UpdateSlot",
+        "specVersion": "0.1.0",
+        "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+        "slot": "A",
+        "role": "active",
+        "state": "good",
+        "bootPriority": 15,
+        "triesRemaining": 0,
+        "successful": true,
+        "currentlyRunning": true,
+        "payloadDigest": "sha256:b73d34fdc15b73c8efeb4527811459b62addf6e4c4a69730f81244ff0beab97e",
+        "forceBootAnyway": true
+      }
+    },
+    {
+      "schema": "UpdateHealthProbe.json",
+      "reason": "A watchdog set with no hardware watchdog cannot fire through a wedged kernel — the process that would notice is the process that is stuck.",
+      "document": {
+        "id": "urn:srcos:update-health-probe:neg_software_only",
+        "type": "UpdateHealthProbe",
+        "specVersion": "0.1.0",
+        "definitionDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "evaluatedIn": "post-boot-userspace",
+        "onProbeUnavailable": "fail",
+        "timeoutSeconds": 180,
+        "minConsecutivePasses": 1,
+        "checks": [
+          { "name": "supervisor-alive", "kind": "process-liveness", "blocking": true }
+        ],
+        "watchdogs": [
+          {
+            "kind": "software",
+            "timeoutSeconds": 90,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot-to-fallback"
+          },
+          {
+            "kind": "software",
+            "timeoutSeconds": 120,
+            "pettedBy": "urn:srcos:component:node_secondary_loop",
+            "expiryAction": "reboot"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "UpdateHealthProbe.json",
+      "reason": "onProbeUnavailable other than 'fail' promotes payloads through a gate that never ran.",
+      "document": {
+        "id": "urn:srcos:update-health-probe:neg_inconclusive_passes",
+        "type": "UpdateHealthProbe",
+        "specVersion": "0.1.0",
+        "definitionDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "evaluatedIn": "post-boot-userspace",
+        "onProbeUnavailable": "pass",
+        "timeoutSeconds": 180,
+        "minConsecutivePasses": 1,
+        "checks": [
+          { "name": "supervisor-alive", "kind": "process-liveness", "blocking": true }
+        ],
+        "watchdogs": [
+          {
+            "kind": "software",
+            "timeoutSeconds": 90,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot-to-fallback"
+          },
+          {
+            "kind": "hardware",
+            "timeoutSeconds": 300,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "UpdateHealthProbe.json",
+      "reason": "A probe evaluated in the bootloader can only observe that control transferred. Letting the boot path declare its own success is having no gate at all.",
+      "document": {
+        "id": "urn:srcos:update-health-probe:neg_bootloader_evaluated",
+        "type": "UpdateHealthProbe",
+        "specVersion": "0.1.0",
+        "definitionDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "evaluatedIn": "bootloader",
+        "onProbeUnavailable": "fail",
+        "timeoutSeconds": 180,
+        "minConsecutivePasses": 1,
+        "checks": [
+          { "name": "supervisor-alive", "kind": "process-liveness", "blocking": true }
+        ],
+        "watchdogs": [
+          {
+            "kind": "software",
+            "timeoutSeconds": 90,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot-to-fallback"
+          },
+          {
+            "kind": "hardware",
+            "timeoutSeconds": 300,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "UpdateHealthProbe.json",
+      "reason": "A probe with an empty check set passes everything while producing a passing record — worse than no probe, because it looks like evidence.",
+      "document": {
+        "id": "urn:srcos:update-health-probe:neg_empty_checks",
+        "type": "UpdateHealthProbe",
+        "specVersion": "0.1.0",
+        "definitionDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+        "evaluatedIn": "post-boot-userspace",
+        "onProbeUnavailable": "fail",
+        "timeoutSeconds": 180,
+        "minConsecutivePasses": 1,
+        "checks": [],
+        "watchdogs": [
+          {
+            "kind": "software",
+            "timeoutSeconds": 90,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot-to-fallback"
+          },
+          {
+            "kind": "hardware",
+            "timeoutSeconds": 300,
+            "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+            "expiryAction": "reboot"
+          }
+        ]
+      }
+    }
+  ]
+}

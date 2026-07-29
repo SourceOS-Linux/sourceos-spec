@@ -1,0 +1,59 @@
+{
+  "id": "urn:srcos:update-health-probe:sourceos_node_v1",
+  "type": "UpdateHealthProbe",
+  "specVersion": "0.1.0",
+  "definitionDigest": "sha256:2e0672e76fbc68c30cad6542a5f0a778596cb8700e77a222715738d4731da86c",
+  "evaluatedIn": "post-boot-userspace",
+  "onProbeUnavailable": "fail",
+  "timeoutSeconds": 180,
+  "minConsecutivePasses": 2,
+  "description": "Promotion gate for SourceOS fog-node images and for Noetica desktop installs. Both targets run the same five checks because both fail the same way: a payload that starts, answers one request, and then cannot reach its control plane.",
+  "checks": [
+    {
+      "name": "supervisor-alive",
+      "kind": "process-liveness",
+      "blocking": true,
+      "description": "The node supervisor reached its ready state and has stayed there for the probe window."
+    },
+    {
+      "name": "local-api-200",
+      "kind": "endpoint-health",
+      "blocking": true,
+      "description": "The local control endpoint answers with a 200 and reports the payload version this transaction wrote."
+    },
+    {
+      "name": "state-store-readable",
+      "kind": "data-integrity",
+      "blocking": true,
+      "description": "The persistent state store opens and its schema version is one this payload can serve. A payload that boots but cannot read the state it inherited is a brick with a login prompt."
+    },
+    {
+      "name": "control-plane-reachable",
+      "kind": "connectivity",
+      "blocking": true,
+      "description": "The target reached its control plane at least once. Blocking on purpose: an edge node that cannot be reached cannot be remotely rolled back, so promoting it converts a recoverable fault into a site visit."
+    },
+    {
+      "name": "fallback-slot-bootable",
+      "kind": "rollback-capability",
+      "blocking": true,
+      "description": "The other slot still holds a digest-verified payload with a non-zero boot priority. Checked BEFORE promotion because promotion is the moment the previous payload stops being the guaranteed way back."
+    }
+  ],
+  "watchdogs": [
+    {
+      "kind": "software",
+      "timeoutSeconds": 90,
+      "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+      "expiryAction": "reboot-to-fallback",
+      "description": "Petted only by the health loop after a full passing check sweep, never on a timer. A supervisor that pets on a schedule proves the supervisor is alive and says nothing about the payload."
+    },
+    {
+      "kind": "hardware",
+      "timeoutSeconds": 300,
+      "pettedBy": "urn:srcos:component:node_supervisor_health_loop",
+      "expiryAction": "reboot",
+      "description": "Independent SoC timer. Longer than the software timeout so the software watchdog gets the first, attributable word; it exists for the case where the kernel wedges and the software watchdog can never run to fire."
+    }
+  ]
+}

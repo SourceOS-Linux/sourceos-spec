@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:update-slot:fog_edge_07_b",
+  "type": "UpdateSlot",
+  "specVersion": "0.1.0",
+  "targetRef": "urn:srcos:node:sourceos_fog_edge_07",
+  "slot": "B",
+  "role": "candidate",
+  "state": "unbootable",
+  "bootPriority": 0,
+  "triesRemaining": 0,
+  "successful": false,
+  "currentlyRunning": false,
+  "payloadDigest": "sha256:9da88dc197887a52961b7846083b868e0a2e4ed0f1846abdfa6e9f4d566c66d0",
+  "payloadRef": "urn:srcos:image:sourceos_node_2026.07.4",
+  "version": "2026.07.4",
+  "installedAt": "2026-07-27T02:17:11.000Z",
+  "lastBootedAt": "2026-07-27T02:26:12.000Z",
+  "lastProbeVerdict": "fail"
+}

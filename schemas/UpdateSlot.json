@@ -1,0 +1,163 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/UpdateSlot.json",
+  "title": "UpdateSlot",
+  "description": "One of exactly two boot/install slots on an update target. Models the GPT priority-boot attribute triple (bootPriority, triesRemaining, successful) that a GRUB/bootloader slot selector reads, plus the payload digest installed in the slot. THE INVARIANT THIS FAMILY EXISTS FOR: the slot holding the currently-good payload is never the write target of an update. It is enforced structurally here (state 'writing' requires role 'candidate') and again on UpdateTransaction (fromSlot != toSlot, enumerated over the closed two-slot set). Role and running are deliberately separate: 'active' is the known-good fallback the target returns to, 'currentlyRunning' is what the CPU is executing right now — during a trial boot the candidate is running while the active slot is still the fallback, and collapsing the two would make the fallback slot indescribable exactly when it matters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "targetRef",
+    "slot",
+    "role",
+    "state",
+    "bootPriority",
+    "triesRemaining",
+    "successful",
+    "currentlyRunning"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": { "state": { "const": "writing" } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": { "role": { "const": "candidate" } },
+        "required": ["role"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "role": { "const": "active" } },
+        "required": ["role"]
+      },
+      "then": {
+        "properties": {
+          "successful": { "const": true },
+          "bootPriority": { "minimum": 1 }
+        },
+        "required": ["successful", "bootPriority"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "state": { "const": "unbootable" } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": {
+          "bootPriority": { "const": 0 },
+          "successful": { "const": false }
+        },
+        "required": ["bootPriority", "successful"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "state": { "const": "good" } },
+        "required": ["state"]
+      },
+      "then": {
+        "properties": { "successful": { "const": true } },
+        "required": ["successful"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "successful": { "const": true } },
+        "required": ["successful"]
+      },
+      "then": {
+        "required": ["payloadDigest"]
+      }
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:update-slot:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:update-slot:<local-id>"
+    },
+    "type": {
+      "const": "UpdateSlot",
+      "description": "Discriminator constant — always \"UpdateSlot\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "A/B fallback update contract version, pinned. Changing this const is a contract change."
+    },
+    "targetRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "URN of the update target owning this slot — a node, device, or installed application. Exactly two UpdateSlot documents share one targetRef."
+    },
+    "slot": {
+      "type": "string",
+      "enum": ["A", "B"],
+      "description": "Physical slot label. Closed to exactly two at v0.1: A/B is not a shorthand for 'N slots'. The fallback guarantee is that one slot is always retained known-good while the other is written, and that argument does not generalise to N without a new arbitration rule — a third slot is a contract change, not a new enum value."
+    },
+    "role": {
+      "type": "string",
+      "enum": ["active", "candidate"],
+      "description": "active = the known-good slot the target falls back to; candidate = the slot an update writes to and trials. Roles swap only on promotion (a passing health probe), never on a boot attempt."
+    },
+    "state": {
+      "type": "string",
+      "enum": ["empty", "writing", "written", "trying", "good", "unbootable"],
+      "description": "Slot lifecycle. empty = never written; writing = receiving a payload (candidate only, enforced by if/then); written = payload complete and digest-verified, not yet booted; trying = armed and being trial-booted with the probe pending; good = health probe passed and successful was set; unbootable = priority zeroed, the selector will never choose it again."
+    },
+    "bootPriority": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 15,
+      "description": "GPT priority attribute. The slot selector boots the highest-priority slot that is either successful or still has tries remaining. 0 means unbootable and is the value written when a candidate exhausts its tries — that write is what makes fallback automatic rather than operator-driven."
+    },
+    "triesRemaining": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 7,
+      "description": "GPT tries attribute. Decremented by the bootloader BEFORE control is handed to the slot, so a payload that hangs before userspace still consumes an attempt. A counter decremented after boot would never terminate for a payload that cannot reach userspace — which is precisely the boot loop this contract forbids."
+    },
+    "successful": {
+      "type": "boolean",
+      "description": "GPT successful attribute. Set true ONLY by userspace after the pinned health probe passes; the bootloader never sets it. A bootloader that marks its own boot successful is attesting that control transferred, not that the payload works, and that is the failure this whole family is built to prevent."
+    },
+    "currentlyRunning": {
+      "type": "boolean",
+      "description": "Whether the target is executing this slot right now. Distinct from role: during a trial boot the candidate is running while the active slot remains the known-good fallback. Exactly one slot per targetRef may be true (cross-document invariant, enforced by the family validator)."
+    },
+    "payloadDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content digest of the payload installed in this slot. Required once successful is true. Digest-pinned, never a tag: a slot recorded as good by a moving tag cannot be proven to still hold the payload that passed the probe."
+    },
+    "payloadRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable reference of the payload artifact (image URN, release URN, registry reference)."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable version string of the payload in this slot. Advisory only — arbitration reads bootPriority/triesRemaining/successful, never this field."
+    },
+    "installedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the current payload finished writing and passed digest verification. Null while empty."
+    },
+    "lastBootedAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the target last handed control to this slot. Null if never booted."
+    },
+    "lastProbeVerdict": {
+      "type": ["string", "null"],
+      "enum": ["pass", "fail", null],
+      "description": "Verdict of the most recent health probe run against this slot. Null before the first run. This is an operations verdict, not a claims verdict: it says the payload works, never that it is correct."
+    }
+  }
+}

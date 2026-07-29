@@ -1,0 +1,264 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/UpdateTransaction.json",
+  "title": "UpdateTransaction",
+  "description": "One attempt to move an update target from the payload in its active slot to a new payload, with an enforced path back. Records the write target, the pinned health probe, every boot attempt and its outcome, and which slot the target ended up on. THE INVARIANT: fromSlot != toSlot — the known-good slot is never the write target. Because the slot set is closed to exactly two, that invariant is enumerable and is enforced here by schema (the `not`/`anyOf` clause) rather than by prose or by a runtime check that a caller can forget. A second family of if/then clauses enforces the other half of the guarantee: a transaction that does not end in promotion must leave the target running the slot it started on. Together those two say the whole thing — you may fail an update, but you may not lose the payload that worked.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "targetRef",
+    "fromSlot",
+    "toSlot",
+    "preservedPayloadDigest",
+    "candidatePayloadDigest",
+    "healthProbeRef",
+    "healthProbeDigest",
+    "maxAttempts",
+    "outcome",
+    "attempts",
+    "openedAt"
+  ],
+  "not": {
+    "anyOf": [
+      {
+        "properties": {
+          "fromSlot": { "const": "A" },
+          "toSlot": { "const": "A" }
+        },
+        "required": ["fromSlot", "toSlot"]
+      },
+      {
+        "properties": {
+          "fromSlot": { "const": "B" },
+          "toSlot": { "const": "B" }
+        },
+        "required": ["fromSlot", "toSlot"]
+      }
+    ]
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "outcome": { "enum": ["rolled-back", "refused"] } },
+        "required": ["outcome"]
+      },
+      "then": {
+        "required": ["rollbackReason", "settledAt", "settledOnSlot"],
+        "properties": { "rollbackReason": { "type": "string" } }
+      }
+    },
+    {
+      "if": {
+        "properties": { "outcome": { "const": "refused" } },
+        "required": ["outcome"]
+      },
+      "then": {
+        "properties": { "rollbackReason": { "const": "attempts-exhausted" } },
+        "required": ["rollbackReason"]
+      }
+    },
+    {
+      "if": {
+        "properties": { "outcome": { "const": "promoted" } },
+        "required": ["outcome"]
+      },
+      "then": {
+        "required": ["settledAt", "settledOnSlot"],
+        "properties": { "rollbackReason": { "type": "null" } }
+      }
+    },
+    {
+      "if": {
+        "properties": { "outcome": { "const": "pending" } },
+        "required": ["outcome"]
+      },
+      "then": {
+        "properties": {
+          "settledAt": { "type": "null" },
+          "settledOnSlot": { "type": "null" }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": { "const": "promoted" },
+          "toSlot": { "const": "A" }
+        },
+        "required": ["outcome", "toSlot"]
+      },
+      "then": { "properties": { "settledOnSlot": { "const": "A" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": { "const": "promoted" },
+          "toSlot": { "const": "B" }
+        },
+        "required": ["outcome", "toSlot"]
+      },
+      "then": { "properties": { "settledOnSlot": { "const": "B" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": { "enum": ["rolled-back", "refused"] },
+          "fromSlot": { "const": "A" }
+        },
+        "required": ["outcome", "fromSlot"]
+      },
+      "then": { "properties": { "settledOnSlot": { "const": "A" } } }
+    },
+    {
+      "if": {
+        "properties": {
+          "outcome": { "enum": ["rolled-back", "refused"] },
+          "fromSlot": { "const": "B" }
+        },
+        "required": ["outcome", "fromSlot"]
+      },
+      "then": { "properties": { "settledOnSlot": { "const": "B" } } }
+    }
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:update-transaction:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:update-transaction:<local-id>"
+    },
+    "type": {
+      "const": "UpdateTransaction",
+      "description": "Discriminator constant — always \"UpdateTransaction\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "A/B fallback update contract version, pinned. Changing this const is a contract change."
+    },
+    "targetRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:",
+      "description": "URN of the update target — the same targetRef carried by both of its UpdateSlot documents."
+    },
+    "fromSlot": {
+      "type": "string",
+      "enum": ["A", "B"],
+      "description": "The slot that was active (known-good) when this transaction opened. It is the fallback for the whole life of the transaction and must not be written."
+    },
+    "toSlot": {
+      "type": "string",
+      "enum": ["A", "B"],
+      "description": "The slot the candidate payload is written to. Must differ from fromSlot — enforced by the top-level `not` clause, which enumerates the two illegal pairs because the slot set is closed."
+    },
+    "preservedPayloadDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Digest of the payload in fromSlot at open. The family validator asserts this still matches the active slot's payloadDigest after the transaction settles — that comparison is the executable form of 'the good slot was never overwritten', as opposed to an assurance that it was not."
+    },
+    "candidatePayloadDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Digest of the payload being written to toSlot, verified after write and before the slot is armed. A write that ends with a digest mismatch settles as rolled-back and never arms."
+    },
+    "healthProbeRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:update-health-probe:[A-Za-z0-9._~-]+$",
+      "description": "URN of the UpdateHealthProbe that gates promotion."
+    },
+    "healthProbeDigest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "The probe's definitionDigest as pinned at open. Must equal the referenced probe's current definitionDigest (family validator). Pinning at open is what prevents the gate being edited to admit the candidate that failed it."
+    },
+    "maxAttempts": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 7,
+      "description": "Boot attempts the candidate is allowed before it is marked unbootable and the transaction is refused. Bounded above by the GPT tries attribute width. There is no unbounded setting: the reason this field exists is that 'retry until it works' and 'boot loop' are the same program."
+    },
+    "outcome": {
+      "type": "string",
+      "enum": ["pending", "promoted", "rolled-back", "refused"],
+      "description": "pending = in flight; promoted = probe passed and roles swapped; rolled-back = abandoned before the attempt budget was spent (write failure, digest mismatch, operator abort, or a single-attempt policy); refused = the budget was spent, the candidate is unbootable, and no further automatic attempt will be made. refused is a terminal state on purpose — it is the state that ends the boot loop, and a system without it retries a fatal payload forever."
+    },
+    "rollbackReason": {
+      "type": ["string", "null"],
+      "enum": [
+        "probe-failed",
+        "watchdog-expired",
+        "attempts-exhausted",
+        "write-failed",
+        "digest-mismatch",
+        "operator-abort",
+        null
+      ],
+      "description": "Why the target stayed on (or returned to) fromSlot. Required and non-null whenever outcome is rolled-back or refused; null when promoted. Closed set — an unattributed rollback teaches nothing and is indistinguishable from a rollback that was never diagnosed."
+    },
+    "attempts": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Ordered record of boot attempts into toSlot. Empty only while the payload is still being written. Every failed attempt records the slot the target fell back to, so 'we rolled back' is a fact in the record rather than an inference from the absence of a promotion.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["attemptNumber", "startedAt", "result"],
+        "properties": {
+          "attemptNumber": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 7,
+            "description": "1-based attempt index. Must be contiguous from 1 and must not exceed maxAttempts (family validator)."
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bootloader handed control to toSlot for this attempt."
+          },
+          "result": {
+            "type": "string",
+            "enum": ["pass", "probe-failed", "watchdog-expired", "write-failed", "aborted"],
+            "description": "Outcome of this attempt. pass may appear only once and only as the final attempt (family validator) — a transaction that keeps trying after a pass has not understood that promotion is terminal."
+          },
+          "fellBackTo": {
+            "type": ["string", "null"],
+            "enum": ["A", "B", null],
+            "description": "Slot the target booted after this attempt failed. Null on a passing attempt. Non-null on every failing attempt — a failed trial boot that fell back nowhere is a target left running an unproven payload."
+          },
+          "triesRemainingAfter": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 7,
+            "description": "The candidate slot's triesRemaining after the bootloader decremented for this attempt. Recorded so attempt accounting can be audited against the on-device attribute rather than trusted."
+          },
+          "detail": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Which check or watchdog produced the result."
+          }
+        }
+      }
+    },
+    "settledOnSlot": {
+      "type": ["string", "null"],
+      "enum": ["A", "B", null],
+      "description": "Slot the target is running once the transaction is terminal. Constrained by if/then to equal toSlot on promotion and fromSlot on rollback or refusal — the schema, not the operator, decides that a failed update leaves you where you started."
+    },
+    "openedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When the transaction opened and preservedPayloadDigest was recorded."
+    },
+    "settledAt": {
+      "type": ["string", "null"],
+      "format": "date-time",
+      "description": "When the transaction reached a terminal outcome. Null while pending."
+    },
+    "receiptRef": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to the sealed receipt covering this transaction, if the target emits into the reasoning-evidence fabric."
+    }
+  }
+}
