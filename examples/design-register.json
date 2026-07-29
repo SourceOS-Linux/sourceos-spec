@@ -1,0 +1,24 @@
+{
+  "register": [
+    {
+      "id": "effect-discipline",
+      "source": "concept-diagram-2026-07 (monads panel)",
+      "mechanism": "Four enforced laws in compute-gateway tests/test_receipt_compositionality.py: warrant fold (weakest-link monoid), structural fold (composite embeds exactly its step receipts in DAG order), hash binding, determinism (memo law).",
+      "owner": "prophet-platform/apps/compute-gateway",
+      "status": "wired",
+      "probe": "The law suite exists and the gateway test dir is CI-gated.",
+      "probe_cmd": "test -f apps/compute-gateway/tests/test_receipt_compositionality.py && grep -rq compute-gateway .github/workflows/",
+      "wave": "W6.0"
+    },
+    {
+      "id": "exhaust-accounting",
+      "source": "concept-diagram-2026-07 (thermodynamics panel)",
+      "mechanism": "ExhaustRecord on every compute/compaction; Receipt gains optional exhaust_sha/bytes_in/bytes_out; trace-dream job mines discarded-but-later-needed into retrieval tuning + SRS.",
+      "owner": "agent-machine + compute-gateway",
+      "status": "absent",
+      "probe": "Sample /v1/compute receipt carries exhaust_sha and bytes_in/bytes_out.",
+      "wave": "W6.1",
+      "notes": "v1 entropy metric = compression ratio; refinement is research-gated."
+    }
+  ]
+}

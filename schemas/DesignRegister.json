@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DesignRegister.json",
+  "title": "DesignRegister",
+  "description": "Metaphor→Mechanism program (prophet-platform docs/METAPHOR_TO_MECHANISM_PROGRAM.md). A design register is the machine-checkable ledger of design concepts: every entry carries a status on the execution ladder and a probe that can prove it. INVARIANT DR-I1 (the ladder rule): no entry may be described — in code comments, memory, retrospectives, or external communications — above its probe-verified status. INVARIANT DR-I2: any entry claiming status `wired` or above MUST carry a runnable `probe_cmd`, and a failing probe is a build failure, not a warning (enforced structurally below via if/then). The register exists to make an unimplemented design a red CI gate instead of an archaeology finding.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["register"],
+  "properties": {
+    "register": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/DesignRegisterEntry" }
+    }
+  },
+  "$defs": {
+    "DesignRegisterEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source", "mechanism", "owner", "status", "probe", "wave"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+          "description": "Stable kebab-case slug; the concept's greppable name from this point on."
+        },
+        "source": {
+          "type": "string",
+          "description": "Where the design was authored (diagram, doc, audit) — the artifact this entry keeps honest."
+        },
+        "mechanism": {
+          "type": "string",
+          "description": "The concept re-expressed as a mechanism over EXISTING capabilities. Metaphor is not a mechanism; if this field cannot be written concretely, the entry is not ready to leave `absent`."
+        },
+        "owner": {
+          "type": "string",
+          "description": "Owning repo/service(s) — where the mechanism lives or will live."
+        },
+        "status": {
+          "enum": ["absent", "declared", "wired", "measured", "sealed"],
+          "description": "The execution ladder. absent: idea only. declared: spec/schema merged. wired: callers > 0, deployed, live probe passes. measured: a metric/bench number exists. sealed: the number is receipted/replay-exact."
+        },
+        "probe": {
+          "type": "string",
+          "description": "Human-readable statement of what would prove the current status claim."
+        },
+        "probe_cmd": {
+          "type": "string",
+          "description": "Runnable shell probe (file/grep/curl-grade, cheap by construction). Exit 0 = claim holds. Required at `wired` and above (DR-I2)."
+        },
+        "wave": {
+          "type": "string",
+          "description": "Delivery wave/lane assignment (e.g. W6.1), or `unassigned`."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional context: research gates, sequencing rationale, prior convictions."
+        }
+      },
+      "if": {
+        "properties": { "status": { "enum": ["wired", "measured", "sealed"] } }
+      },
+      "then": {
+        "required": ["id", "source", "mechanism", "owner", "status", "probe", "wave", "probe_cmd"]
+      }
+    }
+  }
+}
