@@ -1,7 +1,10 @@
-.PHONY: validate validate-source-locator validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-pattern-warrant-examples
+.PHONY: validate validate-vectors-are-executed validate-source-locator validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-pattern-warrant-examples
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-pattern-warrant-examples validate-source-locator
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-pattern-warrant-examples validate-source-locator validate-vectors-are-executed
 	@echo "OK: validate"
+
+validate-vectors-are-executed:
+	python3 tools/validate_vectors_are_executed.py
 
 validate-source-locator:
 	python3 tools/validate_source_locator.py
