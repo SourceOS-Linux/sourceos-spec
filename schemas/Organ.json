@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Organ.json",
+  "title": "Organ",
+  "description": "Metaphor→Mechanism W6.4 (design-register: declared-organs). A typed, queryable view of a functional group of services in the mesh — the organogenesis design's first mechanical form. v1 is DECLARED, not emergent: organs are asserted over services that already exist (memory, routing, perception, policy) and report live member health, so the mesh's capabilities become inspectable instead of implicit. INVARIANT OR-I1: an organ NEVER invents members — every member corresponds to a real, addressable service, and a member whose health cannot be determined is reported `unknown`, never assumed healthy. INVARIANT OR-I2: organ health is derived from members, never asserted independently — an organ cannot claim to be healthier than the members it is made of. Membership dynamics (v2) and differentiation (v3) are deliberately out of scope until v1 proves useful.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "specVersion", "id", "kind", "members", "capabilities", "health"],
+  "properties": {
+    "type": { "const": "Organ" },
+    "specVersion": { "type": "string" },
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:organ:[A-Za-z0-9._~-]+$"
+    },
+    "kind": {
+      "enum": ["memory", "routing", "perception", "policy"],
+      "description": "The function this organ performs for the whole: memory retains, routing directs, perception ingests/extracts, policy governs."
+    },
+    "name": { "type": "string" },
+    "members": {
+      "type": "array",
+      "description": "Real services composing the organ (OR-I1). Never synthetic.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["service", "health"],
+        "properties": {
+          "service": { "type": "string", "description": "Addressable service name." },
+          "endpoint": { "type": "string" },
+          "health": {
+            "enum": ["healthy", "degraded", "down", "unknown"],
+            "description": "`unknown` when health could not be determined — never optimistically 'healthy' (OR-I1)."
+          },
+          "checkedAt": { "type": "string", "format": "date-time" },
+          "detail": { "type": "string" }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "What this organ can do, as capability tokens the membrane/registry already speaks."
+    },
+    "health": {
+      "enum": ["healthy", "degraded", "down", "unknown"],
+      "description": "Derived from members only (OR-I2): healthy iff all known members are healthy; down iff all are down; unknown iff no member health is known; degraded otherwise."
+    },
+    "observedAt": { "type": "string", "format": "date-time" }
+  }
+}

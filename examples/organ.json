@@ -1,0 +1,14 @@
+{
+  "type": "Organ",
+  "specVersion": "2.0",
+  "id": "urn:srcos:organ:memory",
+  "kind": "memory",
+  "name": "Memory organ",
+  "members": [
+    { "service": "memory-mesh", "endpoint": "http://memory-mesh:8080", "health": "healthy", "checkedAt": "2026-07-29T14:00:00Z" },
+    { "service": "hellgraph-service", "endpoint": "http://hellgraph-service:8090", "health": "unknown", "checkedAt": "2026-07-29T14:00:00Z", "detail": "probe timed out" }
+  ],
+  "capabilities": ["recall", "consolidate", "ground"],
+  "health": "degraded",
+  "observedAt": "2026-07-29T14:00:00Z"
+}
