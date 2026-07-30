@@ -103,6 +103,24 @@ def main() -> int:
     case("id URN not the mesh-action-registry namespace",
          broken(lambda b: b.__setitem__("id", "urn:srcos:something:x")), False)
 
+    # implementsAbb — new field. Absent is fine (participant claims no ABB slots); present must be
+    # non-empty when set, and each entry must match the ABB.NN pattern.
+    print("  implementsAbb")
+    case("implementsAbb absent (participant claims no ABB slots)",
+         broken(lambda b: b["participants"][0].pop("implementsAbb", None)), True)
+    case("implementsAbb with a valid ABB claim",
+         broken(lambda b: b["participants"][0].__setitem__("implementsAbb", ["ABB.03"])), True)
+    case("implementsAbb with multiple valid ABB claims",
+         broken(lambda b: b["participants"][0].__setitem__("implementsAbb", ["ABB.03", "ABB.07"])), True)
+    case("implementsAbb non-conforming pattern (bare number)",
+         broken(lambda b: b["participants"][0].__setitem__("implementsAbb", ["3"])), False)
+    case("implementsAbb non-conforming pattern (three digits)",
+         broken(lambda b: b["participants"][0].__setitem__("implementsAbb", ["ABB.003"])), False)
+    case("implementsAbb with duplicate ABB entries (uniqueItems)",
+         broken(lambda b: b["participants"][0].__setitem__("implementsAbb", ["ABB.03", "ABB.03"])), False)
+    case("implementsAbb wrong namespace",
+         broken(lambda b: b["participants"][0].__setitem__("implementsAbb", ["ARC.03"])), False)
+
     case("undeclared property on a participant (schema is closed)",
          broken(lambda b: b["participants"][0].__setitem__("zzUnknown", "leak")), False)
 

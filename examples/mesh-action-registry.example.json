@@ -15,13 +15,15 @@
       "manifestRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/.sourceos/manifest.json",
       "catalogRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/agent-machine/lib/action-registry.ts",
       "catalogDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
-      "verbOntologyRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/agent-machine/data/verb-ontology.json"
+      "verbOntologyRef": "https://raw.githubusercontent.com/SocioProphet/Noetica/main/agent-machine/data/verb-ontology.json",
+      "implementsAbb": ["ABB.02"]
     },
     {
       "repo": "SourceOS-Linux/agent-machine",
       "manifestRef": "https://raw.githubusercontent.com/SourceOS-Linux/agent-machine/main/.sourceos/manifest.json",
       "catalogRef": "https://raw.githubusercontent.com/SourceOS-Linux/agent-machine/main/src/agent_machine/actions.py",
-      "catalogDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222"
+      "catalogDigest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "implementsAbb": ["ABB.01", "ABB.02"]
     }
   ]
 }

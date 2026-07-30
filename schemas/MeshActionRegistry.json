@@ -80,6 +80,16 @@
           "type": "string",
           "format": "uri-reference",
           "description": "Optional pointer to the verb ontology the participant classifies against — see Noetica's verb-ontology.json. Absent means the participant does not classify its actions with verbs, which is a weaker claim (Apple's 4-primitive shape); present with a mismatched ontologyVersion is a decision the consumer must adjudicate."
+        },
+        "implementsAbb": {
+          "type": "array",
+          "minItems": 0,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^ABB\\.[0-9]{2}$"
+          },
+          "description": "ABB identifiers this participant fills, per https://schemas.srcos.ai/v2/ArchitecturalBuildingBlock.json. Absent or empty means the participant is not claimed as a slot filler for any registered ABB — the consumer walking the registry for an ABB will not consider it. Non-empty means each listed ABB is an implementation contract the participant asserts it satisfies. Verification is the consumer's job (walk the ABB's protocol + requiredCapabilities, confirm the participant delivers each) — this field only establishes the CLAIM, not its truth. That split matters: a validator here could reject an unknown ABB.NN, but cannot know whether the participant actually satisfies its protocol without running the caller."
         }
       }
     }
