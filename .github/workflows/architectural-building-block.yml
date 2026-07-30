@@ -1,0 +1,37 @@
+name: ArchitecturalBuildingBlock
+
+# Estate-wide role-named component contract. Consumed by prophet-mesh (Michael Agent's
+# ABB-aware routing), Noetica (intent-grid → ABB match), and prophet-platform
+# (solution-ranker, access-prewalk libs). Its own gate so a schema change trips one row.
+
+on:
+  pull_request:
+    paths:
+      - 'schemas/ArchitecturalBuildingBlock.json'
+      - 'examples/architectural-building-block.example.json'
+      - 'tools/validate_architectural_building_block.py'
+      - '.github/workflows/architectural-building-block.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'schemas/ArchitecturalBuildingBlock.json'
+      - 'examples/architectural-building-block.example.json'
+      - 'tools/validate_architectural_building_block.py'
+      - '.github/workflows/architectural-building-block.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-architectural-building-block:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate ArchitecturalBuildingBlock schema + example
+        run: |
+          python3 -m pip install jsonschema
+          python3 tools/validate_architectural_building_block.py
