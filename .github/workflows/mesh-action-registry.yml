@@ -1,0 +1,37 @@
+name: MeshActionRegistry
+
+on:
+  pull_request:
+    paths:
+      - 'schemas/MeshActionRegistry.json'
+      - 'examples/mesh-action-registry.example.json'
+      - 'tools/validate_mesh_action_registry.py'
+      - '.github/workflows/mesh-action-registry.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'schemas/MeshActionRegistry.json'
+      - 'examples/mesh-action-registry.example.json'
+      - 'tools/validate_mesh_action_registry.py'
+      - '.github/workflows/mesh-action-registry.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate-mesh-action-registry:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Validate MeshActionRegistry schema
+        run: |
+          python3 -m pip install jsonschema
+          python3 tools/validate_mesh_action_registry.py
