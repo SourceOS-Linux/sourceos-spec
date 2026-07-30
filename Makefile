@@ -1,6 +1,6 @@
-.PHONY: validate validate-value-type validate-source-locator validate-sourceos-repo-manifest validate-mesh-action-registry validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples validate-ab-update-examples validate-device-service-examples validate-duplicate-schema-ids
+.PHONY: validate validate-value-type validate-source-locator validate-sourceos-repo-manifest validate-mesh-action-registry validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples validate-ab-update-examples validate-device-service-examples validate-duplicate-schema-ids validate-lawful-dispatch-receipt
 
-validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples validate-ab-update-examples validate-device-service-examples validate-duplicate-schema-ids validate-value-type validate-source-locator validate-sourceos-repo-manifest validate-mesh-action-registry
+validate: validate-control-plane-examples validate-nlboot-examples validate-lattice-data-governai-examples validate-ops-history-examples validate-runtime-observability-examples validate-interpretability-examples validate-lifecycle-boundary-examples validate-svf-contracts validate-sync-cycle-receipts validate-onboarding-examples validate-runtime-causality-examples validate-agentic-os-examples validate-triparty-examples validate-labor-market-examples validate-supply-chain-risk-examples validate-reasoning-examples validate-mpcc-event-examples validate-knowledge-nugget-examples validate-semantic-action-examples validate-epistemic-kernel-examples validate-ab-update-examples validate-device-service-examples validate-duplicate-schema-ids validate-value-type validate-source-locator validate-sourceos-repo-manifest validate-mesh-action-registry validate-lawful-dispatch-receipt
 	@echo "OK: validate"
 
 validate-source-locator:
@@ -11,6 +11,11 @@ validate-sourceos-repo-manifest:
 
 validate-mesh-action-registry:
 	python3 tools/validate_mesh_action_registry.py
+
+# Truth = Law × Evidence, enforced by the contract rather than by each app's goodwill.
+validate-lawful-dispatch-receipt:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_lawful_dispatch_receipt.py
 
 validate-ab-update-examples:
 	python3 -m pip install --user jsonschema >/dev/null
