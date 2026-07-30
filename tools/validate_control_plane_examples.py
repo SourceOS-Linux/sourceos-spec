@@ -15,6 +15,46 @@ PAIRS = [
 ]
 
 
+SCHEMAS = ROOT / "schemas"
+
+
+def resolve_legacy_ref(schema_path: Path, legacy_ref: str) -> Path:
+    """Resolve a wrapper's `$ref`, refusing anything that escapes the schema tree.
+
+    `$ref` is schema *content*, so it is attacker-controlled the moment anyone can open a
+    pull request: this validator runs in CI (`make validate` -> the aggregate target,
+    invoked by .github/workflows/validate-ops-history.yml), and the unconfined
+    `(schema_path.parent / legacy_ref).resolve()` let a planted `../../../..` ref make it
+    read arbitrary files on the runner. Demonstrated before this guard existed: it read a
+    file outside the repository entirely and still exited 0.
+
+    The boundary is the `schemas/` tree, NOT the wrapper's own directory. Both shapes in
+    use are legitimate and must keep working:
+        ReleaseSet.json   -> "../ReleaseSet.json"            (up into schemas/)
+        BootReleaseSet.json -> "./boot-release-set.schema.json" (sibling)
+    Confining to the wrapper's directory would reject the first and break the gate — the
+    tighter rule is not the safer one here, it is just the wrong one.
+    """
+    # `$ref` is JSON content, so its TYPE is attacker-controlled too, not just its
+    # value. Without this check a list or dict ref dies on `PosixPath / list` and an
+    # int on `argument of type 'int' is not iterable` — TypeErrors from deep inside a
+    # path helper, where the operator needs "this schema's $ref is malformed".
+    if not isinstance(legacy_ref, str):
+        raise ValueError(
+            f"{schema_path.name}: $ref must be a string, got {type(legacy_ref).__name__}"
+        )
+    if "\x00" in legacy_ref:
+        raise ValueError(f"{schema_path.name}: $ref contains NUL")
+    base = SCHEMAS.resolve()
+    target = (schema_path.parent / legacy_ref).resolve()
+    if target != base and base not in target.parents:
+        raise ValueError(
+            f"{schema_path.name}: $ref {legacy_ref!r} resolves to {target}, outside {base}; "
+            "a legacy $ref must name a schema inside the schema tree"
+        )
+    return target
+
+
 def validate_pair(schema_path: Path, example_path: Path) -> None:
     schema = json.loads(schema_path.read_text(encoding="utf-8"))
     jsonschema.validators.validator_for(schema).check_schema(schema)
@@ -22,7 +62,7 @@ def validate_pair(schema_path: Path, example_path: Path) -> None:
     # The wrapper schema delegates validation to the legacy sibling schema it $refs
     # (a relative path like "./release-set.schema.json"), so resolve it against the
     # wrapper's directory. (Path.with_name rejects names containing "/".)
-    validation_schema_path = (schema_path.parent / legacy_ref).resolve() if legacy_ref else schema_path
+    validation_schema_path = resolve_legacy_ref(schema_path, legacy_ref) if legacy_ref else schema_path
     validation_schema = json.loads(validation_schema_path.read_text(encoding="utf-8"))
     example = json.loads(example_path.read_text(encoding="utf-8"))
     jsonschema.validate(example, validation_schema)
