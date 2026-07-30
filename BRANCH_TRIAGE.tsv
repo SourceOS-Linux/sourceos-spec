@@ -1,0 +1,90 @@
+branch	ahead	disposition	reason
+add-recommendation-object	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+agent-machine-model-carry-projections-v0-1	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+agent-machine-model-carry-projections-v0-2	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+agent-machine-semantic-catalog-v0-1	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+agentic-mesh-contract-expansion-v1	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+chore/local-first-control-plane-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+ci/control-plane-wrapper-validation-20260419	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+ci/control-plane-wrapper-validation-more-20260419	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+copilot/create-sourceos-devtools-repo	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+diagnostics/add-diag-schemas-20260414	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+digital-soul-identity-reputation	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs-control-node-starter-pack-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/2026-04-14-videolab-media-promotion	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/compression-commons-placement-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/compression-evaluation-catalog-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/compression-evaluation-schema-catalog-current	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/compression-evaluation-schema-catalog-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/compression-evaluation-v0-hygiene	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/crdt-over-evidence-fabric	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/fog-index-cleanup	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/runner-boundary-adr-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+docs/semantic-overlay-example-conventions-20260415	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+examples/shared-content-build-release-family	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/close-92-97-83-103	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/command-bus-envelope	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/compression-evaluation-v0-contract	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/compression-evaluation-v0-contract-main	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/diagnostics-bundle-contract-seed	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/execution-control-contract-pack-v0-2-20260415	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/fog-followon-catalog-and-api	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/keyboard-surface-contracts	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/local-first-control-plane-contract-seed	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/network-assistant-model-doors	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/onboarding-control-plane-contracts-complete	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/runtime-causality-contracts-v0	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/sae-contracts-v0-1	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/shared-content-build-release-family	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/sourceos-shell-api-events	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/sourceos-shell-contract-docs	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/sourceos-shell-contracts-bootstrap	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/sourceos-shell-contracts-phase2	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/workstation-contract-family	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feat/workstation-report-schemas	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+feature/boot-release-set-v0-hardening	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+oprisk-reserve-envelope-v1	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+ops-history-spec-hardening	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+polycentric-schema-capture-plan-20260409	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+replay/onboarding-control-plane-current-main	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+replay/s100-id-clean	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+replay/workstation-mac-polish-v2	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+review/mac-polish-contract	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+runtime-content-composition	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+security/radio-spatial-context-receipts	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+sourceos-mutation-evidence-v0-1	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+sourceos-v1-1-policy-grant	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+spec/boot-storage-staging-followup-20260416	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+spec/control-plane-ids-20260418	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+spec/hygiene-adr-catalog-20260418	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+spec/hygiene-changelog-ci-wrapper-20260419	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+spec/hygiene-incident-id-20260418	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+spec/validate-duplicate-schema-ids-20260418	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+strategy/sovereign-correctness-brief-draft	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/agent-harness-receipts	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/boot-provisioning-examples	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/interaction-codegen-116	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/noetica-agentterm-interaction-substrate	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/os-build-boundary-discoverability	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/sourceos-interaction-follow-up-issue-refs	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/sourceos-interaction-implementation-ledger	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/sourceos-interaction-noetica-placement-index	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+work/sourceos-interaction-reference-packet	0	DELETED-MERGED	ahead=0; fully contained in origin/main
+copilot/add-nlboot-object-schemas	2	DELETED-SUPERSEDED	stale draft; all nlboot schemas/examples byte-identical in main; branch-only = old README paragraph + minimal Makefile; backed up
+copilot/add-sourceos-schemas	2	DELETED-SUPERSEDED	all sourceos schemas/examples identical in main; branch-only = stale README lines; backed up
+copilot/update-workstation-examples-mac-on-linux	2	DELETED-SUPERSEDED	workstation schemas identical; branch-only = older desktopprofile field order/doc; main richer; backed up
+diagnostics/add-diag-schemas-20260415	4	DELETED-SUPERSEDED	DiagnosticBundle & DiagnosticProbeResult semantically IDENTICAL to main (jq -S); line diff was pretty-print only; backed up
+diagnostics/add-diag-schemas-20260416	1	DELETED-SUPERSEDED	DiagnosticProbeResult semantically IDENTICAL to main (jq -S); backed up
+docs/sourceos-interaction-catalog	3	DELETED-SUPERSEDED	main catalog.md richer (adds generated TS/Python types + codegen CI); branch is pre-codegen draft; backed up
+feat/lattice-data-governai-contracts-v0	16	DELETED-SUPERSEDED	all 7 data-governai schemas/examples byte-identical in main (+0 every file); backed up
+feat/onboarding-control-plane-contracts	4	DELETED-SUPERSEDED	AutomationTemplate/CapabilityPack/TrustMode/WorkspaceScope: main strictly richer (main-only lines >> branch-only reworded descriptions/specVersion); backed up
+feat/runtime-capability-ledger-receipts	4	DELETED-SUPERSEDED	main strictly richer; BrowserAutomationReceipt enum renamed+extended in main (read_page vs branch read_dom) + added capabilityLedgerRef/causalRefs/navigate; backed up
+feat/runtime-observability-contracts	15	DELETED-SUPERSEDED	all observability schemas/examples/docs byte-identical in main (+0 every file); backed up
+replay/s100-current	20	DELETED-SUPERSEDED	all 9 runtime-causality schemas/examples identical in main; branch validate marks RuntimeIdentityGraph DEFERRED which main since integrated; backed up
+replay/s100-id-followup	21	DELETED-SUPERSEDED	RuntimeIdentityGraph schema identical in main; branch-only = alternative BearBrowser example payload (cosmetic); backed up
+sourceos/immutable-node-contracts-v0	8	DELETED-SUPERSEDED	HostCapabilityPlacement/ImmutableNodeProfile/NodeStateSchema: main strictly richer (main-only >> branch reworded descriptions); backed up
+sourceos/immutable-node-contracts-v0-current	7	DELETED-SUPERSEDED	same immutable-node schemas as v0; main strictly richer; backed up
+work/control-plane-examples	5	DELETED-SUPERSEDED	main larger on fingerprint/release_set/validate (main+18/+15/+16 > branch); superseded; backed up
+work/sourceos-interaction-runtime-bridge-ledger	1	DELETED-SUPERSEDED	main ledger newer (Last updated 06-02 vs 06-01) + adds Follow-up issue-routing table; backed up
+work/sourceos-interaction-top-level-index	3	DELETED-SUPERSEDED	main README/doc richer (adds CommentSignal to Collaboration family); branch stale; backed up
+work/sourceos-lifecycle-boundary-v0	8	DELETED-SUPERSEDED	grant-state-decision & runtime-effect-decision schemas/examples byte-identical in main (+0 every file); backed up

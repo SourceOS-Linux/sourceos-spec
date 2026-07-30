@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Measurement.json",
+  "title": "Measurement",
+  "description": "A value together with how it was obtained. The point is `gateEligible`: a value nobody measured cannot satisfy a gate, and the schema — not the caller — decides that.\n\nThis generalises a shape already proven inside LawfulDispatchReceipt.json, where `law.source` and `evidence.source` are `measured | declared` and a `declared` factor is forced to evidenceTier T2. That invariant was correct and inlined in exactly one schema, so nothing else in 302 schemas could reuse it. Extracting it here is deduplication, not a new concept: the drift between an inlined definition and its copies is how `extension`, `Extension`, `DiagnosticExtension`, `diagnosticextension` and `diagnostic` all came to name the same macOS extension point.\n\nThe defects this exists to make unrepresentable, all observed 2026-07-30:\n\n1. A census of 627 macOS sandbox containers run as `find -maxdepth 2 -name … 2>/dev/null` returned 617. The ten it lost were Safari, Mail, Notes, Messages, News, Stocks, Home, VoiceMemos, Safari.WebApp and archiveutility — exactly the TCC-protected ones, i.e. the population the audit existed to measure. `find` printed ten `Operation not permitted` lines; the redirect swallowed them. As a Measurement that walk must declare `unobserved: 10`, and `gateEligible` is then false by shape.\n\n2. A legend mapping `/var/folders/<shard>/<hash>/{0,C,T}` to their meanings was printed as though derived, in the same breath as criticising Apple for shipping that tree with no legend. The three `confstr` lookups that would have confirmed it had all failed. As a Measurement that is `source: \"assumed\"`, and unusable.\n\n3. Two macOS resource reports carried `Duration Sampled` shorter than `Duration`, and `samples lost` counts, in headers that are easy to skim past. Those are `sampling` and `unobserved`; here they are required rather than incidental.\n\nWhat this is NOT: a provenance record for content. `KnowledgeNugget.provenance` and `OSImage.provenance` answer 'where did this artefact come from'. This answers 'may I rely on this number', which is a different question with a different consumer.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "kind", "value", "source", "gateEligible"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "kind": { "const": "Measurement" },
+    "label": {
+      "type": "string",
+      "minLength": 1,
+      "description": "What was measured, in the terms the reader needs. 'containers carrying a metadata receipt', not 'count'. An unlabelled number cannot be checked against the thing it claims to describe."
+    },
+    "value": {
+      "description": "The measured quantity. Deliberately untyped — counts, ratios, durations, booleans and strings are all measurable, and constraining this to `number` would push every non-numeric measurement back into an untyped field somewhere else.",
+      "type": ["number", "integer", "string", "boolean", "null"]
+    },
+    "source": {
+      "enum": ["measured", "derived", "declared", "assumed"],
+      "description": "How the value was obtained.\n\n`measured` — an instrument produced it, and `instrument` names which. Only this can be gate-eligible.\n`derived` — computed from other Measurements. Honest, but its own eligibility depends on inputs this schema cannot see, so it is not gate-eligible here; the deriving consumer must publish its own Measurement.\n`declared` — a human or a manifest asserted it. Matches `law.source`/`evidence.source` in LawfulDispatchReceipt, which is the SUBSET this enum extends; the two must stay compatible and a validator asserts it.\n`assumed` — filled in from memory or convention because the measurement was unavailable or failed. Recording this is the whole point: the alternative is what happened on 2026-07-30, where an assumed legend was presented as derived."
+    },
+    "instrument": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The tool that produced the value, specifically enough to reproduce it — including the implementation when the name is ambiguous. `find` on the machine that produced defect (1) above is `bfs`, with different semantics; `stat -f` there is GNU coreutils, where `-f` reports filesystem status rather than a format string. 'find(1)' would have hidden both. Required when source is `measured`: a measurement with no named instrument is an assertion wearing a number."
+    },
+    "sampling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observed", "population", "unit"],
+      "description": "Present when the value summarises a population rather than exhausting it. NOTE: deliberately not called `coverage` — GuardrailEvalReport.coverage already means declared-vs-enforced clause counts, and reusing the word for sample coverage would put two meanings on one name.",
+      "properties": {
+        "observed": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Members the instrument actually read."
+        },
+        "population": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Members that exist. When this is itself an estimate, it needs its own Measurement — a population figure taken on faith makes the ratio meaningless."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "description": "What is being counted: 'entries', 'samples', 'seconds'. Without it a ratio of two integers is uninterpretable."
+        }
+      }
+    },
+    "unobserved": {
+      "type": "integer",
+      "minimum": 0,
+      "default": 0,
+      "description": "Members the instrument could not read, for any reason — permission denied, dropped samples, timeouts. Distinct from `population - observed`, which is what was not looked at; this is what was looked at and refused.\n\nAny value above zero forces `gateEligible: false`, because a walk that silently omits part of its population is indistinguishable from one that found nothing there — and the omissions correlate with sensitivity, so the missing members are disproportionately the ones that mattered."
+    },
+    "gateEligible": {
+      "type": "boolean",
+      "description": "Whether a gate, check or policy decision may rely on this value. Stated as a field rather than left to each consumer for the same reason LawfulDispatchReceipt states `verdict` instead of letting callers infer it — the inference was the bug.\n\nThis is a CEILING, not an equality. `true` is available only when `source` is `measured` AND `unobserved` is 0; `false` is always available. A producer may therefore downgrade its own reading — it knows things the schema cannot, such as an instrument it has come to distrust — but can never upgrade one. Same asymmetry as the truth-product being a MEET: never claim more than your weakest factor, always free to claim less. (The exhaustive validator sweep caught this file's own test asserting equality here on its first run, which is what an exhaustive sweep is for.)"
+    },
+    "note": {
+      "type": "string",
+      "description": "Why the measurement is shaped as it is: what the instrument refused, why a population is estimated, what a retry would need. Read by whoever has to decide whether to trust a non-eligible value anyway."
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "INVARIANT 1 — anything but a clean instrumented reading is gate-ineligible. Covers `derived`, `declared` and `assumed`, and any measurement with refused members.",
+      "if": {
+        "anyOf": [
+          {
+            "required": ["source"],
+            "properties": { "source": { "not": { "const": "measured" } } }
+          },
+          {
+            "required": ["unobserved"],
+            "properties": { "unobserved": { "minimum": 1 } }
+          }
+        ]
+      },
+      "then": {
+        "properties": { "gateEligible": { "const": false } }
+      }
+    },
+    {
+      "$comment": "INVARIANT 2 — a measured value must name its instrument. Without this, `source: measured` is the same unfalsifiable assertion the enum exists to prevent.",
+      "if": {
+        "required": ["source"],
+        "properties": { "source": { "const": "measured" } }
+      },
+      "then": { "required": ["instrument"] }
+    },
+    {
+      "$comment": "INVARIANT 3 — a measurement that refused members has to say what it was trying to enumerate. `unobserved: 10` with no population is a fact about nothing.",
+      "if": {
+        "required": ["unobserved"],
+        "properties": { "unobserved": { "minimum": 1 } }
+      },
+      "then": { "required": ["sampling"] }
+    }
+  ]
+}
