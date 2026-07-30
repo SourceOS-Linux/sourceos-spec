@@ -81,5 +81,22 @@
       "type": ["string", "null"],
       "description": "Optional human-readable notes about this config source."
     }
-  }
+  },
+  "allOf": [
+    {
+      "$comment": "The uri description has always said 'Required for git, http, and oci kinds', but nothing enforced it: uri accepts null unconditionally, so a git source with no location validated clean. A description that states a requirement the schema does not check is a declared-unenforced rule — the reader believes a guarantee the contract never made. This is that rule, in the schema.",
+      "if": {
+        "required": ["sourceKind"],
+        "properties": {
+          "sourceKind": { "enum": ["git", "http", "oci"] }
+        }
+      },
+      "then": {
+        "required": ["uri"],
+        "properties": {
+          "uri": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  ]
 }
