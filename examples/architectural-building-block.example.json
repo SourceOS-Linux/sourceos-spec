@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "ArchitecturalBuildingBlock",
+  "abbId": "ABB.03",
+  "role": "DATABASE",
+  "description": "A durable, queryable store for the estate's domain records. What it is NOT: an event bus (that is ABB.05), a blob store (ABB.06), or an in-process cache (not an ABB at all — implementations may hold one internally). The role names a function; PostgreSQL, ADLS, BLOB, XYZ or CaaS may all fill the slot as long as they satisfy `requiredCapabilities` and answer the `protocol` verbs.",
+  "protocol": {
+    "reads": ["retrieve", "evaluate"],
+    "writes": ["create", "transform"]
+  },
+  "requiredCapabilities": [
+    "at-rest-encryption",
+    "row-level-auth",
+    "audit-chain-append",
+    "point-in-time-recovery"
+  ],
+  "conformanceTest": "conformance/abb-database-vectors.json"
+}
