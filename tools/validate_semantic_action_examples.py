@@ -37,6 +37,19 @@ EXAMPLES = [
 SIDE_EFFECTS_VOCABULARY = ["none", "effect-request"]
 
 
+def require(condition: object, message: str) -> None:
+    """Contract check that survives `python -O`.
+
+    These are conformance obligations, not debug assertions. Written as bare
+    `assert` they were deleted wholesale by `python -O` while the surrounding
+    function still ran to the end and recorded `checks[...] = True`, so the
+    tool printed `"ok": true` with every check green for examples it had never
+    inspected. A check a runtime flag can silently delete is not a check.
+    """
+    if not condition:
+        raise SystemExit(message)
+
+
 def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -66,14 +79,16 @@ def check_binding_soundness(checks: dict[str, bool]) -> None:
     for name in EXAMPLES:
         action = load(ROOT / "examples" / name)
         input_names = [slot["name"] for slot in action["inputs"]]
-        assert len(input_names) == len(set(input_names)), (
-            f"{name}: input names must be unique within an action"
+        require(
+            len(input_names) == len(set(input_names)),
+            f"{name}: input names must be unique within an action",
         )
         subjects = set(input_names) | {"output"}
         for constraint in action["constraints"]:
-            assert constraint["subject"] in subjects, (
+            require(
+                constraint["subject"] in subjects,
                 f"{name}: constraint subject {constraint['subject']!r} does not "
-                f"resolve to a declared input name or \"output\""
+                f"resolve to a declared input name or \"output\"",
             )
         checks[f"binding-soundness:{name}"] = True
 
@@ -89,13 +104,15 @@ def check_purity_posture(schema: dict, checks: dict[str, bool]) -> None:
     for name in EXAMPLES:
         action = load(ROOT / "examples" / name)
         postures[action["sideEffects"]] = action
-    assert set(postures) == set(SIDE_EFFECTS_VOCABULARY), (
-        "example set must exercise both sideEffects postures"
+    require(
+        set(postures) == set(SIDE_EFFECTS_VOCABULARY),
+        "example set must exercise both sideEffects postures",
     )
     effect_action = postures["effect-request"]
-    assert "EffectRequest" in effect_action["output"]["typeRef"], (
+    require(
+        "EffectRequest" in effect_action["output"]["typeRef"],
         "the effect-request example's output must be the EffectRequest proposal "
-        "itself — the action proposes, it never acts directly"
+        "itself — the action proposes, it never acts directly",
     )
     checks["purity-posture:vocabulary"] = True
     checks["purity-posture:examples"] = True

@@ -40,6 +40,19 @@ EXAMPLES = [
 TIME_KEYS = ["wallTime", "logicalTime"]
 
 
+def require(condition: object, message: str) -> None:
+    """Contract check that survives `python -O`.
+
+    These are conformance obligations, not debug assertions. Written as bare
+    `assert` they were deleted wholesale by `python -O` while the surrounding
+    function still ran to the end and recorded `checks[...] = True`, so the
+    tool printed `"ok": true` with every check green for examples it had never
+    inspected. A check a runtime flag can silently delete is not a check.
+    """
+    if not condition:
+        raise SystemExit(message)
+
+
 def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -84,21 +97,24 @@ def check_warrant_soundness(checks: dict[str, bool]) -> None:
     warrant_types = set()
     for name, nugget in zip(EXAMPLES, examples):
         span = nugget["sourceRef"]["span"]
-        assert span["end"] >= span["start"], f"{name}: span.end must be >= span.start"
+        require(span["end"] >= span["start"], f"{name}: span.end must be >= span.start")
         warrant = nugget["warrant"]
         warrant_types.add(warrant["type"])
         if warrant["type"] == "direct-quote":
-            assert span["end"] - span["start"] == len(nugget["text"]), (
-                f"{name}: a direct-quote span must be exactly as long as its text"
+            require(
+                span["end"] - span["start"] == len(nugget["text"]),
+                f"{name}: a direct-quote span must be exactly as long as its text",
             )
         if warrant["type"] in ("computed", "inferred"):
-            assert len(warrant["evidence"]) >= 1, (
-                f"{name}: computed/inferred warrants must cite evidence"
+            require(
+                len(warrant["evidence"]) >= 1,
+                f"{name}: computed/inferred warrants must cite evidence",
             )
-    assert "direct-quote" in warrant_types, "example set must include a direct-quote nugget"
-    assert "model-generated" in warrant_types, (
+    require("direct-quote" in warrant_types, "example set must include a direct-quote nugget")
+    require(
+        "model-generated" in warrant_types,
         "example set must include a model-generated nugget — the admissibility "
-        "contrast must stay exercised"
+        "contrast must stay exercised",
     )
     checks["warrant-soundness:examples"] = True
 

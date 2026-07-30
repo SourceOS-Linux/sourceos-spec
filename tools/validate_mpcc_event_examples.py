@@ -83,6 +83,19 @@ ENVELOPE_KEYS = [
 AUTHORITY_FILES = ["ConversationEvent.json", "EffectDecision.json", "OrderIntent.json"]
 
 
+def require(condition: object, message: str) -> None:
+    """Contract check that survives `python -O`.
+
+    These are conformance obligations, not debug assertions. Written as bare
+    `assert` they were deleted wholesale by `python -O` while the surrounding
+    function still ran to the end and recorded `checks[...] = True`, so the
+    tool printed `"ok": true` with every check green for examples it had never
+    inspected. A check a runtime flag can silently delete is not a check.
+    """
+    if not condition:
+        raise SystemExit(message)
+
+
 def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
@@ -142,24 +155,25 @@ def check_lifecycle(checks: dict[str, bool]) -> None:
     position = ex["position_change.json"]
     recon = ex["reconciliation_record.json"]
 
-    assert request["id"] in event["requestedEffects"], "event must request the effect"
-    assert decision["id"] in event["approvedEffects"], "event must reference the decision"
-    assert record["id"] in event["actualEffects"], "event must reference the record"
-    assert decision["effectRequestRef"] == request["id"], "decision governs the request"
-    assert record["effectRequestRef"] == request["id"], "record executes the request"
-    assert record["effectDecisionRef"] == decision["id"], "record grounded in the decision"
-    assert record["idempotencyKey"] == request["idempotencyKey"], "replay guard must match"
+    require(request["id"] in event["requestedEffects"], "event must request the effect")
+    require(decision["id"] in event["approvedEffects"], "event must reference the decision")
+    require(record["id"] in event["actualEffects"], "event must reference the record")
+    require(decision["effectRequestRef"] == request["id"], "decision governs the request")
+    require(record["effectRequestRef"] == request["id"], "record executes the request")
+    require(record["effectDecisionRef"] == decision["id"], "record grounded in the decision")
+    require(record["idempotencyKey"] == request["idempotencyKey"], "replay guard must match")
     if decision["decision"] == "approved":
-        assert isinstance(decision.get("approvedEffect"), dict), (
-            "approved decision must carry the exact approved effect shape"
+        require(
+            isinstance(decision.get("approvedEffect"), dict),
+            "approved decision must carry the exact approved effect shape",
         )
     checks["lifecycle:effect-chain"] = True
 
-    assert intent["requestedEffectRef"] == request["id"], "intent governed by the effect"
-    assert report["orderIntentRef"] == intent["id"], "report responds to the intent"
-    assert report["id"] in record["resultRefs"], "record evidences venue reality"
-    assert report["id"] in position["sourceExecutionRefs"], "position traceable to fill"
-    assert recon["scopeRef"] == intent["id"], "reconciliation scopes the order"
+    require(intent["requestedEffectRef"] == request["id"], "intent governed by the effect")
+    require(report["orderIntentRef"] == intent["id"], "report responds to the intent")
+    require(report["id"] in record["resultRefs"], "record evidences venue reality")
+    require(report["id"] in position["sourceExecutionRefs"], "position traceable to fill")
+    require(recon["scopeRef"] == intent["id"], "reconciliation scopes the order")
     checks["lifecycle:trading-chain"] = True
 
 
