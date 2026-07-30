@@ -13,6 +13,9 @@ __pycache__/
 .venv/
 venv/
 
+# Node (tools/spectral is installed with `npm ci`; only the lockfile is tracked)
+node_modules/
+
 # Build
 dist/
 build/

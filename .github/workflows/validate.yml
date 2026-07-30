@@ -142,11 +142,19 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Install Spectral
-        run: npm install -g @stoplight/spectral-cli
+      # Pinned and sha512-verified from tools/spectral/package-lock.json rather
+      # than `npm install -g @stoplight/spectral-cli`, which floats to whatever
+      # the registry serves that day.
+      - name: Install Spectral (pinned, integrity-verified)
+        run: npm ci --prefix tools/spectral
 
+      # The ruleset is the local .spectral.yaml, not a URL. The previous
+      # `--ruleset https://unpkg.com/@stoplight/spectral-openapi/dist/ruleset.js`
+      # returned HTTP 404 -- that package has never existed on npm -- so this
+      # step exited 2 on every run and `|| true` discarded the verdict. Both are
+      # gone: a load failure or any error-severity finding now fails the job.
       - name: Lint openapi.yaml
-        run: spectral lint openapi.yaml --ruleset https://unpkg.com/@stoplight/spectral-openapi/dist/ruleset.js || true
+        run: tools/spectral/node_modules/.bin/spectral lint openapi.yaml --ruleset .spectral.yaml --fail-severity error
 
       - name: Validate openapi.yaml parses as valid OpenAPI
         run: |

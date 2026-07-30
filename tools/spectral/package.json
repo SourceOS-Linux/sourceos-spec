@@ -1,0 +1,9 @@
+{
+  "name": "sourceos-spec-spectral",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Pinned, integrity-verified Spectral CLI used by .github/workflows/validate.yml to lint openapi.yaml. Kept out of the repo root so it does not turn sourceos-spec into a Node package.",
+  "dependencies": {
+    "@stoplight/spectral-cli": "6.15.0"
+  }
+}
