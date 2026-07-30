@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import copy
 import json
-import re
 import sys
 from pathlib import Path
 from typing import Any
@@ -32,17 +31,24 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = REPO_ROOT / "schemas" / "ArchitecturalBuildingBlock.json"
 EXAMPLE_PATH = REPO_ROOT / "examples" / "architectural-building-block.example.json"
 
-# Vendor names that must never appear as a role. Not exhaustive by design — the goal is to
-# catch obvious slips ('postgres' as a role), not to enumerate every product. A determined
-# author can still name a role poorly, but the review checklist will catch what this misses.
-_VENDOR_ROLES_FORBIDDEN = re.compile(
-    r"^(postgres|postgresql|mysql|mariadb|mssql|sqlserver|oracle|db2|"
-    r"redis|memcached|elastic|elasticsearch|opensearch|"
-    r"mstr|microstrategy|tableau|powerbi|superset|"
-    r"docker|kubernetes|helm|nginx|apache|"
-    r"aws|azure|gcp|gce|s3|adls|blob|ecs|eks|gke|gks)$",
-    re.IGNORECASE,
-)
+# Vendor names that must never appear as a role, and case-variant spellings of a legitimate
+# role. Both are asserted by feeding them to the SCHEMA as real documents — see INVARIANT 1.
+#
+# There used to be a `_VENDOR_ROLES_FORBIDDEN` regex here and a loop that matched it against
+# six hardcoded strings. The loop built a document (`e = deepcopy(example); e["role"] = v`)
+# and then never used it, so the regex was only ever tested against its own fixtures. With
+# `role: "postgres"` in the shipped example this file exited 0 AND printed
+# "OK 6 vendor-named roles caught by the deny list". A control that reports catching what it
+# has not looked at is worse than an absent one: it produces evidence.
+#
+# The deny list is gone. `role` is now a closed enum in the schema, so rejection happens in
+# the artefact every consumer already validates against, not in a private regex here.
+_VENDOR_ROLES = ["postgres", "PostgreSQL", "mysql", "AWS", "MSTR", "kubernetes", "DB2", "ADLS"]
+
+# The compounding failure a deny list cannot catch. macOS ships `extension` (45×), `Extension`
+# (2×), `DiagnosticExtension` (8×), `diagnosticextension` (5×) and `diagnostic` (3×) across its
+# 627 sandbox containers — a freeform role field after fifteen years without a grammar.
+_CASE_VARIANTS = ["database", "Database", "DataBase", "DATABASE ", " DATABASE", "data solution platform"]
 
 
 def main() -> int:
@@ -99,36 +105,80 @@ def main() -> int:
         case(label, broken(mut), False)
     print(f"    {'OK  ' if not failures else 'FAIL'} shape controls: 14 rejected, 1 accepted")
 
-    # INVARIANT 1 (advisory): vendor-named roles. Enforced here in the validator rather than
-    # the schema because a hard pattern-based deny would need every vendor enumerated in JSON
-    # Schema — brittle. Here the deny list is code and grows over time.
-    print("  INVARIANT 1 — role names FUNCTIONS, not vendors")
-    vendor_examples = ["postgres", "PostgreSQL", "mysql", "AWS", "MSTR", "kubernetes"]
-    vendor_failures = 0
-    for v in vendor_examples:
-        e = copy.deepcopy(example)
-        e["role"] = v
-        # Schema accepts it (role is any non-empty string) — but this validator catches it.
-        if _VENDOR_ROLES_FORBIDDEN.match(v):
-            checks += 1
-            continue
-        vendor_failures += 1
-        failures.append(f"vendor role '{v}' should be caught by the forbidden-vendor list")
-    if vendor_failures == 0:
-        print(f"    OK   {len(vendor_examples)} vendor-named roles caught by the deny list "
-              "('postgres', 'PostgreSQL', 'mysql', 'AWS', 'MSTR', 'kubernetes')")
+    # INVARIANT 1 — role is a CLOSED enum, and rejection happens in the schema, applied to a
+    # real document. Every case below mutates the shipped example and asks the schema.
+    print("  INVARIANT 1 — role names FUNCTIONS from a closed set, not vendors or variants")
+    before = len(failures)
+    for v in _VENDOR_ROLES:
+        case(f"vendor name as role ({v!r})", broken(lambda b, v=v: b.__setitem__("role", v)), False)
+    for v in _CASE_VARIANTS:
+        case(f"case/whitespace variant as role ({v!r})", broken(lambda b, v=v: b.__setitem__("role", v)), False)
+    case("unlisted role invented at the call site",
+         broken(lambda b: b.__setitem__("role", "VECTOR INDEX")), False)
+    ok = len(failures) == before
+    print(f"    {'OK  ' if ok else 'FAIL'} {len(_VENDOR_ROLES)} vendor names, "
+          f"{len(_CASE_VARIANTS)} case/whitespace variants and 1 unlisted role rejected "
+          "BY THE SCHEMA, as documents")
+
+    # The mutation test. Without it, the cases above pass whenever the schema rejects for ANY
+    # reason, and would keep passing if `role` were reverted to a freeform string while some
+    # unrelated constraint did the rejecting. Drop the enum, confirm 'postgres' is accepted.
+    print("  INVARIANT 1a — the enum is what does the work (mutation test)")
+    checks += 1
+    loose = copy.deepcopy(schema)
+    loose["properties"]["role"] = {"type": "string", "minLength": 1}
+    loose_validator = Draft202012Validator(loose)
+    vendor_doc = copy.deepcopy(example)
+    vendor_doc["role"] = "postgres"
+    if list(loose_validator.iter_errors(vendor_doc)):
+        failures.append(
+            "mutation test inconclusive: with the role enum removed, role='postgres' was STILL "
+            "rejected — so the enum is not the constraint doing the work and INVARIANT 1 above "
+            "proves nothing about it"
+        )
+        print("    FAIL enum removed but document still rejected — INVARIANT 1 proves nothing")
     else:
-        failures.append(f"vendor role checks missed {vendor_failures}")
+        print("    OK   enum removed ⇒ role='postgres' accepted; restored ⇒ rejected. "
+              "The enum is load-bearing.")
 
     # INVARIANT 2 — the shipped example demonstrates the required shape.
     print("  INVARIANT 2 — reads and writes explicit (may be empty)")
+    before = len(failures)
     checks += 1
     if not isinstance(example.get("protocol", {}).get("reads"), list):
         failures.append("example must declare protocol.reads explicitly")
     if not isinstance(example.get("protocol", {}).get("writes"), list):
         failures.append("example must declare protocol.writes explicitly")
-    print(f"    {'OK  ' if not failures else 'FAIL'} example declares both, and shape reject "
-          "case above covers the missing-field failure")
+    print(f"    {'OK  ' if len(failures) == before else 'FAIL'} example declares both, and shape "
+          "reject case above covers the missing-field failure")
+
+    # INVARIANT 3 — a conformanceTest pointer must RESOLVE. `format: uri-reference` is a syntax
+    # check that resolves nothing; this field shipped pointing at a file that did not exist and
+    # validated clean. Absence is documented as meaningful; a dangling pointer is not — it reads
+    # as "held to shared vectors" to every consumer that does not go looking.
+    print("  INVARIANT 3 — conformanceTest resolves, or is absent on purpose")
+    checks += 1
+    ptr = example.get("conformanceTest")
+    if ptr is None:
+        print("    OK   example declares no conformanceTest — absence is meaningful per schema "
+              "(conformance is per-implementation until shared vectors exist)")
+    elif (REPO_ROOT / ptr).is_file():
+        print(f"    OK   {ptr} resolves")
+    else:
+        failures.append(
+            f"conformanceTest {ptr!r} does not resolve to a file under {REPO_ROOT}. A pointer to "
+            "a suite that is not there is worse than absence — drop the field or add the suite."
+        )
+
+    # Negative control on INVARIANT 3. A resolve check never observed refusing is
+    # indistinguishable from no resolve check.
+    checks += 1
+    probe = copy.deepcopy(example)
+    probe["conformanceTest"] = "conformance/does-not-exist-negative-control.json"
+    if (REPO_ROOT / probe["conformanceTest"]).exists():
+        failures.append("negative control is not negative: the probe path exists on disk")
+    elif not (REPO_ROOT / probe["conformanceTest"]).is_file():
+        print("    OK   negative control: a dangling pointer IS detected as unresolvable")
 
     if failures:
         print(f"\n{len(failures)} failure(s) of {checks} checks:", file=sys.stderr)
@@ -137,8 +187,9 @@ def main() -> int:
         return 1
 
     print(f"\nOK ArchitecturalBuildingBlock: {checks} checks. "
-          "abbId must be ABB.NN, roles name functions not vendors, "
-          "protocol reads and writes must be explicit.")
+          "abbId must be ABB.NN; role comes from a CLOSED enum so vendor names and case "
+          "variants are rejected by the schema on real documents (mutation-tested); "
+          "protocol reads and writes must be explicit; conformanceTest must resolve.")
     return 0
 
 

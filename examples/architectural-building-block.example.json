@@ -13,6 +13,5 @@
     "row-level-auth",
     "audit-chain-append",
     "point-in-time-recovery"
-  ],
-  "conformanceTest": "conformance/abb-database-vectors.json"
+  ]
 }
