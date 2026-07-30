@@ -35,6 +35,14 @@ def resolve_legacy_ref(schema_path: Path, legacy_ref: str) -> Path:
     Confining to the wrapper's directory would reject the first and break the gate — the
     tighter rule is not the safer one here, it is just the wrong one.
     """
+    # `$ref` is JSON content, so its TYPE is attacker-controlled too, not just its
+    # value. Without this check a list or dict ref dies on `PosixPath / list` and an
+    # int on `argument of type 'int' is not iterable` — TypeErrors from deep inside a
+    # path helper, where the operator needs "this schema's $ref is malformed".
+    if not isinstance(legacy_ref, str):
+        raise ValueError(
+            f"{schema_path.name}: $ref must be a string, got {type(legacy_ref).__name__}"
+        )
     if "\x00" in legacy_ref:
         raise ValueError(f"{schema_path.name}: $ref contains NUL")
     base = SCHEMAS.resolve()
