@@ -18,9 +18,13 @@
       "description": "Two-digit ABB identifier (ABB.01, ABB.02, ..., ABB.99). Namespaced by role, not by vendor — vendor is a property of the implementation, not the block. ABBs are numbered stably: renumbering an ABB is a breaking change to every manifest that references it, so ids are assigned once and never reused."
     },
     "role": {
-      "type": "string",
-      "minLength": 1,
-      "description": "One-line canonical role. 'DATABASE', 'IMPLEMENTATION CONTROLLER', 'DATA SOLUTION PLATFORM' — the same names Zurich uses, deliberately, because they name FUNCTIONS not TECHNOLOGIES. 'PostgreSQL' is not a role; 'DATABASE' is."
+      "enum": [
+        "DATABASE",
+        "IMPLEMENTATION CONTROLLER",
+        "DATA SOLUTION PLATFORM",
+        "DATA SOLUTION COMPONENT"
+      ],
+      "description": "Canonical role, from a CLOSED set. The same names Zurich uses, deliberately, because they name FUNCTIONS not TECHNOLOGIES: 'PostgreSQL' is not a role, 'DATABASE' is.\n\nWhy an enum and not a validated string: this field was `{type: string, minLength: 1}` and the vendor denial lived in a code-side deny list that was never applied to a document (see tools/validate_architectural_building_block.py). A deny list also cannot prevent the OTHER failure, which is the one that actually compounds — the same role spelled several ways. macOS ships 627 sandbox containers whose extension-point names include `extension` (45×), `Extension` (2×), `DiagnosticExtension` (8×), `diagnosticextension` (5×) and `diagnostic` (3×): fifteen years of a freeform role field with no enforced grammar, after which the name can no longer be used to group anything and a side-channel record has to carry the contract instead. An allowlist forecloses both failures at once, and forecloses them in the SCHEMA, which is applied to every document — unlike a validator's private regex.\n\nThe set is closed on purpose and is grounded in roles actually in use (prophet-mesh specs/abb-catalog.yaml plus the shipped example), never on roles we imagine wanting. Adding a role is therefore a spec PR: a reviewed edit here, which is exactly the gatekeeping step whose absence produced the five spellings above. If you need a role that is not listed, add it in the same change that adds the ABB document which fills it — a role with no filler is a declared-unenforced field by construction."
     },
     "description": {
       "type": "string",
@@ -56,7 +60,7 @@
     "conformanceTest": {
       "type": "string",
       "format": "uri-reference",
-      "description": "Optional pointer to a conformance test suite (like sourceos-spec/conformance/lawful-verdict-vectors.json for LawfulDispatchReceipt). Two implementations of the same ABB that each pass their own unit tests can still disagree with each other on the ABB's contract — only shared vectors detect that. Present ⇒ implementations are held to it; absent ⇒ conformance is per-implementation and drift is discoverable only by breaking behaviour."
+      "description": "Optional pointer to a conformance test suite (like sourceos-spec/conformance/lawful-verdict-vectors.json for LawfulDispatchReceipt). Two implementations of the same ABB that each pass their own unit tests can still disagree with each other on the ABB's contract — only shared vectors detect that. Present ⇒ implementations are held to it; absent ⇒ conformance is per-implementation and drift is discoverable only by breaking behaviour.\n\n`format: uri-reference` is a SYNTAX check and resolves nothing — this field shipped pointing at `conformance/abb-database-vectors.json`, a file that does not exist, and validated clean. Repo-relative pointers are therefore resolved by tools/validate_pointers_resolve.py, which fails on a dangling one. A pointer to a suite that is not there is worse than absence: absence is documented above as meaningful, whereas a dangling pointer reads as 'held to shared vectors' to every consumer that does not go looking."
     },
     "supersedes": {
       "type": "array",
