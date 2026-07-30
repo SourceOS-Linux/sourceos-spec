@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "ResourceContract",
+  "contractId": "runner-tenant-disk-writes",
+  "resource": "disk-writes",
+  "limit": { "value": 2147483648, "unit": "bytes" },
+  "window": "P1D",
+  "scope": "tenant",
+  "enforcement": "throttle",
+  "negativeControl": "conformance/resource-contract-throttle-fires.md",
+  "firedCount": 0,
+  "observedPeak": {
+    "schemaVersion": "0.1.0",
+    "kind": "Measurement",
+    "label": "bytes dirtied by one runner tenant over 24h, worst observed day",
+    "value": 1503238553,
+    "source": "measured",
+    "instrument": "cgroup v2 io.stat wbytes, sampled hourly",
+    "sampling": { "observed": 24, "population": 24, "unit": "hourly samples" },
+    "unobserved": 0,
+    "gateEligible": true
+  }
+}
