@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "0.1.0",
+  "kind": "Measurement",
+  "label": "macOS sandbox containers carrying a containermanagerd metadata receipt",
+  "value": 617,
+  "source": "measured",
+  "instrument": "bfs 4.x invoked as find(1) — GNU/BSD-ambiguous name, resolved here",
+  "sampling": {
+    "observed": 617,
+    "population": 627,
+    "unit": "container directories"
+  },
+  "unobserved": 10,
+  "gateEligible": false,
+  "note": "The ten refused members are Safari, Safari.WebApp, mail, Notes, MobileSMS, news, stocks, Home, VoiceMemos and archiveutility — the TCC-protected containers, i.e. the population this walk existed to measure. The instrument emitted ten 'Operation not permitted' lines which a 2>/dev/null redirect discarded; the redirect, not the tool, produced the wrong number. A direct per-entry existence test returned 627 with zero missing, so the true value is 627 and this Measurement is evidence about the instrument rather than about the containers. Deliberately kept as the shipped example: it is the reading that actually happened, and the shape that a passing 617 would otherwise have been reported as."
+}

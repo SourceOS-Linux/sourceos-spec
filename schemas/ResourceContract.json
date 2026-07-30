@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ResourceContract.json",
+  "title": "ResourceContract",
+  "description": "A resource limit together with evidence that it can actually refuse. The whole schema exists to make one string unwritable without proof: `Action taken: none`.\n\nMotivating observations, both macOS 26.3.1, both 2026-07-30:\n\n1. `com.apple.Virtualization.VirtualMachine` — limit 50% CPU over 180s, actual 66% over 137s. `Action taken: none`.\n2. `nsurlsessiond` — limit 2147.48 MB of dirtied file-backed memory per 86400s, actual 2147.50 MB. Crossed by 0.02 MB. `Action taken: none`.\n\nBoth limits were declared, both were measured, both were exceeded, and neither did anything. That is the never-fired-control defect in its purest form: a threshold that observes and reports is not a limit, and a system carrying one is strictly worse off than a system carrying none, because the limit's existence is read as a guarantee.\n\nThe second motivating finding is about `scope`. In the same report the flagged process accounted for 141 of 8,357 samples (2%), while `node` (24%), the app (17%), the VM (15%) and `git` (9%) — 66% between them, all charged to one resource coalition — tripped nothing, because each stayed under its own per-process threshold. **A per-process limit is defeated by fan-out**, and fan-out is exactly what a build runner does by design. macOS had the aggregate accounting (the coalition is right there in the header) and applied the limit per-process anyway. Declaring `scope` forces that question at authoring time rather than after an SSD wears out.\n\nComposes with Measurement.json: `observedPeak` must be a gate-eligible Measurement. A contract whose evidence of its own high-water mark is unmeasured, or came from a walk that refused part of its population, cannot claim to be calibrated.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "kind", "resource", "limit", "window", "scope", "enforcement"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "kind": { "const": "ResourceContract" },
+    "contractId": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Stable lowercase-kebab identifier, so a receipt can name which contract adjudicated it."
+    },
+    "resource": {
+      "enum": ["cpu", "memory", "disk-writes", "disk-reads", "io-bandwidth", "io-operations", "network-egress", "network-ingress", "file-descriptors", "wall-clock"],
+      "description": "What is being bounded. A closed set, for the reason ArchitecturalBuildingBlock.role is closed: a freeform resource name accumulates spellings, and after enough of them the field can no longer group anything. Note `disk-writes` is separate from `io-bandwidth` — the nsurlsessiond case bounded *dirtied file-backed memory*, which is neither throughput nor operation count, and collapsing the three would have made the limit unstateable."
+    },
+    "limit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "unit"],
+      "description": "The threshold. Unit is mandatory: `2147483648` is a number, `2147483648 bytes` is a limit.",
+      "properties": {
+        "value": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "description": "e.g. 'bytes', 'bytes/second', 'ratio-of-one-cpu', 'seconds', 'count'."
+        }
+      }
+    },
+    "window": {
+      "type": "string",
+      "pattern": "^P(?:\\d+D)?(?:T(?:\\d+H)?(?:\\d+M)?(?:\\d+S)?)?$",
+      "description": "ISO 8601 duration the limit is measured over. Required because a rate without a window is not a rate — and because the two motivating cases differed only in window (180s vs 86400s), which is what made one look like a spike and the other like a leak."
+    },
+    "scope": {
+      "enum": ["process", "tenant", "aggregate"],
+      "description": "What the limit is applied ACROSS.\n\n`process` — one process. Convenient, and defeated by fan-out: N cooperating processes each under the threshold sum to N× the limit with nothing tripped. Requires `scopeRationale`, because choosing it should be a decision rather than a default.\n`tenant` — every process attributable to one principal, however spawned. The macOS resource coalition is this, and it is the level at which the accounting already existed while the enforcement did not. Linux equivalent is a cgroup v2 slice — and the common failure there is that the VMM lands in the *daemon's* hierarchy, so the limit written on the tenant slice has no tasks in it and throttles nothing.\n`aggregate` — the whole host or cluster. The backstop that keeps one tenant from exhausting a shared device."
+    },
+    "scopeRationale": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Why per-process is the right scope here despite fan-out. Required when `scope` is `process`. 'It's simpler' is an answer; leaving it blank is not."
+    },
+    "enforcement": {
+      "enum": ["observe", "throttle", "refuse", "terminate"],
+      "description": "What happens on exceedance.\n\n`observe` — record and continue. Legitimate for a metric being characterised before a limit is chosen, and requires `observeOnlyReason` so it reads as a decision instead of an oversight. This is the value both macOS reports were effectively carrying while presenting a `limit`.\n`throttle` — slow the consumer to stay under.\n`refuse` — reject the request that would exceed.\n`terminate` — stop the consumer.\n\nAnything but `observe` requires `negativeControl`. A contract that claims it will act, with nothing demonstrating it can, is the defect this schema exists to prevent — and 'it has never needed to' is the shape of every control that turns out not to work."
+    },
+    "observeOnlyReason": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Why this is measured but not enforced. Required when `enforcement` is `observe`. Surfaces `Action taken: none` as an explicit position someone took, which is the difference between a characterisation exercise and a broken gate."
+    },
+    "negativeControl": {
+      "type": "string",
+      "format": "uri-reference",
+      "description": "Repo-relative pointer to a test that drives the consumer past the limit and asserts the enforcement observably happened — the throttle counter incremented, the request was rejected, the process died. Required for any enforcement other than `observe`, and resolved by tools/validate_resource_contract.py: a pointer to a test that is not there is worse than none, because it reads as proof to anyone who does not go looking.\n\nOn Linux the assertion is usually cheap and specific: peg the consumer, then read `cpu.stat`'s `throttled_usec` or `memory.events`' `oom_kill` for the slice. If those stay at zero while the consumer is saturated, the limit is decoration — which is the state a `cpu.max` written on a slice containing no tasks is always in."
+    },
+    "firedCount": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "How many times enforcement has actually acted in production. NOT a substitute for `negativeControl`: zero is normal for a healthy system, and a non-zero count proves only that something happened, not that it was right. Its value is the other direction — a count that never leaves zero while `observedPeak` sits above `limit` means the control is not wired to the thing it claims to bound."
+    },
+    "lastFiredAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When enforcement last acted. Required when `firedCount` is above zero: a count with no timestamp cannot be reconciled against any log."
+    },
+    "observedPeak": {
+      "$ref": "Measurement.json",
+      "description": "Highest observed consumption, as a Measurement. Must be gate-eligible — a peak that was declared rather than instrumented, or came from a walk that refused part of its population, cannot calibrate anything. This is the field that makes the contract falsifiable: `observedPeak` above `limit` with `firedCount` at zero is a contradiction the validator reports."
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "INVARIANT 1 — a claim to act requires a demonstration that it can act.",
+      "if": {
+        "required": ["enforcement"],
+        "properties": { "enforcement": { "not": { "const": "observe" } } }
+      },
+      "then": { "required": ["negativeControl"] }
+    },
+    {
+      "$comment": "INVARIANT 2 — observe-only must say why, so `Action taken: none` is a position rather than an accident.",
+      "if": {
+        "required": ["enforcement"],
+        "properties": { "enforcement": { "const": "observe" } }
+      },
+      "then": { "required": ["observeOnlyReason"] }
+    },
+    {
+      "$comment": "INVARIANT 3 — per-process scope must justify itself against fan-out.",
+      "if": {
+        "required": ["scope"],
+        "properties": { "scope": { "const": "process" } }
+      },
+      "then": { "required": ["scopeRationale"] }
+    },
+    {
+      "$comment": "INVARIANT 4 — a non-zero fired count needs a timestamp to reconcile against.",
+      "if": {
+        "required": ["firedCount"],
+        "properties": { "firedCount": { "minimum": 1 } }
+      },
+      "then": { "required": ["lastFiredAt"] }
+    }
+  ]
+}
