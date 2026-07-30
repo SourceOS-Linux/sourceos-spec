@@ -1,0 +1,1436 @@
+{
+  "description": "Negative conformance vectors for the DeviceService contract v0.1 (W8.7). Each document MUST FAIL validation against its schema for the stated reason; tools/validate_device_service_examples.py enforces this and fails the build if any of them validates. Every case is derived from a complete canonical example and broken in exactly one way, so a failure is attributable to the named defect rather than to a missing required field. The vectors encode the failure modes that make a reading meaningless: a value that cannot name its device, its profile, or the exact profile revision it was admitted against; an absence that is not typed; a quality vocabulary widened by a producer; a profile that declares no metric, no range, or no source address; and actuation smuggled in through an access enum.",
+  "cases": [
+    {
+      "schema": "DeviceReading.json",
+      "reason": "deviceRef is required. A reading that cannot name the physical thing that produced it is unattributable — the exact silent-wrong this contract exists to make impossible.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_no_device_ref",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "deviceProfileRef is required. Without the profile a value is a bare number: no declared unit, no declared range, no declared source channel.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_no_profile_ref",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "profileDigest is required. A reading that pins no contract revision can be retroactively legalised by widening the profile it failed.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_no_profile_digest",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "profileDigest must be a full lowercase sha256 hex digest. A truncated digest is a pin that cannot actually distinguish two profile revisions.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_short_profile_digest",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:deadbeef",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "deviceRef must be a urn:srcos:device: instance URN. A DeviceIdentity is an admitted operator workstation, not a sensor; attributing a measurement to the gateway that relayed it loses the device.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_device_ref_is_a_workstation",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device-identity:home_edge_node_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "sourceAddress is required. It is what proves the value came off the declared physical channel for this metric rather than an adjacent characteristic, register, or topic.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_no_source_address",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "quality \"ok\" with a null value is an untyped hole wearing a measured quality. Non-unavailable qualities must carry a real value.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_ok_with_null_value",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": null,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "quality \"unavailable\" means the device produced nothing; a value alongside it is a contradiction the schema must reject, not a curiosity for a consumer to resolve.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_unavailable_with_a_value",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:03.500Z",
+        "logicalTime": 418,
+        "causalParents": [
+          "urn:srcos:device-reading:th100_bed2_humidity_000417"
+        ],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "1a2b3c4d5e6f7081"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:acme_th100_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:th100_bed2"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceRef": "urn:srcos:device:th100_bed2",
+        "deviceProfileRef": "urn:srcos:device-profile:acme_th100_room_sensor_v1",
+        "profileDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813",
+        "metric": "humidity.relative",
+        "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+        "value": 44.1,
+        "unit": "%",
+        "quality": "unavailable",
+        "observedAt": "2026-07-29T09:15:03.000Z",
+        "receivedAt": "2026-07-29T09:15:03.500Z",
+        "sequenceRef": 418,
+        "nullAbsenceRef": "urn:srcos:null-absence:th100_bed2_notify_timeout_000418",
+        "qualityFlags": [
+          "notify_window_missed"
+        ],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": null
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "quality \"unavailable\" requires a NullAbsenceRecord reference. An untyped absence conflates a timeout with an intentional silence with a transport failure — the exact conflation the 12-kind taxonomy exists to prevent.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_unavailable_untyped",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:03.500Z",
+        "logicalTime": 418,
+        "causalParents": [
+          "urn:srcos:device-reading:th100_bed2_humidity_000417"
+        ],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "1a2b3c4d5e6f7081"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:acme_th100_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:th100_bed2"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceRef": "urn:srcos:device:th100_bed2",
+        "deviceProfileRef": "urn:srcos:device-profile:acme_th100_room_sensor_v1",
+        "profileDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813",
+        "metric": "humidity.relative",
+        "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+        "value": null,
+        "unit": "%",
+        "quality": "unavailable",
+        "observedAt": "2026-07-29T09:15:03.000Z",
+        "receivedAt": "2026-07-29T09:15:03.500Z",
+        "sequenceRef": 418,
+        "nullAbsenceRef": null,
+        "qualityFlags": [
+          "notify_window_missed"
+        ],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": null
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "the quality vocabulary is closed at v0.1. A producer inventing \"estimated\" widens the contract unilaterally; substituted already types a value that did not come from the device.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_invented_quality",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "estimated",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false). Side-channel fields are how an untyped vocabulary grows inside a typed one.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_unknown_prop",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        },
+        "calibrationHint": "trust me"
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "specVersion is pinned: any value other than the 0.1.0 const must fail.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_wrong_spec_version",
+        "type": "DeviceReading",
+        "specVersion": "0.2.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "temperature",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceReading.json",
+      "reason": "metric names are lowercase dot-separated slugs. Free-form display strings make the profile lookup a fuzzy match instead of an equality.",
+      "document": {
+        "id": "urn:srcos:device-reading:neg_metric_name_shape",
+        "type": "DeviceReading",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "branchRef": "urn:srcos:branch:home_main",
+        "visibilityScope": [
+          "private"
+        ],
+        "wallTime": "2026-07-29T09:15:00.042Z",
+        "logicalTime": 117,
+        "causalParents": [],
+        "traceContext": {
+          "traceId": "4bf92f3577b34da6a3ce929d0e0e4736",
+          "spanId": "00f067aa0ba902b7"
+        },
+        "provenanceLinks": [
+          {
+            "rel": "declared_by",
+            "ref": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1"
+          },
+          {
+            "rel": "produced_by",
+            "ref": "urn:srcos:device:room_sensor_01"
+          },
+          {
+            "rel": "ingested_by",
+            "ref": "prophet-platform:apps/device-service"
+          }
+        ],
+        "policyLabels": [
+          "synthetic:simulated-device"
+        ],
+        "riskLabels": [
+          "not-a-measurement"
+        ],
+        "deviceRef": "urn:srcos:device:room_sensor_01",
+        "deviceProfileRef": "urn:srcos:device-profile:srcos_virtual_room_sensor_v1",
+        "profileDigest": "sha256:55d51880fb7d938c7d87f0a8190b6d1499ba2c00291dbe55b710be5fc93e6666",
+        "metric": "Temperature (indoor)",
+        "sourceAddress": "virtual://room-sensor/temperature",
+        "value": 21.37,
+        "unit": "Cel",
+        "quality": "ok",
+        "observedAt": "2026-07-29T09:15:00.000Z",
+        "receivedAt": "2026-07-29T09:15:00.042Z",
+        "sequenceRef": 117,
+        "nullAbsenceRef": null,
+        "qualityFlags": [],
+        "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+        "rawPayload": {
+          "driver": "virtual",
+          "raw": 2137,
+          "scale": -2
+        }
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "A profile with no metrics describes nothing, yet would still be citable by readings. minItems: 1.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_declares_nothing",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813"
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "Every declared metric must carry a protocol-native sourceAddress; without it a reading's sourceAddress has nothing to be checked against and the attribution chain breaks at the profile.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_metric_without_address",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": -40.0,
+            "maximum": 85.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "access": "read"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813"
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "A number/integer metric must declare a real operating range (if/then). With a null range there is no way to distinguish a genuine excursion from a decode error, and every out-of-range value becomes admissible by default.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_numeric_without_range",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": null,
+            "maximum": null,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6e-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813"
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "access is closed to \"read\" at v0.1. Commanding a device is a world-changing effect and must travel the MPCC EffectRequest -> EffectDecision lifecycle; letting it in through a widened enum would give drivers unreviewed actuation.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_write_access",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": -40.0,
+            "maximum": 85.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6e-0000-1000-8000-00805f9b34fb",
+            "access": "write"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813"
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "protocolBinding.parameters holds scalars only. A nested blob is an untyped escape hatch through which unreviewed configuration — here, credentials — enters a typed contract.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_nested_binding_parameter",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "auth": {
+              "user": "admin",
+              "pass": "admin"
+            }
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": -40.0,
+            "maximum": 85.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6e-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813"
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "definitionDigest is required. Without it there is nothing for a reading to pin, and a declaration can be edited in place with no reading ever noticing.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_no_definition_digest",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": -40.0,
+            "maximum": 85.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6e-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_unknown_prop",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "ble-gatt",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": -40.0,
+            "maximum": 85.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6e-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813",
+        "calibrationTable": "see wiki"
+      }
+    },
+    {
+      "schema": "DeviceProfile.json",
+      "reason": "The protocol taxonomy is closed. An unlisted protocol means no driver implements it: admitting the profile would produce a device nothing can read, described as if it could.",
+      "document": {
+        "id": "urn:srcos:device-profile:neg_unknown_protocol",
+        "type": "DeviceProfile",
+        "specVersion": "0.1.0",
+        "actorRef": "urn:srcos:agent:device_service",
+        "workspaceRef": "urn:srcos:workspace:citizen_home_demo",
+        "visibilityScope": [
+          "private"
+        ],
+        "provenanceLinks": [
+          {
+            "rel": "declared_from",
+            "ref": "datasheet:acme-th-100-rev-c"
+          },
+          {
+            "rel": "conforms_to",
+            "ref": "org.bluetooth.service.environmental_sensing"
+          }
+        ],
+        "policyLabels": [
+          "residence:interior",
+          "pii:none"
+        ],
+        "riskLabels": [],
+        "deviceClass": "acme-th-100-room-sensor",
+        "manufacturer": "Acme Instruments",
+        "model": "TH-100",
+        "protocol": "proprietary-serial",
+        "protocolBinding": {
+          "endpoint": "ble://C4:2F:90:11:8A:3D",
+          "securityMode": "pairing-bonded",
+          "parameters": {
+            "connectionIntervalMs": 1000,
+            "notifyOnly": true,
+            "gattService": "0000181a-0000-1000-8000-00805f9b34fb"
+          }
+        },
+        "metrics": [
+          {
+            "metric": "temperature",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "Cel",
+            "minimum": -40.0,
+            "maximum": 85.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6e-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "humidity.relative",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "number",
+            "unit": "%",
+            "minimum": 0.0,
+            "maximum": 100.0,
+            "resolution": 0.01,
+            "samplePeriodMs": 1000,
+            "sourceAddress": "gatt://0000181a-0000-1000-8000-00805f9b34fb/00002a6f-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          },
+          {
+            "metric": "battery.level",
+            "kkoTypeRef": "http://kbpedia.org/ontologies/kko#Quantity",
+            "valueType": "integer",
+            "unit": "%",
+            "minimum": 0,
+            "maximum": 100,
+            "resolution": 1,
+            "samplePeriodMs": 300000,
+            "sourceAddress": "gatt://0000180f-0000-1000-8000-00805f9b34fb/00002a19-0000-1000-8000-00805f9b34fb",
+            "access": "read"
+          }
+        ],
+        "declaredAt": "2026-07-29T08:00:00.000Z",
+        "identityRef": "urn:srcos:device-identity:home_edge_node_01",
+        "adminState": "enabled",
+        "supersedesRef": null,
+        "definitionDigest": "sha256:24dfe44e340bc684c2c5618cfad534717c6b1f218b6bf7e94aa809afecab2813"
+      }
+    }
+  ]
+}

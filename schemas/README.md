@@ -5,6 +5,31 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — DeviceService Contract v0.1 (the southbound device plane, W8.7)
+
+The southbound device abstraction — the estate's first — adds the following top-level schemas:
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `DeviceProfile.json` | DeviceProfile | `urn:srcos:device-profile:` |
+| `DeviceReading.json` | DeviceReading | `urn:srcos:device-reading:` |
+
+These types support:
+- **ONE southbound interface, N protocol drivers** (EdgeX Foundry's lesson): a driver speaks a protocol, it does not invent a vocabulary. `DeviceProfile` declares what a device IS — protocol, protocol binding, and the exact readings it produces with units, value types, operating ranges and protocol-native source addresses; `DeviceReading` is one observation against that declaration
+- **the invariant the family exists for — a reading is ATTRIBUTABLE OR IT IS NOTHING.** `deviceRef`, `deviceProfileRef`, `profileDigest`, `metric`, `sourceAddress` and `unit` are all required, so every value resolves to the physical thing that produced it, the exact declared-capability revision it was admitted against, and the protocol-native channel it came off. The validator resolves all of them across the example set and additionally requires `provenanceLinks` to name the device and profile independently, so the attribution survives being read without the validator
+- **digest-pinning against retroactive legalisation**: `DeviceProfile.definitionDigest` is recomputed by the validator from the profile's own `{deviceClass, protocol, metrics}` projection, and every reading pins it. Widening a range after the fact produces a new digest and orphans the readings it was meant to legalise instead of silently admitting them (the `UpdateHealthProbe` digest-pinned-gate construct, applied to metrology)
+- **a closed quality vocabulary with typed absence**: `ok` / `degraded` / `stale` / `substituted` / `unavailable`, where `unavailable` is schema-bound to a null value plus a `NullAbsenceRecord` reference — the device plane reuses the existing 12-kind MPCC absence taxonomy rather than inventing a device-local one. Normative: `stale` and `substituted` are not `ok`, and `substituted` is not measured
+- **simulated devices as a first-class, visibly-labelled member of the protocol taxonomy** (`protocol: "virtual"` ⇒ the `synthetic:simulated-device` label, enforced in both directions) — the `model-generated` admissibility rule applied to sensors
+- `observedAt` → `receivedAt` → `wallTime` kept distinct, because `observedAt` → `receivedAt` is the southbound latency a twin's sync budget is actually spent on
+- ontology typing at the granularity the estate can resolve: `kkoTypeRef` cites the vendored KKO upper ontology (169 verified terms), not the unvendored ~58k KBpedia reference-concept layer — a more specific-looking URI that resolves to nothing is the same silent-wrong in different clothing
+- read-only at v0.1 (`access` closed to `"read"`): commanding a device is a world-changing effect and must travel the MPCC `EffectRequest` → `EffectDecision` lifecycle, not a widened enum
+
+Distinct from `DeviceIdentity` (admission/attestation/trust for a SourceOS operator workstation — no metrology) and `TelemetryEvent` (an `AgentSession` diagnostic log event — no unit, range, quality or device); `DeviceProfile.identityRef` binds to the former rather than competing with it.
+
+Validation: `make validate-device-service-examples` (schema conformance, tranche strictness bar, envelope parity against `ConversationEvent`, recomputed profile digests, cross-document attribution soundness, simulated-visibility, and twenty-one negative vectors under `fixtures/device-service/`). Normative notes: `specs/device-service-contract.md`. Reference implementation: `device-service` in `SocioProphet/prophet-platform` (`apps/device-service`).
+
+---
+
 ## Recent additions — A/B Fallback Update Contract v0.1
 
 The dual-slot update contract adds the following top-level schemas:
