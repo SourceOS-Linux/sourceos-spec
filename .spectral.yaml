@@ -1,0 +1,31 @@
+# Vendored Spectral ruleset for openapi.yaml.
+#
+# This replaces the previous
+#   --ruleset https://unpkg.com/@stoplight/spectral-openapi/dist/ruleset.js
+# which never worked. That URL returns HTTP 404, and the package it names
+# (@stoplight/spectral-openapi) does not exist on the npm registry at all --
+# the real package is @stoplight/spectral-rulesets. Spectral exits 2 with
+# "Could not load ...: Not Found", and the `|| true` on the CI step swallowed
+# it, so openapi.yaml has never actually been linted for conformance.
+#
+# No CDN is referenced. `spectral:oas` is the ruleset built into the Spectral
+# CLI itself, resolved from the @stoplight/spectral-rulesets copy inside the
+# CLI's own dependency tree. That tree is pinned exactly and sha512-verified
+# by tools/spectral/package-lock.json (248 packages, all with an integrity
+# hash), installed with `npm ci`. Nothing is fetched by URL at lint time.
+
+extends: spectral:oas
+
+rules:
+  # Upstream bug, not a defect in this spec. In @stoplight/spectral-cli 6.15.0
+  # this rule aborts the whole run with
+  #   "Cannot read properties of null (reading 'enum')"
+  # thrown from nimma's traversal, whenever openapi.yaml's external
+  # `$ref: ./schemas/*.json` pointers resolve. Verified to be this rule alone:
+  # with it off the lint completes; with it on -- and with every referenced
+  # schema replaced by `{"type":"object"}` -- it still aborts, so the schema
+  # contents are not the trigger. Leaving it enabled would mean the lint could
+  # only ever crash, which is how a `|| true` gets added in the first place.
+  # Re-enable when the upstream traversal bug is fixed.
+  # Quoted: bare `off` is a boolean in YAML 1.1, a string in YAML 1.2.
+  duplicated-entry-in-enum: "off"
