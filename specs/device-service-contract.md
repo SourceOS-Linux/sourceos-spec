@@ -127,6 +127,15 @@ actually spent on. Collapsing them into one field hides the only number that
 would tell you whether a Δt target is met, which is why the family carries all
 three and the validator enforces `receivedAt >= observedAt`.
 
+Normative: that ordering is over **instants, not strings**. `format: date-time`
+admits the same instant written several ways (`...T09:15:00Z` ==
+`...T11:15:00+02:00`), and lexicographically `...:00.500Z` sorts *before*
+`...:00Z` while being 500ms later. A conformance tool that compares the two
+timestamps as text is a check that cannot fail for precisely the documents most
+likely to be wrong, so implementations MUST parse both to an absolute instant
+and MUST refuse a pair that cannot be parsed to one (an offset is required —
+a naive stamp is not an instant).
+
 ## 7. Simulated devices are first-class and must stay visible
 
 `protocol: "virtual"` denotes a simulated device with no physical counterpart.

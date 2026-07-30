@@ -34,6 +34,7 @@ from __future__ import annotations
 import hashlib
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 import jsonschema
@@ -105,6 +106,30 @@ def fail(msg: str) -> None:
 
 def load(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def instant(value: str) -> datetime | None:
+    """Parse an RFC3339 `date-time` to an absolute instant, or None if it is not
+    one. Comparing these as STRINGS is wrong and silently so: the schema pins
+    `format: date-time` with no `pattern`, so `2026-07-29T09:15:00Z` and
+    `2026-07-29T11:15:00+02:00` are the same instant written two ways, and
+    `...:00.500Z` sorts BEFORE `...:00Z` lexicographically ('.' < 'Z') while
+    being 500ms later. An ordering check built on string compare is a check that
+    cannot fail for exactly the documents most likely to be wrong."""
+    text = value.strip()
+    if len(text) > 10 and text[10] in "tT":  # RFC3339 permits a lowercase separator
+        text = text[:10] + "T" + text[11:]
+    if text.endswith(("Z", "z")):
+        text = text[:-1] + "+00:00"
+    try:
+        parsed = datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        # RFC3339 requires an offset. A naive stamp is not an instant; refuse it
+        # rather than assume UTC and compare two different clocks.
+        return None
+    return parsed.astimezone(timezone.utc)
 
 
 def definition_digest(profile: dict) -> str:
@@ -237,8 +262,16 @@ def check_attribution(profiles: dict[str, dict], readings: dict[str, dict], abse
         else:
             CHECKS[f"attribution:{name}:channel-agrees"] = True
 
-        if reading.get("kkoTypeRef") and metric.get("kkoTypeRef") and reading["kkoTypeRef"] != metric["kkoTypeRef"]:
-            fail(f"{name}: kkoTypeRef disagrees with the profile's declared ontology type for {reading['metric']}")
+        # Matches the reference implementation (prophet-platform device-service
+        # contract.py): if the PROFILE declares an ontology type, the reading must
+        # carry that same type. A reading that simply omits kkoTypeRef does not get
+        # to skip the check — a laxer conformance tool than the implementation it
+        # certifies would green-light documents the implementation rejects.
+        if metric.get("kkoTypeRef") and reading.get("kkoTypeRef") != metric["kkoTypeRef"]:
+            fail(
+                f"{name}: kkoTypeRef {reading.get('kkoTypeRef')!r} disagrees with the ontology type "
+                f"{metric['kkoTypeRef']!r} the profile declares for {reading['metric']}"
+            )
         else:
             CHECKS[f"attribution:{name}:ontology-agrees"] = True
 
@@ -276,11 +309,25 @@ def check_attribution(profiles: dict[str, dict], readings: dict[str, dict], abse
                 else:
                     CHECKS[f"attribution:{name}:value-in-range"] = True
 
+        # Compare INSTANTS, never strings (see instant()). Only record the check
+        # as performed when it actually was — a green "latency-ordered" on a
+        # reading that carries no receivedAt is a check reporting on nothing.
         received = reading.get("receivedAt")
-        if received and received < reading["observedAt"]:
-            fail(f"{name}: receivedAt precedes observedAt — the reading arrived before it was observed")
-        else:
-            CHECKS[f"attribution:{name}:latency-ordered"] = True
+        if received:
+            observed_at, received_at = instant(reading["observedAt"]), instant(received)
+            if observed_at is None or received_at is None:
+                fail(
+                    f"{name}: observedAt/receivedAt must be RFC3339 instants with an offset "
+                    f"({reading['observedAt']!r} -> {received!r}); an unorderable pair cannot be checked"
+                )
+            elif received_at < observed_at:
+                fail(
+                    f"{name}: receivedAt precedes observedAt by "
+                    f"{(observed_at - received_at).total_seconds()}s — the reading arrived "
+                    f"before it was observed"
+                )
+            else:
+                CHECKS[f"attribution:{name}:latency-ordered"] = True
 
         # A reading must also *say* where it came from, not only be checkable.
         rels = {link["ref"] for link in reading.get("provenanceLinks", [])}
