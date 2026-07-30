@@ -7,8 +7,9 @@ Noetica ledger stated it for its whole life while every call site passed the lit
 and 34 of 53 real entries recorded `grounded: false` next to `verdict: 'POS'` in the same
 object. A per-app implementation can always drift back into that. A schema cannot.
 
-So the two governance rules live in the schema, where any validator in any language
-enforces them without trusting the emitter:
+So the governance rules live in the schema, where any validator in any language enforces
+them without trusting the emitter. There are FOUR, and the last two were missing from the
+first revision:
 
   INVARIANT 1  verdict == law.factor × evidence.factor, where × is the MEET in the chain
                NEG < ZERO < POS (strong-Kleene conjunction, i.e. min). The 9 branches are
@@ -20,6 +21,18 @@ enforces them without trusting the emitter:
   INVARIANT 2  evidenceTier T1 is unavailable when either factor is 'declared'. T1 means
                instrumented; claiming it for a value no instrument produced is the same
                defect one level up.
+
+  INVARIANT 3  law.factor is a FUNCTION of (barCleared, residual), enforced both ways.
+  INVARIANT 4  evidence.factor is a FUNCTION of (digests, grounded, refuted), both ways.
+
+               3 and 4 were found by adversarial probe after the first revision shipped, and
+               they matter more than 1 and 2. Binding the verdict to its factors while
+               leaving the factors unbound enforces nothing: all six of these were ACCEPTED
+               — `law.factor: POS` alongside `barCleared: false`, an `evidence.factor: POS`
+               carrying no digests at all — and the product then faithfully multiplied the
+               lie. Enforcing an invariant one level too high is indistinguishable from not
+               enforcing it. Now checked exhaustively: 12 law and 24 evidence combinations,
+               accepting only the derivable factor, plus the six attacks by name.
 
 The critical property is asserted by REJECTION. A schema never observed refusing is
 indistinguishable from no schema, so every cell of the 3×3 table is checked in both
@@ -52,7 +65,10 @@ def product(law: str, evidence: str) -> str:
 
 
 def canonical_json(obj: Any) -> str:
-    return json.dumps(obj, sort_keys=True, separators=(",", ":"))
+    r"""ensure_ascii=False is load-bearing: Python's default escapes non-ASCII as \uXXXX while
+    JavaScript's JSON.stringify emits it raw, so the default would make every seal over
+    non-ASCII content diverge between languages."""
+    return json.dumps(obj, sort_keys=True, separators=(",", ":"), ensure_ascii=False)
 
 
 def seal(obj: Any) -> str:
@@ -102,17 +118,29 @@ def main() -> int:
         failures.append(f"example seal does not verify: recorded {recorded}, recomputed {seal(body)}")
     checks += 1
 
+    def broken_factor(base: dict, mutation) -> dict:
+        b = copy.deepcopy(base)
+        mutation(b)
+        return b
+
     def with_factors(law: str, ev: str, verdict: str, tier: str = "T2") -> dict:
         r = copy.deepcopy(example)
         r["law"]["factor"], r["evidence"]["factor"] = law, ev
         r["verdict"], r["evidenceTier"] = verdict, tier
-        # Keep the factor bodies consistent so a rejection can only be about the product.
+        # Each factor body must DERIVE its declared factor, or invariants 3/4 reject the
+        # receipt and every product case below becomes vacuous — passing for the wrong
+        # reason. This is the same trap as comparing two empty result sets and calling them
+        # identical, so the derivations are spelled out rather than approximated.
         r["law"]["barCleared"] = law != "NEG"
-        r["law"]["residual"] = [] if law == "POS" else ["citation.resolves"]
+        r["law"]["residual"] = ["citation.resolves"] if law == "ZERO" else []
+        r["evidence"].pop("refuted", None)
         if ev == "NEG":
             r["evidence"]["refuted"] = True
+            r["evidence"]["grounded"] = True
         elif ev == "ZERO":
             r["evidence"]["grounded"] = False
+        else:
+            r["evidence"]["grounded"] = True
         return r
 
     # ── INVARIANT 1: every cell, both directions ───────────────────────────────
@@ -147,6 +175,61 @@ def main() -> int:
         case(f"law={law_src} evidence={ev_src} tier={tier}", r, ok)
     print(f"    {'OK  ' if not failures else 'FAIL'} T1 rejected whenever either factor is declared; T2 always permitted")
 
+    # ── INVARIANTS 3 & 4: each FACTOR is a function of the record ──────────────
+    # Found by adversarial probe AFTER the first version shipped: the product invariant
+    # binds verdict to the factors, but nothing bound the factors to their own evidence.
+    # All six of these were ACCEPTED — `law.factor: POS` with `barCleared: false`, an
+    # `evidence.factor: POS` carrying no digests at all — and the product then faithfully
+    # multiplied the lie. Enforcing the product one level too high enforces nothing.
+    print("  INVARIANTS 3 & 4 — each factor is a function of the record it derives from")
+
+    def law_factor(cleared: bool, residual: list[str]) -> str:
+        return "NEG" if not cleared else ("POS" if not residual else "ZERO")
+
+    def evidence_factor(digests: bool, grounded: bool, refuted: bool) -> str:
+        return "NEG" if refuted else ("POS" if digests and grounded else "ZERO")
+
+    import itertools
+    a_hash = example["evidence"]["requestHash"]
+
+    # Exhaustive over the law inputs: only the derivable factor may be accepted, so the
+    # schema is checked for admitting too much AND for refusing what it should allow.
+    for cleared, residual in itertools.product([True, False], [[], ["citation.resolves"]]):
+        right = law_factor(cleared, residual)
+        for claim in VERDICTS:
+            r = copy.deepcopy(example)
+            r["law"] = {"factor": claim, "barCleared": cleared, "residual": residual, "source": "measured"}
+            r["verdict"] = product(claim, r["evidence"]["factor"])
+            case(f"law claim={claim} barCleared={cleared} residual={len(residual)}", r, claim == right)
+    print(f"    {'OK  ' if not failures else 'FAIL'} 12 law combinations: only the derivable factor accepted")
+
+    for digests, grounded, refuted in itertools.product([True, False], [True, False], [True, False]):
+        right = evidence_factor(digests, grounded, refuted)
+        for claim in VERDICTS:
+            r = copy.deepcopy(example)
+            ev: dict[str, Any] = {"factor": claim, "grounded": grounded, "source": "measured"}
+            if digests:
+                ev["requestHash"], ev["answerHash"] = a_hash, a_hash
+            if refuted:
+                ev["refuted"] = True
+            r["evidence"] = ev
+            r["verdict"] = product(r["law"]["factor"], claim)
+            case(f"evidence claim={claim} digests={digests} grounded={grounded} refuted={refuted}", r, claim == right)
+    print(f"    {'OK  ' if not failures else 'FAIL'} 24 evidence combinations: only the derivable factor accepted")
+
+    # The six attacks by name, so a future edit that reopens one of them fails loudly rather
+    # than merely dropping a count.
+    for label, mut in [
+        ("law POS while the gate REFUSED", lambda b: (b["law"].update({"factor": "POS", "barCleared": False}), b.update({"verdict": "POS"}))),
+        ("law POS carrying undischarged residual", lambda b: b["law"].update({"factor": "POS", "residual": ["citation.resolves"]})),
+        ("evidence POS while refuted", lambda b: b["evidence"].update({"factor": "POS", "refuted": True})),
+        ("evidence POS with NO digests at all", lambda b: (b["evidence"].pop("requestHash"), b["evidence"].pop("answerHash"))),
+        ("evidence POS while ungrounded", lambda b: b["evidence"].update({"factor": "POS", "grounded": False})),
+        ("evidence POS with grounded absent entirely", lambda b: b["evidence"].pop("grounded")),
+    ]:
+        case(f"ATTACK: {label}", broken_factor(example, mut), False)
+    print(f"    {'OK  ' if not failures else 'FAIL'} all 6 factor-forging attacks rejected by name")
+
     # ── the vectors must agree with the algebra ────────────────────────────────
     # The vector file is what cross-language implementations test against, so a typo there
     # would propagate into every consumer rather than being caught by one of them.
@@ -163,6 +246,28 @@ def main() -> int:
             failures.append(f"mustNotHold vector actually holds: {bad}")
         case(f"vector mustNotHold {bad['law']}×{bad['evidence']}={bad['verdict']}",
              with_factors(bad["law"], bad["evidence"], bad["verdict"]), False)
+    # canonicalJson and contentHash define the SEAL, so the vectors must be self-consistent:
+    # a wrong expected value here propagates into every consumer rather than being caught by
+    # one of them. Recomputed with this file's own canonicaliser, which is also what the
+    # example receipt's seal was checked against above.
+    for cs in vectors["canonicalJson"]["cases"]:
+        checks += 1
+        got = canonical_json(cs["input"])
+        if got != cs["expected"]:
+            failures.append(f"canonicalJson vector: input {cs['input']!r} expected {cs['expected']!r}, got {got!r}")
+    for cs in vectors["contentHash"]["cases"]:
+        checks += 1
+        got = "sha256:" + hashlib.sha256(canonical_json(cs["input"]).encode("utf-8")).hexdigest()
+        if got != cs["expected"]:
+            failures.append(f"contentHash vector: input {cs['input']!r} expected {cs['expected']}, got {got}")
+    # And at least one case must exercise non-ASCII, or the ensure_ascii trap is untested.
+    checks += 1
+    if not any(any(ord(ch) > 127 for ch in json.dumps(c["input"], ensure_ascii=False))
+               for c in vectors["canonicalJson"]["cases"]):
+        failures.append("canonicalJson vectors contain no non-ASCII case — the ensure_ascii trap is untested")
+    print(f"    {'OK  ' if not failures else 'FAIL'} {len(vectors['canonicalJson']['cases'])} canonicalJson + "
+          f"{len(vectors['contentHash']['cases'])} contentHash cases agree, non-ASCII covered")
+
     print(f"    {'OK  ' if not failures else 'FAIL'} {len(vectors['product']['table'])} product rows agree "
           f"with min(); {len(vectors['product']['mustNotHold'])} mustNotHold rows rejected by the schema")
 
