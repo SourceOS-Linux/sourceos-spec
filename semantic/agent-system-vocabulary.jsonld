@@ -1,0 +1,49 @@
+{
+  "@context": {
+    "agentsys": "https://spec.sourceos.dev/vocab/agent-system#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+    "owl": "http://www.w3.org/2002/07/owl#"
+  },
+  "@id": "https://spec.sourceos.dev/vocab/agent-system",
+  "@type": "owl:Ontology",
+  "rdfs:label": "Agent System Vocabulary",
+  "rdfs:comment": "JSON-LD vocabulary seed for the agent-system domain: host-level typed agent classification, permission flags, spatial authorization, seams, capability exceptions, and bundle identity. Anchors the URN namespace urn:srcos:agent-passport:* and is realized as OWL/SHACL in ontogenesis (T1). Complementary to the Agent Plane family, which operates at workflow/session level.",
+  "@graph": [
+    {
+      "@id": "agentsys:AgentClass",
+      "@type": "owl:Class",
+      "rdfs:label": "Agent Class",
+      "rdfs:comment": "The typed classification of a host agent, one of the five classes: system_core, intelligence_automation, app_helper, legacy_bridge, third_party. Governs execution authorization, spatial permissions, and intelligence constraints."
+    },
+    {
+      "@id": "agentsys:PermissionFlag",
+      "@type": "owl:Class",
+      "rdfs:label": "Permission Flag",
+      "rdfs:comment": "A boolean permission attribute governing a host agent: is_daemon, is_apple_signed, suppress_user_authorization_prompt, system_bundle. Flag combinations are constrained by class (e.g. third_party may not set system_bundle)."
+    },
+    {
+      "@id": "agentsys:ManagedSpace",
+      "@type": "owl:Class",
+      "rdfs:label": "Managed Space",
+      "rdfs:comment": "A CGSSpace spatial authorization context (with an associated display UUID) an agent may present in. Not merely a UI concept: an authorization boundary whose stability is subject to SEAM-008 (displayUUID instability)."
+    },
+    {
+      "@id": "agentsys:SeamDefinition",
+      "@type": "owl:Class",
+      "rdfs:label": "Seam Definition",
+      "rdfs:comment": "An ungated boundary between two system layers that represents an attack surface. Names where trust is not yet enforced, the vector that exploits it, and the gate that would close it."
+    },
+    {
+      "@id": "agentsys:CapabilityException",
+      "@type": "owl:Class",
+      "rdfs:label": "Capability Exception",
+      "rdfs:comment": "An explicit, scoped, attributable capability grant that deviates from an agent class default. Carries capability, granted_by, granted_at, scope, and optional expiry."
+    },
+    {
+      "@id": "agentsys:BundleIdentity",
+      "@type": "owl:Class",
+      "rdfs:label": "Bundle Identity",
+      "rdfs:comment": "The stable process identity (bundle_id) of a host agent, e.g. com.anthropic.claudefordesktop. The slug basis for the URN urn:srcos:agent-passport:<bundle_id_slug>. Distinct from pid, which is session-scoped and non-stable."
+    }
+  ]
+}
