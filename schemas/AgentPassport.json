@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentPassport.json",
+  "title": "AgentPassport",
+  "description": "Canonical typed classification for an agent or service observed on a SourceOS-managed host. Formalizes the five-class agent model (system_core, intelligence_automation, app_helper, legacy_bridge, third_party) that governs execution authorization, spatial permissions, and intelligence constraints across the SourceOS estate. Complementary to the Agent Plane family (AgentSession/ExecutionDecision/ExecutionSurface), which operate at workflow/session level; AgentPassport is host-level process classification. Canonical instance URN: urn:srcos:agent-passport:<bundle_id_slug>. Schema version 1.0.0. Cross-field invariants (documented on the relevant properties) are authoritatively enforced by SHACL in ontogenesis (T1-4); the JSON-Schema-expressible subset is additionally enforced here via the allOf/if-then rules at the end of this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundle_id",
+    "agent_class",
+    "is_daemon",
+    "is_apple_signed",
+    "suppress_user_authorization_prompt",
+    "system_bundle",
+    "interrupt_level"
+  ],
+  "properties": {
+    "bundle_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Stable process identity (e.g. com.anthropic.claudefordesktop). The canonical passport URN is urn:srcos:agent-passport:<bundle_id_slug>."
+    },
+    "pid": {
+      "type": "integer",
+      "description": "SESSION-SCOPED process id. NOT a stable identifier: it is reused across processes and reboots and must never be used for cross-session correlation or authorization."
+    },
+    "binary_path": {
+      "type": "string",
+      "description": "Last known binary path on the host."
+    },
+    "agent_class": {
+      "type": "string",
+      "enum": [
+        "system_core",
+        "intelligence_automation",
+        "app_helper",
+        "legacy_bridge",
+        "third_party"
+      ],
+      "description": "Typed classification. system_core = _SYSTEM_CENTER_ daemons, highest privilege. intelligence_automation = proactive/prediction agents, constrained output. app_helper = application background daemons, standard user auth. legacy_bridge = legacy/modern connection bridge services. third_party = unsigned external applications."
+    },
+    "is_daemon": {
+      "type": "boolean",
+      "description": "Whether the process runs as a background daemon."
+    },
+    "is_apple_signed": {
+      "type": "boolean",
+      "description": "Whether the binary is Apple-signed."
+    },
+    "suppress_user_authorization_prompt": {
+      "type": "boolean",
+      "description": "Whether the agent may suppress the user authorization prompt. CONSTRAINT: true is only valid when is_apple_signed is true (enforced below via if/then; SHACL T1-4 is authoritative). third_party/app_helper/legacy_bridge must never set this true (SEAM-002)."
+    },
+    "system_bundle": {
+      "type": "boolean",
+      "description": "Whether the agent is part of a system bundle. CONSTRAINT: a third_party agent must not set this true (enforced below via if/then; SHACL T1-4 authoritative)."
+    },
+    "authorized_space_ids": {
+      "type": "array",
+      "items": { "type": "integer" },
+      "description": "CGSSpace spids the agent may present in."
+    },
+    "authorized_window_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "WAWindow wids the agent may interact with."
+    },
+    "authorized_display_uuids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Physical display contexts. Stability is subject to SEAM-008 (displayUUID instability from firmware manipulation); an attestation timestamp is required when this is asserted."
+    },
+    "summarize_previews_permitted": {
+      "type": "boolean",
+      "description": "Mirrors the summarizePreviews system flag. Required for the intelligence_automation class (enforced below)."
+    },
+    "dnd_intelligent_management_permitted": {
+      "type": "boolean",
+      "description": "Mirrors dndAllowIntelligentManagement. Required for the intelligence_automation class (enforced below)."
+    },
+    "autonomous_action_permitted": {
+      "type": "boolean",
+      "description": "Whether the agent may act without a human in the loop. Required for the intelligence_automation class (enforced below)."
+    },
+    "capability_exceptions": {
+      "type": "array",
+      "description": "Explicit, scoped capability grants that deviate from the class default.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capability", "granted_by", "granted_at", "scope"],
+        "properties": {
+          "capability": { "type": "string" },
+          "granted_by": { "type": "string" },
+          "granted_at": { "type": "string", "format": "date-time" },
+          "scope": { "type": "string" },
+          "expires": {
+            "type": ["string", "null"],
+            "format": "date-time",
+            "description": "Expiry timestamp, or null for a non-expiring grant."
+          }
+        }
+      }
+    },
+    "interrupt_level": {
+      "type": "string",
+      "enum": ["critical", "time_sensitive", "high", "standard", "passive"],
+      "description": "Notification/interrupt authority level."
+    },
+    "attested_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this passport was attested. Required when spatial authorization (authorized_display_uuids) is asserted (SEAM-008)."
+    },
+    "attestation_source": {
+      "type": "string",
+      "description": "The attesting authority (e.g. agent-machine attest subcommand)."
+    }
+  },
+  "allOf": [
+    {
+      "$comment": "intelligence_automation requires all three intelligence-constraint fields.",
+      "if": {
+        "properties": { "agent_class": { "const": "intelligence_automation" } },
+        "required": ["agent_class"]
+      },
+      "then": {
+        "required": [
+          "summarize_previews_permitted",
+          "dnd_intelligent_management_permitted",
+          "autonomous_action_permitted"
+        ]
+      }
+    },
+    {
+      "$comment": "third_party must not claim system_bundle: true (class elevation).",
+      "if": {
+        "properties": { "agent_class": { "const": "third_party" } },
+        "required": ["agent_class"]
+      },
+      "then": {
+        "properties": { "system_bundle": { "const": false } }
+      }
+    },
+    {
+      "$comment": "suppress_user_authorization_prompt: true is only valid when is_apple_signed: true.",
+      "if": {
+        "properties": { "suppress_user_authorization_prompt": { "const": true } },
+        "required": ["suppress_user_authorization_prompt"]
+      },
+      "then": {
+        "properties": { "is_apple_signed": { "const": true } }
+      }
+    }
+  ]
+}
