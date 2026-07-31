@@ -19,6 +19,8 @@ Negative (each fed to the SCHEMA as a real document; each MUST be rejected):
       constraint field
   R4  unknown agent_class (not one of the five)        (unclassified / anySource)
   R5  missing bundle_id                                (no stable identity)
+  R6  app_helper/legacy_bridge/third_party suppressing (SEAM-002 class ban)
+      the auth prompt even when apple-signed
 """
 
 from __future__ import annotations
@@ -29,11 +31,17 @@ import sys
 from pathlib import Path
 from typing import Any
 
-from jsonschema import Draft202012Validator
+try:
+    from jsonschema import Draft202012Validator
+except ImportError:  # pragma: no cover - dependency is installed by the Makefile target
+    print("FAIL: jsonschema is not installed; run `python3 -m pip install jsonschema`")
+    sys.exit(1)
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = REPO_ROOT / "schemas" / "AgentPassport.json"
-EXAMPLE_PATH = REPO_ROOT / "examples" / "agent-passport.json"
+# One object per file, per the repo's example convention (each carries a top-level
+# `type` so CI can map it to its schema). Cover multiple classes across files.
+EXAMPLE_GLOB = "agent-passport*.json"
 
 EXPECTED_CLASSES = {
     "system_core",
@@ -59,21 +67,31 @@ def main() -> int:
     Draft202012Validator.check_schema(schema)
     validator = Draft202012Validator(schema)
 
-    # agent_class enum must contain exactly the five canonical values.
-    enum = set(schema["properties"]["agent_class"]["enum"])
-    if enum != EXPECTED_CLASSES:
-        fail(f"agent_class enum must be exactly the five classes, got {sorted(enum)}")
+    # agent_class enum must contain exactly the five canonical values. Access
+    # defensively so a malformed schema yields a clear FAIL, not a traceback.
+    enum_list = (
+        schema.get("properties", {}).get("agent_class", {}).get("enum")
+        if isinstance(schema, dict)
+        else None
+    )
+    if not isinstance(enum_list, list):
+        fail("schema is missing properties.agent_class.enum")
+    if set(enum_list) != EXPECTED_CLASSES:
+        fail(f"agent_class enum must be exactly the five classes, got {sorted(set(enum_list))}")
 
-    examples = load(EXAMPLE_PATH)
-    if not isinstance(examples, list) or not examples:
-        fail("examples/agent-passport.json must be a non-empty array of passports")
+    example_paths = sorted((REPO_ROOT / "examples").glob(EXAMPLE_GLOB))
+    if not example_paths:
+        fail(f"no example files matched examples/{EXAMPLE_GLOB}")
 
-    # Positive: every element validates.
+    # Positive: every example object validates.
     seen_classes = set()
-    for i, passport in enumerate(examples):
+    for path in example_paths:
+        passport = load(path)
+        if not isinstance(passport, dict):
+            fail(f"{path.name}: each example must be a single AgentPassport object")
         errors = sorted(validator.iter_errors(passport), key=lambda e: list(e.path))
         if errors:
-            lines = [f"example[{i}] ({passport.get('bundle_id', '?')}) failed validation:"]
+            lines = [f"{path.name} ({passport.get('bundle_id', '?')}) failed validation:"]
             for e in errors:
                 loc = ".".join(str(p) for p in e.path) or "<root>"
                 lines.append(f"  - {loc}: {e.message}")
@@ -130,10 +148,18 @@ def main() -> int:
     del r5["bundle_id"]
     must_reject("R5 missing bundle_id", r5)
 
+    # R6: SEAM-002 — app_helper/legacy_bridge/third_party cannot suppress the
+    # auth prompt even when apple-signed.
+    r6 = copy.deepcopy(base)
+    r6["agent_class"] = "app_helper"
+    r6["is_apple_signed"] = True
+    r6["suppress_user_authorization_prompt"] = True
+    must_reject("R6 SEAM-002 class suppression", r6)
+
     print(
-        f"OK: AgentPassport schema valid; {len(examples)} example passports validated "
+        f"OK: AgentPassport schema valid; {len(example_paths)} example passports validated "
         f"(classes: {', '.join(sorted(c for c in seen_classes if c))}); "
-        f"5 rejection invariants enforced (R1-R5)"
+        f"6 rejection invariants enforced (R1-R6)"
     )
     return 0
 

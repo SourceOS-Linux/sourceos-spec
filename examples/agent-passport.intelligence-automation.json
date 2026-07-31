@@ -1,0 +1,16 @@
+{
+  "type": "AgentPassport",
+  "bundle_id": "com.apple.Siri.ActionPredictionNotifications",
+  "binary_path": "/System/Library/PrivateFrameworks/SiriActionPrediction.framework",
+  "agent_class": "intelligence_automation",
+  "is_daemon": true,
+  "is_apple_signed": true,
+  "suppress_user_authorization_prompt": false,
+  "system_bundle": true,
+  "summarize_previews_permitted": false,
+  "dnd_intelligent_management_permitted": false,
+  "autonomous_action_permitted": false,
+  "interrupt_level": "time_sensitive",
+  "attested_at": "2026-06-09T14:00:00Z",
+  "attestation_source": "urn:srcos:agent-machine:attest"
+}

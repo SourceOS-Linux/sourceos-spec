@@ -1,42 +1,14 @@
-[
-  {
-    "bundle_id": "com.apple.sharingd",
-    "binary_path": "/usr/libexec/sharingd",
-    "agent_class": "system_core",
-    "is_daemon": true,
-    "is_apple_signed": true,
-    "suppress_user_authorization_prompt": true,
-    "system_bundle": true,
-    "interrupt_level": "critical",
-    "attested_at": "2026-06-09T14:00:00Z",
-    "attestation_source": "urn:srcos:agent-machine:attest"
-  },
-  {
-    "bundle_id": "com.apple.Siri.ActionPredictionNotifications",
-    "binary_path": "/System/Library/PrivateFrameworks/SiriActionPrediction.framework",
-    "agent_class": "intelligence_automation",
-    "is_daemon": true,
-    "is_apple_signed": true,
-    "suppress_user_authorization_prompt": false,
-    "system_bundle": true,
-    "summarize_previews_permitted": false,
-    "dnd_intelligent_management_permitted": false,
-    "autonomous_action_permitted": false,
-    "interrupt_level": "time_sensitive",
-    "attested_at": "2026-06-09T14:00:00Z",
-    "attestation_source": "urn:srcos:agent-machine:attest"
-  },
-  {
-    "bundle_id": "com.anthropic.claudefordesktop",
-    "binary_path": "/Applications/Claude.app/Contents/MacOS/Claude",
-    "agent_class": "third_party",
-    "is_daemon": false,
-    "is_apple_signed": false,
-    "suppress_user_authorization_prompt": false,
-    "system_bundle": false,
-    "interrupt_level": "standard",
-    "capability_exceptions": [],
-    "attested_at": "2026-06-09T14:00:00Z",
-    "attestation_source": "urn:srcos:agent-machine:attest"
-  }
-]
+{
+  "type": "AgentPassport",
+  "bundle_id": "com.anthropic.claudefordesktop",
+  "binary_path": "/Applications/Claude.app/Contents/MacOS/Claude",
+  "agent_class": "third_party",
+  "is_daemon": false,
+  "is_apple_signed": false,
+  "suppress_user_authorization_prompt": false,
+  "system_bundle": false,
+  "interrupt_level": "standard",
+  "capability_exceptions": [],
+  "attested_at": "2026-06-09T14:00:00Z",
+  "attestation_source": "urn:srcos:agent-machine:attest"
+}
