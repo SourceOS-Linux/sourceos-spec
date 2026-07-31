@@ -1,0 +1,16 @@
+{
+  "type": "TwinEventEnvelope",
+  "event_id": "evt:01JZ9F",
+  "event_type": "twin.verified",
+  "timestamp": "2026-03-09T00:00:00Z",
+  "actor_id": "user:alpha",
+  "twin_id": "twin:deploy/7c1",
+  "mission_id": "mission:prod-rollout/114",
+  "project_id": "project:inception-alpha",
+  "correlation_id": "corr:98b7",
+  "trace_id": "otel-trace-id",
+  "policy_refs": ["policy:deploy/base"],
+  "memory_refs": ["mem:event/991", "mem:graph/change/24"],
+  "provenance_refs": ["prov:intoto:stmt/8891"],
+  "payload": { "status": "verified", "capabilities": ["dry_run", "status"] }
+}

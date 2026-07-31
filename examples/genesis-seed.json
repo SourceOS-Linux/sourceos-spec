@@ -1,0 +1,14 @@
+{
+  "type": "GenesisSeed",
+  "seed_id": "seed:operator/deploy-v1",
+  "archetype": "deployment_twin",
+  "ontology_slice": ["Artifact", "Host", "Policy", "Environment", "ChangeRequest"],
+  "goal_schema": "schema:deployment_goal:v1",
+  "organs_allowed": ["graph_retrieval", "policy_check", "workflow", "tool_exec"],
+  "retrieval_profile": { "graph": true, "hybrid": true, "multimodal": false, "self_reflective": true, "recursive": true },
+  "memory_profile": { "episodic": "read_write", "semantic": "read_write_scoped", "procedural": "read", "provenance": "append_only" },
+  "policy_profile": ["policy:deploy/base", "policy:human_gate/high_risk"],
+  "provider_profile": ["provider:kubernetes", "provider:artifact_store", "provider:telemetry"],
+  "federation_profile": "same_domain_only",
+  "approval_profile": { "host_mutation": "required" }
+}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AdapterDescriptor.json",
+  "title": "AdapterDescriptor",
+  "description": "Cybernetic Agentic Genesis & Inception — a typed world-changing adapter. Declares capabilities, identity mode, policy hooks (preflight/approval/postflight), audit fields, and rollback strategy. A real adapter must support dry-run and rollback (Actuation gate). Phase-0 canonical schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "adapter_id", "kind", "capabilities", "identity_mode", "policy_hooks"],
+  "properties": {
+    "type": { "const": "AdapterDescriptor" },
+    "adapter_id": { "type": "string", "minLength": 1 },
+    "kind": { "type": "string", "enum": ["api", "cli", "sdk", "event", "file"] },
+    "capabilities": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "identity_mode": { "type": "string", "minLength": 1 },
+    "policy_hooks": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "audit_fields": { "type": "array", "items": { "type": "string" } },
+    "rollback_strategy": { "type": "string" }
+  }
+}

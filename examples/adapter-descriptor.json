@@ -1,0 +1,10 @@
+{
+  "type": "AdapterDescriptor",
+  "adapter_id": "adapter:kubernetes/apply-v1",
+  "kind": "api",
+  "capabilities": ["dry_run", "apply", "rollback", "status"],
+  "identity_mode": "workload_identity",
+  "policy_hooks": ["preflight", "approval", "postflight"],
+  "audit_fields": ["actor", "twin_id", "namespace", "artifact_digest"],
+  "rollback_strategy": "stored_previous_revision"
+}
