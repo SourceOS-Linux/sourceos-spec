@@ -1,0 +1,9 @@
+## Captured sources
+- sources/SourceOS Spec/ : 36 files
+- sources/agentic_forge_running_repo/ : 12 files
+- sources/fsms_memory_pack/ : 10 files
+## Extracted zips
+- extracted/Archive/ : 196 files
+- extracted/SourceOS_Obfuscation_Genesis_Spec_v0.7/ : 10 files
+- extracted/build_forge_contract_bundle_v0_1/ : 3 files
+- extracted/gh_profile_v1_contracts_and_actions_harness_bundle/ : 19 files
