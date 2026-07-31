@@ -1,0 +1,15 @@
+{
+  "type": "SeamDefinition",
+  "seam_id": "SEAM-013",
+  "name": "Claude Desktop Telemetry → Platform Data",
+  "boundary_from": "ClaudeDesktopTelemetry",
+  "boundary_to": "PlatformData",
+  "attack_vector": "sessionSampleRate:100 (100% of sessions sampled) means sensitive output can route through a fully-sampled telemetry surface before reaching an intended consumer.",
+  "known_exploits": ["sessionSampleRate:100", "20% error telemetry", "MASK_USER_INPUT client-controlled"],
+  "gate_requirements": ["Telemetry boundary check in ActivationDecision (advisory)", "sensitive output must not route through a 100%-sampled surface"],
+  "implementation_status": "open",
+  "linked_repos": ["SourceOS-Linux/agent-machine#T2-1"],
+  "priority": "high",
+  "first_identified": "2026-06-09",
+  "last_reviewed": "2026-06-09"
+}
