@@ -113,8 +113,10 @@ def main() -> int:
             d = doc.get("directionality", {})
             if d.get("identityInputsToReputation") != "forbidden":
                 errors.append(f"{ex_rel}: directionality.identityInputsToReputation must be 'forbidden'")
-            if d.get("worksToInnerAxes") != "allowed":
-                errors.append(f"{ex_rel}: directionality.worksToInnerAxes must be 'allowed'")
+            if d.get("reputationStateToInnerAxes") != "allowed":
+                errors.append(f"{ex_rel}: directionality.reputationStateToInnerAxes must be 'allowed'")
+            if doc.get("abstractionOf") != "reputation-model-state":
+                errors.append(f"{ex_rel}: AscensionReading.abstractionOf must be 'reputation-model-state'")
 
         # EVIDENCE BACKING
         if t == "SacredCapitalLedger":

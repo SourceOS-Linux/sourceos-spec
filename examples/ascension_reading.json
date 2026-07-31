@@ -4,29 +4,22 @@
   "specVersion": "2.0.0",
   "capturedAt": "2026-06-29T00:00:00Z",
   "subjectRef": "subject:pseudo:abc123",
+  "abstractionOf": "reputation-model-state",
   "computedOn": "holder-device",
   "networkServiceProhibited": true,
   "inputs": {
     "spineRef": "urn:srcos:identity-spine:yi-globe:v1",
-    "worksReceiptRefs": [
-      "urn:srcos:reasoning-receipt:work-1",
-      "urn:srcos:reasoning-receipt:work-2"
+    "sacredCapitalRef": "urn:srcos:sacred-capital:abc123:v1",
+    "dimensionRefs": [
+      "urn:srcos:reputation-dimension:math-commons:proof-rigor:v1"
     ]
   },
-  "steps": [
+  "projections": [
     {
-      "receiptRef": "urn:srcos:reasoning-receipt:work-1",
+      "dimensionRef": "urn:srcos:reputation-dimension:math-commons:proof-rigor:v1",
       "gateRef": "gate_25",
       "axisId": "shadowGift",
       "fromValue": -1,
-      "toValue": 0,
-      "deterministic": true
-    },
-    {
-      "receiptRef": "urn:srcos:reasoning-receipt:work-2",
-      "gateRef": "gate_25",
-      "axisId": "shadowGift",
-      "fromValue": 0,
       "toValue": 1,
       "deterministic": true
     }
@@ -41,7 +34,7 @@
     ]
   },
   "directionality": {
-    "worksToInnerAxes": "allowed",
+    "reputationStateToInnerAxes": "allowed",
     "identityInputsToReputation": "forbidden",
     "innerToOutsideRequiresClaim": true
   },

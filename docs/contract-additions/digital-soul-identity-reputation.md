@@ -17,11 +17,14 @@ records of works; no parallel receipt type is introduced.
    inner axis). This is what turns Sacred Capital from portable *data* into portable
    *meaning*: bound dimensions are legible across neighbourhoods; unbound ones stay
    opaque. There is never a global score.
-3. **The private reading.** `AscensionReading` is the single one-way bridge from
-   reputation to identity: it reads the holder's own works-receipts back through the
-   spine to move private gate-state along its inner axes ("ascension"). It is
-   normatively **on-device** and **network-prohibited** — no party but the holder may
-   compute or store the holder's inner state. This forecloses a "spiritual credit score".
+3. **Ascension = the reputation-model state abstracted.** `AscensionReading` is not a
+   parallel pipeline; it is the holder's reputation-model state re-represented in the
+   spine's inner vocabulary. Each `ReputationDimension` value (from the holder's
+   `SacredCapitalLedger`) is projected through its `latticeBinding` onto a gate's inner
+   axis — the binding IS the abstraction operator, and the set of projections IS
+   "ascension" (a digital-spiritual analogue of the same earned state). It is normatively
+   **on-device** and **network-prohibited** — no party but the holder may render or store
+   the holder's inner state. This forecloses a "spiritual credit score".
 
 ## Contracts
 
@@ -29,7 +32,7 @@ records of works; no parallel receipt type is introduced.
 |---|---|---|
 | `IdentitySpine` | identity (public-shared) | canonical 64-gate lattice + inner axes + one-way projections |
 | `DigitalSoulIdentity` | identity (agent-held-private) | per-subject given inputs + gate-state; default disclosure none |
-| `AscensionReading` | bridge (agent-held-private) | on-device works→inner-axes reading; replayable |
+| `AscensionReading` | bridge (agent-held-private) | reputation-model state abstracted onto inner axes via latticeBindings; on-device; replayable |
 | `ReputationDimension` | reputation | community-authored context-local dimension + optional spine binding |
 | `SacredCapitalLedger` | reputation (agent-held-portable) | evidence-backed capital per (neighbourhood, dimension); no global score |
 | `PortableReputationClaim` | reputation | holder-minted, signed, selective disclosure; optional witnessed ascension |
@@ -81,7 +84,8 @@ soul references it but does not absorb it.
   (`birthdate` / `faith` / `personality*` / `givenInputs`). The boundary holds by
   construction: the reputation schemas provide no field able to carry them.
 - **Directionality** — `AscensionReading` must be on-device, `networkServiceProhibited`,
-  and declare works→inner-axes `allowed` / identity-inputs→reputation `forbidden`.
+  `abstractionOf = reputation-model-state`, and declare reputation-state→inner-axes
+  `allowed` / identity-inputs→reputation `forbidden`.
 - **Evidence backing** — capital entries and claimed dimensions must each reference
   at least one works-receipt; no document asserts a global score.
 - **Spine integrity** — exactly 64 unique gates.

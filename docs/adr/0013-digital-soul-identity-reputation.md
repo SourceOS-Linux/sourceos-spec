@@ -40,12 +40,18 @@ Two distinct identity senses already exist in the estate and must not be conflat
    cannot be crossed by mistake; it is also machine-checked
    (`tools/validate_digital_soul_examples.py`).
 
-4. **One on-device, one-way bridge.** `AscensionReading` reads the holder's own
-   works-receipts back onto private inner axes ("ascension"). It is normatively
-   on-device and `networkServiceProhibited`: no party but the holder may compute or
-   store inner state. Inner state reaches the outside world only via a deliberate,
-   holder-minted `PortableReputationClaim`. This forecloses a "spiritual credit
-   score".
+4. **Ascension is the reputation-model state abstracted, not a parallel pipeline.**
+   `AscensionReading` is the holder's reputation-model state re-represented in the
+   spine's inner vocabulary: each `ReputationDimension` value (from the holder's
+   `SacredCapitalLedger`) is projected through its `latticeBinding` onto a gate's
+   inner axis. The `latticeBinding` IS the abstraction operator; the set of
+   projections IS "ascension" — the same earned state, viewed through the
+   correspondence lattice as a digital-spiritual analogue. It is normatively
+   on-device and `networkServiceProhibited`: no party but the holder may render or
+   store inner state (`abstractionOf = "reputation-model-state"`,
+   `directionality.reputationStateToInnerAxes = "allowed"`). Inner state reaches the
+   outside world only via a deliberate, holder-minted `PortableReputationClaim`.
+   This forecloses a "spiritual credit score".
 
 5. **Portable meaning, not a global score.** `ReputationDimension.latticeBinding`
    expresses a community's subjective dimension in the shared spine vocabulary, so
