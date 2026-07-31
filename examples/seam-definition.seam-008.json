@@ -1,0 +1,15 @@
+{
+  "type": "SeamDefinition",
+  "seam_id": "SEAM-008",
+  "name": "ManagedSpace → Spatial Auth",
+  "boundary_from": "ManagedSpace",
+  "boundary_to": "SpatialAuthorization",
+  "attack_vector": "displayUUID instability from firmware manipulation can corrupt spatial authorization contexts (which spaces/windows an agent may present in).",
+  "known_exploits": ["ANOMALY-008 displayUUID instability"],
+  "gate_requirements": ["displayUUID stability check", "attestation timestamp required on spatial authorization"],
+  "implementation_status": "open",
+  "linked_repos": ["SourceOS-Linux/agent-machine#T2-3"],
+  "priority": "high",
+  "first_identified": "2026-06-09",
+  "last_reviewed": "2026-06-09"
+}

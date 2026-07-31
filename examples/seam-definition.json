@@ -1,0 +1,15 @@
+{
+  "type": "SeamDefinition",
+  "seam_id": "SEAM-002",
+  "name": "MDM → usernoted",
+  "boundary_from": "MDM",
+  "boundary_to": "usernoted",
+  "attack_vector": "Unauthorized MDM enrollment (e.g. IBM MaaS360) grants a profile that suppresses user authorization on the notification server.",
+  "known_exploits": ["Unauthorized MaaS360 enrollment observed in diagnostic captures"],
+  "gate_requirements": ["MDM profile audit: flag unrecognized configuration profiles"],
+  "implementation_status": "open",
+  "linked_repos": ["SourceOS-Linux/agent-machine#T2-3"],
+  "priority": "critical",
+  "first_identified": "2026-06-09",
+  "last_reviewed": "2026-06-09"
+}
