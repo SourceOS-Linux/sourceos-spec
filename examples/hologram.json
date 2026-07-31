@@ -1,0 +1,19 @@
+{
+  "type": "Hologram",
+  "id": "holo:doc:research/2026/claim-017",
+  "kind": "document_claim",
+  "archetypes": ["Claim", "EvidenceBearingObject"],
+  "traits": { "title": "Attested deployment claim", "domain": "platform_security", "sensitivity": "internal" },
+  "relations": [
+    { "type": "supported_by", "target": "holo:artifact:build/341" },
+    { "type": "governed_by", "target": "holo:policy:deploy/default" },
+    { "type": "owned_by", "target": "holo:project:inception-alpha" }
+  ],
+  "vector_signatures": { "dense": ["vec:qdrant:claims:v1:88431"], "sparse": ["vec:sparse:claims:v1:88431"] },
+  "memories": { "semantic": ["mem:graph:claim/017"], "provenance": ["prov:intoto:stmt/8891"] },
+  "affordances": ["read", "cite", "verify", "promote_to_scene"],
+  "policy_envelope": "policy:claims/internal",
+  "provenance_root": "prov:slsa:build/341",
+  "state_projection": "state:claim/017@v4",
+  "version": "v4"
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Hologram.json",
+  "title": "Hologram",
+  "description": "Cybernetic Agentic Genesis & Inception — the base semantic representation. A Hologram is a typed object with archetypes, traits, typed relations, vector signatures, memory/provenance refs, affordances, and a policy envelope. Phase-0 canonical schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "id", "kind", "archetypes", "policy_envelope", "provenance_root"],
+  "properties": {
+    "type": { "const": "Hologram" },
+    "id": { "type": "string", "minLength": 1 },
+    "kind": { "type": "string", "minLength": 1 },
+    "archetypes": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "traits": { "type": "object", "additionalProperties": true },
+    "relations": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": { "type": { "type": "string" }, "target": { "type": "string" } }
+      }
+    },
+    "vector_signatures": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "dense": { "type": "array", "items": { "type": "string" } },
+        "sparse": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "memories": {
+      "type": "object", "additionalProperties": false,
+      "properties": {
+        "semantic": { "type": "array", "items": { "type": "string" } },
+        "provenance": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "affordances": { "type": "array", "items": { "type": "string" } },
+    "policy_envelope": { "type": "string", "minLength": 1 },
+    "provenance_root": { "type": "string", "minLength": 1 },
+    "state_projection": { "type": "string" },
+    "version": { "type": "string" }
+  }
+}
