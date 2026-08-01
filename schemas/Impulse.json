@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Impulse.json",
+  "title": "Impulse",
+  "description": "A typed input to a twin's state-space world model: u in x+ = A*x + B*(G*u). An Impulse records the class, source, magnitude, which state dimensions it targets, and — after the gate has run — whether it was admitted and the gate state that decided it. Two invariants are load-bearing and asserted by rejection: an exogenous_shock MUST cite the GaiaObservation it came from (GAIA is the exogenous world model), and an impulse admitted through a closed gate is a contradiction (fail-closed).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "impulse_id", "twin_id", "impulse_class", "source", "magnitude", "target_dims", "gate_state", "admitted", "provenance_refs"],
+  "properties": {
+    "type": { "const": "Impulse" },
+    "impulse_id": { "type": "string", "minLength": 1 },
+    "twin_id": { "type": "string", "minLength": 1 },
+    "impulse_class": {
+      "type": "string",
+      "enum": ["device_reading", "market_data_event", "exogenous_shock", "policy_change", "human_action"]
+    },
+    "source": { "type": "string", "minLength": 1 },
+    "magnitude": { "type": "number", "minimum": 0, "maximum": 1 },
+    "target_dims": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+    "gate_state": { "type": "string", "enum": ["open", "attenuated", "closed"] },
+    "admitted": { "type": "boolean" },
+    "source_ref": {
+      "type": "string",
+      "description": "For exogenous_shock: the GaiaObservation.observation_id this impulse was derived from."
+    },
+    "provenance_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "impulse_class": { "const": "exogenous_shock" } } },
+      "then": { "required": ["source_ref"] }
+    },
+    {
+      "if": { "properties": { "gate_state": { "const": "closed" } } },
+      "then": { "properties": { "admitted": { "const": false } } }
+    }
+  ]
+}

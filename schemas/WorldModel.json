@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/WorldModel.json",
+  "title": "WorldModel",
+  "description": "The state-space world model of a Twin — the dynamical layer beneath the governance lifecycle. It declares the state dimensions, the discrete dynamics x+ = A*x + B*(G*u) (A as a relaxation-toward-baseline rate), the impulse gates, the Region it is grounded in, and its exogenous source. GAIA is the exogenous world model: a WorldModel whose gates admit exogenous_shock MUST declare exogenous_source 'gaia' — you cannot admit exogenous shocks with no world model behind them (asserted by rejection). A model with no state dimensions or no gates is not a model and is rejected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "model_id", "twin_id", "state_dims", "dynamics", "gates", "exogenous_source"],
+  "properties": {
+    "type": { "const": "WorldModel" },
+    "model_id": { "type": "string", "minLength": 1 },
+    "twin_id": { "type": "string", "minLength": 1 },
+    "state_dims": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1 },
+    "dynamics": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["relaxation"],
+      "properties": {
+        "relaxation": { "type": "number", "minimum": 0, "maximum": 1 },
+        "baseline": { "type": "object", "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 } }
+      }
+    },
+    "gates": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["impulse_class", "mode"],
+        "properties": {
+          "impulse_class": { "type": "string", "enum": ["device_reading", "market_data_event", "exogenous_shock", "policy_change", "human_action"] },
+          "mode": { "type": "string", "enum": ["open", "attenuated", "closed"] }
+        }
+      }
+    },
+    "region_ref": { "type": "string", "description": "Region.region_id this world model is grounded in." },
+    "exogenous_source": { "type": "string", "enum": ["gaia", "none"] }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "gates": { "contains": { "type": "object", "properties": { "impulse_class": { "const": "exogenous_shock" } }, "required": ["impulse_class"] } }
+        }
+      },
+      "then": {
+        "properties": { "exogenous_source": { "const": "gaia" } },
+        "required": ["region_ref"]
+      }
+    }
+  ]
+}

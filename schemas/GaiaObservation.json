@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GaiaObservation.json",
+  "title": "GaiaObservation",
+  "description": "An exogenous environmental world-state reading from GAIA — the estate's weather/environmental world model (TWC / IBM alt-data). A GaiaObservation is the grounding for the exogenous state that drives a twin's WorldModel: an ExogenousShock Impulse must cite one, and a Region is grounded in the GAIA cells its observations cover. Provenance is load-bearing — an ungrounded observation is inadmissible (asserted by rejection).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "observation_id", "gaia_cell", "field", "value", "valid_time", "source", "provenance_refs"],
+  "properties": {
+    "type": { "const": "GaiaObservation" },
+    "observation_id": { "type": "string", "minLength": 1 },
+    "gaia_cell": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "cell"],
+      "properties": {
+        "system": { "type": "string", "enum": ["h3", "latlon_grid", "s2"] },
+        "cell": { "type": "string", "minLength": 1 }
+      }
+    },
+    "field": {
+      "type": "string",
+      "enum": ["temperature", "precipitation", "wind_speed", "humidity", "pressure", "air_quality", "hazard_index", "flood_risk", "wildfire_risk", "solar_irradiance"]
+    },
+    "value": { "type": "number" },
+    "unit": { "type": "string" },
+    "valid_time": { "type": "string", "format": "date-time" },
+    "source": { "type": "string", "enum": ["twc", "ibm_environmental", "noaa", "ecmwf", "synthetic"] },
+    "provenance_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "type": "GaiaObservation",
+  "observation_id": "gaia:obs/2026-07-31T12:00Z/8928308280fffff/hazard_index",
+  "gaia_cell": { "system": "h3", "cell": "8928308280fffff" },
+  "field": "hazard_index",
+  "value": 0.62,
+  "unit": "index_0_1",
+  "valid_time": "2026-07-31T12:00:00Z",
+  "source": "twc",
+  "provenance_refs": ["gaia:ingest/twc/2026-07-31T12:00Z", "receipt:compute-gateway/materialize/9f2a"]
+}

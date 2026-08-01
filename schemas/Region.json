@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Region.json",
+  "title": "Region",
+  "description": "A geospatial region a twin is grounded in. A Region is the join between the twin's WorldModel and GAIA: it carries a centroid for the Common Operating Picture and is grounded in one or more GAIA cells, which is where its exogenous (weather/environmental) state is read from. An ungrounded region — no GAIA cells — cannot supply exogenous state and is rejected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "region_id", "name", "centroid", "gaia_cells"],
+  "properties": {
+    "type": { "const": "Region" },
+    "region_id": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "centroid": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["lat", "lon"],
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lon": { "type": "number", "minimum": -180, "maximum": 180 }
+      }
+    },
+    "bbox": {
+      "type": "array",
+      "description": "[min_lon, min_lat, max_lon, max_lat]",
+      "items": { "type": "number" },
+      "minItems": 4,
+      "maxItems": 4
+    },
+    "gaia_cells": {
+      "type": "array",
+      "description": "GAIA grounding — the environmental world-model cells this region is read through. Must be non-empty.",
+      "items": { "type": "string", "minLength": 1 },
+      "minItems": 1
+    }
+  }
+}

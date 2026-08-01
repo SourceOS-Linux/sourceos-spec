@@ -1,0 +1,18 @@
+{
+  "type": "EvalItem",
+  "id": "ev:B/evidence_answer/00123",
+  "source": "internal",
+  "corpus": "B",
+  "task_family": "evidence_answer",
+  "user_question": "A customer reports that release 2026.7 broke SSO for their Okta tenant. Given the linked incident and changelog, what is the root cause and the exact remediation step?",
+  "context_doc_ids": ["inc:2026-07-29/sso-okta", "changelog:2026.7", "kb:okta-saml-clock-skew"],
+  "expected_answer_traits": [
+    "names the SAML clock-skew tolerance change in 2026.7 as the cause",
+    "cites the changelog entry and the incident",
+    "gives the exact config remediation, not a generic 'contact support'",
+    "does not fabricate a CVE or a version that does not appear in context"
+  ],
+  "gold_citations": ["changelog:2026.7#saml-clock-skew", "inc:2026-07-29/sso-okta#rootcause"],
+  "grading_method": "citation_faithfulness",
+  "risk_class": "high"
+}

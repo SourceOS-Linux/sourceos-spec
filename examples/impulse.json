@@ -1,0 +1,13 @@
+{
+  "type": "Impulse",
+  "impulse_id": "imp:twn_mkt-0001/000042",
+  "twin_id": "twn_mkt-0001",
+  "impulse_class": "exogenous_shock",
+  "source": "gaia",
+  "magnitude": 0.62,
+  "target_dims": ["risk", "drift"],
+  "gate_state": "attenuated",
+  "admitted": true,
+  "source_ref": "gaia:obs/2026-07-31T12:00Z/8928308280fffff/hazard_index",
+  "provenance_refs": ["gate:twn_mkt-0001/exogenous_shock", "gaia:obs/2026-07-31T12:00Z/8928308280fffff/hazard_index"]
+}

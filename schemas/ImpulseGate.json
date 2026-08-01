@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ImpulseGate.json",
+  "title": "ImpulseGate",
+  "description": "A governed admission gate for one impulse class into a twin's state-space dynamics. The gate is where governance meets dynamics: it decides whether an input of its class may perturb the state vector, and by how much (gate_factor). Fail-closed is the default and the load-bearing rule — a closed gate must have gate_factor 0, so an ungated impulse cannot move the state (asserted by rejection).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "gate_id", "impulse_class", "mode", "gate_factor"],
+  "properties": {
+    "type": { "const": "ImpulseGate" },
+    "gate_id": { "type": "string", "minLength": 1 },
+    "impulse_class": {
+      "type": "string",
+      "enum": ["device_reading", "market_data_event", "exogenous_shock", "policy_change", "human_action"]
+    },
+    "mode": { "type": "string", "enum": ["open", "attenuated", "closed"] },
+    "gate_factor": { "type": "number", "minimum": 0, "maximum": 1 },
+    "fail_closed": { "type": "boolean", "default": true },
+    "admission_rule": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "mode": { "const": "closed" } } },
+      "then": { "properties": { "gate_factor": { "const": 0 } } }
+    },
+    {
+      "if": { "properties": { "mode": { "const": "open" } } },
+      "then": { "properties": { "gate_factor": { "const": 1 } } }
+    }
+  ]
+}

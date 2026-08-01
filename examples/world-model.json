@@ -1,0 +1,19 @@
+{
+  "type": "WorldModel",
+  "model_id": "wm:twn_mkt-0001",
+  "twin_id": "twn_mkt-0001",
+  "state_dims": ["integrity", "risk", "load", "coverage", "drift"],
+  "dynamics": {
+    "relaxation": 0.90,
+    "baseline": { "integrity": 0.85, "risk": 0.30, "load": 0.40, "coverage": 0.70, "drift": 0.20 }
+  },
+  "gates": [
+    { "impulse_class": "device_reading", "mode": "open" },
+    { "impulse_class": "market_data_event", "mode": "open" },
+    { "impulse_class": "exogenous_shock", "mode": "attenuated" },
+    { "impulse_class": "policy_change", "mode": "closed" },
+    { "impulse_class": "human_action", "mode": "open" }
+  ],
+  "region_ref": "region:au/sydney-ashore",
+  "exogenous_source": "gaia"
+}
