@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/StateVector.json",
+  "title": "StateVector",
+  "description": "A reading of a twin's latent world-state x at a point in the replay sequence. Each named dimension is normalized to [0,1]; an out-of-range component is not a valid state and is rejected. A StateVector with no dimensions is not observable and is rejected. Provenance ties the reading back to the Impulse(s) that produced it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "twin_id", "seq", "at", "dims", "provenance_refs"],
+  "properties": {
+    "type": { "const": "StateVector" },
+    "twin_id": { "type": "string", "minLength": 1 },
+    "seq": { "type": "integer", "minimum": 0 },
+    "at": { "type": "string", "format": "date-time" },
+    "dims": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+    },
+    "provenance_refs": { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+  }
+}

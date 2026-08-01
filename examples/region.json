@@ -1,0 +1,8 @@
+{
+  "type": "Region",
+  "region_id": "region:au/sydney-ashore",
+  "name": "Sydney · ASX",
+  "centroid": { "lat": -33.87, "lon": 151.21 },
+  "bbox": [150.5, -34.2, 151.6, -33.5],
+  "gaia_cells": ["8928308280fffff", "8928308281fffff", "89283082837ffff"]
+}

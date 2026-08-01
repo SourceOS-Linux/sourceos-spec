@@ -1,0 +1,9 @@
+{
+  "type": "ImpulseGate",
+  "gate_id": "gate:twn_mkt-0001/exogenous_shock",
+  "impulse_class": "exogenous_shock",
+  "mode": "attenuated",
+  "gate_factor": 0.35,
+  "fail_closed": true,
+  "admission_rule": "GAIA hazard_index shocks admitted at 0.35 unless the twin is verified and the region is under an active advisory, in which case escalate to human_action gate."
+}
