@@ -1,0 +1,23 @@
+{
+  "id": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+  "type": "IngestedDocument",
+  "specVersion": "0.1.0",
+  "source": {
+    "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+    "filename": "gyg-fy2025-annual-report.pdf",
+    "mimeType": "application/pdf",
+    "contentHash": "sha256:b19145cedbf26cb94201e2afafaa685fe7f0cd6dcc6a5adf525bdfe1c4fba3ec"
+  },
+  "text": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million. Same-store sales grew 9.6% across the network.",
+  "pageBreaks": [
+    0
+  ],
+  "extractionDigest": "sha256:120e838142aed40b26b5bb6b22c0871ba9e8aa5429e2d851844ece67997c8e0a",
+  "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+  "policyLabels": [
+    "tenant:socioprophet",
+    "source:asx-public"
+  ],
+  "wallTime": "2026-07-29T09:15:00.000Z",
+  "logicalTime": 4021
+}

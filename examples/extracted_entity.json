@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:extracted-entity:gyg_asx_fy2025_annual_report.gyg_limited",
+  "type": "ExtractedEntity",
+  "specVersion": "0.1.0",
+  "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+  "surface": "Guzman y Gomez Limited",
+  "normalized": "guzman-y-gomez-limited",
+  "mentions": [
+    {
+      "span": {
+        "start": 0,
+        "end": 22
+      }
+    }
+  ],
+  "grounding": {
+    "confirmed": true
+  }
+}

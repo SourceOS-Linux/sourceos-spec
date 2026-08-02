@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ExtractedEntity.json",
+  "title": "ExtractedEntity",
+  "description": "The grounding grain of the ingestion pipeline: an entity mention lifted from one IngestedDocument, with a canonical `normalized` form and the exact spans where it occurs. Generalizes Noetica doc-store linkDocGrounds (entity → document grounding). Grounding soundness (validator): every mention's span selects the entity's surface form out of the document text, so a claimed grounding always points at real evidence — the ingestion analog of the KnowledgeNugget derivation-grounding invariant.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "documentRef",
+    "surface",
+    "normalized",
+    "mentions"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:extracted-entity:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:extracted-entity:<local-id>. Identity is stable and never reused."
+    },
+    "type": {
+      "const": "ExtractedEntity",
+      "description": "Discriminator constant — always \"ExtractedEntity\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Contract version, pinned per the tranche-0001 discipline. Changing this const is a contract change."
+    },
+    "documentRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:ingested-document:[A-Za-z0-9._~-]+$"
+    },
+    "surface": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The entity's surface form exactly as it appears in the document text."
+    },
+    "normalized": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Canonical/normalized form used for cross-document linkage."
+    },
+    "mentions": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Where the entity occurs. Non-empty: an entity with no grounded mention is not extracted, it is asserted.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "span"
+        ],
+        "properties": {
+          "span": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "start",
+              "end"
+            ],
+            "properties": {
+              "start": {
+                "type": "integer",
+                "minimum": 0,
+                "description": "0-based inclusive character offset into the document's hashed text."
+              },
+              "end": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Exclusive character offset. Invariant (validator): 0 <= start < end <= len(text)."
+              }
+            }
+          }
+        }
+      }
+    },
+    "grounding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "confirmed"
+      ],
+      "properties": {
+        "confirmed": {
+          "type": "boolean",
+          "description": "Whether the linkage to a canonical entity is confirmed vs residual/candidate."
+        }
+      }
+    }
+  }
+}

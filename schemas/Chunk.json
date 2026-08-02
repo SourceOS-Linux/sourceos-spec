@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/Chunk.json",
+  "title": "Chunk",
+  "description": "The retrieval grain of the ingestion pipeline: a span of one IngestedDocument's text, with an optional embedding. Generalizes Noetica doc-store chunkTextWithSpans + hgPutChunk (text + vector + provenance DocumentChunk atoms). The span is not decorative: the validator recomputes text[start:end] == this chunk's text, so a chunk can never silently misquote the document it cites. When present, `embedding` MUST name the one sovereign embedding model and dimension (see EmbeddingRequest) — this is what stops two producers from writing into two different, silently-incomparable vector spaces.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "documentRef",
+    "idx",
+    "text",
+    "span",
+    "contentHash"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:chunk:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:chunk:<local-id>. Identity is stable and never reused."
+    },
+    "type": {
+      "const": "Chunk",
+      "description": "Discriminator constant — always \"Chunk\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Contract version, pinned per the tranche-0001 discipline. Changing this const is a contract change."
+    },
+    "documentRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:ingested-document:[A-Za-z0-9._~-]+$",
+      "description": "URN of the IngestedDocument this chunk is a span of. Must resolve within the corpus."
+    },
+    "idx": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "0-based ordinal of the chunk within the document."
+    },
+    "text": {
+      "type": "string",
+      "minLength": 1,
+      "description": "The chunk text. Invariant (validator): equals documentText[span.start:span.end]."
+    },
+    "span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "0-based inclusive character offset into the document's hashed text."
+        },
+        "end": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Exclusive character offset. Invariant (validator): 0 <= start < end <= len(text)."
+        }
+      }
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "sha256 of `text`. Recomputed by the validator."
+    },
+    "embedding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "model",
+        "dimension",
+        "vector"
+      ],
+      "description": "Optional. The chunk's vector in the SHARED embedding space. A chunk may exist before it is embedded; once embedded it must use the pinned model/dimension.",
+      "properties": {
+        "model": {
+          "type": "string",
+          "description": "The embedding model id. Invariant (validator): equals the pinned EmbeddingRequest.model."
+        },
+        "dimension": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Vector dimension. Invariant: equals the pinned dimension AND len(vector)."
+        },
+        "vector": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "minItems": 1
+        }
+      }
+    }
+  }
+}
