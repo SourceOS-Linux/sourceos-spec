@@ -58,7 +58,7 @@ def main() -> int:
     gt = jsonschema.Draft202012Validator(vcl.load(GLOSSARY_SCHEMA))
     proposals = r.get("proposedTerms", []) + run("corpus_divergent.json").get("proposedTerms", [])
     bad = [(t.get("id"), e.message) for t in proposals for e in gt.iter_errors(t)]
-    self_approved = [t["id"] for t in proposals if t.get("status") != "draft"]
+    self_approved = [t.get("id") for t in proposals if t.get("status") != "draft"]
     if bad:
         FAILURES.append(f"proposed term(s) do not conform to GlossaryTerm.json: {bad[:3]}")
     elif self_approved:
