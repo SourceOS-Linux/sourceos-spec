@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/IngestedDocument.json",
+  "title": "IngestedDocument",
+  "description": "The extracted-text layer of the estate ingestion pipeline: one governed source document, parsed to a single canonical plaintext offset space, before chunking or embedding. Generalizes the Noetica agent-machine doc-store extraction (extractText / extractTextWithPages) into a portable contract so the parse step is not Noetica-private. Every downstream Chunk and ExtractedEntity addresses THIS document's `text` by (start,end) offsets, so the text and its extractionDigest are the shared coordinate system; extractionDigest is RECOMPUTED from `text` by the validator, never read back.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "source",
+    "text",
+    "extractionDigest",
+    "createdBy",
+    "policyLabels",
+    "wallTime",
+    "logicalTime"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:ingested-document:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:ingested-document:<local-id>. Identity is stable and never reused."
+    },
+    "type": {
+      "const": "IngestedDocument",
+      "description": "Discriminator constant — always \"IngestedDocument\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Contract version, pinned per the tranche-0001 discipline. Changing this const is a contract change."
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "docRef",
+        "filename",
+        "mimeType",
+        "contentHash"
+      ],
+      "properties": {
+        "docRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:[a-z0-9-]+:[A-Za-z0-9._~-]+$",
+          "description": "URN of the governed source object (Dataset, ArtifactManifest, or content-addressed document)."
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mimeType": {
+          "type": "string",
+          "minLength": 1,
+          "description": "IANA media type of the raw bytes (application/pdf, text/plain, ...)."
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "sha256 of the RAW source bytes (not the extracted text) — content-addresses the input."
+        }
+      }
+    },
+    "text": {
+      "type": "string",
+      "description": "The canonical extracted plaintext. The offset space every Chunk/ExtractedEntity span indexes into."
+    },
+    "pageBreaks": {
+      "type": "array",
+      "items": {
+        "type": "integer",
+        "minimum": 0
+      },
+      "description": "Optional character offsets where a source page boundary falls, for page-of-offset resolution."
+    },
+    "extractionDigest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "sha256 of `text`. RECOMPUTED by the validator — a digest that is merely stored is an assertion; a recomputed one is a pin."
+    },
+    "createdBy": {
+      "type": "string",
+      "pattern": "^urn:srcos:agent:[A-Za-z0-9._~-]+$"
+    },
+    "policyLabels": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "wallTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "logicalTime": {
+      "type": "integer",
+      "minimum": 0
+    }
+  }
+}

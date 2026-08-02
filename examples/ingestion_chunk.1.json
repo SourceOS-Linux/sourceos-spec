@@ -1,0 +1,13 @@
+{
+  "id": "urn:srcos:chunk:gyg_asx_fy2025_annual_report.p001.1",
+  "type": "Chunk",
+  "specVersion": "0.1.0",
+  "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+  "idx": 1,
+  "text": "Same-store sales grew 9.6% across the network.",
+  "span": {
+    "start": 69,
+    "end": 115
+  },
+  "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da"
+}

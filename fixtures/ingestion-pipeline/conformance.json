@@ -1,0 +1,123 @@
+{
+  "description": "Negative conformance vectors for the Ingestion-Pipeline contract family v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_ingestion_pipeline_examples.py enforces this. These vectors keep the pipeline seam executable: closed objects, pinned contract version, sha256 content-addressing, an addressable (start,end) span, and — the reason this family exists — a const-pinned embedding model and dimension so the estate cannot fork into two silently-incomparable vector spaces.",
+  "cases": [
+    {
+      "schema": "Chunk.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "document": {
+        "id": "urn:srcos:chunk:gyg_asx_fy2025_annual_report.p001.1",
+        "type": "Chunk",
+        "specVersion": "0.1.0",
+        "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+        "idx": 1,
+        "text": "Same-store sales grew 9.6% across the network.",
+        "span": {
+          "start": 69,
+          "end": 115
+        },
+        "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da",
+        "vibeScore": 11
+      }
+    },
+    {
+      "schema": "Chunk.json",
+      "reason": "span.end is required — a chunk with an open-ended span is not addressable.",
+      "document": {
+        "id": "urn:srcos:chunk:gyg_asx_fy2025_annual_report.p001.1",
+        "type": "Chunk",
+        "specVersion": "0.1.0",
+        "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+        "idx": 1,
+        "text": "Same-store sales grew 9.6% across the network.",
+        "span": {
+          "start": 0
+        },
+        "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da"
+      }
+    },
+    {
+      "schema": "Chunk.json",
+      "reason": "type discriminator const is closed.",
+      "document": {
+        "id": "urn:srcos:chunk:gyg_asx_fy2025_annual_report.p001.1",
+        "type": "DocumentChunk",
+        "specVersion": "0.1.0",
+        "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+        "idx": 1,
+        "text": "Same-store sales grew 9.6% across the network.",
+        "span": {
+          "start": 69,
+          "end": 115
+        },
+        "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da"
+      }
+    },
+    {
+      "schema": "EmbeddingRequest.json",
+      "reason": "Shared-vector-space pin: any model other than the sovereign nomic-embed-text-v1.5 must fail (const).",
+      "document": {
+        "id": "urn:srcos:embedding-request:gyg_asx_fy2025_annual_report.p001.0",
+        "type": "EmbeddingRequest",
+        "specVersion": "0.1.0",
+        "model": "ollama/nomic-embed-text",
+        "dimension": 768,
+        "input": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million."
+      }
+    },
+    {
+      "schema": "EmbeddingRequest.json",
+      "reason": "Dimension pin: a Matryoshka-truncated dimension (512) must fail — it is a different, incomparable space (const 768).",
+      "document": {
+        "id": "urn:srcos:embedding-request:gyg_asx_fy2025_annual_report.p001.0",
+        "type": "EmbeddingRequest",
+        "specVersion": "0.1.0",
+        "model": "nomic-ai/nomic-embed-text-v1.5",
+        "dimension": 512,
+        "input": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million."
+      }
+    },
+    {
+      "schema": "IngestedDocument.json",
+      "reason": "source.contentHash must be a sha256: content address, not an opaque token.",
+      "document": {
+        "id": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+        "type": "IngestedDocument",
+        "specVersion": "0.1.0",
+        "source": {
+          "docRef": "urn:srcos:dataset:gyg_asx_fy2025_annual_report",
+          "filename": "gyg-fy2025-annual-report.pdf",
+          "mimeType": "application/pdf",
+          "contentHash": "etag-abc123"
+        },
+        "text": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million. Same-store sales grew 9.6% across the network.",
+        "pageBreaks": [
+          0
+        ],
+        "extractionDigest": "sha256:120e838142aed40b26b5bb6b22c0871ba9e8aa5429e2d851844ece67997c8e0a",
+        "createdBy": "urn:srcos:agent:ifm_extractor_v2",
+        "policyLabels": [
+          "tenant:socioprophet",
+          "source:asx-public"
+        ],
+        "wallTime": "2026-07-29T09:15:00.000Z",
+        "logicalTime": 4021
+      }
+    },
+    {
+      "schema": "ExtractedEntity.json",
+      "reason": "mentions must be non-empty — an entity with no grounded mention is asserted, not extracted (minItems 1).",
+      "document": {
+        "id": "urn:srcos:extracted-entity:gyg_asx_fy2025_annual_report.gyg_limited",
+        "type": "ExtractedEntity",
+        "specVersion": "0.1.0",
+        "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
+        "surface": "Guzman y Gomez Limited",
+        "normalised": "guzman-y-gomez-limited",
+        "mentions": [],
+        "grounding": {
+          "confirmed": true
+        }
+      }
+    }
+  ]
+}

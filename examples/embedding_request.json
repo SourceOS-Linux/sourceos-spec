@@ -1,0 +1,8 @@
+{
+  "id": "urn:srcos:embedding-request:gyg_asx_fy2025_annual_report.p001.0",
+  "type": "EmbeddingRequest",
+  "specVersion": "0.1.0",
+  "model": "nomic-ai/nomic-embed-text-v1.5",
+  "dimension": 768,
+  "input": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million."
+}

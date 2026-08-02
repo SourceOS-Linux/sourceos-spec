@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EmbeddingRequest.json",
+  "title": "EmbeddingRequest",
+  "description": "The one embedding call shape for the whole estate: an OpenAI-compatible request (input: str | str[]) that PINS the sovereign model and dimension by const. This contract is the seam the finding demands — Noetica's doc-store and the platform apps/embeddings service must both speak exactly this, so every chunk lands in one comparable vector space instead of Noetica's ollama space and the platform service's space drifting apart. The model/dimension are const, not free strings: a request for any other model or a Matryoshka-truncated dimension fails validation, by construction.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "model",
+    "dimension",
+    "input"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:embedding-request:[A-Za-z0-9._~-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:embedding-request:<local-id>. Identity is stable and never reused."
+    },
+    "type": {
+      "const": "EmbeddingRequest",
+      "description": "Discriminator constant — always \"EmbeddingRequest\"."
+    },
+    "specVersion": {
+      "const": "0.1.0",
+      "description": "Contract version, pinned per the tranche-0001 discipline. Changing this const is a contract change."
+    },
+    "model": {
+      "const": "nomic-ai/nomic-embed-text-v1.5",
+      "description": "The sovereign embedding model id served by prophet-platform apps/embeddings. Pinned by const — the shared-vector-space anchor."
+    },
+    "dimension": {
+      "const": 768,
+      "description": "The embedding dimension of the pinned model. Pinned by const so no producer may silently truncate (Matryoshka) into an incomparable space."
+    },
+    "input": {
+      "description": "Text(s) to embed. OpenAI/Ollama /v1/embeddings compatible.",
+      "oneOf": [
+        {
+          "type": "string",
+          "minLength": 1
+        },
+        {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      ]
+    }
+  }
+}
