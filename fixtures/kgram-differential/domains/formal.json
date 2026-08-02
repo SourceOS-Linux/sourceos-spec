@@ -1,0 +1,14 @@
+{
+  "domain": "formal",
+  "documents": [
+    {
+      "text": "the finite state machine reads the set of states. a base class defines the state of the set. the empty set of states in the state machine. the finite state machine reads the set of states. a base class defines the state of the set."
+    },
+    {
+      "text": "the empty set of states in the state machine. the finite state machine reads the set of states. a base class defines the state of the set. the finite state machine reads the set of states again. the empty set of states in the state machine."
+    },
+    {
+      "text": "a base class defines the state of the set. the empty set of states in the state machine. the finite state machine reads the set of states. a base class defines the state of the set once more. the finite state machine reads the set of states."
+    }
+  ]
+}
