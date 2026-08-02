@@ -1,0 +1,24 @@
+{
+  "documents": [
+    {
+      "id": "d1",
+      "text": "The release gate refused the deploy; the attestation was signed and verified."
+    },
+    {
+      "id": "d2",
+      "text": "Promotion moved the catalogued dataset to the platform scope after approval."
+    },
+    {
+      "id": "d3",
+      "text": "The receipt sealed the governance decision for the sync cycle."
+    },
+    {
+      "id": "d4",
+      "text": "A signed attestation let the release gate pass; the receipt sealed the promotion."
+    },
+    {
+      "id": "d5",
+      "text": "The gate quarantine held the artifact; the epistemic receipt recorded the quarantine epistemic state."
+    }
+  ]
+}

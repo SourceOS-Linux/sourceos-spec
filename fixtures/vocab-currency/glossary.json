@@ -1,0 +1,34 @@
+{
+  "terms": [
+    {
+      "id": "urn:srcos:glossary:release-gate",
+      "status": "approved",
+      "label": "release gate",
+      "definition": "A fail-closed check a service must pass to be release ready."
+    },
+    {
+      "id": "urn:srcos:glossary:attestation",
+      "status": "approved",
+      "label": "attestation",
+      "definition": "A signed statement that an artifact was built and verified."
+    },
+    {
+      "id": "urn:srcos:glossary:promotion",
+      "status": "approved",
+      "label": "promotion",
+      "definition": "Moving a catalogued dataset to the platform scope after approval."
+    },
+    {
+      "id": "urn:srcos:glossary:receipt",
+      "status": "approved",
+      "label": "receipt",
+      "definition": "A sealed record of a governance decision or sync cycle."
+    },
+    {
+      "id": "urn:srcos:glossary:divergence-metric",
+      "status": "draft",
+      "label": "divergence metric",
+      "definition": "Draft term, not yet approved \u2014 does not regulate state."
+    }
+  ]
+}
