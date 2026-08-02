@@ -20,7 +20,7 @@
     },
     "type": {
       "const": "GlossaryTerm",
-      "description": "Discriminator constant \u2014 always \"GlossaryTerm\"."
+      "description": "Discriminator constant — always \"GlossaryTerm\"."
     },
     "specVersion": {
       "type": "string",
@@ -69,6 +69,131 @@
         "$ref": "Link.json"
       },
       "description": "Supplementary hyperlinks."
+    },
+    "partOfSpeech": {
+      "type": "string",
+      "enum": [
+        "noun-phrase",
+        "verb-phrase"
+      ],
+      "description": "Tesnière grain: noun-phrase (NP) = an estate ENTITY/actant; verb-phrase (VP) = an ACTION/service. Optional; required-in-effect once status is 'approved' (validator)."
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "approved",
+        "deprecated"
+      ],
+      "default": "draft",
+      "description": "Lifecycle. A 'draft' term may be partially aligned (capture in flight); an 'approved' term MUST be fully aligned across all three methods (validator, fail-closed)."
+    },
+    "alignment": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Alignment across the three methods that make a term governance-usable: (1) formal ontology class; (2) NP↔VP vector link in the sovereign space; (3) estate entity/service binding.",
+      "properties": {
+        "ontologyClassRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:ontology-class:[A-Za-z0-9._~:-]+$",
+          "description": "Method 1 — the formal ontology/KKO class this term is captured as."
+        },
+        "vectorLink": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "description": "Method 2 — the semantic vector link to a peer term (NP↔VP), in the SAME sovereign space as EmbeddingRequest (model + dimension pinned by const).",
+          "required": [
+            "peerRef",
+            "model",
+            "dimension",
+            "cosine"
+          ],
+          "properties": {
+            "peerRef": {
+              "type": "string",
+              "pattern": "^urn:srcos:glossary:[A-Za-z0-9._~:-]+$",
+              "description": "The peer term (an NP links to a VP and vice versa)."
+            },
+            "model": {
+              "const": "nomic-ai/nomic-embed-text-v1.5"
+            },
+            "dimension": {
+              "const": 768
+            },
+            "cosine": {
+              "type": "number",
+              "minimum": -1,
+              "maximum": 1
+            }
+          }
+        },
+        "estateBinding": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "description": "Method 3 — the real estate entity/service that IMPLEMENTS this term. NP→entity, VP→service|action (validator).",
+          "required": [
+            "kind",
+            "ref"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "entity",
+                "service",
+                "action"
+              ]
+            },
+            "ref": {
+              "type": "string",
+              "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+            }
+          }
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "description": "Typed relations to other terms / ontology classes / estate refs, over a CLOSED predicate set (RDF/RDFS/SKOS/FOAF patterns) so a reasoner can derive dependencies + constraints and cross-check them against the blast-radius graph and the neurosymbolic domain. Inverse pairs (is-type/has-type, is-member/has-member, skos:broader/skos:narrower) must reciprocate; skos:related is symmetric; is-a (subsumption) must be acyclic.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "predicate",
+          "target"
+        ],
+        "properties": {
+          "predicate": {
+            "type": "string",
+            "enum": [
+              "is-type",
+              "has-type",
+              "is-a",
+              "has-a",
+              "is-member",
+              "has-member",
+              "skos:broader",
+              "skos:narrower",
+              "skos:related",
+              "foaf:member",
+              "has-datatype"
+            ]
+          },
+          "target": {
+            "type": "string",
+            "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+          }
+        }
+      }
     }
   }
 }

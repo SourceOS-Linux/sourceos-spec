@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:glossary:release-gate",
+  "type": "GlossaryTerm",
+  "specVersion": "2.0.0",
+  "name": "release gate",
+  "definition": "A fail-closed check a service must pass to be release-ready.",
+  "partOfSpeech": "noun-phrase",
+  "status": "approved",
+  "alignment": {
+    "ontologyClassRef": "urn:srcos:ontology-class:governance.ReleaseGate",
+    "vectorLink": {
+      "peerRef": "urn:srcos:glossary:promote-to-platform",
+      "model": "nomic-ai/nomic-embed-text-v1.5",
+      "dimension": 768,
+      "cosine": 0.71
+    },
+    "estateBinding": {
+      "kind": "entity",
+      "ref": "urn:srcos:service-graph:release-gate-audit"
+    }
+  },
+  "relations": [
+    {
+      "predicate": "is-a",
+      "target": "urn:srcos:ontology-class:governance.Control"
+    },
+    {
+      "predicate": "skos:related",
+      "target": "urn:srcos:glossary:promote-to-platform"
+    }
+  ]
+}
