@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/OperationalDAG.json",
+  "title": "OperationalDAG",
+  "description": "The operational task graph. It carries IDENTITY + DEPENDENCY + CAUSALITY, so it MUST be acyclic — a cycle is unsatisfiable and is refused by validate_dag_loop.py (a loop where a DAG belongs is a bug). Every node is SEMANTICALLY GROUNDED: it references a vocab/DataClass/service node, so governance reasons about WHAT is ordered, not opaque tasks. Correction/feedback belongs in a GovernedLoop, never as a cycle here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "nodes",
+    "edges"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:operational-dag:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "OperationalDAG"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "semanticRef"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "semanticRef": {
+            "type": "string",
+            "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+            "description": "The semantic substrate this task node IS (GlossaryTerm / DataClass / service / relation) — the grounding."
+          },
+          "taskRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+          },
+          "placementRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+            "description": "Field-calculus placement (PlacementFact / phase-field) — where this node runs; a gradient on the field, not ad-hoc."
+          }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "from",
+          "to"
+        ],
+        "properties": {
+          "from": {
+            "type": "string"
+          },
+          "to": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
