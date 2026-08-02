@@ -26,7 +26,7 @@ Fail-closed teeth:
 Run:
     python3 tools/vocab_currency_loop.py                 # default fixtures → converges
     python3 tools/vocab_currency_loop.py --corpus <f>    # point at another corpus
-    python3 tools/vocab_currency_loop.py --emit-candidates
+    python3 tools/vocab_currency_loop.py --trace         # include per-iteration divergence trace
 """
 from __future__ import annotations
 
@@ -152,7 +152,7 @@ def main() -> int:
     ap.add_argument("--loop", default=str(ROOT / "examples" / "governed_loop.vocab_currency.json"))
     ap.add_argument("--glossary", default=str(FIX / "glossary.json"))
     ap.add_argument("--corpus", default=str(FIX / "corpus.json"))
-    ap.add_argument("--emit-candidates", action="store_true")
+    ap.add_argument("--trace", action="store_true", help="include the per-iteration divergence trace")
     args = ap.parse_args()
 
     loop = load(Path(args.loop))
@@ -163,7 +163,7 @@ def main() -> int:
         return 1
 
     result = run_loop(loop, load(Path(args.glossary)), load(Path(args.corpus)))
-    if not args.emit_candidates:
+    if not args.trace:
         result.pop("trace", None)
     print(json.dumps(result, indent=2))
     return 0 if result.get("ok") else 1
