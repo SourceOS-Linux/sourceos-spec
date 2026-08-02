@@ -7,8 +7,10 @@ our own approved vocabulary current with our own specifications? On real incompl
 governed loop does exactly what it should: it connects what it can within the bound, then
 ESCALATES-human with concrete proposals rather than pretending currency.
 
-This is a REPORT, not a gate (it always exits 0): the estate vocab is legitimately incomplete
-today, so failing CI on it would be wrong. It writes each proposed draft `GlossaryTerm` to
+This is a REPORT, not a gate: it does not fail on the currency OUTCOME (the estate vocab is
+legitimately incomplete today, so failing CI on a non-current result would be wrong) — it exits 0
+whether the loop reaches currency or escalates. (A genuine IO error still surfaces normally.)
+It writes each proposed draft `GlossaryTerm` to
 `build/vocab-currency-proposals/<slug>.json` — those are the artifacts ontogenesis ingests for
 the 3-method alignment pass. The ENFORCEMENT lives in `validate_vocab_currency_loop.py` (synthetic
 fixtures with a known-good outcome); this shows the same loop on live data.
@@ -60,7 +62,10 @@ def real_glossary() -> dict:
             continue
         items = doc["terms"] if isinstance(doc, dict) and isinstance(doc.get("terms"), list) else [doc]
         for it in items:
-            if isinstance(it, dict) and str(it.get("id", "")).startswith("urn:srcos:glossary:"):
+            # A glossary-namespaced id AND (untyped bundle entry OR explicitly a GlossaryTerm) —
+            # so a doc merely carrying such an id but typed as something else isn't miscounted.
+            if (isinstance(it, dict) and str(it.get("id", "")).startswith("urn:srcos:glossary:")
+                    and it.get("type") in (None, "GlossaryTerm")):
                 by_id[it["id"]] = it
     return {"terms": list(by_id.values())}
 
@@ -68,7 +73,12 @@ def real_glossary() -> dict:
 def real_corpus() -> dict:
     docs = []
     for f in sorted(glob.glob(str(ROOT / "specs" / "*.md"))):
-        docs.append({"id": Path(f).stem, "text": clean_markdown(Path(f).read_text(encoding="utf-8"))})
+        try:
+            text = Path(f).read_text(encoding="utf-8")
+        except (OSError, UnicodeDecodeError) as exc:
+            print(f"skipping unreadable spec {f}: {exc}", file=sys.stderr)
+            continue
+        docs.append({"id": Path(f).stem, "text": clean_markdown(text)})
     return {"documents": docs}
 
 
@@ -103,7 +113,8 @@ def main() -> int:
         "proposalsWritten": written,
         "topRemainingCandidates": [c["term"] for c in result.get("candidateNewVocab", [])],
     }, indent=2))
-    # Always exit 0 — this is an informational currency scan of live vocab, not a gate.
+    # Exit 0 regardless of the currency OUTCOME — this reports the state of live vocab, it does
+    # not gate on whether the vocab happens to be current (a genuine IO error still surfaces above).
     return 0
 
 

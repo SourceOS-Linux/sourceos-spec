@@ -33,10 +33,11 @@ Each connected token is emitted as a conformant status:`draft` `GlossaryTerm` in
 
 `tools/dogfood_vocab_currency.py` runs the governed loop over THIS repo's real vocabulary — every
 approved `GlossaryTerm` in `examples/` (fixed/LSA) vs `specs/*.md` (open/LDA) — answering honestly
-whether our own approved vocab is current with our own specs. On today's estate (2 approved terms
-vs 14 specs) it is not: divergence starts ~0.98 and the governed loop, unable to reach currency in
-its 8-iteration bound, **escalates-human** with concrete draft proposals rather than pretending
-currency. It writes each proposed draft `GlossaryTerm` to `build/vocab-currency-proposals/<slug>.json`
+whether our own approved vocab is current with our own specs. Today it is not — only a handful of
+terms are approved against the full spec corpus, so divergence starts high and the governed loop,
+unable to reach currency within its iteration bound, **escalates-human** with concrete draft
+proposals rather than pretending currency. (Exact counts/divergence are point-in-time; run it to
+see the current numbers.) It writes each proposed draft `GlossaryTerm` to `build/vocab-currency-proposals/<slug>.json`
 — the exact artifacts ontogenesis ingests. Informational (exit 0), corpus-configured (Markdown
 cleaned, generic prose words stoplisted so DOMAIN terms surface); the ENFORCEMENT stays in
 `validate-vocab-currency-loop` on known-good fixtures.
