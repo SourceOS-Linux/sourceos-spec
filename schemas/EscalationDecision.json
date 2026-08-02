@@ -19,7 +19,8 @@
     "trigger",
     "sensitivityCheck",
     "inputHash",
-    "verdict"
+    "verdict",
+    "ledgerSeq"
   ],
   "properties": {
     "id": { "type": "string", "pattern": "^urn:srcos:escalation-decision:", "description": "Stable URN identifier. Pattern: urn:srcos:escalation-decision:<local-id>" },
@@ -97,6 +98,36 @@
       "then": {
         "required": ["targetExternalProviderRef"],
         "properties": { "targetExternalProviderRef": { "type": "string" } }
+      }
+    },
+    {
+      "$comment": "SEAM-015 BIOMETRIC HARD BOUNDARY: if the T0 sensitivity check flags a biometric category (face/speaker embeddings), no crossing is permitted under any grant — the verdict must be refused with refusalReason biometric-boundary. A permitted crossing carrying a biometric category is schema-invalid.",
+      "if": {
+        "properties": {
+          "sensitivityCheck": {
+            "properties": { "sensitiveCategories": { "contains": { "const": "biometric" } } },
+            "required": ["sensitiveCategories"]
+          }
+        },
+        "required": ["sensitivityCheck"]
+      },
+      "then": {
+        "required": ["refusalReason"],
+        "properties": {
+          "verdict": { "const": "refused" },
+          "refusalReason": { "const": "biometric-boundary" }
+        }
+      }
+    },
+    {
+      "$comment": "REVIEW HARDENING (ledger tamper-evidence): any non-genesis entry (ledgerSeq >= 1) must carry the prior entry's hash, so the append-only ledger is hash-chained.",
+      "if": {
+        "properties": { "ledgerSeq": { "minimum": 1 } },
+        "required": ["ledgerSeq"]
+      },
+      "then": {
+        "required": ["ledgerPrevHash"],
+        "properties": { "ledgerPrevHash": { "type": "string" } }
       }
     }
   ]

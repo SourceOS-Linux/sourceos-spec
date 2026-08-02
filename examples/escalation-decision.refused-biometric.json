@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:escalation-decision:2026-06-09-4472-biometric",
+  "type": "EscalationDecision",
+  "specVersion": "2.1.0",
+  "decidedAt": "2026-06-09T22:03:10Z",
+  "machineRef": "urn:srcos:agent-machine:workstation-01",
+  "task": "face_recognition_assist",
+  "fromTier": "T0",
+  "toTier": "T3",
+  "fromResidencyClass": "on_device_only",
+  "toResidencyClass": "sovereign_cluster",
+  "trigger": "low-confidence",
+  "sensitivityCheck": {
+    "performed": true,
+    "result": "fail",
+    "classifierDigest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "sensitiveCategories": ["biometric"]
+  },
+  "capabilityLeaseRef": null,
+  "targetProviderRef": null,
+  "targetExternalProviderRef": null,
+  "inputHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "verdict": "refused",
+  "refusalReason": "biometric-boundary",
+  "policyDecisionRef": "urn:srcos:decision:escalate-4472",
+  "ledgerSeq": 4472,
+  "ledgerPrevHash": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "evidenceHash": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "evidenceRefs": []
+}
