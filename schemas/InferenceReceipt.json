@@ -60,9 +60,10 @@
         "required": ["dataResidencyClass"]
       },
       "then": {
-        "required": ["capabilityLeaseRef", "escalatedFrom"],
+        "required": ["capabilityLeaseRef", "escalatedFrom", "escalationChain"],
         "properties": {
           "capabilityLeaseRef": { "type": "string" },
+          "escalatedFrom": { "type": "string", "enum": ["T0", "T1", "T2", "T3"] },
           "escalationChain": { "minItems": 1 }
         }
       }

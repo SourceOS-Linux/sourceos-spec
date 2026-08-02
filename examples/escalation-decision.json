@@ -16,7 +16,7 @@
     "classifierDigest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
     "sensitiveCategories": []
   },
-  "grantRef": "urn:srcos:lease:noetica-t3-escalation-9f2a",
+  "capabilityLeaseRef": "urn:srcos:lease:noetica-t3-escalation-9f2a",
   "targetProviderRef": "urn:srcos:inference-provider:sovereign-cluster-teacher-70b",
   "targetExternalProviderRef": null,
   "inputHash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",

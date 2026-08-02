@@ -45,7 +45,7 @@
         "sensitiveCategories": { "type": "array", "description": "Categories detected (e.g. pii, biometric, credential, health). A biometric detection forbids any crossing.", "items": { "type": "string" } }
       }
     },
-    "grantRef": { "type": ["string", "null"], "pattern": "^urn:srcos:lease:", "description": "AgentCapabilityLease URN authorizing the crossing to the target residency class. Null when no grant exists — in which case the verdict must be refused (enforced below)." },
+    "capabilityLeaseRef": { "type": ["string", "null"], "pattern": "^urn:srcos:lease:", "description": "AgentCapabilityLease URN authorizing the crossing to the target residency class. Null when no grant exists — in which case the verdict must be refused (enforced below)." },
     "targetProviderRef": { "type": ["string", "null"], "pattern": "^urn:srcos:inference-provider:", "description": "InferenceProvider URN that would serve the escalated request (for on-device / sovereign-cluster targets)." },
     "targetExternalProviderRef": { "type": ["string", "null"], "pattern": "^urn:srcos:external-model-provider-profile:", "description": "ExternalModelProviderProfile URN for a T4 external-frontier target. Required when toTier is T4 (enforced below)." },
     "inputHash": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Hash of the canonical input under consideration. Content is not recorded here." },
@@ -65,9 +65,9 @@
         "required": ["verdict"]
       },
       "then": {
-        "required": ["grantRef"],
+        "required": ["capabilityLeaseRef"],
         "properties": {
-          "grantRef": { "type": "string" },
+          "capabilityLeaseRef": { "type": "string" },
           "sensitivityCheck": {
             "properties": {
               "performed": { "const": true },
