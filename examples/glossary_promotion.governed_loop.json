@@ -1,0 +1,46 @@
+{
+  "draftTerm": {
+    "id": "urn:srcos:glossary:governed-loop",
+    "type": "GlossaryTerm",
+    "specVersion": "2.0.0",
+    "name": "governed loop",
+    "partOfSpeech": "noun-phrase",
+    "status": "draft",
+    "definition": "A correction loop admissible only when bounded, convergent, fail-closed, and admitted by the superconscious."
+  },
+  "alignment": {
+    "ontologyClassRef": "urn:srcos:ontology-class:governance.GovernedLoop",
+    "vectorLink": {
+      "peerRef": "urn:srcos:glossary:operational-dag",
+      "model": "nomic-ai/nomic-embed-text-v1.5",
+      "dimension": 768,
+      "cosine": 0.69
+    },
+    "estateBinding": {
+      "kind": "entity",
+      "ref": "urn:srcos:schema:GovernedLoop"
+    }
+  },
+  "peer": {
+    "id": "urn:srcos:glossary:operational-dag",
+    "type": "GlossaryTerm",
+    "specVersion": "2.0.0",
+    "name": "operational DAG",
+    "partOfSpeech": "noun-phrase",
+    "status": "approved",
+    "definition": "The operational task graph carrying identity and dependency; it must be acyclic.",
+    "alignment": {
+      "ontologyClassRef": "urn:srcos:ontology-class:governance.OperationalDag",
+      "vectorLink": {
+        "peerRef": "urn:srcos:glossary:governed-loop",
+        "model": "nomic-ai/nomic-embed-text-v1.5",
+        "dimension": 768,
+        "cosine": 0.69
+      },
+      "estateBinding": {
+        "kind": "entity",
+        "ref": "urn:srcos:schema:OperationalDAG"
+      }
+    }
+  }
+}
