@@ -1,0 +1,243 @@
+{
+  "description": "Negative vectors for the DataClass (OntoDT/OntoDQ) family v0.1. Each MUST fail on its named failValidator; validate_data_class_examples.py enforces both, plus: a DataClass must be ontologically typed + glossary-linked + domain-bounded; a classifier's labels are GlossaryTerms and its compute is Ray/TritFabric; and a bound EntityField's validValues must conform to the DataClass domain.",
+  "cases": [
+    {
+      "schema": "DataClass.json",
+      "reason": "classifier kind is pinned to tf-lattice-wide-and-deep.",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "random-forest",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "ray",
+            "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+            "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "urn:srcos:glossary:revenue",
+            "urn:srcos:glossary:cost"
+          ],
+          "head": "logistic",
+          "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
+          "threshold": 0.5
+        }
+      }
+    },
+    {
+      "schema": "DataClass.json",
+      "reason": "classifier compute platform is closed (ray|tritfabric).",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "tf-lattice-wide-and-deep",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "lambda"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "urn:srcos:glossary:revenue",
+            "urn:srcos:glossary:cost"
+          ],
+          "head": "logistic",
+          "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
+          "threshold": 0.5
+        }
+      }
+    },
+    {
+      "schema": "DataClass.json",
+      "reason": "classifier labels must be GlossaryTerm URNs (assigned in the glossary).",
+      "failValidator": "pattern",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "tf-lattice-wide-and-deep",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "ray",
+            "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+            "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "not-a-glossary-urn"
+          ],
+          "head": "logistic",
+          "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
+          "threshold": 0.5
+        }
+      }
+    },
+    {
+      "schema": "DataClass.json",
+      "reason": "ontologyClassRef is required — a data class must be ontologically typed.",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "tf-lattice-wide-and-deep",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "ray",
+            "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+            "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "urn:srcos:glossary:revenue",
+            "urn:srcos:glossary:cost"
+          ],
+          "head": "logistic",
+          "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
+          "threshold": 0.5
+        }
+      }
+    },
+    {
+      "schema": "TableClassifier.json",
+      "reason": "table classifier head is pinned to softmax (n-ary).",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:table-classifier:finance-ledger-v1",
+        "type": "TableClassifier",
+        "specVersion": "2.0.0",
+        "schemaRef": "urn:srcos:schema-definition:finance-ledger",
+        "head": "logistic",
+        "embeddings": [
+          {
+            "kind": "lsa-bag-of-words",
+            "dimension": 300
+          },
+          {
+            "kind": "doc2vec-sentence-encoder",
+            "dimension": 300
+          }
+        ],
+        "modelRef": "urn:srcos:model-manifest:table-assigner-softmax-v1",
+        "version": "1.0.0",
+        "runRef": "urn:srcos:run:table-assigner-train-001",
+        "compute": {
+          "platform": "tritfabric",
+          "assetRef": "urn:srcos:physical-asset:trit-cluster-01"
+        },
+        "assignsClasses": [
+          "urn:srcos:data-class:currency-amount-usd"
+        ]
+      }
+    },
+    {
+      "schema": "TableClassifier.json",
+      "reason": "embedding kind is closed to lsa-bag-of-words | doc2vec-sentence-encoder.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:table-classifier:finance-ledger-v1",
+        "type": "TableClassifier",
+        "specVersion": "2.0.0",
+        "schemaRef": "urn:srcos:schema-definition:finance-ledger",
+        "head": "softmax",
+        "embeddings": [
+          {
+            "kind": "word2vec"
+          },
+          {
+            "kind": "doc2vec-sentence-encoder"
+          }
+        ],
+        "modelRef": "urn:srcos:model-manifest:table-assigner-softmax-v1",
+        "version": "1.0.0",
+        "runRef": "urn:srcos:run:table-assigner-train-001",
+        "compute": {
+          "platform": "tritfabric",
+          "assetRef": "urn:srcos:physical-asset:trit-cluster-01"
+        },
+        "assignsClasses": [
+          "urn:srcos:data-class:currency-amount-usd"
+        ]
+      }
+    }
+  ]
+}

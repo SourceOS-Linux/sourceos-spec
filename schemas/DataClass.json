@@ -1,0 +1,149 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DataClass.json",
+  "title": "DataClass",
+  "description": "An OntoDT/OntoDQ data class: a data type/class defined ontologically (mereotopology in the datatype ontology) with its value domain, its business glossary term, and an optional TF-Lattice wide-and-deep classifier — registered in the model catalog with a run on Ray/TritFabric — that assigns this class by inference. Bridges the business vocabulary (GlossaryTerm) to the data (EntityField). Governs data quality: a field bound to this class must conform to its domain.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "ontologyClassRef",
+    "glossaryTermRef",
+    "domain"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:data-class:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "DataClass"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "ontologyClassRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:ontology-class:[A-Za-z0-9._~:-]+$",
+      "description": "OntoDT — the datatype-ontology class this data class IS (capture; enables inference-based data-quality logic)."
+    },
+    "glossaryTermRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:glossary:",
+      "description": "The business GlossaryTerm this data class realizes — the biz↔data bridge."
+    },
+    "domain": {
+      "$ref": "ValidValues.json",
+      "description": "The value domain: enumeration / range / regex. Reuses ValidValues (single source with EntityField.validValues)."
+    },
+    "dataQualityRules": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Identifiers of data-quality validations enforced for this class (OntoDQ)."
+    },
+    "classifier": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "description": "Optional TF-Lattice wide-and-deep classifier that ASSIGNS this data class by inference. It is a first-class cataloged model: modelRef → ModelManifest, runRef → RunRecord, compute on Ray/TritFabric, labels are GlossaryTerms.",
+      "required": [
+        "kind",
+        "head",
+        "modelRef",
+        "version",
+        "evalRunRef",
+        "runRef",
+        "compute",
+        "labels"
+      ],
+      "properties": {
+        "kind": {
+          "const": "tf-lattice-wide-and-deep"
+        },
+        "modelRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:model-manifest:",
+          "description": "The classifier model in the model catalog (ModelManifest)."
+        },
+        "version": {
+          "type": "string"
+        },
+        "runRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:run:",
+          "description": "The training/eval RunRecord."
+        },
+        "compute": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "platform"
+          ],
+          "properties": {
+            "platform": {
+              "type": "string",
+              "enum": [
+                "ray",
+                "tritfabric"
+              ]
+            },
+            "assetRef": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+            },
+            "serviceRef": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+            }
+          }
+        },
+        "monotonicFeatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Features constrained monotone in the lattice (TF-Lattice shape constraint)."
+        },
+        "labels": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "pattern": "^urn:srcos:glossary:"
+          },
+          "description": "Output class labels — each a GlossaryTerm URN (labels are assigned in the glossary)."
+        },
+        "head": {
+          "const": "logistic",
+          "description": "Per-class head: a LOGISTIC (one-vs-rest, binary) classifier so THIS class / glossary term can be tested INDIVIDUALLY (per-class precision/recall). The table-level n-ary assignment lives in TableClassifier (softmax)."
+        },
+        "evalRunRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:run:",
+          "description": "The per-class evaluation RunRecord — the individual test for this class/label."
+        },
+        "threshold": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Decision threshold on the logistic probability."
+        }
+      }
+    }
+  }
+}

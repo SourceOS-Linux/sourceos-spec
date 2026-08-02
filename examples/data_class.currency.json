@@ -1,0 +1,40 @@
+{
+  "id": "urn:srcos:data-class:currency-amount-usd",
+  "type": "DataClass",
+  "specVersion": "2.0.0",
+  "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+  "glossaryTermRef": "urn:srcos:glossary:revenue",
+  "domain": {
+    "kind": "range",
+    "values": [],
+    "min": 0,
+    "max": null,
+    "pattern": null
+  },
+  "dataQualityRules": [
+    "dq.nonnegative",
+    "dq.currency.usd.scale2"
+  ],
+  "classifier": {
+    "kind": "tf-lattice-wide-and-deep",
+    "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+    "version": "1.0.0",
+    "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+    "compute": {
+      "platform": "ray",
+      "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+      "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+    },
+    "monotonicFeatures": [
+      "token_magnitude",
+      "decimal_places"
+    ],
+    "labels": [
+      "urn:srcos:glossary:revenue",
+      "urn:srcos:glossary:cost"
+    ],
+    "head": "logistic",
+    "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
+    "threshold": 0.5
+  }
+}

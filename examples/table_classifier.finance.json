@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:table-classifier:finance-ledger-v1",
+  "type": "TableClassifier",
+  "specVersion": "2.0.0",
+  "schemaRef": "urn:srcos:schema-definition:finance-ledger",
+  "head": "softmax",
+  "embeddings": [
+    {
+      "kind": "lsa-bag-of-words",
+      "dimension": 300
+    },
+    {
+      "kind": "doc2vec-sentence-encoder",
+      "dimension": 300
+    }
+  ],
+  "modelRef": "urn:srcos:model-manifest:table-assigner-softmax-v1",
+  "version": "1.0.0",
+  "runRef": "urn:srcos:run:table-assigner-train-001",
+  "compute": {
+    "platform": "tritfabric",
+    "assetRef": "urn:srcos:physical-asset:trit-cluster-01"
+  },
+  "assignsClasses": [
+    "urn:srcos:data-class:currency-amount-usd"
+  ]
+}
