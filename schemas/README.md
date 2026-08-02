@@ -5,6 +5,27 @@ This directory contains the JSON Schema (draft 2020-12) files that make up the S
 
 ---
 
+## Recent additions — Model Plane Provenance v0.1 (Tranche 7)
+
+The governed-inference provenance layer atop the existing Agent Machine / Model Carry family (`InferenceProvider`, `ModelResidency`, `SourceOSModelCarryRef`, `ExternalModelProviderProfile`, `AgentMachineReceipt`, all reused, not restated):
+
+| File | Type | URN prefix |
+|------|------|-----------|
+| `InferenceReceipt.json` | InferenceReceipt | `urn:srcos:inference-receipt:` |
+| `EscalationDecision.json` | EscalationDecision | `urn:srcos:escalation-decision:` |
+| `AdapterPromotionDecision.json` | AdapterPromotionDecision | `urn:srcos:adapter-promotion-decision:` |
+
+These types make on-device inference auditable in the ways Apple Intelligence's silent loop does not:
+- **`InferenceReceipt`** — the provenance primitive emitted for every completion: tier, content-addressed base/adapter/tokenizer digests, serving daemon, the data-residency class served under, and the escalation chain. Ledger-bound (a local-only ledger is not permitted, SEAM-011). Off-device receipts (`sovereign_cluster`/`external_permitted`) are schema-required to carry an authorizing lease and a non-empty escalation chain — possession of the output is not authorization for the crossing (SEAM-015).
+- **`EscalationDecision`** — the governed record of a tier / data-residency boundary crossing. Fail-closed by construction: a `permitted` verdict is schema-impossible without an authorizing capability lease **and** a passing T0 sensitivity check; ∅-grant or an unanswered background consent prompt (`refusalReason: prompt-unanswered`) resolves to refusal, never a silent downgrade (SEAM-015).
+- **`AdapterPromotionDecision`** — adapter promotion as a human-governed decision, never an automatic OS update. Enumerates every contributing `OverrideEvent` (the property Apple's loop lacks), and a `promoted` verdict is schema-impossible without a verified signature, per-event training consent, all eval gates passing (including an adversarial-poisoning probe), a named human promoter, and a mandatory rollback target (SEAM-016, SEAM-017). Governs *model* (LoRA) adapters — distinct from `AdapterDescriptor` (connector/actuation adapters).
+
+All three carry an optional `ledgerPrevHash` (hash-chain the append-only ledger so an enumerated contribution list cannot be retroactively rewritten) and, on the receipt, an optional `confidenceMethod` (the escalation trigger is self-reported — recording the method makes it auditable).
+
+Validation: `ajv validate -s schemas/<Type>.json -d examples/<type>.json`. Canonical examples: `examples/inference-receipt.json`, `examples/escalation-decision.json`, `examples/adapter-promotion-decision.json`. ADR: `docs/adr/0015-model-plane-inference-provenance.md`.
+
+---
+
 ## Recent additions — DeviceService Contract v0.1 (the southbound device plane, W8.7)
 
 The southbound device abstraction — the estate's first — adds the following top-level schemas:
@@ -360,6 +381,9 @@ These types support:
 | `TruthSurface` | Signed truth summary emitted by a plane (system/user/agent/witness) |
 | `DeltaSurface` | Signed diff between two TruthSurfaces with gate results |
 | `SourceOSInteractionEvent` | Shared noetic/chat/task lifecycle event envelope for Noetica, AgentTerm, governance traces, task submission, and evidence handoff |
+| `InferenceReceipt` | Model Plane (T7): per-completion provenance receipt — tier, model/adapter/tokenizer digests, residency class, escalation chain; ledger-bound (SEAM-011/015) |
+| `EscalationDecision` | Model Plane (T7): governed tier/data-residency boundary crossing; fail-closed — `permitted` requires a lease and a passing T0 sensitivity check (SEAM-015) |
+| `AdapterPromotionDecision` | Model Plane (T7): human-governed LoRA-adapter promotion; enumerates contributing override events; requires signature + consent + eval + rollback (SEAM-016/017) |
 
 ### Agent Plane
 
