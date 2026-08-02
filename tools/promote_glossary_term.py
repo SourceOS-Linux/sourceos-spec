@@ -58,9 +58,19 @@ def _method_failures(term: dict, alignment: dict, peer: dict | None) -> list[str
 
 
 def promote(term: dict, alignment: dict, peer: dict | None = None) -> dict:
+    # Input guard — only promote an actual draft GlossaryTerm; a non-term or an already-approved
+    # term is not a valid promotion target (don't silently mutate it).
+    if term.get("type") != "GlossaryTerm" or not str(term.get("id") or "").strip():
+        return {"promoted": False, "term": term.get("id"), "status": term.get("status"),
+                "refused": "not-a-draft-glossary-term",
+                "detail": "promotion input must be a GlossaryTerm with an id"}
+    if term.get("status") == "approved":
+        return {"promoted": False, "term": term["id"], "status": "approved",
+                "refused": "already-approved", "detail": "term is already approved — nothing to promote"}
+
     fails = _method_failures(term, alignment, peer)
     if fails:
-        return {"promoted": False, "term": term.get("id"), "status": "draft",
+        return {"promoted": False, "term": term["id"], "status": "draft",
                 "refused": "incomplete-alignment", "unaligned": fails,
                 "detail": "draft->approved refused: an approved term must be captured + vector-aligned "
                           "+ implemented (fail-closed meet); it stays draft"}

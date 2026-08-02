@@ -71,6 +71,18 @@ def main() -> int:
     else:
         CHECKS["off-space-embedding:refused"] = True
 
+    # 5. Input guards — a non-term and an already-approved term are both refused (no silent mutation).
+    r = P.promote({"id": "x", "type": "NotATerm"}, alignment, peer)
+    if r.get("promoted") or r.get("refused") != "not-a-draft-glossary-term":
+        FAILURES.append("a non-GlossaryTerm input must be refused")
+    else:
+        CHECKS["non-term-input:refused"] = True
+    r = P.promote({**draft, "status": "approved"}, alignment, peer)
+    if r.get("promoted") or r.get("refused") != "already-approved":
+        FAILURES.append("an already-approved term must be refused (nothing to promote)")
+    else:
+        CHECKS["already-approved:refused"] = True
+
     for m in FAILURES:
         print(f"FAIL: {m}", file=sys.stderr)
     ok = not FAILURES and all(CHECKS.values())
