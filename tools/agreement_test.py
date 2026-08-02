@@ -40,7 +40,10 @@ def _binding(term: dict) -> str | None:
 
 def agreement(glossary: dict, graph: dict) -> dict:
     terms = {t["id"]: t for t in glossary["terms"]}
-    bind = {tid: _binding(t) for tid, t in terms.items() if _binding(t)}
+    # Only APPROVED terms regulate state, so only their relations are held to agreement — a draft
+    # term hasn't been promoted through the alignment gate and can't overclaim the estate.
+    bind = {tid: _binding(t) for tid, t in terms.items()
+            if _binding(t) and t.get("status") == "approved"}
     observed = {(e["from"], e["to"]) for e in graph.get("edges", [])}
 
     # DECLARED estate edges: a dep-implying relation A->B where both A and B are bound entities.
