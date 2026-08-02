@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TableClassifier.json",
+  "title": "TableClassifier",
+  "description": "The per-table (per-SchemaDefinition) SOFTMAX classifier that assigns each column to one of N DataClasses — the n-ary logit→class assignment. It ALIGNS two representations of each column: an LSA bag-of-words embedding (the closed fixed vocabulary) and a doc2vec sentence-encoder (contextual). A first-class cataloged model (ModelManifest) with a run on Ray/TritFabric.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "head",
+    "embeddings",
+    "modelRef",
+    "assignsClasses"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:table-classifier:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "TableClassifier"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "schemaRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+      "description": "The SchemaDefinition/table this classifier assigns columns for."
+    },
+    "head": {
+      "const": "softmax",
+      "description": "n-ary multinomial head — one class per column."
+    },
+    "embeddings": {
+      "type": "array",
+      "minItems": 2,
+      "description": "The representations aligned by the softmax. MUST include both an LSA bag-of-words embedding and a doc2vec sentence-encoder (the n-ary logit→class examples).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "lsa-bag-of-words",
+              "doc2vec-sentence-encoder"
+            ]
+          },
+          "dimension": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1
+          }
+        }
+      }
+    },
+    "modelRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:model-manifest:"
+    },
+    "version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "runRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:run:"
+    },
+    "compute": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "platform"
+      ],
+      "properties": {
+        "platform": {
+          "type": "string",
+          "enum": [
+            "ray",
+            "tritfabric"
+          ]
+        },
+        "assetRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+        }
+      }
+    },
+    "assignsClasses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^urn:srcos:data-class:[A-Za-z0-9._~:-]+$"
+      },
+      "description": "The DataClasses this softmax can assign — the N of the n-ary."
+    }
+  }
+}

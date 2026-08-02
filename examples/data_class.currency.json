@@ -32,6 +32,9 @@
     "labels": [
       "urn:srcos:glossary:revenue",
       "urn:srcos:glossary:cost"
-    ]
+    ],
+    "head": "logistic",
+    "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
+    "threshold": 0.5
   }
 }

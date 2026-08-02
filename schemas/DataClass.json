@@ -54,8 +54,10 @@
       "description": "Optional TF-Lattice wide-and-deep classifier that ASSIGNS this data class by inference. It is a first-class cataloged model: modelRef → ModelManifest, runRef → RunRecord, compute on Ray/TritFabric, labels are GlossaryTerms.",
       "required": [
         "kind",
+        "head",
         "modelRef",
         "version",
+        "evalRunRef",
         "labels"
       ],
       "properties": {
@@ -126,6 +128,24 @@
             "pattern": "^urn:srcos:glossary:"
           },
           "description": "Output class labels — each a GlossaryTerm URN (labels are assigned in the glossary)."
+        },
+        "head": {
+          "const": "logistic",
+          "description": "Per-class head: a LOGISTIC (one-vs-rest, binary) classifier so THIS class / glossary term can be tested INDIVIDUALLY (per-class precision/recall). The table-level n-ary assignment lives in TableClassifier (softmax)."
+        },
+        "evalRunRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:run:",
+          "description": "The per-class evaluation RunRecord — the individual test for this class/label."
+        },
+        "threshold": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Decision threshold on the logistic probability."
         }
       }
     }

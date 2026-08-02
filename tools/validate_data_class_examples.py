@@ -76,8 +76,30 @@ def check_classifier(dcs) -> None:
             FAILURES.append(f"{name}: classifier.modelRef must be a ModelManifest (cataloged model)")
         elif (clf.get("compute") or {}).get("platform") not in ("ray", "tritfabric"):
             FAILURES.append(f"{name}: classifier compute must run on ray|tritfabric")
+        elif clf.get("head") != "logistic":
+            FAILURES.append(f"{name}: per-class classifier head must be 'logistic' (one-vs-rest) so the class is individually testable")
+        elif not clf.get("evalRunRef"):
+            FAILURES.append(f"{name}: per-class classifier must carry an evalRunRef — the individual test for this class/label")
         else:
-            CHECKS[f"classifier:{name}:cataloged-on-compute-with-glossary-labels"] = True
+            CHECKS[f"classifier:{name}:logistic-individually-testable"] = True
+
+
+def check_table_classifiers(tcs) -> None:
+    """A TableClassifier is the n-ary SOFTMAX; it must align BOTH a LSA bag-of-words and a
+    doc2vec sentence-encoder, and be a cataloged model on ray/tritfabric assigning N DataClasses."""
+    for name, tc in tcs.items():
+        kinds = {e.get("kind") for e in (tc.get("embeddings") or [])}
+        if tc.get("head") != "softmax":
+            FAILURES.append(f"{name}: table classifier head must be 'softmax' (n-ary)")
+        elif not {"lsa-bag-of-words", "doc2vec-sentence-encoder"} <= kinds:
+            FAILURES.append(f"{name}: softmax must align BOTH lsa-bag-of-words AND doc2vec-sentence-encoder "
+                            f"(the n-ary logit→class representations); have {sorted(kinds)}")
+        elif not tc.get("modelRef", "").startswith("urn:srcos:model-manifest:"):
+            FAILURES.append(f"{name}: modelRef must be a cataloged ModelManifest")
+        elif not (tc.get("assignsClasses") and all(c.startswith("urn:srcos:data-class:") for c in tc["assignsClasses"])):
+            FAILURES.append(f"{name}: assignsClasses must be DataClass URNs (the N of the n-ary)")
+        else:
+            CHECKS[f"table-classifier:{name}:softmax-lsa+doc2vec-cataloged"] = True
 
 
 def check_field_conformance(dcs, fields) -> None:
@@ -101,6 +123,8 @@ def check_field_conformance(dcs, fields) -> None:
 def check_negatives(dataclass_schema) -> None:
     fx = load(ROOT / "fixtures" / "data-class" / "conformance.json")
     for i, case in enumerate(fx["cases"]):
+        if case["schema"] != "DataClass.json":
+            continue  # TableClassifier negatives handled in main() against their own schema
         expected = case.get("failValidator")
         try:
             validator_for(dataclass_schema).validate(case["document"])
@@ -116,13 +140,37 @@ def check_negatives(dataclass_schema) -> None:
 def main() -> int:
     dataclass_schema = load(SCHEMAS / "DataClass.json")
     field_schema = load(SCHEMAS / "EntityField.json")
+    table_schema = load(SCHEMAS / "TableClassifier.json")
     dcs = {"data_class.currency.json": load(ROOT / "examples" / "data_class.currency.json")}
     fields = {"entity_field.revenue.json": load(ROOT / "examples" / "entity_field.revenue.json")}
+    tcs = {"table_classifier.finance.json": load(ROOT / "examples" / "table_classifier.finance.json")}
 
     check_conformance(dataclass_schema, field_schema, dcs, fields)
+    for name, tc in tcs.items():
+        errs = sorted(validator_for(table_schema).iter_errors(tc), key=str)
+        if errs:
+            for e in errs:
+                FAILURES.append(f"{name}: {e.message}")
+        else:
+            CHECKS[f"schema:{name}"] = True
     check_classifier(dcs)
+    check_table_classifiers(tcs)
     check_field_conformance(dcs, fields)
     check_negatives(dataclass_schema)
+    # TableClassifier negatives use their own schema
+    fx = load(ROOT / "fixtures" / "data-class" / "conformance.json")
+    for i, case in enumerate(fx["cases"]):
+        if case["schema"] != "TableClassifier.json":
+            continue
+        try:
+            validator_for(table_schema).validate(case["document"])
+            FAILURES.append(f"negative {i} (TableClassifier) unexpectedly PASSED: {case['reason']}")
+        except jsonschema.ValidationError as exc:
+            exp = case.get("failValidator")
+            if exp and exc.validator != exp:
+                FAILURES.append(f"negative {i} (TableClassifier): failed on {exc.validator!r}, not {exp!r}")
+            else:
+                CHECKS[f"negative-tc:{i}:{exc.validator}"] = True
 
     for m in FAILURES:
         print(f"FAIL: {m}", file=sys.stderr)
