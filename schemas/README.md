@@ -14,15 +14,18 @@ The governed-inference provenance layer atop the existing Agent Machine / Model 
 | `InferenceReceipt.json` | InferenceReceipt | `urn:srcos:inference-receipt:` |
 | `EscalationDecision.json` | EscalationDecision | `urn:srcos:escalation-decision:` |
 | `AdapterPromotionDecision.json` | AdapterPromotionDecision | `urn:srcos:adapter-promotion-decision:` |
+| `ModelManifest.json` | ModelManifest | `urn:srcos:model-manifest:` |
+| `ModelAdapterManifest.json` | ModelAdapterManifest | `urn:srcos:model-adapter-manifest:` |
 
 These types make on-device inference auditable in the ways Apple Intelligence's silent loop does not:
 - **`InferenceReceipt`** — the provenance primitive emitted for every completion: tier, content-addressed base/adapter/tokenizer digests, serving daemon, the data-residency class served under, and the escalation chain. Ledger-bound (a local-only ledger is not permitted, SEAM-011). Off-device receipts (`sovereign_cluster`/`external_permitted`) are schema-required to carry an authorizing lease and a non-empty escalation chain — possession of the output is not authorization for the crossing (SEAM-015).
 - **`EscalationDecision`** — the governed record of a tier / data-residency boundary crossing. Fail-closed by construction: a `permitted` verdict is schema-impossible without an authorizing capability lease **and** a passing T0 sensitivity check; ∅-grant or an unanswered background consent prompt (`refusalReason: prompt-unanswered`) resolves to refusal, never a silent downgrade (SEAM-015).
 - **`AdapterPromotionDecision`** — adapter promotion as a human-governed decision, never an automatic OS update. Enumerates every contributing `OverrideEvent` (the property Apple's loop lacks), and a `promoted` verdict is schema-impossible without a verified signature, per-event training consent, all eval gates passing (including an adversarial-poisoning probe), a named human promoter, and a mandatory rollback target (SEAM-016, SEAM-017). Governs *model* (LoRA) adapters — distinct from `AdapterDescriptor` (connector/actuation adapters).
+- **`ModelManifest` / `ModelAdapterManifest`** (T7-2) — the content-addressed *store* manifests sitting beside the weights. Distinct from `SourceOSModelCarryRef` (a governance/carry *reference* that points AT a manifest digest). A valid manifest is schema-impossible without signature info (SEAM-014) and — for the adapter — the `baseModelDigest` it binds to (SEAM-017, rejected on mismatch); both require an SPDX `license` so the estate's MIT/Apache-only rule is checkable before wiring. The adapter manifest is named `ModelAdapterManifest`, not `AdapterManifest`, to avoid colliding with `AdapterDescriptor` (connector adapters).
 
-All three carry an optional `ledgerPrevHash` (hash-chain the append-only ledger so an enumerated contribution list cannot be retroactively rewritten) and, on the receipt, an optional `confidenceMethod` (the escalation trigger is self-reported — recording the method makes it auditable).
+All three provenance types carry an optional `ledgerPrevHash` (hash-chain the append-only ledger so an enumerated contribution list cannot be retroactively rewritten) and, on the receipt, an optional `confidenceMethod` (the escalation trigger is self-reported — recording the method makes it auditable).
 
-Validation: `ajv validate -s schemas/<Type>.json -d examples/<type>.json`. Canonical examples: `examples/inference-receipt.json`, `examples/escalation-decision.json`, `examples/adapter-promotion-decision.json`. ADR: `docs/adr/0015-model-plane-inference-provenance.md`.
+Validation: `ajv validate -s schemas/<Type>.json -d examples/<type>.json`. Canonical examples: `examples/inference-receipt.json`, `examples/escalation-decision.json`, `examples/adapter-promotion-decision.json`, `examples/model-manifest.json`, `examples/model-adapter-manifest.json`. ADRs: `docs/adr/0015-model-plane-inference-provenance.md`, `docs/adr/0016-model-plane-store-manifests.md`.
 
 ---
 
