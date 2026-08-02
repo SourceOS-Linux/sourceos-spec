@@ -29,7 +29,7 @@
     "tokenizerDigest": { "type": ["string", "null"], "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Content-addressed digest of the tokenizer, or null when the tokenizer is embedded in the weights." },
     "contextLength": { "type": ["integer", "null"], "minimum": 0, "description": "Maximum context length in tokens, or null when unknown." },
     "defaultTier": { "type": ["string", "null"], "enum": ["T0", "T1", "T2", "T3", "T4", null], "description": "The Model Plane tier this model is normally resident at." },
-    "modalities": { "type": "array", "description": "Modalities the model serves.", "items": { "type": "string", "enum": ["text", "code", "embedding", "reranking", "vision", "audio", "video", "multimodal"] } },
+    "modalities": { "type": "array", "minItems": 1, "uniqueItems": true, "description": "Modalities the model serves. When present, at least one, no duplicates.", "items": { "type": "string", "enum": ["text", "code", "embedding", "reranking", "vision", "audio", "video", "multimodal"] } },
     "license": { "type": "string", "description": "SPDX license identifier for the model weights, e.g. \"Apache-2.0\", \"MIT\". Required so the estate's MIT/Apache-only rule can be enforced before a model is wired; use \"LicenseRef-<name>\" for non-SPDX licenses (e.g. LicenseRef-Gemma, LicenseRef-Llama-Community), which are NOT MIT/Apache and must be flagged." },
     "signature": {
       "type": "object",

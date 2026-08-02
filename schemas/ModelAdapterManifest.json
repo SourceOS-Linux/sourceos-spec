@@ -14,6 +14,7 @@
     "task",
     "rank",
     "alpha",
+    "targetModules",
     "format",
     "license",
     "signature"
@@ -29,7 +30,7 @@
     "task": { "type": "string", "description": "Task the adapter specializes, e.g. summarization, translation-de-en, agent_classification." },
     "rank": { "type": "integer", "minimum": 1, "description": "LoRA rank (r)." },
     "alpha": { "type": "number", "exclusiveMinimum": 0, "description": "LoRA scaling factor (alpha)." },
-    "targetModules": { "type": "array", "description": "Attention/MLP submodules the adapter targets, e.g. q_proj, v_proj, o_proj, gate_proj.", "items": { "type": "string" } },
+    "targetModules": { "type": "array", "minItems": 1, "uniqueItems": true, "description": "Attention/MLP submodules the adapter targets, e.g. q_proj, v_proj, o_proj, gate_proj. Required and non-empty — an adapter that does not declare its target modules is not applicable by a consumer.", "items": { "type": "string" } },
     "format": { "type": "string", "enum": ["safetensors", "gguf", "mlx"], "description": "On-disk adapter format." },
     "tokenizerDigest": { "type": ["string", "null"], "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Tokenizer digest if the adapter changes tokenization; null to inherit the base model's tokenizer." },
     "license": { "type": "string", "description": "SPDX license identifier for the adapter weights (e.g. Apache-2.0, MIT). Required so the MIT/Apache-only rule is checkable; a distilled adapter also inherits any base-model license constraint." },
