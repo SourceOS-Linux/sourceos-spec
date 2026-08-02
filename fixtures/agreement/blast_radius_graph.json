@@ -1,0 +1,18 @@
+{
+  "nodes": [
+    "urn:srcos:service:release-gate",
+    "urn:srcos:service:attestation-signer",
+    "urn:srcos:service:epistemic-evaluator",
+    "urn:srcos:service:key-store"
+  ],
+  "edges": [
+    {
+      "from": "urn:srcos:service:release-gate",
+      "to": "urn:srcos:service:attestation-signer"
+    },
+    {
+      "from": "urn:srcos:service:attestation-signer",
+      "to": "urn:srcos:service:key-store"
+    }
+  ]
+}

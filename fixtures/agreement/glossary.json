@@ -1,0 +1,45 @@
+{
+  "terms": [
+    {
+      "id": "urn:srcos:glossary:release-gate",
+      "status": "approved",
+      "name": "release gate",
+      "alignment": {
+        "estateBinding": {
+          "kind": "service",
+          "ref": "urn:srcos:service:release-gate"
+        }
+      },
+      "relations": [
+        {
+          "predicate": "has-a",
+          "target": "urn:srcos:glossary:attestation"
+        }
+      ]
+    },
+    {
+      "id": "urn:srcos:glossary:attestation",
+      "status": "approved",
+      "name": "attestation",
+      "alignment": {
+        "estateBinding": {
+          "kind": "service",
+          "ref": "urn:srcos:service:attestation-signer"
+        }
+      },
+      "relations": []
+    },
+    {
+      "id": "urn:srcos:glossary:epistemic-level",
+      "status": "approved",
+      "name": "epistemic level",
+      "alignment": {
+        "estateBinding": {
+          "kind": "service",
+          "ref": "urn:srcos:service:epistemic-evaluator"
+        }
+      },
+      "relations": []
+    }
+  ]
+}
