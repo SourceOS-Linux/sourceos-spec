@@ -71,17 +71,23 @@ def check_classifier(dcs) -> None:
         if not clf:
             CHECKS[f"classifier:{name}:none"] = True
             continue
+        if not isinstance(clf, dict):
+            FAILURES.append(f"{name}: classifier must be an object")  # type-guard: don't crash on a bad shape
+            continue
         labels = clf.get("labels") or []
+        compute = clf.get("compute") if isinstance(clf.get("compute"), dict) else {}
         if not all(l.startswith("urn:srcos:glossary:") for l in labels):
             FAILURES.append(f"{name}: classifier labels must all be GlossaryTerm URNs (assigned in the glossary)")
-        elif not clf.get("modelRef", "").startswith("urn:srcos:model-manifest:"):
+        elif not str(clf.get("modelRef", "")).startswith("urn:srcos:model-manifest:"):
             FAILURES.append(f"{name}: classifier.modelRef must be a ModelManifest (cataloged model)")
-        elif (clf.get("compute") or {}).get("platform") not in ("ray", "tritfabric"):
+        elif not str(clf.get("runRef", "")).startswith("urn:srcos:run:"):
+            FAILURES.append(f"{name}: classifier.runRef must be a RunRecord URN (the training run that produced this model)")
+        elif compute.get("platform") not in ("ray", "tritfabric"):
             FAILURES.append(f"{name}: classifier compute must run on ray|tritfabric")
         elif clf.get("head") != "logistic":
             FAILURES.append(f"{name}: per-class classifier head must be 'logistic' (one-vs-rest) so the class is individually testable")
-        elif not clf.get("evalRunRef"):
-            FAILURES.append(f"{name}: per-class classifier must carry an evalRunRef — the individual test for this class/label")
+        elif not str(clf.get("evalRunRef", "")).startswith("urn:srcos:run:"):
+            FAILURES.append(f"{name}: per-class classifier must carry an evalRunRef (RunRecord URN) — the individual test for this class/label")
         else:
             CHECKS[f"classifier:{name}:logistic-individually-testable"] = True
 
@@ -90,7 +96,7 @@ def check_table_classifiers(tcs) -> None:
     """A TableClassifier is the n-ary SOFTMAX; it must align BOTH a LSA bag-of-words and a
     doc2vec sentence-encoder, and be a cataloged model on ray/tritfabric assigning N DataClasses."""
     for name, tc in tcs.items():
-        kinds = {e.get("kind") for e in (tc.get("embeddings") or [])}
+        kinds = {e.get("kind") for e in (tc.get("embeddings") or []) if isinstance(e, dict)}
         if tc.get("head") != "softmax":
             FAILURES.append(f"{name}: table classifier head must be 'softmax' (n-ary)")
         elif not {"lsa-bag-of-words", "doc2vec-sentence-encoder"} <= kinds:
