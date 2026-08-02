@@ -28,3 +28,15 @@ ontogenesis / the prophet-ontology as draft terms for the 3-method alignment pas
 ## Remediation artifacts
 
 Each connected token is emitted as a conformant status:`draft` `GlossaryTerm` in `result.proposedTerms` — the loop's output is directly ingestible by ontogenesis for the 3-method alignment pass. The loop only proposes: `partOfSpeech`, `alignment`, and approval are downstream. `make validate-vocab-currency-loop` refuses any proposed term that fails `GlossaryTerm.json` or that is not `draft` (the loop may not self-approve).
+
+## Live dogfood (`make vocab-currency-dogfood`)
+
+`tools/dogfood_vocab_currency.py` runs the governed loop over THIS repo's real vocabulary — every
+approved `GlossaryTerm` in `examples/` (fixed/LSA) vs `specs/*.md` (open/LDA) — answering honestly
+whether our own approved vocab is current with our own specs. On today's estate (2 approved terms
+vs 14 specs) it is not: divergence starts ~0.98 and the governed loop, unable to reach currency in
+its 8-iteration bound, **escalates-human** with concrete draft proposals rather than pretending
+currency. It writes each proposed draft `GlossaryTerm` to `build/vocab-currency-proposals/<slug>.json`
+— the exact artifacts ontogenesis ingests. Informational (exit 0), corpus-configured (Markdown
+cleaned, generic prose words stoplisted so DOMAIN terms surface); the ENFORCEMENT stays in
+`validate-vocab-currency-loop` on known-good fixtures.
