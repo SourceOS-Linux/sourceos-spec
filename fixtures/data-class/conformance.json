@@ -1,0 +1,169 @@
+{
+  "description": "Negative vectors for the DataClass (OntoDT/OntoDQ) family v0.1. Each MUST fail on its named failValidator; validate_data_class_examples.py enforces both, plus: a DataClass must be ontologically typed + glossary-linked + domain-bounded; a classifier's labels are GlossaryTerms and its compute is Ray/TritFabric; and a bound EntityField's validValues must conform to the DataClass domain.",
+  "cases": [
+    {
+      "schema": "DataClass.json",
+      "reason": "classifier kind is pinned to tf-lattice-wide-and-deep.",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "random-forest",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "ray",
+            "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+            "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "urn:srcos:glossary:revenue",
+            "urn:srcos:glossary:cost"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "DataClass.json",
+      "reason": "classifier compute platform is closed (ray|tritfabric).",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "tf-lattice-wide-and-deep",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "lambda"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "urn:srcos:glossary:revenue",
+            "urn:srcos:glossary:cost"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "DataClass.json",
+      "reason": "classifier labels must be GlossaryTerm URNs (assigned in the glossary).",
+      "failValidator": "pattern",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "ontologyClassRef": "urn:srcos:ontology-class:datatype.CurrencyAmount",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "tf-lattice-wide-and-deep",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "ray",
+            "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+            "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "not-a-glossary-urn"
+          ]
+        }
+      }
+    },
+    {
+      "schema": "DataClass.json",
+      "reason": "ontologyClassRef is required — a data class must be ontologically typed.",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:data-class:currency-amount-usd",
+        "type": "DataClass",
+        "specVersion": "2.0.0",
+        "glossaryTermRef": "urn:srcos:glossary:revenue",
+        "domain": {
+          "kind": "range",
+          "values": [],
+          "min": 0,
+          "max": null,
+          "pattern": null
+        },
+        "dataQualityRules": [
+          "dq.nonnegative",
+          "dq.currency.usd.scale2"
+        ],
+        "classifier": {
+          "kind": "tf-lattice-wide-and-deep",
+          "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+          "version": "1.0.0",
+          "runRef": "urn:srcos:run:dataclass-assigner-train-001",
+          "compute": {
+            "platform": "ray",
+            "assetRef": "urn:srcos:physical-asset:ray-cluster-01",
+            "serviceRef": "urn:srcos:tritfabric-consumption-api:assigner"
+          },
+          "monotonicFeatures": [
+            "token_magnitude",
+            "decimal_places"
+          ],
+          "labels": [
+            "urn:srcos:glossary:revenue",
+            "urn:srcos:glossary:cost"
+          ]
+        }
+      }
+    }
+  ]
+}

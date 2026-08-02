@@ -1,0 +1,16 @@
+{
+  "name": "revenue_usd",
+  "dataType": "decimal",
+  "nullable": false,
+  "validValues": {
+    "kind": "range",
+    "values": [],
+    "min": 0,
+    "max": null,
+    "pattern": null
+  },
+  "glossaryTerms": [
+    "urn:srcos:glossary:revenue"
+  ],
+  "dataClassRef": "urn:srcos:data-class:currency-amount-usd"
+}
