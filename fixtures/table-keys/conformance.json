@@ -1,0 +1,79 @@
+{
+  "description": "Negative vectors for table keys/indexes as set-identifiers. Each fails on its named failValidator; validate_key_bipartite.py also enforces (recomputed): rank == arity, primitive iff rank==1, key attributes exist as fields, exactly-one primary, and every foreign key resolves to a real key in the referenced entity (the bipartite entity↔entity line).",
+  "cases": [
+    {
+      "schema": "SchemaDefinition.json",
+      "reason": "key kind is closed (primary|unique|foreign|index).",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:schema:finance-ledger",
+        "type": "SchemaDefinition",
+        "specVersion": "2.0.0",
+        "name": "finance_ledger",
+        "fields": [
+          {
+            "name": "txn_id",
+            "dataType": "string"
+          },
+          {
+            "name": "account_id",
+            "dataType": "string"
+          },
+          {
+            "name": "revenue_usd",
+            "dataType": "decimal"
+          },
+          {
+            "name": "posted_at",
+            "dataType": "date"
+          }
+        ],
+        "keys": [
+          {
+            "name": "x",
+            "kind": "candidate",
+            "attributes": [
+              "txn_id"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "schema": "SchemaDefinition.json",
+      "reason": "a key attribute set must be non-empty (it identifies a set).",
+      "failValidator": "minItems",
+      "document": {
+        "id": "urn:srcos:schema:finance-ledger",
+        "type": "SchemaDefinition",
+        "specVersion": "2.0.0",
+        "name": "finance_ledger",
+        "fields": [
+          {
+            "name": "txn_id",
+            "dataType": "string"
+          },
+          {
+            "name": "account_id",
+            "dataType": "string"
+          },
+          {
+            "name": "revenue_usd",
+            "dataType": "decimal"
+          },
+          {
+            "name": "posted_at",
+            "dataType": "date"
+          }
+        ],
+        "keys": [
+          {
+            "name": "x",
+            "kind": "primary",
+            "attributes": []
+          }
+        ]
+      }
+    }
+  ]
+}

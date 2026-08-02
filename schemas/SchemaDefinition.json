@@ -20,7 +20,7 @@
     },
     "type": {
       "const": "SchemaDefinition",
-      "description": "Discriminator constant \u2014 always \"SchemaDefinition\"."
+      "description": "Discriminator constant — always \"SchemaDefinition\"."
     },
     "specVersion": {
       "type": "string",
@@ -50,6 +50,77 @@
         "$ref": "Link.json"
       },
       "description": "Supplementary hyperlinks."
+    },
+    "keys": {
+      "type": "array",
+      "description": "Keys and indexes of this table as SET-IDENTIFIERS: each identifies a set of rows by an attribute set. `rank` = arity (recomputed); a single-attribute key is a `primitive`. A `foreign` key is a Biperpedia-style bipartite line to another entity's key (entity↔entity). Optional + backward-compatible.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "kind",
+          "attributes"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "unique",
+              "foreign",
+              "index"
+            ]
+          },
+          "attributes": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string"
+            },
+            "description": "Field names forming the key — the SET that identifies rows (bipartite: this entity ↔ these attributes)."
+          },
+          "rank": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "description": "Arity = len(attributes). Recomputed by validate_key_bipartite.py."
+          },
+          "primitive": {
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "description": "True iff a single-attribute key (an atomic identity primitive). Recomputed."
+          },
+          "references": {
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": false,
+            "description": "For a foreign key: the bipartite entity↔entity link to another table's key.",
+            "required": [
+              "schemaRef",
+              "keyName"
+            ],
+            "properties": {
+              "schemaRef": {
+                "type": "string",
+                "pattern": "^urn:srcos:"
+              },
+              "keyName": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

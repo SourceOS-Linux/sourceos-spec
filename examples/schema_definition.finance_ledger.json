@@ -1,0 +1,68 @@
+{
+  "id": "urn:srcos:schema:finance-ledger",
+  "type": "SchemaDefinition",
+  "specVersion": "2.0.0",
+  "name": "finance_ledger",
+  "fields": [
+    {
+      "name": "txn_id",
+      "dataType": "string"
+    },
+    {
+      "name": "account_id",
+      "dataType": "string"
+    },
+    {
+      "name": "revenue_usd",
+      "dataType": "decimal"
+    },
+    {
+      "name": "posted_at",
+      "dataType": "date"
+    }
+  ],
+  "keys": [
+    {
+      "name": "pk_ledger",
+      "kind": "primary",
+      "attributes": [
+        "txn_id"
+      ],
+      "rank": 1,
+      "primitive": true
+    },
+    {
+      "name": "uq_txn_account_time",
+      "kind": "unique",
+      "attributes": [
+        "txn_id",
+        "account_id",
+        "posted_at"
+      ],
+      "rank": 3,
+      "primitive": false
+    },
+    {
+      "name": "fk_account",
+      "kind": "foreign",
+      "attributes": [
+        "account_id"
+      ],
+      "rank": 1,
+      "primitive": true,
+      "references": {
+        "schemaRef": "urn:srcos:schema:accounts",
+        "keyName": "pk_accounts"
+      }
+    },
+    {
+      "name": "ix_revenue",
+      "kind": "index",
+      "attributes": [
+        "revenue_usd"
+      ],
+      "rank": 1,
+      "primitive": true
+    }
+  ]
+}
