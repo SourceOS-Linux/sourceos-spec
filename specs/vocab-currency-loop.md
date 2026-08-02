@@ -24,3 +24,7 @@ rather than declaring the vocab current; and a loop with no `admission.supercons
 
 Next: feed the estate's real corpus + glossary, and route the emitted `candidateNewVocab` into
 ontogenesis / the prophet-ontology as draft terms for the 3-method alignment pass.
+
+## Remediation artifacts
+
+Each connected token is emitted as a conformant status:`draft` `GlossaryTerm` in `result.proposedTerms` — the loop's output is directly ingestible by ontogenesis for the 3-method alignment pass. The loop only proposes: `partOfSpeech`, `alignment`, and approval are downstream. `make validate-vocab-currency-loop` refuses any proposed term that fails `GlossaryTerm.json` or that is not `draft` (the loop may not self-approve).

@@ -13,7 +13,11 @@ Divergence measure (monotone, information-theoretic, dependency-free):
     D = uncovered probability mass = Σ Q(t) for corpus tokens t the approved vocab does NOT name,
 where Q is the corpus token distribution (what the current state actually discusses). Remediation
 = connect the single highest-Q uncovered token (propose it as a new GlossaryTerm), which lowers D
-by exactly Q(t) — strictly monotone-decreasing, so `monotone-decrease` convergence is real.
+by exactly Q(t) — strictly monotone-decreasing, so `monotone-decrease` convergence is real. Each
+remediation emits a conformant status:draft `GlossaryTerm` ARTIFACT (`result.proposedTerms`) for
+ingestion by ontogenesis — the loop proposes drafts, never self-approves (alignment happens
+downstream). A proposed term that does not conform to GlossaryTerm.json is a bug the CI harness
+refuses.
 
 Fail-closed teeth:
   * a loop with no `admission.superconsciousRef` is REFUSED (loops don't self-authorize);
@@ -86,6 +90,23 @@ def uncovered_mass(Q: dict[str, float], covered: set[str]) -> float:
     return sum(q for t, q in Q.items() if t not in covered)
 
 
+def proposed_term(loop_id: str, token: str, mass: float) -> dict:
+    """The loop's remediation ARTIFACT: a conformant status:draft GlossaryTerm for a token the
+    corpus uses but the approved vocab doesn't name. `partOfSpeech`/`alignment` are deliberately
+    OMITTED — those are assigned by the downstream 3-method alignment pass in ontogenesis; the
+    loop only proposes, it does not self-approve (status stays `draft`)."""
+    return {
+        "id": f"urn:srcos:glossary:{token}",
+        "type": "GlossaryTerm",
+        "specVersion": "2.0.0",
+        "name": token,
+        "definition": (f"Proposed by vocab-currency loop {loop_id}: appears in the current corpus "
+                       f"(mass {mass:.4f}) but is named by no approved glossary term. Awaiting "
+                       f"3-method alignment before approval."),
+        "status": "draft",
+    }
+
+
 # Convergence measures this runner actually implements: it drives divergence strictly down each
 # step (monotone-decrease) until it is below tolerance (error-below-tolerance). It does NOT
 # implement `fixpoint`, so a contract declaring that measure is REFUSED rather than run with
@@ -130,7 +151,8 @@ def run_loop(loop: dict, glossary: dict, corpus: dict) -> dict:
             return {"ok": False, "escalated": "non-monotone",
                     "handler": on_nonconv, "detail": f"divergence did not decrease at step {i}",
                     "trace": trace}
-        connected.append({"term": tok, "massConnected": round(q, 6)})
+        connected.append({"term": tok, "massConnected": round(q, 6),
+                          "proposedTerm": proposed_term(loop["id"], tok, q)})
         trace.append({"iteration": i, "divergence": round(D, 6), "connected": tok})
 
     converged = D <= tolerance
@@ -144,6 +166,7 @@ def run_loop(loop: dict, glossary: dict, corpus: dict) -> dict:
         "finalDivergence": round(D, 6),
         "converged": converged,
         "connectedVocab": connected,
+        "proposedTerms": [c["proposedTerm"] for c in connected],  # conformant draft GlossaryTerms
         "candidateNewVocab": [{"term": t, "mass": q} for q, t in remaining[:10]],
         "trace": trace,
     }

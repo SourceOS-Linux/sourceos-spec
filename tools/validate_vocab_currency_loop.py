@@ -18,6 +18,7 @@ ROOT = Path(__file__).resolve().parents[1]
 FIX = ROOT / "fixtures" / "vocab-currency"
 LOOP = ROOT / "examples" / "governed_loop.vocab_currency.json"
 LOOP_SCHEMA = ROOT / "schemas" / "GovernedLoop.json"
+GLOSSARY_SCHEMA = ROOT / "schemas" / "GlossaryTerm.json"
 
 FAILURES: list[str] = []
 CHECKS: dict[str, bool] = {}
@@ -50,6 +51,22 @@ def main() -> int:
         FAILURES.append("declared converged but divergence exceeds tolerance")
     else:
         CHECKS["convergent:reaches-currency"] = True
+
+    # 1b. Every proposed remediation artifact MUST conform to GlossaryTerm.json and be status:draft
+    #     — the loop proposes drafts for ontogenesis, it must never emit a malformed or self-approved
+    #     term. (Uses the divergent run too, which proposes the most terms.)
+    gt = jsonschema.Draft202012Validator(vcl.load(GLOSSARY_SCHEMA))
+    proposals = r.get("proposedTerms", []) + run("corpus_divergent.json").get("proposedTerms", [])
+    bad = [(t.get("id"), e.message) for t in proposals for e in gt.iter_errors(t)]
+    self_approved = [t["id"] for t in proposals if t.get("status") != "draft"]
+    if bad:
+        FAILURES.append(f"proposed term(s) do not conform to GlossaryTerm.json: {bad[:3]}")
+    elif self_approved:
+        FAILURES.append(f"proposed term(s) not status:draft — the loop must not self-approve: {self_approved[:3]}")
+    elif not proposals:
+        FAILURES.append("expected the loop to emit proposed draft terms, got none")
+    else:
+        CHECKS["proposed-terms:conform-and-draft"] = True
 
     # 2. Divergent corpus — a domain the vocab cannot name within the bound MUST escalate,
     #    never silently succeed, never spin past maxIterations.
