@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/DataAcquisitionRequest.json",
+  "title": "DataAcquisitionRequest",
+  "description": "A governed request to PROMOTE a catalogued object (document, dataset, or collection) from a user/project/chat scope to platform scope. Not all catalogued objects may be promoted: promotion is authorized only by an approved DataAcquisitionRequest, whose approval is the MEET (logical AND) of two independent gates — a governance review and an IP/legal rights review. Either gate pending or denied ⇒ the request is NOT approved (fail-closed). Mirrors the estate's decision-envelope family (ImagePromotionGate, PublishDecision) and the Truth = Law × Evidence meet.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "subjectRef", "requestedBy", "fromScope", "toScope", "governanceReview", "ipLegalReview", "state", "createdAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:data-acquisition-request:",
+      "description": "Stable URN identifier. Pattern: urn:srcos:data-acquisition-request:<local-id>."
+    },
+    "type": {
+      "const": "DataAcquisitionRequest",
+      "description": "Discriminator constant — always \"DataAcquisitionRequest\"."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Spec version of this document, e.g. \"2.0.0\"."
+    },
+    "subjectRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:catalog-entry:",
+      "description": "URN of the CatalogEntry being promoted."
+    },
+    "requestedBy": {
+      "type": "string",
+      "description": "URN of the requesting user (urn:srcos:user:…)."
+    },
+    "fromScope": {
+      "type": "string",
+      "enum": ["user", "project", "chat"],
+      "description": "The origin scope the object is being promoted FROM."
+    },
+    "toScope": {
+      "const": "platform",
+      "description": "Promotion target. Only platform promotion is governed by a DAR; this is pinned."
+    },
+    "governanceReview": { "$ref": "#/$defs/review" },
+    "ipLegalReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision"],
+      "description": "The IP / legal rights review gate. Carries the same decision vocabulary as any review, plus a rightsBasis.",
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["pending", "approved", "denied"],
+          "description": "Independent gate decision. Default posture is 'pending' — absence of a decision is not approval."
+        },
+        "reviewer": { "type": ["string", "null"], "description": "URN of the reviewing authority." },
+        "rationale": { "type": ["string", "null"] },
+        "decidedAt": { "type": ["string", "null"], "format": "date-time" },
+        "rightsBasis": {
+          "type": ["string", "null"],
+          "description": "The IP/legal rights basis relied on (licence id, ownership assertion, consent ref). Expected when the IP/legal decision is 'approved'."
+        }
+      }
+    },
+    "state": {
+      "type": "string",
+      "enum": ["submitted", "under-review", "approved", "denied"],
+      "description": "Overall request state. INVARIANT: 'approved' iff BOTH reviews are 'approved' (the meet); enforced here by schema and recomputed by the validator."
+    },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "decidedAt": { "type": ["string", "null"], "format": "date-time" }
+  },
+  "allOf": [
+    {
+      "$comment": "Fail-closed meet, at the schema level: state=approved REQUIRES both reviews approved.",
+      "if": { "properties": { "state": { "const": "approved" } }, "required": ["state"] },
+      "then": {
+        "properties": {
+          "governanceReview": { "properties": { "decision": { "const": "approved" } } },
+          "ipLegalReview": { "properties": { "decision": { "const": "approved" } } }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision"],
+      "properties": {
+        "decision": {
+          "type": "string",
+          "enum": ["pending", "approved", "denied"],
+          "description": "Independent gate decision. Default posture is 'pending' — absence of a decision is not approval."
+        },
+        "reviewer": { "type": ["string", "null"], "description": "URN of the reviewing authority." },
+        "rationale": { "type": ["string", "null"] },
+        "decidedAt": { "type": ["string", "null"], "format": "date-time" }
+      }
+    }
+  }
+}

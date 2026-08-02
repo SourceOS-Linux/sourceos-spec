@@ -1,0 +1,177 @@
+{
+  "description": "Negative conformance vectors for the Data-Acquisition governance family v0.1. Each document MUST FAIL validation against its schema, and MUST fail on the JSON-Schema keyword named in `failValidator`; tools/validate_data_acquisition_examples.py enforces both. These pin the governance seam: promotion to platform is authorized only by a DataAcquisitionRequest whose approval is the fail-closed meet of an independent governance review AND an IP/legal review.",
+  "cases": [
+    {
+      "schema": "DataAcquisitionRequest.json",
+      "reason": "Unknown top-level property must be rejected (additionalProperties: false).",
+      "failValidator": "additionalProperties",
+      "document": {
+        "id": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+        "type": "DataAcquisitionRequest",
+        "specVersion": "2.0.0",
+        "subjectRef": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "requestedBy": "urn:srcos:user:charles",
+        "fromScope": "project",
+        "toScope": "platform",
+        "governanceReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:governance-board",
+          "rationale": "No policy conflict; public ASX filing.",
+          "decidedAt": "2026-08-02T11:30:00Z"
+        },
+        "ipLegalReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:ip-legal",
+          "rightsBasis": "ASX public disclosure — no restriction",
+          "decidedAt": "2026-08-02T11:45:00Z"
+        },
+        "state": "approved",
+        "createdAt": "2026-08-02T11:00:00Z",
+        "decidedAt": "2026-08-02T11:45:00Z",
+        "vibeScore": 11
+      }
+    },
+    {
+      "schema": "DataAcquisitionRequest.json",
+      "reason": "toScope is pinned to 'platform' — a DAR governs only platform promotion.",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+        "type": "DataAcquisitionRequest",
+        "specVersion": "2.0.0",
+        "subjectRef": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "requestedBy": "urn:srcos:user:charles",
+        "fromScope": "project",
+        "toScope": "project",
+        "governanceReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:governance-board",
+          "rationale": "No policy conflict; public ASX filing.",
+          "decidedAt": "2026-08-02T11:30:00Z"
+        },
+        "ipLegalReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:ip-legal",
+          "rightsBasis": "ASX public disclosure — no restriction",
+          "decidedAt": "2026-08-02T11:45:00Z"
+        },
+        "state": "approved",
+        "createdAt": "2026-08-02T11:00:00Z",
+        "decidedAt": "2026-08-02T11:45:00Z"
+      }
+    },
+    {
+      "schema": "DataAcquisitionRequest.json",
+      "reason": "A review decision outside the closed {pending,approved,denied} set must fail.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:data-acquisition-request:gyg_deck_user_charles.promote.001",
+        "type": "DataAcquisitionRequest",
+        "specVersion": "2.0.0",
+        "subjectRef": "urn:srcos:catalog-entry:gyg_deck_user_charles.001",
+        "requestedBy": "urn:srcos:user:charles",
+        "fromScope": "user",
+        "toScope": "platform",
+        "governanceReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:governance-board",
+          "decidedAt": "2026-08-02T10:30:00Z"
+        },
+        "ipLegalReview": {
+          "decision": "maybe"
+        },
+        "state": "under-review",
+        "createdAt": "2026-08-02T10:15:00Z",
+        "decidedAt": null
+      }
+    },
+    {
+      "schema": "DataAcquisitionRequest.json",
+      "reason": "Fail-closed meet: state='approved' with a non-approved IP/legal gate must fail (schema allOf).",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+        "type": "DataAcquisitionRequest",
+        "specVersion": "2.0.0",
+        "subjectRef": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "requestedBy": "urn:srcos:user:charles",
+        "fromScope": "project",
+        "toScope": "platform",
+        "governanceReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:governance-board",
+          "rationale": "No policy conflict; public ASX filing.",
+          "decidedAt": "2026-08-02T11:30:00Z"
+        },
+        "ipLegalReview": {
+          "decision": "pending"
+        },
+        "state": "approved",
+        "createdAt": "2026-08-02T11:00:00Z",
+        "decidedAt": "2026-08-02T11:45:00Z"
+      }
+    },
+    {
+      "schema": "DataAcquisitionRequest.json",
+      "reason": "ipLegalReview is required — a single-gate approval is not the meet.",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+        "type": "DataAcquisitionRequest",
+        "specVersion": "2.0.0",
+        "subjectRef": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "requestedBy": "urn:srcos:user:charles",
+        "fromScope": "project",
+        "toScope": "platform",
+        "governanceReview": {
+          "decision": "approved",
+          "reviewer": "urn:srcos:authority:governance-board",
+          "rationale": "No policy conflict; public ASX filing.",
+          "decidedAt": "2026-08-02T11:30:00Z"
+        },
+        "state": "approved",
+        "createdAt": "2026-08-02T11:00:00Z",
+        "decidedAt": "2026-08-02T11:45:00Z"
+      }
+    },
+    {
+      "schema": "CatalogEntry.json",
+      "reason": "promotion is a closed object — an unknown promotion field must be rejected.",
+      "failValidator": "additionalProperties",
+      "document": {
+        "id": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "type": "CatalogEntry",
+        "specVersion": "2.0.0",
+        "objectRef": "urn:srcos:dataset:gyg_asx_fy2025_public",
+        "objectType": "Dataset",
+        "title": "GYG ASX FY2025 (public)",
+        "status": "published",
+        "updatedAt": "2026-08-02T12:00:00Z",
+        "scope": "platform",
+        "ownerRef": "urn:srcos:project:capital-markets",
+        "promotion": {
+          "state": "promoted",
+          "darRef": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+          "sneak": true
+        }
+      }
+    },
+    {
+      "schema": "CatalogEntry.json",
+      "reason": "Schema teeth: an explicit scope:platform entry with no promotion block must fail (allOf then requires it).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "type": "CatalogEntry",
+        "specVersion": "2.0.0",
+        "objectRef": "urn:srcos:dataset:gyg_asx_fy2025_public",
+        "objectType": "Dataset",
+        "title": "GYG ASX FY2025 (public)",
+        "status": "published",
+        "updatedAt": "2026-08-02T12:00:00Z",
+        "scope": "platform",
+        "ownerRef": "urn:srcos:project:capital-markets"
+      }
+    }
+  ]
+}

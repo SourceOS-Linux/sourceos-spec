@@ -1,0 +1,24 @@
+{
+  "id": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+  "type": "DataAcquisitionRequest",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+  "requestedBy": "urn:srcos:user:charles",
+  "fromScope": "project",
+  "toScope": "platform",
+  "governanceReview": {
+    "decision": "approved",
+    "reviewer": "urn:srcos:authority:governance-board",
+    "rationale": "No policy conflict; public ASX filing.",
+    "decidedAt": "2026-08-02T11:30:00Z"
+  },
+  "ipLegalReview": {
+    "decision": "approved",
+    "reviewer": "urn:srcos:authority:ip-legal",
+    "rightsBasis": "ASX public disclosure — no restriction",
+    "decidedAt": "2026-08-02T11:45:00Z"
+  },
+  "state": "approved",
+  "createdAt": "2026-08-02T11:00:00Z",
+  "decidedAt": "2026-08-02T11:45:00Z"
+}
