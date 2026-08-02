@@ -39,8 +39,9 @@ def main() -> int:
         CHECKS["domain-terms:surfaced"] = True
 
     # 2. Each term-candidate is CONCENTRATED and points at the domain that uses it as a term.
-    if all(c["concentration"] >= S.CONCENTRATION_INTERESTING and c["candidateDomain"] == "formal"
-           for c in r["termCandidates"]):
+    #    Require at least one candidate — all([]) is vacuously True and would mask an empty result.
+    if r["termCandidates"] and all(c["concentration"] >= S.CONCENTRATION_INTERESTING and c["candidateDomain"] == "formal"
+                                   for c in r["termCandidates"]):
         CHECKS["candidates:concentrated-in-right-domain"] = True
     else:
         FAILURES.append("a term-candidate was not concentrated in the formal domain")

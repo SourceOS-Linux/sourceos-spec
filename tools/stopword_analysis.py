@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,11 +42,12 @@ def raw_tokenize(text: str) -> list[str]:
 
 def analyze(domains: dict[str, str], stoplist: set[str]) -> dict:
     tokens = {d: raw_tokenize(text) for d, text in domains.items()}
+    counters = {d: Counter(t) for d, t in tokens.items()}   # count once, not per (word, domain)
     totals = {d: len(t) or 1 for d, t in tokens.items()}
 
-    interesting, noise, insufficient = [], [], []
+    term_candidates, stylistic, uniform_noise, insufficient = [], [], [], []
     for w in sorted(stoplist):
-        occ = {d: t.count(w) for d, t in tokens.items()}
+        occ = {d: counters[d].get(w, 0) for d in domains}
         total_occ = sum(occ.values())
         if total_occ < MIN_OCCURRENCES:
             insufficient.append(w)
@@ -69,31 +71,37 @@ def analyze(domains: dict[str, str], stoplist: set[str]) -> dict:
                 if 0 <= j < len(toks) and toks[j] not in stoplist:
                     pairs[toks[j]] = pairs.get(toks[j], 0) + 1
         total_adj = sum(pairs.values())
-        repeated_adj = sum(c for c in pairs.values() if c >= 2)
-        density = round(repeated_adj / total_adj, 3) if total_adj else 0.0
+        # Compare the UNROUNDED density to the threshold (rounding could flip a boundary verdict);
+        # round only for reporting.
+        density_raw = repeated_adj / total_adj if total_adj else 0.0
 
         row = {"word": w, "concentration": round(concentration, 3), "candidateDomain": cand,
-               "compositionalDensity": density, "occurrences": total_occ,
+               "compositionalDensity": round(density_raw, 3), "occurrences": total_occ,
                "perDomainFreq": {d: round(relfreq[d], 5) for d in domains},
                "topPartners": sorted(pairs, key=pairs.get, reverse=True)[:5]}
 
         if concentration < CONCENTRATION_INTERESTING:
             row["verdict"] = "noise"            # uniform across domains — a true stopword everywhere
-            noise.append(row)
-        elif density >= DENSITY_TERMLIKE:
+            uniform_noise.append(row)
+        elif density_raw >= DENSITY_TERMLIKE:
             row["verdict"] = "term-candidate"   # concentrated AND recurs in fixed collocations
             row["proposal"] = f"un-stoplist '{w}' in domain '{cand}' (candidate domain term)"
             row["confirmWith"] = "k-gram tf-idf/lsa differential"
-            interesting.append(row)
+            term_candidates.append(row)
         else:
             row["verdict"] = "stylistic"        # concentrated by STYLE, not collocation (e.g. 'and')
             row["note"] = "deviation is stylistic, not compositional — keep stoplisted pending k-gram check"
-            noise.append(row)
+            stylistic.append(row)
 
+    # Expose the three verdicts distinctly (auditable); keep the flattened noiseWords for existing
+    # consumers = stylistic ∪ uniform-noise (everything that stays stoplisted).
+    noise_words = [r["word"] for r in stylistic] + [r["word"] for r in uniform_noise]
     return {"domains": list(domains), "stoplistSize": len(stoplist),
-            "termCandidates": interesting,
-            "noiseCount": len(noise), "insufficientDataCount": len(insufficient),
-            "noiseWords": [r["word"] for r in noise]}
+            "termCandidates": term_candidates,
+            "stylisticWords": [r["word"] for r in stylistic], "stylisticCount": len(stylistic),
+            "uniformNoiseWords": [r["word"] for r in uniform_noise], "uniformNoiseCount": len(uniform_noise),
+            "noiseWords": noise_words, "noiseCount": len(noise_words),
+            "insufficientDataCount": len(insufficient)}
 
 
 def _live_domains() -> dict[str, str]:
