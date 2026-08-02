@@ -54,6 +54,33 @@
       "type": "string",
       "format": "date-time",
       "description": "ISO 8601 date-time when this catalog entry was last updated."
+    },
+    "scope": {
+      "type": "string",
+      "enum": ["user", "project", "chat", "platform"],
+      "description": "Ownership/visibility scope of the catalogued object. Docs/datasets/collections are auto-catalogued at user/project/chat scope (private to their owner's catalogue view); only 'platform' is estate-wide. Promotion to 'platform' is NOT automatic — it requires an approved DataAcquisitionRequest (see `promotion`). Optional for backward compatibility; when absent, a legacy index record is treated as 'platform'."
+    },
+    "ownerRef": {
+      "type": ["string", "null"],
+      "description": "URN of the user/project/chat that owns this entry at its scope (urn:srcos:user:… / urn:srcos:project:… / urn:srcos:chat:…). Drives the per-owner catalogue view."
+    },
+    "promotion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "description": "Promotion lifecycle toward platform scope. INVARIANT (enforced by validate_data_acquisition_examples.py): scope=='platform' requires promotion.state=='promoted' AND a darRef — a catalogued object cannot reach platform scope without an approved Data Acquisition Request.",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": ["origin", "requested", "under-review", "approved", "denied", "promoted"],
+          "description": "origin = private to its scope; requested/under-review = a DAR is in flight; approved/denied = DAR decided; promoted = now at platform scope."
+        },
+        "darRef": {
+          "type": ["string", "null"],
+          "pattern": "^urn:srcos:data-acquisition-request:",
+          "description": "URN of the DataAcquisitionRequest that authorized promotion. Required (non-null) once state is 'promoted'."
+        }
+      }
     }
   }
 }

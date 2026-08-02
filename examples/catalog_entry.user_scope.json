@@ -1,0 +1,16 @@
+{
+  "id": "urn:srcos:catalog-entry:gyg_deck_user_charles.001",
+  "type": "CatalogEntry",
+  "specVersion": "2.0.0",
+  "objectRef": "urn:srcos:document:gyg_deck_user_charles",
+  "objectType": "IngestedDocument",
+  "title": "GYG deck (private upload)",
+  "status": "draft",
+  "updatedAt": "2026-08-02T10:00:00Z",
+  "scope": "user",
+  "ownerRef": "urn:srcos:user:charles",
+  "promotion": {
+    "state": "under-review",
+    "darRef": "urn:srcos:data-acquisition-request:gyg_deck_user_charles.promote.001"
+  }
+}

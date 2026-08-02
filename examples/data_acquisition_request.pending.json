@@ -1,0 +1,20 @@
+{
+  "id": "urn:srcos:data-acquisition-request:gyg_deck_user_charles.promote.001",
+  "type": "DataAcquisitionRequest",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:catalog-entry:gyg_deck_user_charles.001",
+  "requestedBy": "urn:srcos:user:charles",
+  "fromScope": "user",
+  "toScope": "platform",
+  "governanceReview": {
+    "decision": "approved",
+    "reviewer": "urn:srcos:authority:governance-board",
+    "decidedAt": "2026-08-02T10:30:00Z"
+  },
+  "ipLegalReview": {
+    "decision": "pending"
+  },
+  "state": "under-review",
+  "createdAt": "2026-08-02T10:15:00Z",
+  "decidedAt": null
+}
