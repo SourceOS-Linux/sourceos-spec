@@ -47,7 +47,15 @@ def check_conformance(schema_name, examples) -> None:
 
 def check_dag_acyclic(dags: dict[str, dict]) -> None:
     for name, dag in dags.items():
-        node_ids = {n["id"] for n in dag["nodes"]}
+        ids = [n["id"] for n in dag["nodes"]]
+        node_ids = set(ids)
+        # Node ids must be UNIQUE — a DAG is identity; two nodes sharing an id collapse into one
+        # and silently mask edge/cycle errors. Schema minItems can't catch this; the validator must.
+        if len(ids) != len(node_ids):
+            dupes = sorted({i for i in ids if ids.count(i) > 1})
+            FAILURES.append(f"{name}: duplicate node id(s) {dupes} — DAG node ids must be unique (identity)")
+        else:
+            CHECKS[f"dag:{name}:unique-node-ids"] = True
         adj: dict[str, list[str]] = {n: [] for n in node_ids}
         ok_edges = True
         for e in dag["edges"]:

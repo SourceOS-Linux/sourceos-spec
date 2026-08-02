@@ -19,6 +19,10 @@ validate-table-keys:
 	python3 -m pip install --user jsonschema referencing >/dev/null
 	python3 tools/validate_key_bipartite.py
 
+validate-dag-loop:
+	python3 -m pip install --user jsonschema >/dev/null
+	python3 tools/validate_dag_loop.py
+
 validate-data-acquisition-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_data_acquisition_examples.py
