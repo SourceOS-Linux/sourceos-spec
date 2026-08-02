@@ -1,0 +1,141 @@
+{
+  "description": "Negative vectors for OperationalDAG + GovernedLoop. Each fails on its named failValidator; validate_dag_loop.py ALSO enforces (fail-closed): the DAG is ACYCLIC (a cycle is refused), every edge references real nodes, and every node/loop is semantically grounded + every loop is governed (bounded+convergent+fail-closed+admitted).",
+  "cases": [
+    {
+      "schema": "OperationalDAG.json",
+      "reason": "a node must be semantically grounded (semanticRef required).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:operational-dag:catalogue-promotion",
+        "type": "OperationalDAG",
+        "specVersion": "2.0.0",
+        "nodes": [
+          {
+            "id": "x"
+          },
+          {
+            "id": "ingest",
+            "semanticRef": "urn:srcos:glossary:ingest",
+            "placementRef": "urn:srcos:placement-fact:ray-cluster-01"
+          },
+          {
+            "id": "classify",
+            "semanticRef": "urn:srcos:data-class:currency-amount-usd",
+            "placementRef": "urn:srcos:placement-fact:trit-cluster-01"
+          },
+          {
+            "id": "promote",
+            "semanticRef": "urn:srcos:glossary:promote-to-platform"
+          }
+        ],
+        "edges": [
+          {
+            "from": "ingest",
+            "to": "classify"
+          },
+          {
+            "from": "classify",
+            "to": "promote"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "OperationalDAG.json",
+      "reason": "an edge must name both endpoints (from+to).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:operational-dag:catalogue-promotion",
+        "type": "OperationalDAG",
+        "specVersion": "2.0.0",
+        "nodes": [
+          {
+            "id": "ingest",
+            "semanticRef": "urn:srcos:glossary:ingest",
+            "placementRef": "urn:srcos:placement-fact:ray-cluster-01"
+          },
+          {
+            "id": "classify",
+            "semanticRef": "urn:srcos:data-class:currency-amount-usd",
+            "placementRef": "urn:srcos:placement-fact:trit-cluster-01"
+          },
+          {
+            "id": "promote",
+            "semanticRef": "urn:srcos:glossary:promote-to-platform"
+          }
+        ],
+        "edges": [
+          {
+            "from": "ingest"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "GovernedLoop.json",
+      "reason": "onNonConvergence is fail-closed — 'continue' is not allowed.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:governed-loop:vocab-currency",
+        "type": "GovernedLoop",
+        "specVersion": "2.0.0",
+        "semanticRef": "urn:srcos:glossary:release-gate",
+        "bound": {
+          "maxIterations": 8
+        },
+        "convergence": {
+          "measure": "monotone-decrease",
+          "metricRef": "urn:srcos:metric:lsa-lda-divergence",
+          "tolerance": 0.05
+        },
+        "onNonConvergence": "continue",
+        "admission": {
+          "superconsciousRef": "urn:srcos:superconscious:conductor"
+        },
+        "placementRef": "urn:srcos:placement-fact:ray-cluster-01"
+      }
+    },
+    {
+      "schema": "GovernedLoop.json",
+      "reason": "a loop must be admitted by the superconscious (admission required).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:governed-loop:vocab-currency",
+        "type": "GovernedLoop",
+        "specVersion": "2.0.0",
+        "semanticRef": "urn:srcos:glossary:release-gate",
+        "bound": {
+          "maxIterations": 8
+        },
+        "convergence": {
+          "measure": "monotone-decrease",
+          "metricRef": "urn:srcos:metric:lsa-lda-divergence",
+          "tolerance": 0.05
+        },
+        "onNonConvergence": "escalate-human",
+        "placementRef": "urn:srcos:placement-fact:ray-cluster-01"
+      }
+    },
+    {
+      "schema": "GovernedLoop.json",
+      "reason": "a loop must declare a termination bound (bound required).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:governed-loop:vocab-currency",
+        "type": "GovernedLoop",
+        "specVersion": "2.0.0",
+        "semanticRef": "urn:srcos:glossary:release-gate",
+        "convergence": {
+          "measure": "monotone-decrease",
+          "metricRef": "urn:srcos:metric:lsa-lda-divergence",
+          "tolerance": 0.05
+        },
+        "onNonConvergence": "escalate-human",
+        "admission": {
+          "superconsciousRef": "urn:srcos:superconscious:conductor"
+        },
+        "placementRef": "urn:srcos:placement-fact:ray-cluster-01"
+      }
+    }
+  ]
+}

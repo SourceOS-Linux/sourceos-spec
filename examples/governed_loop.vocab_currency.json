@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:governed-loop:vocab-currency",
+  "type": "GovernedLoop",
+  "specVersion": "2.0.0",
+  "semanticRef": "urn:srcos:glossary:release-gate",
+  "bound": {
+    "maxIterations": 8
+  },
+  "convergence": {
+    "measure": "monotone-decrease",
+    "metricRef": "urn:srcos:metric:lsa-lda-divergence",
+    "tolerance": 0.05
+  },
+  "onNonConvergence": "escalate-human",
+  "admission": {
+    "superconsciousRef": "urn:srcos:superconscious:conductor"
+  },
+  "placementRef": "urn:srcos:placement-fact:ray-cluster-01"
+}

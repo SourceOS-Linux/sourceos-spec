@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/GovernedLoop.json",
+  "title": "GovernedLoop",
+  "description": "A feedback/correction loop — the ONLY place a cycle is legitimate, and only when GOVERNED. Correction/convergence/homeostasis (vocab currency, self-heal, reasoner fixpoint, classifier retrain) win as loops, not DAGs. A loop is admissible only if it is BOUNDED (termination), CONVERGENT (a fixpoint or monotone measure), FAIL-CLOSED (refuse on non-convergence, never spin), ADMITTED by the superconscious (the global governor holds the convergence budget + refusal authority — loops don't self-authorize), and semantically grounded (what it corrects). 'A gate that cannot fail is not a gate' applied to iteration.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "semanticRef",
+    "bound",
+    "convergence",
+    "onNonConvergence",
+    "admission"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:governed-loop:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "GovernedLoop"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "semanticRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+      "description": "What this loop corrects (a drift-guard / DataClass / vocab node) — the grounding."
+    },
+    "bound": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "maxIterations"
+      ],
+      "properties": {
+        "maxIterations": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Termination bound — a loop that cannot terminate is not governed."
+        }
+      }
+    },
+    "convergence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "measure"
+      ],
+      "properties": {
+        "measure": {
+          "type": "string",
+          "enum": [
+            "fixpoint",
+            "monotone-decrease",
+            "error-below-tolerance"
+          ]
+        },
+        "metricRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+        },
+        "tolerance": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0
+        }
+      }
+    },
+    "onNonConvergence": {
+      "type": "string",
+      "enum": [
+        "refuse",
+        "escalate-human"
+      ],
+      "description": "Fail-closed handler — never 'continue'. Refuse or escalate; a loop may not silently spin."
+    },
+    "admission": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "superconsciousRef"
+      ],
+      "properties": {
+        "superconsciousRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+          "description": "The superconscious governor that ADMITS this loop (refusal authority + convergence budget). Loops don't self-authorize."
+        }
+      }
+    },
+    "placementRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+      "description": "Field-calculus placement for the loop's work."
+    }
+  }
+}
