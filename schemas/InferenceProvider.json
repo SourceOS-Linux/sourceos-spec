@@ -17,6 +17,7 @@
     "supportedModalities": { "type": "array", "minItems": 1, "description": "Modalities the provider can serve.", "items": { "type": "string", "enum": ["text", "code", "embedding", "reranking", "vision", "audio", "video", "multimodal", "tool-calling"] } },
     "openAICompatible": { "type": "boolean", "description": "Whether the provider exposes an OpenAI-compatible API surface." },
     "requiresNetwork": { "type": "boolean", "description": "Whether the provider requires network egress beyond loopback/local IPC." },
+    "passportRef": { "type": ["string", "null"], "pattern": "^urn:srcos:agent-passport:", "description": "Optional AgentPassport URN of the host process that runs this provider daemon. A model-serving daemon is classified by its AgentPassport (typically system_core for a platform daemon) AND described operationally by this InferenceProvider record — the two compose, which is why the Model Plane does not add a sixth agent_class (ADR-0017)." },
     "evidenceRefs": { "type": "array", "description": "Evidence URNs or hashes for provider validation, binary provenance, and compatibility testing.", "items": { "type": "string" } }
   }
 }

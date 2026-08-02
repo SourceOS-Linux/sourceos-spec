@@ -77,6 +77,17 @@
       "then": {
         "properties": { "escalatedFrom": { "const": null } }
       }
+    },
+    {
+      "$comment": "REVIEW HARDENING (ledger tamper-evidence): any non-genesis entry (ledgerSeq >= 1) must carry the prior entry's hash, so the append-only ledger is hash-chained and an enumerated contribution list cannot be retroactively rewritten.",
+      "if": {
+        "properties": { "ledgerSeq": { "minimum": 1 } },
+        "required": ["ledgerSeq"]
+      },
+      "then": {
+        "required": ["ledgerPrevHash"],
+        "properties": { "ledgerPrevHash": { "type": "string" } }
+      }
     }
   ]
 }

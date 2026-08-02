@@ -89,6 +89,17 @@
         "required": ["rejectionReason"],
         "properties": { "rejectionReason": { "type": "string" } }
       }
+    },
+    {
+      "$comment": "REVIEW HARDENING (ledger tamper-evidence): any non-genesis entry (ledgerSeq >= 1) must carry the prior entry's hash, so a promotion's enumerated contribution list cannot be rewritten after the fact.",
+      "if": {
+        "properties": { "ledgerSeq": { "minimum": 1 } },
+        "required": ["ledgerSeq"]
+      },
+      "then": {
+        "required": ["ledgerPrevHash"],
+        "properties": { "ledgerPrevHash": { "type": "string" } }
+      }
     }
   ]
 }
