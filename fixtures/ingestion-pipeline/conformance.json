@@ -1,5 +1,5 @@
 {
-  "description": "Negative conformance vectors for the Ingestion-Pipeline contract family v0.1. Each document MUST FAIL validation against its schema for the stated reason; tools/validate_ingestion_pipeline_examples.py enforces this. These vectors keep the pipeline seam executable: closed objects, pinned contract version, sha256 content-addressing, an addressable (start,end) span, and — the reason this family exists — a const-pinned embedding model and dimension so the estate cannot fork into two silently-incomparable vector spaces.",
+  "description": "Negative conformance vectors for the Ingestion-Pipeline contract family v0.1. Each document MUST FAIL validation against its schema, and MUST fail on the JSON-Schema keyword named in `failValidator` (not merely fail somewhere); tools/validate_ingestion_pipeline_examples.py enforces both. These vectors keep the pipeline seam executable: closed objects, pinned contract version, sha256 content-addressing, an addressable (start,end) span, and — the reason this family exists — a const-pinned embedding model and dimension so the estate cannot fork into two silently-incomparable vector spaces.",
   "cases": [
     {
       "schema": "Chunk.json",
@@ -17,7 +17,8 @@
         },
         "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da",
         "vibeScore": 11
-      }
+      },
+      "failValidator": "additionalProperties"
     },
     {
       "schema": "Chunk.json",
@@ -33,7 +34,8 @@
           "start": 0
         },
         "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da"
-      }
+      },
+      "failValidator": "required"
     },
     {
       "schema": "Chunk.json",
@@ -50,7 +52,8 @@
           "end": 115
         },
         "contentHash": "sha256:e17b872302c96e0479ed5593296a6e49df9b08da95e13997f623dc28f17200da"
-      }
+      },
+      "failValidator": "const"
     },
     {
       "schema": "EmbeddingRequest.json",
@@ -62,7 +65,8 @@
         "model": "ollama/nomic-embed-text",
         "dimension": 768,
         "input": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million."
-      }
+      },
+      "failValidator": "const"
     },
     {
       "schema": "EmbeddingRequest.json",
@@ -74,7 +78,8 @@
         "model": "nomic-ai/nomic-embed-text-v1.5",
         "dimension": 512,
         "input": "Guzman y Gomez Limited reported FY2025 revenue of AUD 366.6 million."
-      }
+      },
+      "failValidator": "const"
     },
     {
       "schema": "IngestedDocument.json",
@@ -101,7 +106,8 @@
         ],
         "wallTime": "2026-07-29T09:15:00.000Z",
         "logicalTime": 4021
-      }
+      },
+      "failValidator": "pattern"
     },
     {
       "schema": "ExtractedEntity.json",
@@ -112,12 +118,13 @@
         "specVersion": "0.1.0",
         "documentRef": "urn:srcos:ingested-document:gyg_asx_fy2025_annual_report.p001",
         "surface": "Guzman y Gomez Limited",
-        "normalised": "guzman-y-gomez-limited",
+        "normalized": "guzman-y-gomez-limited",
         "mentions": [],
         "grounding": {
           "confirmed": true
         }
-      }
+      },
+      "failValidator": "minItems"
     }
   ]
 }

@@ -32,7 +32,8 @@ Six checks, not one:
      each of its mention spans selects the entity's surface form out of the
      document text, so a claimed grounding always points at real evidence;
 plus 7. negative vectors — every case in fixtures/ingestion-pipeline/conformance.json
-     FAILS validation for its stated reason.
+     FAILS validation, and fails on the exact JSON-Schema keyword it names in
+     `failValidator` (so a vector that fails for an unrelated reason is caught).
 """
 from __future__ import annotations
 
@@ -211,10 +212,18 @@ def check_negative_vectors(schemas: dict[str, dict]) -> None:
     fixture = load(ROOT / "fixtures" / "ingestion-pipeline" / "conformance.json")
     for i, case in enumerate(fixture["cases"]):
         schema = schemas[case["schema"]]
+        expected = case.get("failValidator")
         try:
             jsonschema.validate(case["document"], schema)
-        except jsonschema.ValidationError:
-            CHECKS[f"negative:{i}:{case['schema']}"] = True
+        except jsonschema.ValidationError as exc:
+            # Assert it failed for the RIGHT reason — the named JSON-Schema keyword —
+            # not merely that it failed somewhere. A negative vector that fails on an
+            # unrelated rule is not testing what its `reason` claims.
+            if expected is not None and exc.validator != expected:
+                fail(f"negative vector {i} ({case['schema']}) failed on {exc.validator!r}, "
+                     f"not the expected {expected!r}: {case['reason']}")
+            else:
+                CHECKS[f"negative:{i}:{case['schema']}:{exc.validator}"] = True
             continue
         fail(f"negative vector {i} ({case['schema']}) unexpectedly PASSED: {case['reason']}")
 

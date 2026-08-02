@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ExtractedEntity.json",
   "title": "ExtractedEntity",
-  "description": "The grounding grain of the ingestion pipeline: an entity mention lifted from one IngestedDocument, with a canonical `normalised` form and the exact spans where it occurs. Generalizes Noetica doc-store linkDocGrounds (entity → document grounding). Grounding soundness (validator): every mention's span selects the entity's surface form out of the document text, so a claimed grounding always points at real evidence — the ingestion analog of the KnowledgeNugget derivation-grounding invariant.",
+  "description": "The grounding grain of the ingestion pipeline: an entity mention lifted from one IngestedDocument, with a canonical `normalized` form and the exact spans where it occurs. Generalizes Noetica doc-store linkDocGrounds (entity → document grounding). Grounding soundness (validator): every mention's span selects the entity's surface form out of the document text, so a claimed grounding always points at real evidence — the ingestion analog of the KnowledgeNugget derivation-grounding invariant.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -11,7 +11,7 @@
     "specVersion",
     "documentRef",
     "surface",
-    "normalised",
+    "normalized",
     "mentions"
   ],
   "properties": {
@@ -37,10 +37,10 @@
       "minLength": 1,
       "description": "The entity's surface form exactly as it appears in the document text."
     },
-    "normalised": {
+    "normalized": {
       "type": "string",
       "minLength": 1,
-      "description": "Canonical/normalised form used for cross-document linkage."
+      "description": "Canonical/normalized form used for cross-document linkage."
     },
     "mentions": {
       "type": "array",
