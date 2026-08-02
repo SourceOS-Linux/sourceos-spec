@@ -33,6 +33,9 @@ base-OS territory; `agent-space`/`user-space` are SociOS managed/agentic territo
 - `NoExecute`: a running operation whose toleration is withdrawn is aborted —
   this is how a tenant's consent withdrawal (GDPR Art. 7(3)) evicts in-flight
   work touching `data-namespace=<tenant>`.
+- `PreferNoEntry`: a **non-blocking** soft cap (e.g. `user-space`). Entry is
+  permitted without a matching toleration but is flagged for review in the
+  receipt; it never denies. Only `NoEntry`/`NoExecute` are blocking.
 - Only the `operator` role tolerates `ring=system` and `ring=kernel`.
 - The **surface** may hard-deny a space regardless of toleration
   (defence-in-depth): the `browser` surface denies all but `agent-space`, so an
