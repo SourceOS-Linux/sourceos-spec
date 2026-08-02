@@ -48,8 +48,12 @@ example set (`promotion binding`, `no orphan promotions`).
 | `CatalogEntry` (extended) | the auto-catalogued index record + `scope` / `ownerRef` / `promotion` |
 | `DataAcquisitionRequest` | the governed request to promote to platform, gated on governance ∧ IP/legal review |
 
-The `CatalogEntry` additions are **optional** and backward-compatible: a legacy
-index record with no `scope` is treated as `platform`.
+The `CatalogEntry` additions are **optional** and backward-compatible. A legacy
+index record that omits `scope` is **grandfathered**: it is treated as `platform`
+for discovery, but the platform binding invariant is *not* applied retroactively —
+the schema-level `allOf` fires **only when `scope: "platform"` is explicitly
+declared**. New entries that opt into scoping and reach `platform` must carry
+`promotion.state: promoted` + a `darRef`; legacy entries are not forced to migrate.
 
 ## Conformance
 

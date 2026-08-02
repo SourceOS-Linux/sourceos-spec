@@ -36,7 +36,7 @@ ENTRY_SCHEMA = "CatalogEntry.json"
 SCHEMA_NAMES = [DAR_SCHEMA, ENTRY_SCHEMA]
 
 DAR_EXAMPLES = ["data_acquisition_request.approved.json", "data_acquisition_request.pending.json"]
-ENTRY_EXAMPLES = ["catalog_entry.user_scope.json", "catalog_entry.platform_scope.json"]
+ENTRY_EXAMPLES = ["catalog_entry.user_scope.json", "catalog_entry.platform_scope.json", "catalog_entry.legacy.json"]
 PAIRS = [(DAR_SCHEMA, e) for e in DAR_EXAMPLES] + [(ENTRY_SCHEMA, e) for e in ENTRY_EXAMPLES]
 
 FAILURES: list[str] = []
@@ -91,7 +91,9 @@ def check_meet(dars: dict[str, dict]) -> None:
                  f"rubber-stamp approval is not the meet")
         elif recomputed == "approved" and state != "approved":
             fail(f"{name}: both gates approved but state is {state!r} — an approved meet must be recorded as approved")
-        elif recomputed == "denied" and state not in ("denied",):
+        elif state == "denied" and recomputed != "denied":
+            fail(f"{name}: state 'denied' but no gate is denied (meet is {recomputed!r}) — a denial must name a denying gate")
+        elif recomputed == "denied" and state != "denied":
             fail(f"{name}: a gate is denied but state is {state!r} — a denied gate cannot leave the request open/approved")
         else:
             CHECKS[f"meet:{name}"] = True

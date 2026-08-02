@@ -151,8 +151,26 @@
         "ownerRef": "urn:srcos:project:capital-markets",
         "promotion": {
           "state": "promoted",
+          "darRef": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
           "sneak": true
         }
+      }
+    },
+    {
+      "schema": "CatalogEntry.json",
+      "reason": "Schema teeth: an explicit scope:platform entry with no promotion block must fail (allOf then requires it).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:catalog-entry:gyg_public_dataset.001",
+        "type": "CatalogEntry",
+        "specVersion": "2.0.0",
+        "objectRef": "urn:srcos:dataset:gyg_asx_fy2025_public",
+        "objectType": "Dataset",
+        "title": "GYG ASX FY2025 (public)",
+        "status": "published",
+        "updatedAt": "2026-08-02T12:00:00Z",
+        "scope": "platform",
+        "ownerRef": "urn:srcos:project:capital-markets"
       }
     }
   ]

@@ -68,7 +68,7 @@
       "type": "object",
       "additionalProperties": false,
       "required": ["state"],
-      "description": "Promotion lifecycle toward platform scope. INVARIANT (enforced by validate_data_acquisition_examples.py): scope=='platform' requires promotion.state=='promoted' AND a darRef — a catalogued object cannot reach platform scope without an approved Data Acquisition Request.",
+      "description": "Promotion lifecycle toward platform scope. INVARIANT: an entry that EXPLICITLY declares scope=='platform' requires promotion.state=='promoted' AND a darRef — encoded by the top-level allOf below and cross-checked (darRef resolves to an approved DAR) by validate_data_acquisition_examples.py.",
       "properties": {
         "state": {
           "type": "string",
@@ -82,5 +82,23 @@
         }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "$comment": "Schema-level teeth for the platform promotion invariant. Fires ONLY when scope is EXPLICITLY 'platform', so legacy index records that omit scope stay grandfathered (their scope is treated as platform by convention but not retro-constrained).",
+      "if": { "properties": { "scope": { "const": "platform" } }, "required": ["scope"] },
+      "then": {
+        "required": ["promotion"],
+        "properties": {
+          "promotion": {
+            "required": ["state", "darRef"],
+            "properties": {
+              "state": { "const": "promoted" },
+              "darRef": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  ]
 }

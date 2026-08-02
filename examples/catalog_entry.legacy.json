@@ -1,0 +1,10 @@
+{
+  "id": "urn:srcos:catalog-entry:legacy_release_index.001",
+  "type": "CatalogEntry",
+  "specVersion": "2.0.0",
+  "objectRef": "urn:srcos:release:sourceos-boot-v1",
+  "objectType": "ReleaseManifest",
+  "title": "Legacy release index (pre-scope)",
+  "status": "published",
+  "updatedAt": "2026-06-01T00:00:00Z"
+}
