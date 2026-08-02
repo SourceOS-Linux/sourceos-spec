@@ -58,6 +58,28 @@ def main() -> int:
     else:
         CHECKS["drift:reported-as-candidate"] = True
 
+    # 4. Ambiguous binding — two approved terms bind the SAME estate entity -> fail-closed.
+    g4 = copy.deepcopy(glossary)
+    next(t for t in g4["terms"] if t["id"].endswith("attestation"))["alignment"]["estateBinding"]["ref"] = \
+        "urn:srcos:service:release-gate"  # now two terms bind release-gate
+    r = A.agreement(g4, graph)
+    if r["ok"] or not r["bindingConflicts"]:
+        FAILURES.append("two terms binding the same estate entity must fail-closed (ambiguous)")
+    else:
+        CHECKS["ambiguous-binding:refused"] = True
+
+    # 5. Malformed graph edge (missing to) -> fail-closed, not a crash.
+    g5 = copy.deepcopy(graph)
+    g5["edges"].append({"from": "urn:srcos:service:release-gate"})  # no 'to'
+    try:
+        r = A.agreement(glossary, g5)
+        if r["ok"] or not r["malformedEdges"]:
+            FAILURES.append("a malformed graph edge must fail-closed and be surfaced")
+        else:
+            CHECKS["malformed-edge:refused"] = True
+    except Exception as exc:  # noqa: BLE001
+        FAILURES.append(f"malformed edge crashed instead of failing closed: {exc!r}")
+
     for m in FAILURES:
         print(f"FAIL: {m}", file=sys.stderr)
     ok = not FAILURES and all(CHECKS.values())

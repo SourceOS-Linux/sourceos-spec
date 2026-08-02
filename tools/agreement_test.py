@@ -44,7 +44,22 @@ def agreement(glossary: dict, graph: dict) -> dict:
     # term hasn't been promoted through the alignment gate and can't overclaim the estate.
     bind = {tid: _binding(t) for tid, t in terms.items()
             if _binding(t) and t.get("status") == "approved"}
-    observed = {(e["from"], e["to"]) for e in graph.get("edges", [])}
+
+    # Fail-closed on ambiguous bindings: if two approved terms bind the SAME estate entity, drift
+    # attribution is ambiguous (which term should own a proposed relation?). Surface it, don't guess.
+    ref_owners: dict[str, list[str]] = {}
+    for tid, ref in bind.items():
+        ref_owners.setdefault(ref, []).append(tid)
+    binding_conflicts = [{"estateRef": ref, "terms": sorted(tids)}
+                         for ref, tids in ref_owners.items() if len(tids) > 1]
+
+    # Fail-closed on a malformed consumed graph: an edge missing from/to can't be reasoned about.
+    observed, malformed_edges = set(), []
+    for e in graph.get("edges", []):
+        if isinstance(e, dict) and e.get("from") and e.get("to"):
+            observed.add((e["from"], e["to"]))
+        else:
+            malformed_edges.append(e)
 
     # DECLARED estate edges: a dep-implying relation A->B where both A and B are bound entities.
     declared: dict[tuple[str, str], tuple[str, str]] = {}
@@ -61,7 +76,8 @@ def agreement(glossary: dict, graph: dict) -> dict:
                   for k, v in declared.items() if k not in observed]
 
     # DRIFT: an observed edge between two bound entities with no declared dep relation -> propose one.
-    ent_to_term = {ref: tid for tid, ref in bind.items()}
+    # Only unambiguously-bound entities participate (conflicting refs are surfaced separately above).
+    ent_to_term = {ref: tids[0] for ref, tids in ref_owners.items() if len(tids) == 1}
     drift = []
     for (ef, et) in sorted(observed):
         if ef in ent_to_term and et in ent_to_term and (ef, et) not in declared:
@@ -71,10 +87,14 @@ def agreement(glossary: dict, graph: dict) -> dict:
                           "detail": "estate shows a dependency the vocabulary does not name"})
 
     return {
-        "ok": not overclaims,  # fail-closed on overclaims; drift is remediation, not failure
+        # Fail-closed on overclaims AND on ambiguous bindings / malformed graph edges; drift alone
+        # is remediation, not failure.
+        "ok": not overclaims and not binding_conflicts and not malformed_edges,
         "agreements": agreements,
         "overclaims": overclaims,
         "driftCandidates": drift,
+        "bindingConflicts": binding_conflicts,
+        "malformedEdges": malformed_edges,
     }
 
 
