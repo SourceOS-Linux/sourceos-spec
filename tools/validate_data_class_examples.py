@@ -53,14 +53,16 @@ def validator_for(schema: dict) -> jsonschema.Draft202012Validator:
 
 
 def check_conformance(dataclass_schema, field_schema, dcs, fields) -> None:
-    for name, d in {**dcs, **fields}.items():
-        schema = dataclass_schema if d.get("type") == "DataClass" else field_schema
-        errs = sorted(validator_for(schema).iter_errors(d), key=str)
-        if errs:
-            for e in errs:
-                FAILURES.append(f"{name}: {e.message}")
-        else:
-            CHECKS[f"schema:{name}"] = True
+    # Validate each collection against its INTENDED schema explicitly — never pick the
+    # schema from the instance's own `type`, or a mistyped doc validates against the wrong one.
+    for collection, schema in ((dcs, dataclass_schema), (fields, field_schema)):
+        for name, d in collection.items():
+            errs = sorted(validator_for(schema).iter_errors(d), key=str)
+            if errs:
+                for e in errs:
+                    FAILURES.append(f"{name}: {e.message}")
+            else:
+                CHECKS[f"schema:{name}"] = True
 
 
 def check_classifier(dcs) -> None:

@@ -3,7 +3,7 @@
 The business vocabulary (`GlossaryTerm`) says what a thing MEANS; the `DataClass` says what
 its DATA is, ontologically — so data quality can be inferred and enforced, not asserted.
 
-A `DataClass` binds four things and is fail-closed if any is missing:
+A `DataClass` binds three things and is fail-closed if any is missing, plus an optional fourth (assignment):
 - **OntoDT** — `ontologyClassRef`: the datatype-ontology class (capture; enables reusable,
   inferable data-quality logic — IBM OntoDT).
 - **biz↔data** — `glossaryTermRef`: the business `GlossaryTerm` this data class realizes.

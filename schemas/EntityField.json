@@ -54,5 +54,25 @@
       "pattern": "^urn:srcos:data-class:[A-Za-z0-9._~:-]+$",
       "description": "Optional binding to the OntoDQ DataClass this field is an instance of. When set, the field's validValues must conform to the DataClass domain (validator)."
     }
-  }
+  },
+  "allOf": [
+    {
+      "$comment": "A field bound to a DataClass must declare its validValues, so its domain conformance is checkable.",
+      "if": {
+        "required": [
+          "dataClassRef"
+        ],
+        "properties": {
+          "dataClassRef": {
+            "type": "string"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "validValues"
+        ]
+      }
+    }
+  ]
 }

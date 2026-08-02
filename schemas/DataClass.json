@@ -58,6 +58,8 @@
         "modelRef",
         "version",
         "evalRunRef",
+        "runRef",
+        "compute",
         "labels"
       ],
       "properties": {
@@ -73,18 +75,12 @@
           "type": "string"
         },
         "runRef": {
-          "type": [
-            "string",
-            "null"
-          ],
+          "type": "string",
           "pattern": "^urn:srcos:run:",
           "description": "The training/eval RunRecord."
         },
         "compute": {
-          "type": [
-            "object",
-            "null"
-          ],
+          "type": "object",
           "additionalProperties": false,
           "required": [
             "platform"
