@@ -11,6 +11,7 @@
   "ownerRef": "urn:srcos:project:capital-markets",
   "promotion": {
     "state": "promoted",
-    "darRef": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001"
+    "darRef": "urn:srcos:data-acquisition-request:gyg_public_dataset.promote.001",
+    "doi": "10.5281/zenodo.9990001"
   }
 }

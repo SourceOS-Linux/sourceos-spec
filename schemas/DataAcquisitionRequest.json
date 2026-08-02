@@ -5,7 +5,19 @@
   "description": "A governed request to PROMOTE a catalogued object (document, dataset, or collection) from a user/project/chat scope to platform scope. Not all catalogued objects may be promoted: promotion is authorized only by an approved DataAcquisitionRequest, whose approval is the MEET (logical AND) of two independent gates — a governance review and an IP/legal rights review. Either gate pending or denied ⇒ the request is NOT approved (fail-closed). Mirrors the estate's decision-envelope family (ImagePromotionGate, PublishDecision) and the Truth = Law × Evidence meet.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "type", "specVersion", "subjectRef", "requestedBy", "fromScope", "toScope", "governanceReview", "ipLegalReview", "state", "createdAt"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectRef",
+    "requestedBy",
+    "fromScope",
+    "toScope",
+    "governanceReview",
+    "ipLegalReview",
+    "state",
+    "createdAt"
+  ],
   "properties": {
     "id": {
       "type": "string",
@@ -31,50 +43,145 @@
     },
     "fromScope": {
       "type": "string",
-      "enum": ["user", "project", "chat"],
+      "enum": [
+        "user",
+        "project",
+        "chat"
+      ],
       "description": "The origin scope the object is being promoted FROM."
     },
     "toScope": {
       "const": "platform",
       "description": "Promotion target. Only platform promotion is governed by a DAR; this is pinned."
     },
-    "governanceReview": { "$ref": "#/$defs/review" },
+    "governanceReview": {
+      "$ref": "#/$defs/review"
+    },
     "ipLegalReview": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["decision"],
+      "required": [
+        "decision"
+      ],
       "description": "The IP / legal rights review gate. Carries the same decision vocabulary as any review, plus a rightsBasis.",
       "properties": {
         "decision": {
           "type": "string",
-          "enum": ["pending", "approved", "denied"],
+          "enum": [
+            "pending",
+            "approved",
+            "denied"
+          ],
           "description": "Independent gate decision. Default posture is 'pending' — absence of a decision is not approval."
         },
-        "reviewer": { "type": ["string", "null"], "description": "URN of the reviewing authority." },
-        "rationale": { "type": ["string", "null"] },
-        "decidedAt": { "type": ["string", "null"], "format": "date-time" },
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "URN of the reviewing authority."
+        },
+        "rationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decidedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
         "rightsBasis": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "description": "The IP/legal rights basis relied on (licence id, ownership assertion, consent ref). Expected when the IP/legal decision is 'approved'."
         }
       }
     },
     "state": {
       "type": "string",
-      "enum": ["submitted", "under-review", "approved", "denied"],
+      "enum": [
+        "submitted",
+        "under-review",
+        "approved",
+        "denied"
+      ],
       "description": "Overall request state. INVARIANT: 'approved' iff BOTH reviews are 'approved' (the meet); enforced here by schema and recomputed by the validator."
     },
-    "createdAt": { "type": "string", "format": "date-time" },
-    "decidedAt": { "type": ["string", "null"], "format": "date-time" }
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decidedAt": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "mintedDoi": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Za-z0-9]+$",
+      "description": "The DOI minted for the subject entry when this request was approved and the entry promoted to platform (WO-COMMONS-2). Only an approved DAR may mint a DOI (allOf below); it must equal the entry's promotion.doi (cross-checked by the validator)."
+    }
   },
   "allOf": [
     {
       "$comment": "Fail-closed meet, at the schema level: state=approved REQUIRES both reviews approved.",
-      "if": { "properties": { "state": { "const": "approved" } }, "required": ["state"] },
+      "if": {
+        "properties": {
+          "state": {
+            "const": "approved"
+          }
+        },
+        "required": [
+          "state"
+        ]
+      },
       "then": {
         "properties": {
-          "governanceReview": { "properties": { "decision": { "const": "approved" } } },
-          "ipLegalReview": { "properties": { "decision": { "const": "approved" } } }
+          "governanceReview": {
+            "properties": {
+              "decision": {
+                "const": "approved"
+              }
+            }
+          },
+          "ipLegalReview": {
+            "properties": {
+              "decision": {
+                "const": "approved"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "Only an approved request may have minted a DOI.",
+      "if": {
+        "properties": {
+          "mintedDoi": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "mintedDoi"
+        ]
+      },
+      "then": {
+        "properties": {
+          "state": {
+            "const": "approved"
+          }
         }
       }
     }
@@ -83,16 +190,39 @@
     "review": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["decision"],
+      "required": [
+        "decision"
+      ],
       "properties": {
         "decision": {
           "type": "string",
-          "enum": ["pending", "approved", "denied"],
+          "enum": [
+            "pending",
+            "approved",
+            "denied"
+          ],
           "description": "Independent gate decision. Default posture is 'pending' — absence of a decision is not approval."
         },
-        "reviewer": { "type": ["string", "null"], "description": "URN of the reviewing authority." },
-        "rationale": { "type": ["string", "null"] },
-        "decidedAt": { "type": ["string", "null"], "format": "date-time" }
+        "reviewer": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "URN of the reviewing authority."
+        },
+        "rationale": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "decidedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
       }
     }
   }
