@@ -1,0 +1,94 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AdapterPromotionDecision.json",
+  "title": "AdapterPromotionDecision",
+  "description": "Governed decision artifact for promoting (or rejecting) a candidate LoRA adapter produced by the Model Plane distillation loop (Tranche 7). Adapter promotion is a human-governed decision, never an automatic OS update (Model Plane §VII). A promotion enumerates every override event that contributed to the adapter — the auditable property Apple's silent loop lacks — and cannot proceed without a verified signature, per-event training consent, a passing eval gate, and a mandatory rollback target (SEAM-016, SEAM-017). Note: this governs a *model* (LoRA) adapter and is distinct from AdapterDescriptor, which types connector/actuation adapters.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "decidedAt",
+    "candidateAdapterDigest",
+    "baseModelDigest",
+    "task",
+    "evalReportDigest",
+    "evalGates",
+    "verdict",
+    "rollbackTargetDigest"
+  ],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:adapter-promotion-decision:", "description": "Stable URN identifier. Pattern: urn:srcos:adapter-promotion-decision:<local-id>" },
+    "type": { "const": "AdapterPromotionDecision", "description": "Discriminator constant — always \"AdapterPromotionDecision\"." },
+    "specVersion": { "type": "string", "description": "Spec version of this document, e.g. \"2.1.0\"." },
+    "decidedAt": { "type": "string", "format": "date-time", "description": "Timestamp when the promotion decision was made." },
+    "candidateAdapterDigest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Content-addressed digest of the candidate LoRA adapter under decision." },
+    "replacesAdapterDigest": { "type": ["string", "null"], "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Digest of the adapter this candidate would replace, or null if it is the first adapter for the task." },
+    "baseModelDigest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Digest of the base model the adapter binds to. The candidate adapter's manifest MUST declare this same digest; a mismatch is rejected (SEAM-017)." },
+    "task": { "type": "string", "description": "Task the adapter specializes, e.g. summarization, translation-de-en, agent_classification." },
+    "evalReportDigest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Content-addressed digest of the eval report stored alongside the adapter in the model store." },
+    "evalGates": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["regressionPassed", "taskImprovementPassed", "safetyPassed", "determinismPassed", "adversarialProbePassed"],
+      "description": "Promotion gate results. Every gate must pass for a `promoted` verdict (enforced below).",
+      "properties": {
+        "regressionPassed": { "type": "boolean", "description": "Candidate does not degrade prior tasks." },
+        "taskImprovementPassed": { "type": "boolean", "description": "Candidate meets the target-task improvement threshold." },
+        "safetyPassed": { "type": "boolean", "description": "Candidate passes the safety evaluation." },
+        "determinismPassed": { "type": "boolean", "description": "Same input yields the same output within tolerance." },
+        "adversarialProbePassed": { "type": "boolean", "description": "REVIEW HARDENING (SEAM-016 finding: a signed, consented, poisoned override event passes a generic safety suite while carrying a targeted backdoor). Candidate passes adversarial probes targeting the training-data-poisoning / backdoor vector specifically, not only generic safety." }
+      }
+    },
+    "signatureVerified": { "type": "boolean", "description": "Whether the candidate adapter's detached signature verified against the trust store. Must be true to promote (SEAM-017). Note: signature proves origin, not safety — the eval gate is the safety authority." },
+    "contributingOverrideEvents": { "type": "array", "description": "Ledger sequence numbers of every OverrideEvent that contributed to this adapter. This is the enumerable-contribution property (Model Plane §XII).", "items": { "type": "integer", "minimum": 0 } },
+    "contributingEventCount": { "type": ["integer", "null"], "minimum": 0, "description": "Count of contributing override events. Should equal the length of contributingOverrideEvents." },
+    "allEventsConsented": { "type": "boolean", "description": "Whether every contributing override event carried valid training-data consent. Must be true to promote (SEAM-016)." },
+    "promotedBy": { "type": ["string", "null"], "description": "Human decision-maker (identity/email) who promoted the adapter. Required for a `promoted` verdict (enforced below) — promotion is a governed human decision, not automatic." },
+    "verdict": { "type": "string", "enum": ["promoted", "rejected", "held"], "description": "Decision outcome." },
+    "rejectionReason": { "type": ["string", "null"], "enum": ["eval-failed", "signature-unverified", "unconsented-events", "base-model-mismatch", "insufficient-batch", "manual-hold", null], "description": "Why the candidate was not promoted. Required when verdict is rejected." },
+    "rollbackTargetDigest": { "type": "string", "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Digest the running adapter set rolls back to if this promotion is reverted. Mandatory for every decision (SEAM-017) — rollback is a single operation and does not require retraining. For a first-adapter promotion this is the base-only (no-adapter) marker digest." },
+    "ledgerSeq": { "type": "integer", "minimum": 0, "description": "Monotonic sequence number of this decision in the append-only ledger." },
+    "ledgerPrevHash": { "type": ["string", "null"], "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "REVIEW HARDENING (ledger tamper-evidence): hash of the prior ledger entry, so a promotion's enumerated contribution list cannot be rewritten after the fact." },
+    "evidenceHash": { "type": ["string", "null"], "pattern": "^sha256:[a-fA-F0-9]{64}$", "description": "Hash of the canonical decision evidence payload." },
+    "evidenceRefs": { "type": "array", "description": "Additional evidence URNs or content hashes.", "items": { "type": "string" } }
+  },
+  "allOf": [
+    {
+      "$comment": "SEAM-016 + SEAM-017 TEETH: a `promoted` verdict requires a verified signature, per-event training consent, ALL eval gates passing, and a human promoter. Missing any one cannot yield `promoted`.",
+      "if": {
+        "properties": { "verdict": { "const": "promoted" } },
+        "required": ["verdict"]
+      },
+      "then": {
+        "required": ["signatureVerified", "allEventsConsented", "promotedBy"],
+        "properties": {
+          "signatureVerified": { "const": true },
+          "allEventsConsented": { "const": true },
+          "promotedBy": { "type": "string", "minLength": 1 },
+          "evalGates": {
+            "properties": {
+              "regressionPassed": { "const": true },
+              "taskImprovementPassed": { "const": true },
+              "safetyPassed": { "const": true },
+              "determinismPassed": { "const": true },
+              "adversarialProbePassed": { "const": true }
+            }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A rejection must state why.",
+      "if": {
+        "properties": { "verdict": { "const": "rejected" } },
+        "required": ["verdict"]
+      },
+      "then": {
+        "required": ["rejectionReason"],
+        "properties": { "rejectionReason": { "type": "string" } }
+      }
+    }
+  ]
+}

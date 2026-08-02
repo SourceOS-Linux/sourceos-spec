@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:adapter-promotion-decision:2026-06-10-summ-v3",
+  "type": "AdapterPromotionDecision",
+  "specVersion": "2.1.0",
+  "decidedAt": "2026-06-10T09:15:00Z",
+  "candidateAdapterDigest": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+  "replacesAdapterDigest": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+  "baseModelDigest": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+  "task": "summarization",
+  "evalReportDigest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+  "evalGates": {
+    "regressionPassed": true,
+    "taskImprovementPassed": true,
+    "safetyPassed": true,
+    "determinismPassed": true,
+    "adversarialProbePassed": true
+  },
+  "signatureVerified": true,
+  "contributingOverrideEvents": [4471, 4488, 4512],
+  "contributingEventCount": 3,
+  "allEventsConsented": true,
+  "promotedBy": "michael@socioprophet.ai",
+  "verdict": "promoted",
+  "rejectionReason": null,
+  "rollbackTargetDigest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+  "ledgerSeq": 9001,
+  "ledgerPrevHash": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "evidenceHash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "evidenceRefs": ["urn:srcos:decision:promote-summ-v3"]
+}
