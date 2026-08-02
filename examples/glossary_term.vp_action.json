@@ -1,0 +1,32 @@
+{
+  "id": "urn:srcos:glossary:promote-to-platform",
+  "type": "GlossaryTerm",
+  "specVersion": "2.0.0",
+  "name": "promote to platform",
+  "definition": "Move a catalogued object from user/project/chat scope to platform scope via an approved DAR.",
+  "partOfSpeech": "verb-phrase",
+  "status": "approved",
+  "alignment": {
+    "ontologyClassRef": "urn:srcos:ontology-class:governance.PromoteToPlatform",
+    "vectorLink": {
+      "peerRef": "urn:srcos:glossary:release-gate",
+      "model": "nomic-ai/nomic-embed-text-v1.5",
+      "dimension": 768,
+      "cosine": 0.71
+    },
+    "estateBinding": {
+      "kind": "action",
+      "ref": "urn:srcos:data-acquisition-request:promote"
+    }
+  },
+  "relations": [
+    {
+      "predicate": "is-a",
+      "target": "urn:srcos:ontology-class:governance.Action"
+    },
+    {
+      "predicate": "skos:related",
+      "target": "urn:srcos:glossary:release-gate"
+    }
+  ]
+}

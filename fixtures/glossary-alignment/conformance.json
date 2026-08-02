@@ -1,0 +1,150 @@
+{
+  "description": "Negative vectors for GlossaryTerm alignment v0.1. Each MUST fail on its named failValidator; validate_glossary_alignment_examples.py enforces both, plus the fail-closed invariant that an APPROVED term is fully aligned across all three methods and NP↔entity / VP↔action.",
+  "cases": [
+    {
+      "schema": "GlossaryTerm.json",
+      "reason": "vectorLink must be in the sovereign space — a truncated dimension (512) must fail (const).",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:glossary:release-gate",
+        "type": "GlossaryTerm",
+        "specVersion": "2.0.0",
+        "name": "release gate",
+        "definition": "A fail-closed check a service must pass to be release-ready.",
+        "partOfSpeech": "noun-phrase",
+        "status": "approved",
+        "alignment": {
+          "ontologyClassRef": "urn:srcos:ontology-class:governance.ReleaseGate",
+          "vectorLink": {
+            "peerRef": "urn:srcos:glossary:promote-to-platform",
+            "model": "nomic-ai/nomic-embed-text-v1.5",
+            "dimension": 512,
+            "cosine": 0.71
+          },
+          "estateBinding": {
+            "kind": "entity",
+            "ref": "urn:srcos:service-graph:release-gate-audit"
+          }
+        },
+        "relations": [
+          {
+            "predicate": "is-a",
+            "target": "urn:srcos:ontology-class:governance.Control"
+          },
+          {
+            "predicate": "skos:related",
+            "target": "urn:srcos:glossary:promote-to-platform"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "GlossaryTerm.json",
+      "reason": "estateBinding.kind is closed (entity|service|action).",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:glossary:release-gate",
+        "type": "GlossaryTerm",
+        "specVersion": "2.0.0",
+        "name": "release gate",
+        "definition": "A fail-closed check a service must pass to be release-ready.",
+        "partOfSpeech": "noun-phrase",
+        "status": "approved",
+        "alignment": {
+          "ontologyClassRef": "urn:srcos:ontology-class:governance.ReleaseGate",
+          "vectorLink": {
+            "peerRef": "urn:srcos:glossary:promote-to-platform",
+            "model": "nomic-ai/nomic-embed-text-v1.5",
+            "dimension": 768,
+            "cosine": 0.71
+          },
+          "estateBinding": {
+            "kind": "gadget",
+            "ref": "urn:srcos:x:y"
+          }
+        },
+        "relations": [
+          {
+            "predicate": "is-a",
+            "target": "urn:srcos:ontology-class:governance.Control"
+          },
+          {
+            "predicate": "skos:related",
+            "target": "urn:srcos:glossary:promote-to-platform"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "GlossaryTerm.json",
+      "reason": "alignment is a closed object — unknown method must be rejected.",
+      "failValidator": "additionalProperties",
+      "document": {
+        "id": "urn:srcos:glossary:release-gate",
+        "type": "GlossaryTerm",
+        "specVersion": "2.0.0",
+        "name": "release gate",
+        "definition": "A fail-closed check a service must pass to be release-ready.",
+        "partOfSpeech": "noun-phrase",
+        "status": "approved",
+        "alignment": {
+          "ontologyClassRef": "urn:srcos:ontology-class:governance.ReleaseGate",
+          "vectorLink": {
+            "peerRef": "urn:srcos:glossary:promote-to-platform",
+            "model": "nomic-ai/nomic-embed-text-v1.5",
+            "dimension": 768,
+            "cosine": 0.71
+          },
+          "estateBinding": {
+            "kind": "entity",
+            "ref": "urn:srcos:service-graph:release-gate-audit"
+          },
+          "telepathy": true
+        },
+        "relations": [
+          {
+            "predicate": "is-a",
+            "target": "urn:srcos:ontology-class:governance.Control"
+          },
+          {
+            "predicate": "skos:related",
+            "target": "urn:srcos:glossary:promote-to-platform"
+          }
+        ]
+      }
+    },
+    {
+      "schema": "GlossaryTerm.json",
+      "reason": "relation predicate is a closed RDF/RDFS/SKOS/FOAF set — an unknown predicate must fail.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:glossary:release-gate",
+        "type": "GlossaryTerm",
+        "specVersion": "2.0.0",
+        "name": "release gate",
+        "definition": "A fail-closed check a service must pass to be release-ready.",
+        "partOfSpeech": "noun-phrase",
+        "status": "approved",
+        "alignment": {
+          "ontologyClassRef": "urn:srcos:ontology-class:governance.ReleaseGate",
+          "vectorLink": {
+            "peerRef": "urn:srcos:glossary:promote-to-platform",
+            "model": "nomic-ai/nomic-embed-text-v1.5",
+            "dimension": 768,
+            "cosine": 0.71
+          },
+          "estateBinding": {
+            "kind": "entity",
+            "ref": "urn:srcos:service-graph:release-gate-audit"
+          }
+        },
+        "relations": [
+          {
+            "predicate": "causes-vibes",
+            "target": "urn:srcos:x:y"
+          }
+        ]
+      }
+    }
+  ]
+}

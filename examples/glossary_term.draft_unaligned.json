@@ -1,0 +1,14 @@
+{
+  "id": "urn:srcos:glossary:hermetic-launch-manifest",
+  "type": "GlossaryTerm",
+  "specVersion": "2.0.0",
+  "name": "hermetic launch manifest",
+  "definition": "New field on service manifests (release_gates.hermetic_launch_manifest); not yet captured into the ontology.",
+  "partOfSpeech": "noun-phrase",
+  "status": "draft",
+  "alignment": {
+    "ontologyClassRef": null,
+    "vectorLink": null,
+    "estateBinding": null
+  }
+}
