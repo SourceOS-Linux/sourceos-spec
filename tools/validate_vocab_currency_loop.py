@@ -9,15 +9,29 @@ import json
 import sys
 from pathlib import Path
 
+import jsonschema
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import vocab_currency_loop as vcl  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[1]
 FIX = ROOT / "fixtures" / "vocab-currency"
 LOOP = ROOT / "examples" / "governed_loop.vocab_currency.json"
+LOOP_SCHEMA = ROOT / "schemas" / "GovernedLoop.json"
 
 FAILURES: list[str] = []
 CHECKS: dict[str, bool] = {}
+
+
+def check_contract_conforms() -> None:
+    # Schema conformance FIRST (like the repo's other validators) — so a drifted contract fails
+    # with a clear conformance error, not a downstream KeyError from run_loop.
+    errs = sorted(jsonschema.Draft202012Validator(vcl.load(LOOP_SCHEMA)).iter_errors(vcl.load(LOOP)), key=str)
+    if errs:
+        for e in errs:
+            FAILURES.append(f"shipped GovernedLoop contract invalid: {e.message}")
+    else:
+        CHECKS["contract:conforms"] = True
 
 
 def run(corpus_name: str, loop_override: dict | None = None) -> dict:
@@ -26,6 +40,8 @@ def run(corpus_name: str, loop_override: dict | None = None) -> dict:
 
 
 def main() -> int:
+    check_contract_conforms()
+
     # 1. Convergent corpus — the loop connects the few new terms and reaches currency (ok).
     r = run("corpus.json")
     if not r.get("ok"):
@@ -55,6 +71,16 @@ def main() -> int:
         FAILURES.append("a loop with no superconscious admission must be REFUSED, not run")
     else:
         CHECKS["unadmitted:refused"] = True
+
+    # 4. Unsupported convergence measure — a contract declaring a measure this runner does not
+    #    implement (e.g. fixpoint) MUST be refused, not run with mismatched semantics.
+    mismatched = vcl.load(LOOP)
+    mismatched["convergence"] = {**mismatched["convergence"], "measure": "fixpoint", "tolerance": None}
+    r = run("corpus.json", loop_override=mismatched)
+    if r.get("refused") != "unsupported-measure":
+        FAILURES.append("a loop whose convergence measure the runner can't honor must be REFUSED")
+    else:
+        CHECKS["unsupported-measure:refused"] = True
 
     for m in FAILURES:
         print(f"FAIL: {m}", file=sys.stderr)

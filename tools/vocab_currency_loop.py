@@ -86,14 +86,27 @@ def uncovered_mass(Q: dict[str, float], covered: set[str]) -> float:
     return sum(q for t, q in Q.items() if t not in covered)
 
 
+# Convergence measures this runner actually implements: it drives divergence strictly down each
+# step (monotone-decrease) until it is below tolerance (error-below-tolerance). It does NOT
+# implement `fixpoint`, so a contract declaring that measure is REFUSED rather than run with
+# mismatched semantics — don't honor a convergence guarantee you don't provide.
+SUPPORTED_MEASURES = {"monotone-decrease", "error-below-tolerance"}
+
+
 def run_loop(loop: dict, glossary: dict, corpus: dict) -> dict:
     # Admission first — a loop that does not name its superconscious governor may not run.
     if not (loop.get("admission") or {}).get("superconsciousRef"):
         return {"ok": False, "refused": "unadmitted",
                 "detail": "GovernedLoop has no admission.superconsciousRef — loops don't self-authorize"}
+    measure = loop["convergence"].get("measure")
+    if measure not in SUPPORTED_MEASURES:
+        return {"ok": False, "refused": "unsupported-measure",
+                "detail": f"this runner implements {sorted(SUPPORTED_MEASURES)}, not {measure!r} — "
+                          f"refusing rather than running with mismatched convergence semantics"}
 
     max_iter = loop["bound"]["maxIterations"]
-    tolerance = loop["convergence"].get("tolerance", 0.0)
+    tol = loop["convergence"].get("tolerance")
+    tolerance = 0.0 if tol is None else tol  # schema allows null → treat as "must fully cover"
     on_nonconv = loop["onNonConvergence"]
 
     covered = vocab_tokens(glossary)
