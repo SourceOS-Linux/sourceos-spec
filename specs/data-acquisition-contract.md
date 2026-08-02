@@ -64,3 +64,16 @@ declared**. New entries that opt into scoping and reach `platform` must carry
 `catalog-gateway` (prophet-platform): auto-catalogue on upload at owner scope,
 serve the per-owner catalogue view, and expose DAR submit / review / decide
 endpoints whose promotion path is gated on this contract.
+
+## Citable commons (WO-COMMONS-2)
+
+When a `DataAcquisitionRequest` is approved and the entry reaches `platform` scope, a
+citable **DOI** is minted (Zenodo / DataCite-style) and recorded on `promotion.doi`;
+the approving DAR records the same value on `mintedDoi`. This grounds the governed
+platform tier as a **citable open commons** — every promoted artifact is addressable
+by DOI, by construction, downstream of the governance ∧ IP/legal meet.
+
+Invariants (schema + validator): a `doi` may appear only on a `promoted` entry (a DOI
+is a platform-tier artifact — no DOI before promotion); `mintedDoi` may appear only on
+an `approved` DAR; and where both are present they must be **equal** (a DOI is minted
+once and recorded on both sides).

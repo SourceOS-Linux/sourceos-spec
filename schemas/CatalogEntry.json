@@ -5,7 +5,15 @@
   "description": "A searchable index record for a governed object, release, or artifact family without redefining the canonical object itself.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["id", "type", "specVersion", "objectRef", "objectType", "status", "updatedAt"],
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "objectRef",
+    "objectType",
+    "status",
+    "updatedAt"
+  ],
   "properties": {
     "id": {
       "type": "string",
@@ -29,25 +37,43 @@
       "description": "Type name of the canonical object, such as ReleaseManifest or EvidenceBundle."
     },
     "title": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Optional title for indexing and presentation."
     },
     "labels": {
       "type": "object",
-      "additionalProperties": {"type": "string"},
+      "additionalProperties": {
+        "type": "string"
+      },
       "description": "Index labels, tags, or dimensions used for discovery."
     },
     "status": {
       "type": "string",
-      "enum": ["draft", "frozen", "published", "superseded", "restricted", "archived"],
+      "enum": [
+        "draft",
+        "frozen",
+        "published",
+        "superseded",
+        "restricted",
+        "archived"
+      ],
       "description": "Catalog-visible lifecycle state."
     },
     "evidenceBundleRef": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Optional EvidenceBundle ref associated with the indexed object."
     },
     "authorityRef": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Optional ref to the authority or namespace governing this entry."
     },
     "updatedAt": {
@@ -57,28 +83,56 @@
     },
     "scope": {
       "type": "string",
-      "enum": ["user", "project", "chat", "platform"],
+      "enum": [
+        "user",
+        "project",
+        "chat",
+        "platform"
+      ],
       "description": "Ownership/visibility scope of the catalogued object. Docs/datasets/collections are auto-catalogued at user/project/chat scope (private to their owner's catalogue view); only 'platform' is estate-wide. Promotion to 'platform' is NOT automatic — it requires an approved DataAcquisitionRequest (see `promotion`). Optional for backward compatibility; when absent, a legacy index record is treated as 'platform'."
     },
     "ownerRef": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "URN of the user/project/chat that owns this entry at its scope (urn:srcos:user:… / urn:srcos:project:… / urn:srcos:chat:…). Drives the per-owner catalogue view."
     },
     "promotion": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["state"],
+      "required": [
+        "state"
+      ],
       "description": "Promotion lifecycle toward platform scope. INVARIANT: an entry that EXPLICITLY declares scope=='platform' requires promotion.state=='promoted' AND a darRef — encoded by the top-level allOf below and cross-checked (darRef resolves to an approved DAR) by validate_data_acquisition_examples.py.",
       "properties": {
         "state": {
           "type": "string",
-          "enum": ["origin", "requested", "under-review", "approved", "denied", "promoted"],
+          "enum": [
+            "origin",
+            "requested",
+            "under-review",
+            "approved",
+            "denied",
+            "promoted"
+          ],
           "description": "origin = private to its scope; requested/under-review = a DAR is in flight; approved/denied = DAR decided; promoted = now at platform scope."
         },
         "darRef": {
-          "type": ["string", "null"],
+          "type": [
+            "string",
+            "null"
+          ],
           "pattern": "^urn:srcos:data-acquisition-request:",
           "description": "URN of the DataAcquisitionRequest that authorized promotion. Required (non-null) once state is 'promoted'."
+        },
+        "doi": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Za-z0-9]+$",
+          "description": "Citable DOI minted when this entry reached platform scope via an approved DataAcquisitionRequest (WO-COMMONS-2, Zenodo/DataCite-style). A DOI is a platform-tier artifact — it may only appear on a promoted entry (top-level allOf). Grounds the governed platform commons as citable."
         }
       }
     }
@@ -86,15 +140,64 @@
   "allOf": [
     {
       "$comment": "Schema-level teeth for the platform promotion invariant. Fires ONLY when scope is EXPLICITLY 'platform', so legacy index records that omit scope stay grandfathered (their scope is treated as platform by convention but not retro-constrained).",
-      "if": { "properties": { "scope": { "const": "platform" } }, "required": ["scope"] },
+      "if": {
+        "properties": {
+          "scope": {
+            "const": "platform"
+          }
+        },
+        "required": [
+          "scope"
+        ]
+      },
       "then": {
-        "required": ["promotion"],
+        "required": [
+          "promotion"
+        ],
         "properties": {
           "promotion": {
-            "required": ["state", "darRef"],
+            "required": [
+              "state",
+              "darRef"
+            ],
             "properties": {
-              "state": { "const": "promoted" },
-              "darRef": { "type": "string" }
+              "state": {
+                "const": "promoted"
+              },
+              "darRef": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "$comment": "A DOI is a platform-tier citable artifact — it cannot exist before promotion.",
+      "if": {
+        "properties": {
+          "promotion": {
+            "required": [
+              "doi"
+            ],
+            "properties": {
+              "doi": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "promotion"
+        ]
+      },
+      "then": {
+        "properties": {
+          "promotion": {
+            "properties": {
+              "state": {
+                "const": "promoted"
+              }
             }
           }
         }

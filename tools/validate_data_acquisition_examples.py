@@ -127,6 +127,21 @@ def check_promotion(entries: dict[str, dict], dars: dict[str, dict]) -> None:
                 fail(f"{name}: the DAR that promoted it names subjectRef {dar['subjectRef']}, not this entry")
             else:
                 CHECKS[f"promotion:{name}:bound-to-approved-dar"] = True
+                # WO-COMMONS-2: the DOI is minted once at promotion and recorded on
+                # BOTH the entry and the approving DAR — both-or-neither, and equal.
+                entry_doi = promo.get("doi")
+                dar_doi = dar.get("mintedDoi")
+                if entry_doi and not dar_doi:
+                    fail(f"{name}: has promotion.doi {entry_doi!r} but the approving DAR {dar['id']} "
+                         f"records no mintedDoi — a minted DOI must be recorded on BOTH sides")
+                elif dar_doi and not entry_doi:
+                    fail(f"{name}: the approving DAR minted {dar_doi!r} but this platform entry carries no "
+                         f"promotion.doi — a minted DOI must be recorded on BOTH sides")
+                elif entry_doi and dar_doi and entry_doi != dar_doi:
+                    fail(f"{name}: promotion.doi {entry_doi!r} != minting DAR.mintedDoi {dar_doi!r} — "
+                         f"a DOI is minted once; the entry and its DAR must record the same one")
+                elif entry_doi and dar_doi:
+                    CHECKS[f"promotion:{name}:doi-recorded-both-sides"] = True
         else:
             if state == "promoted":
                 fail(f"{name}: scope {scope!r} but promotion.state is 'promoted' — only platform entries are promoted")

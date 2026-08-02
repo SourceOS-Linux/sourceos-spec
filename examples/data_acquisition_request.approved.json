@@ -20,5 +20,6 @@
   },
   "state": "approved",
   "createdAt": "2026-08-02T11:00:00Z",
-  "decidedAt": "2026-08-02T11:45:00Z"
+  "decidedAt": "2026-08-02T11:45:00Z",
+  "mintedDoi": "10.5281/zenodo.9990001"
 }
