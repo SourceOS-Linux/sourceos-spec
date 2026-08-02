@@ -29,5 +29,7 @@
   "flakeRef": "github:SociOS-Linux/source-os#builder-aarch64",
   "durationMs": 0,
   "issuedAt": "2026-06-16T00:00:00Z",
-  "auditId": "urn:srcos:audit:builder-aarch64-2026-06-16T00:00:00Z-dry"
+  "auditId": "urn:srcos:audit:builder-aarch64-2026-06-16T00:00:00Z-dry",
+  "attestation": null,
+  "epistemicLevel": "Speculative"
 }

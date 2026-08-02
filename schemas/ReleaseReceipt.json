@@ -21,7 +21,7 @@
     },
     "type": {
       "const": "ReleaseReceipt",
-      "description": "Discriminator constant \u2014 always \"ReleaseReceipt\"."
+      "description": "Discriminator constant — always \"ReleaseReceipt\"."
     },
     "specVersion": {
       "type": "string",
@@ -64,6 +64,35 @@
       "type": "string",
       "format": "date-time",
       "description": "ISO 8601 date-time when the release was verified."
+    },
+    "epistemicLevel": {
+      "type": "string",
+      "enum": [
+        "Proved",
+        "Speculative",
+        "Refuted"
+      ],
+      "description": "The receipt's epistemic level, the MEET of attestation ∧ verification (SP-GATE-003): Proved only when signed AND verified; Speculative when unsigned or incomplete (absence of evidence is not Proved); Refuted when a check failed. Optional + backward-compatible; the validator recomputes it and rejects a declared value that disagrees with the meet."
+    },
+    "attestation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The signing/attestation state of the release artifacts, from sign-and-provenance (provenance.attestation, SP-GATE-002). Absent ⇒ treated as unsigned.",
+      "required": [
+        "signed"
+      ],
+      "properties": {
+        "signed": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "e.g. minisign / no-signing-key / signing-failed"
+        }
+      }
     }
   }
 }
