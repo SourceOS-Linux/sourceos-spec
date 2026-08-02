@@ -71,6 +71,7 @@ def analyze(domains: dict[str, str], stoplist: set[str]) -> dict:
                 if 0 <= j < len(toks) and toks[j] not in stoplist:
                     pairs[toks[j]] = pairs.get(toks[j], 0) + 1
         total_adj = sum(pairs.values())
+        repeated_adj = sum(c for c in pairs.values() if c >= 2)
         # Compare the UNROUNDED density to the threshold (rounding could flip a boundary verdict);
         # round only for reporting.
         density_raw = repeated_adj / total_adj if total_adj else 0.0
