@@ -36,11 +36,12 @@ def main() -> int:
         CHECKS["full-alignment:promotes"] = True
         approved = r["approvedTerm"]
 
-        # 1b. The promoted output must PASS #250's drift-guard (no governance hole). Feed the
-        #     approved term + its peer so the reciprocity lookup resolves.
+        # 1b. The promoted output must PASS #250's drift-guard (no governance hole of ANY kind).
+        #     check_alignment prefixes each message with the dict KEY, so key by id — then any
+        #     failure about the promoted term (reciprocity, hole, binding, ...) starts with its id.
         G250.FAILURES.clear()
-        G250.check_alignment({"approved": approved, "peer": peer})
-        holes = [m for m in G250.FAILURES if approved["id"] in m or "governance hole" in m]
+        G250.check_alignment({approved["id"]: approved, peer["id"]: peer})
+        holes = [m for m in G250.FAILURES if m.startswith(approved["id"] + ":")]
         if holes:
             FAILURES.append(f"promoted term fails #250 alignment drift-guard: {holes}")
         else:
@@ -70,6 +71,26 @@ def main() -> int:
         FAILURES.append("a vectorLink off the sovereign embedding space must be refused")
     else:
         CHECKS["off-space-embedding:refused"] = True
+
+    # 4b. Missing cosine (schema-required vectorLink field) -> refused (can't mint schema-invalid).
+    nocos = copy.deepcopy(alignment)
+    nocos["vectorLink"].pop("cosine", None)
+    r = P.promote(draft, nocos, peer)
+    if r.get("promoted") or not any("cosine" in m for m in r.get("unaligned", [])):
+        FAILURES.append("a vectorLink missing cosine must be refused (schema-required)")
+    else:
+        CHECKS["missing-cosine:refused"] = True
+
+    # 4c. The #250-guard filter must actually CATCH a holey approved term (regression on the
+    #     id-keying fix): a hand-built approved term with no estateBinding must be flagged.
+    G250.FAILURES.clear()
+    holey = {**draft, "status": "approved",
+             "alignment": {k: v for k, v in alignment.items() if k != "estateBinding"}}
+    G250.check_alignment({holey["id"]: holey, peer["id"]: peer})
+    if not [m for m in G250.FAILURES if m.startswith(holey["id"] + ":")]:
+        FAILURES.append("the #250-guard filter failed to catch a holey approved term (filter regression)")
+    else:
+        CHECKS["250-guard-filter:catches-hole"] = True
 
     # 5. Input guards — a non-term and an already-approved term are both refused (no silent mutation).
     r = P.promote({"id": "x", "type": "NotATerm"}, alignment, peer)

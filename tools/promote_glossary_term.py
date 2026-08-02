@@ -23,6 +23,10 @@ import json
 import sys
 from pathlib import Path
 
+import jsonschema
+
+ROOT = Path(__file__).resolve().parents[1]
+GLOSSARY_SCHEMA = ROOT / "schemas" / "GlossaryTerm.json"
 EMBED_MODEL = "nomic-ai/nomic-embed-text-v1.5"
 EMBED_DIM = 768
 ESTATE_KINDS = {"entity", "service", "action"}
@@ -40,10 +44,13 @@ def _method_failures(term: dict, alignment: dict, peer: dict | None) -> list[str
         fails.append("capture (alignment.ontologyClassRef missing)")
     # 2. vector-align — present, const-pinned to the sovereign space, and RECIPROCATED by the peer
     vl = alignment.get("vectorLink") or {}
+    cos = vl.get("cosine")
     if not vl.get("peerRef"):
         fails.append("vector-align (alignment.vectorLink missing)")
     elif vl.get("model") != EMBED_MODEL or vl.get("dimension") != EMBED_DIM:
         fails.append(f"vector-align (vectorLink must pin {EMBED_MODEL} / dim {EMBED_DIM})")
+    elif not isinstance(cos, (int, float)) or isinstance(cos, bool) or not (-1 <= cos <= 1):
+        fails.append("vector-align (vectorLink.cosine must be a number in [-1, 1] — schema-required)")
     else:
         back = ((peer or {}).get("alignment") or {}).get("vectorLink") or {}
         if not peer or peer.get("id") != vl["peerRef"]:
@@ -75,6 +82,13 @@ def promote(term: dict, alignment: dict, peer: dict | None = None) -> dict:
                 "detail": "draft->approved refused: an approved term must be captured + vector-aligned "
                           "+ implemented (fail-closed meet); it stays draft"}
     approved = {**term, "status": "approved", "alignment": alignment}
+    # Fail-closed on the output: never MINT a schema-invalid approved term. The method meet checks
+    # the alignment's governance content; this backstops every remaining GlossaryTerm.json constraint.
+    schema_errs = sorted(jsonschema.Draft202012Validator(load(GLOSSARY_SCHEMA)).iter_errors(approved), key=str)
+    if schema_errs:
+        return {"promoted": False, "term": term["id"], "status": "draft",
+                "refused": "schema-invalid-output", "unaligned": [e.message for e in schema_errs],
+                "detail": "promotion would produce a GlossaryTerm that fails GlossaryTerm.json; refusing"}
     return {"promoted": True, "term": term["id"], "status": "approved", "approvedTerm": approved}
 
 
