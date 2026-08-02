@@ -1,0 +1,27 @@
+{
+  "id": "urn:srcos:schema:accounts",
+  "type": "SchemaDefinition",
+  "specVersion": "2.0.0",
+  "name": "accounts",
+  "fields": [
+    {
+      "name": "account_id",
+      "dataType": "string"
+    },
+    {
+      "name": "owner",
+      "dataType": "string"
+    }
+  ],
+  "keys": [
+    {
+      "name": "pk_accounts",
+      "kind": "primary",
+      "attributes": [
+        "account_id"
+      ],
+      "rank": 1,
+      "primitive": true
+    }
+  ]
+}
