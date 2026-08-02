@@ -16,7 +16,8 @@
     "evalReportDigest",
     "evalGates",
     "verdict",
-    "rollbackTargetDigest"
+    "rollbackTargetDigest",
+    "ledgerSeq"
   ],
   "properties": {
     "id": { "type": "string", "pattern": "^urn:srcos:adapter-promotion-decision:", "description": "Stable URN identifier. Pattern: urn:srcos:adapter-promotion-decision:<local-id>" },

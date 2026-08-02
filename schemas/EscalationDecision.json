@@ -19,7 +19,8 @@
     "trigger",
     "sensitivityCheck",
     "inputHash",
-    "verdict"
+    "verdict",
+    "ledgerSeq"
   ],
   "properties": {
     "id": { "type": "string", "pattern": "^urn:srcos:escalation-decision:", "description": "Stable URN identifier. Pattern: urn:srcos:escalation-decision:<local-id>" },
