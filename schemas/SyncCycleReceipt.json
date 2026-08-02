@@ -52,7 +52,10 @@
       "description": "Katello content view name (e.g. sourceos-builder-aarch64)."
     },
     "fromVersion": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Content view version before the sync; null on first sync."
     },
     "toVersion": {
@@ -64,11 +67,23 @@
       "description": "Katello lifecycle environment (dev, candidate, stable)."
     },
     "locus": {
-      "enum": ["local", "trusted_private", "attested_fog", "burst_cloud"],
+      "enum": [
+        "local",
+        "trusted_private",
+        "attested_fog",
+        "burst_cloud"
+      ],
       "description": "Execution locus at which the sync was authorized."
     },
     "outcome": {
-      "enum": ["planned", "dry_run", "applied", "skipped", "denied", "failed"],
+      "enum": [
+        "planned",
+        "dry_run",
+        "applied",
+        "skipped",
+        "denied",
+        "failed"
+      ],
       "description": "Result of the sync cycle."
     },
     "policyGate": {
@@ -83,17 +98,36 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["step", "status"],
+        "required": [
+          "step",
+          "status"
+        ],
         "additionalProperties": false,
         "properties": {
-          "step": { "type": "string" },
-          "status": {
-            "enum": ["dry_run", "ok", "failed", "skipped", "timeout"]
+          "step": {
+            "type": "string"
           },
-          "returncode": { "type": "integer" },
-          "stdout": { "type": "string" },
-          "stderr": { "type": "string" },
-          "reason": { "type": "string" }
+          "status": {
+            "enum": [
+              "dry_run",
+              "ok",
+              "failed",
+              "skipped",
+              "timeout"
+            ]
+          },
+          "returncode": {
+            "type": "integer"
+          },
+          "stdout": {
+            "type": "string"
+          },
+          "stderr": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
         }
       }
     },
@@ -120,8 +154,28 @@
       "description": "AuditEvent id that records this sync cycle in the append-only audit log."
     },
     "agentplaneRunRef": {
-      "type": ["string", "null"],
+      "type": [
+        "string",
+        "null"
+      ],
       "description": "Optional URN or path reference to the agentplane RunArtifact that triggered the build producing this sync cycle. Links the governance execution trace to the SourceOS sync event."
+    },
+    "epistemicLevel": {
+      "type": "string",
+      "enum": [
+        "Proved",
+        "Speculative",
+        "Refuted"
+      ],
+      "description": "The receipt's epistemic level, the MEET of attestation ∧ verification (SP-GATE-003): Proved only when signed AND verified; Speculative when unsigned or incomplete (absence of evidence is not Proved); Refuted when a check failed. Optional + backward-compatible; the validator recomputes it and rejects a declared value that disagrees with the meet."
+    },
+    "attestation": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": true,
+      "description": "The release-attestation decision that gated this sync (sourceos-syncd, SP-GATE-001): carries `ok` (bool) and reason/signer/artifactId. Proved requires ok=true."
     }
   }
 }

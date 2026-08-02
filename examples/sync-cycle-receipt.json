@@ -33,5 +33,12 @@
   "flakeRef": "github:SociOS-Linux/source-os#builder-aarch64",
   "durationMs": 47200,
   "issuedAt": "2026-06-16T00:00:00Z",
-  "auditId": "urn:srcos:audit:builder-aarch64-2026-06-16T00:00:00Z-001"
+  "auditId": "urn:srcos:audit:builder-aarch64-2026-06-16T00:00:00Z-001",
+  "attestation": {
+    "ok": true,
+    "reason": "release attestation verified and bound to this exact version",
+    "epistemicLevel": "Proved",
+    "signer": "urn:srcos:build-pipeline:sourceos-ci"
+  },
+  "epistemicLevel": "Proved"
 }

@@ -1,5 +1,5 @@
 {
-  "id": "urn:srcos:release-receipt:rr_001",
+  "id": "urn:srcos:release-receipt:rr_unsigned_001",
   "type": "ReleaseReceipt",
   "specVersion": "2.0.0",
   "releaseTarget": "ghcr.io/srcos/obfuscator:v2.0.0",
@@ -16,8 +16,8 @@
   "status": "verified",
   "verifiedAt": "2026-01-10T14:22:00Z",
   "attestation": {
-    "signed": true,
-    "reason": "minisign"
+    "signed": false,
+    "reason": "no-signing-key"
   },
-  "epistemicLevel": "Proved"
+  "epistemicLevel": "Speculative"
 }
