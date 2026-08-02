@@ -81,7 +81,8 @@
             "items": {
               "type": "string"
             },
-            "description": "Field names forming the key — the SET that identifies rows (bipartite: this entity ↔ these attributes)."
+            "description": "Field names forming the key — the SET that identifies rows (bipartite: this entity ↔ these attributes).",
+            "uniqueItems": true
           },
           "rank": {
             "type": [
@@ -119,7 +120,31 @@
               }
             }
           }
-        }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "foreign"
+                }
+              },
+              "required": [
+                "kind"
+              ]
+            },
+            "then": {
+              "required": [
+                "references"
+              ],
+              "properties": {
+                "references": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        ]
       }
     }
   }

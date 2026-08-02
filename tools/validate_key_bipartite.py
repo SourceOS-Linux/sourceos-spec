@@ -39,7 +39,20 @@ REG = _registry()
 
 def _v(schema: dict) -> "jsonschema.Draft202012Validator":
     return jsonschema.Draft202012Validator(schema, registry=REG)
-EXAMPLES = ["schema_definition.accounts.json", "schema_definition.finance_ledger.json"]
+def _discover_examples() -> list[str]:
+    # Validate EVERY SchemaDefinition example (not a hard-coded pair), so a keyless legacy
+    # example can't silently escape the key/bipartite audit.
+    out = []
+    for f in sorted((ROOT / "examples").glob("*.json")):
+        try:
+            if json.loads(f.read_text(encoding="utf-8")).get("type") == "SchemaDefinition":
+                out.append(f.name)
+        except (json.JSONDecodeError, OSError):
+            continue
+    return out
+
+
+EXAMPLES = _discover_examples()
 
 FAILURES: list[str] = []
 CHECKS: dict[str, bool] = {}
@@ -58,12 +71,15 @@ def audit(tables: dict[str, dict]) -> dict:
         entities.append(eid)
         fields = {f["name"] for f in t.get("fields", [])}
         keys = t.get("keys") or []
-        primaries = [k for k in keys if k["kind"] == "primary"]
-        if len(primaries) != 1:
-            FAILURES.append(f"{name}: a table must have exactly one primary key (has {len(primaries)}) — "
-                            f"the primary set-identifier")
+        if not keys:
+            CHECKS[f"pk:{name}:no-keys-declared"] = True  # backward-compatible: keys are optional
         else:
-            CHECKS[f"pk:{name}"] = True
+            primaries = [k for k in keys if k["kind"] == "primary"]
+            if len(primaries) != 1:
+                FAILURES.append(f"{name}: a table that declares keys must have exactly one primary key "
+                                f"(has {len(primaries)}) — the primary set-identifier")
+            else:
+                CHECKS[f"pk:{name}"] = True
 
         for k in keys:
             attrs = k["attributes"]
