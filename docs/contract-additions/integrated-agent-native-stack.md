@@ -39,11 +39,36 @@ Each app in the macOS-replacement set gets these modifications designed in:
 | **Mail/PIM + `prophet-workspace`** | local-agent triage/summarize/draft; consent receipts on send/read; office surfaces show their warrant. |
 | **Media + `imagelab`/`ocrlab`** | on-device vision via the governed model plane (E6); consent on library access. |
 | **Messaging (OWN capability)** | first-class on the mesh/Matrix substrate, E2EE, agent-assisted, consent-gated — never a third-party client. |
-| **Assistant (local agent cell)** | local-agent default (E2); App-Intents/Shortcuts bridge; every action receipted. |
+| **Assistant → Noetica voice concierge** | replaces **Siri + Apple Intelligence**, and *extends* them because the whole intelligence stack is native (see below): local-agent default (E2); App-Intents/Shortcuts bridge; reasoning-backed multi-step actions; every action receipted. |
 | **Search (Spotlight → `sherlock`/`lampstand`)** | purpose-gated, slashtag-aware, transparent ranking, receipted. |
 
 Each row's modifications are **contracts on the app repo**, tracked against the
 enhancement matrix (`enhancements` E1–E12).
+
+## Intelligence layer — Siri + Apple Intelligence, native and *extended*
+
+Apple ships Siri + "Apple Intelligence" (writing tools, summarization, image
+generation, notification/priority summaries, an on-device assistant, and a
+cloud-model escape hatch) as bolt-ons to a closed stack. In SourceOS **the entire
+intelligence stack is native**: `Noetica` (reasoning), the labs (`speechlab` STT,
+a TTS, `nlplab`, `ocrlab`, `imagelab`, `translationlab`, `embeddinglab`), the
+governed model plane (`model-router` + `model-governance-ledger` + champion–
+challenger eval), and the local agent cell. So the **Noetica voice concierge is a
+superset of Siri + Apple Intelligence**, not a copy:
+
+- Every Apple-Intelligence feature (summarize, rewrite, generate, prioritize,
+  transcribe, translate, describe) is a **native governed-model-plane capability**,
+  local-by-default (E2), swappable and auditable (E6) — not a fixed vendor model.
+- The concierge is **reasoning-backed** (Noetica) and **agentic**: it doesn't just
+  answer, it takes governed multi-step action across the integrated apps (consent-
+  gated, receipted) — the thing Siri cannot do.
+- It is the **voice front-end of the same agent** that powers the accessibility
+  assistive layer and the launcher — one intelligence, many surfaces.
+
+This is *why* the concierge's features get extended as the stack matures: each new
+native capability (a lab, a model, a reasoning skill) is immediately available to
+the concierge, the launcher, and accessibility at once — no per-feature Apple-style
+gatekeeping.
 
 ## Accessibility — first-class defaults (opt-in for agent modes)
 
