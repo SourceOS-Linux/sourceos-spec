@@ -1,0 +1,79 @@
+{
+ "modelUrn": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+ "features": [
+  "token_magnitude",
+  "decimal_places",
+  "is_negative",
+  "has_cost_keyword"
+ ],
+ "monotonicFeatures": [
+  "token_magnitude",
+  "decimal_places"
+ ],
+ "labels": [
+  "urn:srcos:glossary:revenue",
+  "urn:srcos:glossary:cost"
+ ],
+ "standardize": {
+  "mean": [
+   4.721166666666666,
+   2.0,
+   0.31666666666666665,
+   0.5
+  ],
+  "std": [
+   1.4051110177570392,
+   1.0,
+   0.4651761912317621,
+   0.5
+  ]
+ },
+ "perClassLogistic": {
+  "revenue": {
+   "weights": [
+    1.0885461057087484,
+    0.0,
+    -1.114543681592562,
+    -4.049672435624739
+   ],
+   "bias": -0.30575517671779223,
+   "evalAccuracy": 1.0
+  },
+  "cost": {
+   "weights": [
+    0.0,
+    0.0,
+    1.1726778962251572,
+    4.351329385152503
+   ],
+   "bias": 0.2924522306802593,
+   "evalAccuracy": 1.0
+  }
+ },
+ "tableSoftmax": {
+  "weights": [
+   [
+    0.8203272291509368,
+    0.0
+   ],
+   [
+    0.0,
+    0.0
+   ],
+   [
+    -0.5915568028849446,
+    0.5915568028849448
+   ],
+   [
+    -2.392894979772866,
+    2.3928949797728656
+   ]
+  ],
+  "bias": [
+   -0.1779449481516841,
+   0.1779449481516844
+  ],
+  "evalAccuracy": 1.0
+ },
+ "evalAccuracy": 1.0
+}

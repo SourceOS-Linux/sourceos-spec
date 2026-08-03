@@ -1,0 +1,558 @@
+{
+ "features": [
+  "token_magnitude",
+  "decimal_places",
+  "is_negative",
+  "has_cost_keyword"
+ ],
+ "monotonicFeatures": [
+  "token_magnitude",
+  "decimal_places"
+ ],
+ "labels": [
+  "urn:srcos:glossary:revenue",
+  "urn:srcos:glossary:cost"
+ ],
+ "rows": [
+  {
+   "features": {
+    "token_magnitude": 6.6,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 7.91,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 6.33,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.33,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.44,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.97,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.56,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.29,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.79,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.66,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.19,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 6.03,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.47,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.78,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.23,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.16,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.7,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.11,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.6,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 6.51,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.06,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.24,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 6.31,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.59,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.26,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.61,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 7.31,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 6.14,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.99,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.45,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.07,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.18,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.14,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.3,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.69,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.92,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.1,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.36,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.59,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.73,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.5,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.58,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 7.43,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.23,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.38,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.28,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 7.26,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.15,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 7.79,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.34,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.09,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.72,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.28,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.46,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 2.39,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 5.55,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.42,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.47,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 4.89,
+    "decimal_places": 2,
+    "is_negative": 0,
+    "has_cost_keyword": 0
+   },
+   "label": "revenue"
+  },
+  {
+   "features": {
+    "token_magnitude": 3.36,
+    "decimal_places": 2,
+    "is_negative": 1,
+    "has_cost_keyword": 1
+   },
+   "label": "cost"
+  }
+ ]
+}

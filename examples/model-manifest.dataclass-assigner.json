@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
+  "type": "ModelManifest",
+  "specVersion": "2.1.0",
+  "modelDigest": "sha256:6092cf3788d3cad23c5639dd5e10e92d74a652ccc56ef6250542a91beb452f04",
+  "displayName": "dataclass-assigner (monotone wide-and-deep)",
+  "architecture": "monotone-logistic-wide-and-deep",
+  "format": "onnx",
+  "quantization": "none",
+  "license": "Apache-2.0",
+  "signature": {
+    "algorithm": "ed25519",
+    "keyId": "srcos-model-signing-2026",
+    "signatureDigest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+  },
+  "evidenceRefs": [
+    "urn:srcos:run:dataclass-currency-logistic-eval-001"
+  ]
+}
