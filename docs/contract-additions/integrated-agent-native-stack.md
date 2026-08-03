@@ -1,3 +1,5 @@
+> **Companion:** the app-by-app census lives in [macOS → SourceOS replacement & enhancement matrix](./macos-replacement-matrix.md).
+
 # SourceOS Integrated Agent-Native Stack v0.1
 
 ## Purpose

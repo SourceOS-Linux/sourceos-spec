@@ -1,0 +1,244 @@
+<title>Semantic Holography + Ghostspace — Unified Framework</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --paper:#eceff5; --paper2:#f5f7fb; --card:#ffffff; --ink:#141b2c; --ink2:#54607a; --faint:#8792ab; --rule:#dde3ef;
+  --atzilut:#7b52d6; --beriah:#3762d6; --yetzirah:#1f9188; --assiah:#c05f38;
+  --accent:#1787a0; --grid:#dde3ef;
+  --disp:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --paper:#0a0e18; --paper2:#161e30; --card:#111726; --ink:#e8edf7; --ink2:#8b96b0; --faint:#586179; --rule:#212b42;
+  --atzilut:#c9a9ff; --beriah:#7aa2ff; --yetzirah:#5cc9c0; --assiah:#e8926b; --accent:#4fd0e0; --grid:#212b42;
+}}
+:root[data-theme="light"]{--paper:#eceff5;--paper2:#f5f7fb;--card:#ffffff;--ink:#141b2c;--ink2:#54607a;--faint:#8792ab;--rule:#dde3ef;--atzilut:#7b52d6;--beriah:#3762d6;--yetzirah:#1f9188;--assiah:#c05f38;--accent:#1787a0;--grid:#dde3ef}
+:root[data-theme="dark"]{--paper:#0a0e18;--paper2:#161e30;--card:#111726;--ink:#e8edf7;--ink2:#8b96b0;--faint:#586179;--rule:#212b42;--atzilut:#c9a9ff;--beriah:#7aa2ff;--yetzirah:#5cc9c0;--assiah:#e8926b;--accent:#4fd0e0;--grid:#212b42}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13px;line-height:1.5;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:26px 26px;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono)}.eq{font-family:var(--disp);font-style:italic}
+.eq sub{font-style:normal;font-size:.72em}
+.wrap{max-width:1200px;margin:0 auto;padding:26px 22px 54px}
+header.top{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:20px;display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+header.top h1{font-family:var(--disp);font-weight:600;font-size:29px;line-height:1.05;margin:0;letter-spacing:.2px;text-wrap:balance;max-width:22ch}
+header.top .tag{color:var(--ink2);font-size:12.5px;font-style:italic;font-family:var(--disp);max-width:40ch}
+.tgl{margin-left:auto;background:none;border:1px solid var(--rule);border-radius:7px;width:32px;height:32px;color:var(--ink2);cursor:pointer}
+.poster{display:grid;grid-template-columns:230px 1fr 300px;gap:16px;align-items:start}
+@media (max-width:940px){.poster{grid-template-columns:1fr}}
+.col{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:14px 15px;box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.card h2{font-family:var(--disp);font-size:11px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent);margin:0 0 11px}
+/* four spaces */
+.space{display:grid;grid-template-columns:40px 1fr;gap:11px;align-items:center;padding:9px 0;border-top:1px solid var(--rule)}
+.space:first-of-type{border-top:none}
+.space .g{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;font-size:19px;color:#fff}
+.space .nm{font-family:var(--disp);font-size:15px;font-weight:600}
+.space .nm small{display:block;font-family:var(--sans);font-style:normal;font-size:10.5px;color:var(--ink2);font-weight:400;letter-spacing:.2px;margin-top:1px}
+/* generic svg block */
+svg{display:block;width:100%;height:auto;overflow:visible}
+.cap{font-size:11px;color:var(--ink2);margin-top:8px;line-height:1.45}
+.cap b{color:var(--ink)}
+/* metrics list */
+.metric{display:grid;grid-template-columns:1fr;gap:2px;padding:9px 0;border-top:1px solid var(--rule)}
+.metric:first-of-type{border-top:none}
+.metric .f{font-family:var(--disp);font-style:italic;font-size:15px;color:var(--ink)}
+.metric .f sub{font-style:normal;font-size:.68em;color:var(--ink2)}
+.metric .d{font-size:11px;color:var(--ink2)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+.chip{display:flex;align-items:center;gap:7px;background:var(--paper2);border:1px solid var(--rule);border-radius:20px;padding:5px 12px;font-size:11.5px}
+.chip .dot{width:8px;height:8px;border-radius:50%}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:16px;padding-top:12px;border-top:1px solid var(--rule);font-size:11px;color:var(--ink2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:16px;height:0;border-top:2px solid var(--ink2);display:inline-block}
+.legend i.dash{border-top-style:dashed}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Semantic Holography <span style="color:var(--accent)">+</span> Ghostspace</h1>
+    <span class="tag">Unified framework — four spaces, four fibrations, a life-mirror automaton, and the metrics that keep the ghost honest.</span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button>
+  </header>
+
+  <div class="poster">
+    <!-- LEFT: four spaces + genesis -->
+    <div class="col">
+      <div class="card">
+        <h2>Four Spaces</h2>
+        <div class="space"><span class="g" style="background:var(--atzilut)">א</span><span class="nm">Atzilut<small>Emanation · anchor ontology (kernel/source)</small></span></div>
+        <div class="space"><span class="g" style="background:var(--beriah)">ב</span><span class="nm">Beriah<small>Creation · system-space</small></span></div>
+        <div class="space"><span class="g" style="background:var(--yetzirah)">י</span><span class="nm">Yetzirah<small>Formation · user-space</small></span></div>
+        <div class="space"><span class="g" style="background:var(--assiah)">ה</span><span class="nm">Assiah<small>Action · agent + twin-bridge</small></span></div>
+        <div class="cap">Each space is a base for a fibration; the twin-bridge (Assiah) is where the mirror closes.</div>
+      </div>
+
+      <div class="card">
+        <h2>Genesis Braid · T₀–T₁₁</h2>
+        <svg viewBox="0 0 210 150" role="img" aria-label="Twelve-step genesis braid">
+          <g id="braid"></g>
+        </svg>
+        <div class="cap"><b>Sealed install sequence.</b> Inception → Orientation → Unity → Defense → Kernel → Completion (twin-bridge) → Re-Container → Mesh → Anchor → Recur → Bind → Witness. Each step emits one signed artifact.</div>
+      </div>
+
+      <div class="card">
+        <h2>Substrate</h2>
+        <div class="chips">
+          <span class="chip"><span class="dot" style="background:var(--yetzirah)"></span>PoL heartbeat</span>
+          <span class="chip"><span class="dot" style="background:var(--beriah)"></span>Heads + dm-verity</span>
+          <span class="chip"><span class="dot" style="background:var(--atzilut)"></span>SDF / Akasha ledger</span>
+        </div>
+        <div class="cap">Measured boot seals Atzilut; the Proof-of-Life heartbeat is the automaton's clock — a missed beat is itself a transition.</div>
+      </div>
+    </div>
+
+    <!-- CENTER: fibrations + state machine -->
+    <div class="col">
+      <div class="card">
+        <h2>Four Fibrations · π : E → B</h2>
+        <svg viewBox="0 0 380 190" role="img" aria-label="Fibration diagram">
+          <!-- total space -->
+          <text x="8" y="24" class="mono" font-size="11" fill="var(--ink2)">total space E</text>
+          <rect x="150" y="10" width="90" height="30" rx="6" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="195" y="30" text-anchor="middle" font-family="var(--disp)" font-style="italic" font-size="16" fill="var(--ink)">E</text>
+          <!-- fibers B and B11 -->
+          <rect x="40" y="70" width="66" height="28" rx="6" fill="var(--paper2)" stroke="var(--beriah)" stroke-width="1.5"/>
+          <text x="73" y="89" text-anchor="middle" font-family="var(--disp)" font-style="italic" font-size="15" fill="var(--ink)">B</text>
+          <rect x="278" y="70" width="66" height="28" rx="6" fill="var(--assiah)" fill-opacity="0.18" stroke="var(--assiah)" stroke-width="1.5"/>
+          <text x="311" y="89" text-anchor="middle" font-family="var(--disp)" font-style="italic" font-size="14" fill="var(--ink)">B₁₁</text>
+          <!-- projections -->
+          <g stroke="var(--ink2)" stroke-width="1.3" fill="none" marker-end="url(#ah)">
+            <path d="M175 42 L 96 68"/>
+            <path d="M195 42 L 195 118"/>
+            <path d="M215 42 L 292 68"/>
+          </g>
+          <text x="120" y="52" class="eq" font-size="13" fill="var(--ink2)">π</text>
+          <text x="200" y="60" class="eq" font-size="13" fill="var(--ink2)">π<tspan font-size="9" dy="3">x</tspan></text>
+          <text x="258" y="52" class="eq" font-size="13" fill="var(--ink2)">π</text>
+          <!-- base -->
+          <line x1="20" y1="140" x2="360" y2="140" stroke="var(--ink)" stroke-width="1.5"/>
+          <text x="195" y="158" text-anchor="middle" font-family="var(--disp)" font-style="italic" font-size="13" fill="var(--ink2)">base B — surfaces are sections s : B → E</text>
+          <g id="sections"></g>
+          <defs><marker id="ah" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 z" fill="var(--ink2)"/></marker></defs>
+        </svg>
+        <div class="cap">One fibration per space. A <b>surface</b> is a section of its bundle; the <b>ghost</b> B₁₁ is the fiber the twin reconstructs. Holography = the whole is legible from any fiber.</div>
+      </div>
+
+      <div class="card">
+        <h2>Life-Mirror State Machine</h2>
+        <svg viewBox="0 0 380 150" role="img" aria-label="Life-mirror state machine">
+          <defs><marker id="a2" markerWidth="8" markerHeight="8" refX="6.5" refY="3.5" orient="auto"><path d="M0 0 L7 3.5 L0 7 z" fill="var(--ink2)"/></marker></defs>
+          <g id="states"></g>
+        </svg>
+        <div class="cap"><b>NORMAL → WATCHFUL → SAFE-HALT → QUARANTINE.</b> Escalation is automatic and fail-closed; de-escalation requires consent → verify → rollback. Live view: the B₁₁ automaton surface.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: metrics + tripwire -->
+    <div class="col">
+      <div class="card">
+        <h2>Δ-Surface Metrics</h2>
+        <div class="cap" style="margin:0 0 8px">Compare a live surface <span class="eq">S</span> with its ghost <span class="eq">B₁₁</span>:</div>
+        <div class="metric"><span class="f">J(S, B₁₁) = |S ∩ B₁₁| / |S ∪ B₁₁|</span><span class="d">Jaccard — structural overlap</span></div>
+        <div class="metric"><span class="f">JS(P‖Q) = ½KL(P‖M) + ½KL(Q‖M)</span><span class="d">Jensen–Shannon divergence, M = ½(P+Q)</span></div>
+        <div class="metric"><span class="f">Aff<sub>1</sub> = 1 − √JS</span><span class="d">affinity — how faithful the mirror is</span></div>
+        <div class="metric"><span class="f">F<sub>s</sub> = d(surface) / dt</span><span class="d">surface flow — rate of drift</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Flow / Thermo-Info</h2>
+        <div class="metric"><span class="f">ΔF<sub>s</sub> = H<sub>s</sub> − T<sub>s</sub> S<sub>s</sub></span><span class="d">free energy: coverage H less volatility·entropy</span></div>
+        <div class="metric"><span class="f">ΔC<sub>s</sub> = ∂H<sub>s</sub> / ∂T<sub>s</sub></span><span class="d">coherence capacity</span></div>
+        <div class="metric"><span class="f">R<sub>e</sub> = useful / total,&nbsp; ℓ = 1 − R<sub>e</sub></span><span class="d">efficiency ratio &amp; slippage</span></div>
+        <div class="metric"><span class="f">η = F<sub>out</sub> / F<sub>in</sub></span><span class="d">throughput efficiency</span></div>
+      </div>
+
+      <div class="card">
+        <h2>Tripwire Refusal Scoring</h2>
+        <svg viewBox="0 0 280 130" role="img" aria-label="Refusal scoring sigmoid">
+          <defs><linearGradient id="fill" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.16"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+          <!-- axes -->
+          <line x1="26" y1="10" x2="26" y2="104" stroke="var(--rule)" stroke-width="1"/>
+          <line x1="26" y1="104" x2="270" y2="104" stroke="var(--rule)" stroke-width="1"/>
+          <!-- threshold -->
+          <line x1="148" y1="10" x2="148" y2="104" stroke="var(--ink2)" stroke-dasharray="3 3" stroke-width="1"/>
+          <text x="152" y="20" font-size="9.5" class="mono" fill="var(--ink2)">θ</text>
+          <!-- sigmoid path + fill -->
+          <path id="sig" fill="none" stroke="var(--accent)" stroke-width="2.2"/>
+          <path id="sigfill" fill="url(#fill)" stroke="none"/>
+          <text x="30" y="100" font-size="9.5" class="mono" fill="var(--ink2)">softcheck</text>
+          <text x="200" y="26" font-size="9.5" class="mono" fill="var(--accent)">tripwire</text>
+          <text x="120" y="122" font-size="10" class="eq" fill="var(--ink2)">risk(x) →</text>
+          <text x="2" y="16" font-size="10" class="eq" fill="var(--ink2)">r</text>
+        </svg>
+        <div class="metric" style="border:none;padding-top:4px"><span class="f">r(x) = σ( β·(risk(x) − θ) )</span><span class="d">below θ: soft-check; above: trip → revoke/rotate or SAFE-HALT</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="legend">
+    <span><i></i> base / projection π</span>
+    <span><i class="dash"></i> section (surface)</span>
+    <span><span style="width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block"></span> refusal / tripwire</span>
+    <span style="margin-left:auto;font-style:italic;font-family:var(--disp)">Every glyph here is true — regenerable from source, not drawn.</span>
+  </div>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+// genesis braid: 12 nodes in two rows with crossing arcs
+(function(){
+  const g=document.getElementById('braid');const labels=['0','1','2','3','4','5','6','7','8','9','10','11'];
+  const cols=6, cw=32, x0=14;
+  const pts=labels.map((l,i)=>({x:x0+(i%cols)*cw, y:i<6?30:96, l}));
+  // arcs between consecutive
+  for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];const p=document.createElementNS(NS,'path');
+    const my=(a.y+b.y)/2;p.setAttribute('d',`M${a.x} ${a.y} Q ${(a.x+b.x)/2} ${my} ${b.x} ${b.y}`);
+    p.setAttribute('fill','none');p.setAttribute('stroke','var(--faint)');p.setAttribute('stroke-width','1');g.appendChild(p);}
+  const hue=['--atzilut','--beriah','--yetzirah','--assiah'];
+  pts.forEach((pt,i)=>{const c=document.createElementNS(NS,'circle');c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y);c.setAttribute('r','9');
+    c.setAttribute('fill',`var(${hue[i%4]})`);g.appendChild(c);
+    const t=document.createElementNS(NS,'text');t.setAttribute('x',pt.x);t.setAttribute('y',pt.y+3.5);t.setAttribute('text-anchor','middle');
+    t.setAttribute('font-size','8.5');t.setAttribute('fill','#fff');t.setAttribute('font-family','var(--mono)');t.textContent=pt.l;g.appendChild(t);});
+})();
+// fibration sections: dashed vertical ticks from base up to points
+(function(){
+  const g=document.getElementById('sections');const xs=[70,120,175,235,300];
+  xs.forEach(x=>{const y=64+((x*7)%40);
+    const l=document.createElementNS(NS,'line');l.setAttribute('x1',x);l.setAttribute('y1',140);l.setAttribute('x2',x);l.setAttribute('y2',y);
+    l.setAttribute('stroke','var(--yetzirah)');l.setAttribute('stroke-width','1');l.setAttribute('stroke-dasharray','2 2');g.appendChild(l);
+    const c=document.createElementNS(NS,'circle');c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r','3.4');c.setAttribute('fill','var(--yetzirah)');g.appendChild(c);});
+})();
+// state machine
+(function(){
+  const g=document.getElementById('states');
+  const S=[{x:36,t:'NORMAL',c:'--yetzirah'},{x:132,t:'WATCHFUL',c:'--assiah'},{x:236,t:'SAFE-HALT',c:'--accent'},{x:330,t:'QUARANTINE',c:'--atzilut'}];
+  const y=44,w=78,h=30;
+  // forward arrows
+  for(let i=0;i<S.length-1;i++){const a=document.createElementNS(NS,'line');
+    a.setAttribute('x1',S[i].x+w/2+2);a.setAttribute('y1',y+h/2);a.setAttribute('x2',S[i+1].x-w/2-2);a.setAttribute('y2',y+h/2);
+    a.setAttribute('stroke','var(--ink2)');a.setAttribute('stroke-width','1.4');a.setAttribute('marker-end','url(#a2)');g.appendChild(a);}
+  // recovery arc back from QUARANTINE to NORMAL
+  const rec=document.createElementNS(NS,'path');
+  rec.setAttribute('d',`M330 ${y+h} Q 183 128 36 ${y+h}`);rec.setAttribute('fill','none');rec.setAttribute('stroke','var(--yetzirah)');
+  rec.setAttribute('stroke-width','1.4');rec.setAttribute('stroke-dasharray','4 3');rec.setAttribute('marker-end','url(#a2)');g.appendChild(rec);
+  const rt=document.createElementNS(NS,'text');rt.setAttribute('x',183);rt.setAttribute('y',124);rt.setAttribute('text-anchor','middle');
+  rt.setAttribute('font-size','9.5');rt.setAttribute('fill','var(--yetzirah)');rt.setAttribute('font-family','var(--mono)');rt.textContent='consent → verify → rollback';g.appendChild(rt);
+  S.forEach(s=>{const r=document.createElementNS(NS,'rect');r.setAttribute('x',s.x-w/2);r.setAttribute('y',y);r.setAttribute('width',w);r.setAttribute('height',h);
+    r.setAttribute('rx',7);r.setAttribute('fill',`var(${s.c})`);r.setAttribute('fill-opacity','0.16');r.setAttribute('stroke',`var(${s.c})`);r.setAttribute('stroke-width','1.5');g.appendChild(r);
+    const t=document.createElementNS(NS,'text');t.setAttribute('x',s.x);t.setAttribute('y',y+h/2+3.5);t.setAttribute('text-anchor','middle');
+    t.setAttribute('font-size','9.5');t.setAttribute('font-weight','600');t.setAttribute('fill','var(--ink)');t.setAttribute('font-family','var(--mono)');t.textContent=s.t;g.appendChild(t);});
+})();
+// sigmoid
+(function(){
+  const sig=document.getElementById('sig'),fill=document.getElementById('sigfill');
+  const x0=26,x1=270,y0=104,y1=14,beta=0.09,theta=148;
+  let d='',fd=`M${x0} ${y0} `;
+  for(let px=x0;px<=x1;px+=2){const s=1/(1+Math.exp(-beta*(px-theta)));const py=y0-(y0-y1)*s;
+    d+=(px===x0?'M':'L')+px+' '+py.toFixed(1)+' ';fd+=`L${px} ${py.toFixed(1)} `;}
+  fd+=`L${x1} ${y0} Z`;sig.setAttribute('d',d);fill.setAttribute('d',fd);
+})();
+document.getElementById('tgl').onclick=()=>{const r=document.documentElement;const cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',cur==='dark'?'light':'dark');};
+</script>

@@ -16,3 +16,4 @@ This directory contains discoverability notes for additive SourceOS/SociOS contr
 - Keep implementation code in the owning implementation repository.
 - Do not commit secrets, tokens, private keys, real browser profiles, device-local paths, or user-specific values.
 - If an addition creates a new topology lane, link it from Sociosphere and implementation issues rather than duplicating control logic here.
+- [macOS → SourceOS replacement & enhancement matrix](./macos-replacement-matrix.md) — the app-by-app census (companion to the integrated-agent-native-stack contract)

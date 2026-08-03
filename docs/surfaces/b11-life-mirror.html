@@ -1,0 +1,197 @@
+<title>B11 · Life-Mirror Automaton</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0a0e18; --panel:#111726; --panel2:#161e30; --line:#212b42; --line2:#2c3854;
+  --text:#e8edf7; --muted:#8b96b0; --faint:#586179;
+  --cyan:#4fd0e0; --cyan-dim:#123038;
+  /* automaton semantics */
+  --normal:#43c68a; --watchful:#e0a83a; --halt:#e5594f;
+  --normal-bg:#0f2a1e; --watchful-bg:#2a2210; --halt-bg:#2b1412;
+  /* four worlds / four spaces */
+  --atzilut:#c9a9ff; --beriah:#7aa2ff; --yetzirah:#5cc9c0; --assiah:#e8926b;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; --sans:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#eceff5; --panel:#fff; --panel2:#f5f7fb; --line:#dde3ef; --line2:#c8d1e2;
+  --text:#141b2c; --muted:#54607a; --faint:#8792ab; --cyan:#1787a0; --cyan-dim:#cfeef3;
+  --normal:#1f9e63; --watchful:#a6791b; --halt:#c23a31;
+  --normal-bg:#e0f1e8; --watchful-bg:#f4eed8; --halt-bg:#f7e3e1;
+  --atzilut:#7b52d6; --beriah:#3762d6; --yetzirah:#1f9188; --assiah:#c05f38;
+}}
+:root[data-theme="dark"]{--bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;--text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--normal:#43c68a;--watchful:#e0a83a;--halt:#e5594f;--normal-bg:#0f2a1e;--watchful-bg:#2a2210;--halt-bg:#2b1412;--atzilut:#c9a9ff;--beriah:#7aa2ff;--yetzirah:#5cc9c0;--assiah:#e8926b}
+:root[data-theme="light"]{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--normal:#1f9e63;--watchful:#a6791b;--halt:#c23a31;--normal-bg:#e0f1e8;--watchful-bg:#f4eed8;--halt-bg:#f7e3e1;--atzilut:#7b52d6;--beriah:#3762d6;--yetzirah:#1f9188;--assiah:#c05f38}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1140px;margin:0 auto;padding:22px 20px 56px}
+header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
+.top h1{font-size:19px;margin:0;font-weight:680;letter-spacing:.3px}
+.top .id{font-family:var(--mono);color:var(--cyan);font-size:13px}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:7px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:0 0 20px;max-width:74ch}
+/* state banner */
+.banner{display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--normal);border-radius:12px;padding:16px 20px;margin-bottom:16px}
+.state{display:flex;align-items:center;gap:12px}
+.pulse{width:14px;height:14px;border-radius:50%;background:var(--normal);box-shadow:0 0 0 5px color-mix(in srgb,var(--normal) 22%,transparent);animation:p 2.4s ease-in-out infinite}
+@keyframes p{50%{box-shadow:0 0 0 9px color-mix(in srgb,var(--normal) 8%,transparent)}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+.state .lab{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint)}
+.state .v{font-size:20px;font-weight:720;color:var(--normal);letter-spacing:.4px}
+.sm{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px}
+.sm .s{padding:4px 11px;border-radius:20px;border:1px solid var(--line2);color:var(--faint)}
+.sm .s.on{color:var(--normal);border-color:color-mix(in srgb,var(--normal) 45%,transparent);background:var(--normal-bg);font-weight:600}
+.sm .a{color:var(--faint)}
+.mirror{text-align:right}
+.mirror .lab{font-size:10px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint)}
+.mirror .v{font-family:var(--mono);font-size:15px;color:var(--normal);font-weight:600}
+.mirror .v small{color:var(--muted);font-weight:400}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media (max-width:820px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.card h2{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);font-weight:680;margin:0;padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card h2 .n{margin-left:auto;font-family:var(--mono);color:var(--muted);font-size:10.5px;letter-spacing:0}
+/* four worlds */
+.world{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;padding:12px 16px;border-top:1px solid var(--line)}
+.world:first-of-type{border-top:none}
+.world .glyph{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;font-size:17px;font-weight:600;color:#0a0e18}
+.world .nm{font-weight:600}.world .nm small{display:block;font-family:var(--mono);font-size:10.5px;color:var(--faint);font-weight:400;margin-top:1px}
+.world .st{font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:6px;background:var(--panel2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
+.world .st.ok{color:var(--normal)} .world .st.watch{color:var(--watchful)}
+/* tripwire */
+.trip{padding:14px 16px}
+.tw{margin-top:4px}
+.tw+.tw{margin-top:16px}
+.tw .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.tw .name{font-family:var(--mono);font-size:12px}
+.tw .fired{font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+.tw .fired.never{color:var(--watchful)}
+.bar{height:8px;border-radius:5px;background:var(--panel2);border:1px solid var(--line);overflow:hidden;position:relative}
+.bar i{display:block;height:100%;border-radius:4px}
+.seg{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--faint);margin-top:3px}
+/* loop A-B-Q */
+.loop{display:flex;align-items:center;justify-content:space-around;padding:20px 16px;gap:6px}
+.node{text-align:center;flex:1}
+.node .c{width:52px;height:52px;border-radius:50%;margin:0 auto 8px;display:grid;place-items:center;font-size:19px;font-weight:700;border:2px solid var(--line2);background:var(--panel2)}
+.node.a .c{color:var(--cyan);border-color:color-mix(in srgb,var(--cyan) 55%,transparent)}
+.node.b .c{color:var(--normal);border-color:color-mix(in srgb,var(--normal) 55%,transparent)}
+.node.q .c{color:var(--watchful);border-color:color-mix(in srgb,var(--watchful) 55%,transparent)}
+.node .t{font-size:12px;font-weight:600}.node .d{font-size:11px;color:var(--muted);margin-top:1px}
+.arr{color:var(--faint);font-size:20px;align-self:flex-start;margin-top:16px}
+/* recovery lane */
+.lane{padding:6px 16px 14px}
+.step{display:grid;grid-template-columns:auto 1fr;gap:11px;padding:10px 0;border-top:1px dashed var(--line)}
+.step:first-of-type{border-top:none}
+.step .k{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;padding:3px 8px;border-radius:5px;height:fit-content;white-space:nowrap}
+.k.zero{background:var(--halt-bg);color:var(--halt)} .k.halt{background:var(--halt-bg);color:var(--halt)} .k.consent{background:var(--cyan-dim);color:var(--cyan)}
+.step .txt{font-size:12.5px}.step .txt b{font-weight:600}
+.step .txt .m{color:var(--muted)}
+/* transitions log */
+.log{padding:4px 16px 12px}
+.le{display:grid;grid-template-columns:58px 10px 1fr;gap:9px;align-items:start;padding:8px 0;border-top:1px solid var(--line);font-size:12.5px}
+.le:first-of-type{border-top:none}
+.le .t{font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+.le .g{width:8px;height:8px;border-radius:50%;margin-top:4px}
+.g.n{background:var(--normal)} .g.w{background:var(--watchful)} .g.h{background:var(--halt)}
+.le .m{font-family:var(--mono);font-size:11.5px}.le .why{color:var(--muted);font-size:12px;margin-top:1px}
+.le .seal{font-family:var(--mono);font-size:9.5px;color:var(--faint)}
+.foot{margin-top:22px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+.foot .mono{color:var(--muted)}
+.warnstrip{display:flex;gap:8px;align-items:center;background:var(--watchful-bg);border:1px solid color-mix(in srgb,var(--watchful) 32%,transparent);color:var(--watchful);border-radius:9px;padding:9px 13px;font-size:12px;margin-bottom:16px}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <h1>Life-Mirror Automaton</h1><span class="id">B₁₁ · surface_map</span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button>
+  </header>
+  <p class="sub">The twin mirrors the live system across the four spaces. Deviation drives the automaton <b>NORMAL → WATCHFUL → SAFE-HALT</b>; every transition is receipted and shows its warrant. This is a <i>witness surface</i> — it reads guardrail-fabric decisions, consent-plane state, and netwatch tripwires. It renders the real state or it renders nothing.</p>
+
+  <div class="warnstrip" id="warn">⚠ Liveness check: <b>1 tripwire has never fired</b> — a control that can't be observed firing is SUSPECT until proven. Review <span class="mono">exfil.fanout</span> below.</div>
+
+  <div class="banner" id="banner">
+    <div class="state">
+      <span class="pulse"></span>
+      <div><div class="lab">Automaton state</div><div class="v" id="stateV">NORMAL</div></div>
+    </div>
+    <div class="sm">
+      <span class="s on">NORMAL</span><span class="a">→</span>
+      <span class="s">WATCHFUL</span><span class="a">→</span>
+      <span class="s">SAFE-HALT</span>
+    </div>
+    <div class="mirror"><div class="lab">Twin ⟷ live divergence</div><div class="v" id="divV">0.4% <small>/ 5% trip</small></div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Four spaces <span class="n">consent-plane taints</span></h2>
+      <div id="worlds"></div>
+    </div>
+    <div class="card">
+      <h2>Tripwires <span class="n">soft → hard → trip</span></h2>
+      <div class="trip" id="trips"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>Change loop <span class="n">every mutation: update → verify → consent/rollback</span></h2>
+    <div class="loop">
+      <div class="node a"><div class="c">A</div><div class="t">Update</div><div class="d">signed image / delta staged</div></div>
+      <span class="arr">→</span>
+      <div class="node b"><div class="c">B</div><div class="t">Verify</div><div class="d">seal + eval gate; twin re-mirrors</div></div>
+      <span class="arr">→</span>
+      <div class="node q"><div class="c">Q</div><div class="t">Consent / Rollback</div><div class="d">owner QR-consent, else revert</div></div>
+    </div>
+  </div>
+
+  <div class="grid" style="margin-top:16px">
+    <div class="card">
+      <h2>Response ladder <span class="n">on trip</span></h2>
+      <div class="lane">
+        <div class="step"><span class="k zero">zero-response</span><div class="txt"><b>Revoke &amp; rotate.</b> <span class="m">A soft trip with no operator present → credentials revoked + rotated automatically; blast radius contained without waiting.</span></div></div>
+        <div class="step"><span class="k halt">SAFE-HALT</span><div class="txt"><b>Owner-operated recovery.</b> <span class="m">A hard trip freezes mutating surfaces; only a physically-present owner can resume — no remote path re-enables the system.</span></div></div>
+        <div class="step"><span class="k consent">consent-QR</span><div class="txt"><b>Verify → rollback.</b> <span class="m">Recovery requires a scanned owner-consent token; the automaton verifies, then either commits or rolls back to the last sealed generation.</span></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Recent transitions <span class="n">receipted</span></h2>
+      <div class="log" id="log"></div>
+    </div>
+  </div>
+
+  <p class="foot">
+    Reads: <span class="mono">guardrail-fabric PolicyDecision</span> · <span class="mono">consent-plane/001</span> · <span class="mono">turtle-netwatch</span> tripwires · sealed <span class="mono">AutonomyAdmissionReceipt</span>.<br>
+    B₁₁ · fail-closed · a never-fired control is surfaced as SUSPECT, not hidden.
+  </p>
+</div>
+
+<script>
+const WORLDS=[
+ {g:'א',c:'--atzilut',nm:'Atzilut',sub:'emanation · kernel / source',st:'sealed',cls:'ok'},
+ {g:'ב',c:'--beriah',nm:'Beriah',sub:'creation · system-space',st:'nominal',cls:'ok'},
+ {g:'י',c:'--yetzirah',nm:'Yetzirah',sub:'formation · user-space',st:'nominal',cls:'ok'},
+ {g:'ה',c:'--assiah',nm:'Assiah',sub:'action · agent + twin-bridge',st:'watching',cls:'watch'},
+];
+const TRIPS=[
+ {name:'consent.denied-rate',pct:14,fired:'last fired 3h ago',never:false},
+ {name:'twin.divergence',pct:8,fired:'last fired 2d ago',never:false},
+ {name:'exfil.fanout',pct:2,fired:'never fired',never:true},
+];
+const LOG=[
+ {t:'12:04:11',g:'w',m:'NORMAL → WATCHFUL',why:'consent.denied-rate crossed soft threshold (agent egress attempts)',seal:'sha256:ca43bf38…'},
+ {t:'12:05:02',g:'n',m:'WATCHFUL → NORMAL',why:'rate settled; netwatch throttled pid:1234; no owner action needed',seal:'sha256:9f7712ac…'},
+ {t:'09:20:44',g:'w',m:'NORMAL → WATCHFUL',why:'twin.divergence 4.1% after staged update A→B (verify pending)',seal:'sha256:2b384a17…'},
+ {t:'09:22:10',g:'n',m:'WATCHFUL → NORMAL',why:'verify passed, owner QR-consent committed generation',seal:'sha256:db6f9677…'},
+];
+const el=id=>document.getElementById(id);
+el('worlds').innerHTML=WORLDS.map(w=>`<div class="world">
+  <span class="glyph" style="background:var(${w.c})">${w.g}</span>
+  <div class="nm">${w.nm}<small>${w.sub}</small></div>
+  <span class="st ${w.cls}">${w.st}</span></div>`).join('');
+el('trips').innerHTML=TRIPS.map(t=>{const col=t.pct>60?'--halt':t.pct>25?'--watchful':'--normal';
+ return `<div class="tw"><div class="row"><span class="name">${t.name}</span><span class="fired ${t.never?'never':''}">${t.fired}</span></div>
+  <div class="bar"><i style="width:${Math.max(t.pct,3)}%;background:var(${col})"></i></div>
+  <div class="seg"><span>soft</span><span>hard</span><span>trip</span></div></div>`}).join('');
+el('log').innerHTML=LOG.map(l=>`<div class="le"><span class="t">${l.t}</span><span class="g ${l.g}"></span>
+  <div><span class="m">${l.m}</span><div class="why">${l.why}</div><div class="seal">${l.seal}</div></div></div>`).join('');
+el('tgl').onclick=()=>{const r=document.documentElement;const cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',cur==='dark'?'light':'dark');};
+</script>
