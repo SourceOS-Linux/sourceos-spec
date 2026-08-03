@@ -30,7 +30,7 @@ The rule (from the contract): a replacement is not "done" until it is **agent-na
 | Calendar | CalDAV via prophet-workspace | prophet-workspace | agent schedules with consent + receipts | E2 E3 | CalDAV, radicale | partial |
 | Photos | owned media library | *unassigned* | on-device model plane for tagging (governed); no cloud egress by default | E6 E1 | — | **gap** |
 | Music | owned player + library | *unassigned* | local-first, no vendor account | — | — | **gap** |
-| System Settings | SociOS settings + **consent/receipts pane** | source-os | the consent plane + warrant/receipts are *visible & editable* — the E11 UX macOS never surfaces | E11 E1 | GNOME Settings | partial |
+| System Settings | SociOS settings + **[consent/receipts pane](./e11-consent-receipts-ux.md)** | source-os | the consent plane + warrant/receipts are *visible & editable* — the E11 UX macOS never surfaces | E11 E1 | GNOME Settings | spec |
 | Preview / Quick Look | owned viewer | *unassigned* | render locally-verified, no remote fetch | E7 | evince/poppler | gap |
 | Activity Monitor | **turtle-netwatch** + turtle-diagnose + System Graph | TurtleTerm, hellgraph | processes/sockets become a queryable System Graph; anomalies → consent-gated Governor actions | E1 E4 | ss/lsof, hellgraph | **built** |
 | Automator / Shortcuts | agent **App-Intents** (per-app intent ontology) | ontogenesis, agent-machine | intents are purpose-bound + consent-gated, not capability-only | E1 E10 | — | partial |
