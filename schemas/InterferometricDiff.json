@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/InterferometricDiff.json",
+  "title": "InterferometricDiff",
+  "description": "The primary read over a MultiversealTwin: not 'return the score' but 'return the fringe' — the interference between two identity states. Reading phase (Delta-phi) detects change far below the magnitude at which a scalar score would move: it is the leading indicator, not the lagging one. This is the operation that earns 'SocioProphet' — the prophet reads fringes, not scores. It also yields tamper-evidence for free: because the encoding is holographic, a local unauthorized write perturbs the fringe globally, so tampering is detectable even without knowing what was altered. An AscensionReading (the holder's private reputation-state abstracted onto inner axes) is the on-device, self-directed special case of a live diff of the holder's own twin over time; this contract is the general, watch/replay-facing read.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "capturedAt", "twinRef", "mode", "watcher", "fringe"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:interferometric-diff:", "description": "Stable URN for this read." },
+    "type": { "const": "InterferometricDiff", "description": "Type discriminator; always 'InterferometricDiff'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract." },
+    "capturedAt": { "type": "string", "format": "date-time", "description": "When the read was taken." },
+    "twinRef": { "type": "string", "pattern": "^urn:srcos:multiverseal-twin:", "description": "The twin being read." },
+    "mode": {
+      "type": "string",
+      "enum": ["live", "double-exposure", "time-averaged"],
+      "description": "live = Delta-phi(H_live, H_stored) real-time drift/tamper map; double-exposure = fringe(H(tau1), H(tau2)) the versioned changelog between two commits; time-averaged = spectrum of periodic behavior (fringe order = amplitude of each behavioral mode)."
+    },
+    "watcher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contextRef", "authorized"],
+      "description": "Who is reading, and with which reference. Each relying party unbinds with THEIR r_c to see THEIR angle; un-authored angles unbind to noise (rainbow angle-bounding). A watchable persona must be authorized under the subject key or a subject-signed capability (impersonation wall).",
+      "properties": {
+        "contextRef": { "type": "string", "description": "The reference r_c the watcher unbinds with (their sanctioned angle)." },
+        "authorized": { "const": true, "description": "The watch is within a sanctioned reference subspace. Un-authored angles cannot be watched. Always true for a valid diff." }
+      }
+    },
+    "fringe": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deltaPhase", "subThreshold", "tamperGlobalPerturbation"],
+      "description": "The fringe read itself. Phase is never collapsed to magnitude at ingest, so this read is available.",
+      "properties": {
+        "deltaPhase": { "type": "array", "items": { "type": "number" }, "description": "The interferometric fringe Delta-phi — where and how much state moved, per component." },
+        "magnitude": { "type": "array", "items": { "type": "number" }, "description": "Optional raw-score magnitudes (the lagging indicator), for reference only." },
+        "subThreshold": { "const": true, "description": "Asserts this read surfaces change below scalar-score movement (leading indicator). Always true — it is the point of the contract." },
+        "tamperGlobalPerturbation": { "const": true, "description": "A local unauthorized write shows up as a global fringe perturbation; tamper is detectable without knowing what changed. Always true." },
+        "propagated": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Optional 'replay' = unbind then propagate forward to a prophet forecast of the reconstructed future state.",
+          "properties": {
+            "horizon": { "type": "string", "description": "Forecast horizon." },
+            "digest": { "type": "string", "description": "Digest of the forecast reconstruction." }
+          }
+        }
+      }
+    }
+  }
+}
