@@ -69,3 +69,23 @@ Spec cannot close these; they are silicon, not software. State them so nothing i
 1. Every `gap`/`partial` row is a work item; the highest-leverage gaps are **lampstand** (Spotlight), **owned messaging**, **Photos/Music/Time-Machine**, and completing the **model plane** + **identity** despite the hardware ceiling.
 2. A row moves to `built` only when it satisfies the [contract](./integrated-agent-native-stack.md): agent-native + accessible-by-default + its seam's purple-team test passes.
 3. `hw` rows can reach `built` in software while remaining honestly capped by the register above.
+
+## Long tail (audit-flagged as unspecified — now enumerated, mostly `gap`)
+
+| macOS | SourceOS replacement | Owning repo | Superiority | E-IDs | Status |
+|---|---|---|---|---|---|
+| Contacts | CardDAV via prophet-workspace | prophet-workspace | agent reads with consent+receipt; no cloud | E3 E1 | gap |
+| Reminders | tasks in goose-notes (Taskwarrior adapter) | goose-notes | agent-created tasks are typed intents + receipted | E1 | partial |
+| Maps | owned map surface (offline-first) | *unassigned* | no location egress by default; consent-gated | E1 | gap |
+| Weather | investor-insights weather mesh (TWC/IBM cartridge) | investor-insights | governed data cartridge, not a vendor widget | E6 | partial |
+| Clock / World Clock | GNOME clocks + agent alarms | source-os | agent alarms are intents | — | gap |
+| Home (HomeKit) | citizen-IoT fogstack | fogstack | sovereign IoT, no vendor cloud | E3 | partial |
+| Passwords | sovereign identity vault (E9) | agent-registry | agent-scoped, portable; TPM-rooted where available | E9 | gap · hw |
+| Screen Time | consent/receipts activity view (E11) | source-os | the operator sees agent+human activity as receipts, not surveillance | E11 E4 | gap |
+| Disk Utility | GNOME Disks + snapshot tooling | source-os | snapshots tie to E12 backup plane | E12 | gap |
+| Console / logs | telemetry plane + System Graph | hellgraph, telemetry | logs are queryable graph + receipts | E4 | partial |
+| FaceTime / Screen Sharing | mesh A/V (owned, Matrix/WebRTC) | sourceos-shell | first-class, on the personal mesh | E3 | gap |
+| AirPlay | mesh cast (owned) | memory-mesh | sovereign cast over the mesh | E3 | gap |
+| Dictation | Noetica on-device STT (whisper.cpp) | goose-voice | on-device, no cloud STT (a Guard Goose requirement) | E2 | partial |
+
+> With this, the census enumerates **~37 stock-macOS surfaces** — the full replacement scope. `gap` rows are the feature-gaps-zero backlog; `hw` rows are honestly capped by the register above.
