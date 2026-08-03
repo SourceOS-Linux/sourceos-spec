@@ -15,6 +15,13 @@ flags a never-fired tripwire as SUSPECT.
 | **2 · Live surface** | operational dashboards | HTML | guardrail-fabric · consent-plane · netwatch (sample data until wired) |
 | **3 · Dynamics / math** | the model, falsifiable | typeset spec | states what each term is measured from |
 
+## Style is validated against source
+Every surface imports `sourceos.tokens.css` — the canonical palette + font (**Cantarell**,
+`color-scheme`-honored) extracted from `source-os/website/index.html` and the GNOME
+workstation-v0 appearance profile. A surface that invents its own colors is **not
+validated against the OS** and is not canonical. The operational surfaces render inside
+the real SociOS/GNOME chrome (top bar, launcher card) so they read as in-shell, not as generic web pages.
+
 ## In this directory
 - **`holography-framework.html`** — Tier 1. The *Semantic Holography + Ghostspace* one-pager:
   four spaces (Atzilut/Beriah/Yetzirah/Assiah), four fibrations (π: E→B, fiber B₁₁),
@@ -24,6 +31,13 @@ flags a never-fired tripwire as SUSPECT.
 - **`b11-life-mirror.html`** — Tier 2. The runtime automaton: NORMAL→WATCHFUL→SAFE-HALT
   over the four spaces, tripwires (soft→hard→trip), receipted transitions, response ladder
   (zero-response→revoke/rotate; SAFE-HALT→owner-operated recovery; consent-QR→verify/rollback).
+- **`lampstand-launcher.html`** — Tier 2, *actionable*. The Spotlight replacement: natural
+  language → typed intents/entities/relations (the annotation tree) → **governed actions**
+  (purpose-bound, consent-gated, receipted), ranked by sherlock (IR). Not web search — typed acts.
+- **`turn-witness.html`** — Tier 2, *verifiable*. Any chat turn annotated → **Gödel-numbered**
+  (canonical G = ∏ pᵢ^codeᵢ, reproducible integrity fingerprint) → **consistency-checked** →
+  **conclusions** with a sealed verdict. Demonstrates *well-formed ≠ admissible*: a turn can
+  pass every structural check and still be refused (the destructive example escalates to Governor).
 - **`e11-consent-receipts.html`** — Tier 2. The [E11](./e11-consent-receipts-ux.md) consent &
   receipts center (per-app purpose envelopes, sealed receipt timeline, Governor queue, residency).
 

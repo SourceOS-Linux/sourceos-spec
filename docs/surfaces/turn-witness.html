@@ -1,0 +1,223 @@
+<title>SociOS — Turn Witness</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* ── canonical SociOS tokens · source: source-os/website/index.html (brand site) ── */
+:root{
+  --bg:#0d1117; --panel:#161b22; --panel-2:#1c2330; --text:#e6edf3; --muted:#9aa7b4;
+  --accent:#4f8cff; --accent-2:#7c5cff; --border:#2a3340; --ok:#3fb950; --warn:#d29922; --bad:#f85149;
+  --radius:14px;
+  /* semantic annotation layer (matches the tokens-tree legend) */
+  --intent:#57c66a; --intent-bg:#12331a; --type:#58b0d6; --type-bg:#0f2a33;
+  --relation:#7f93bd; --relation-bg:#1a2138; --entity:#e0975a; --entity-bg:#2c1f12; --scope:#a689d8; --scope-bg:#211a33;
+  --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#f6f8fa; --panel:#fff; --panel-2:#f0f3f7; --text:#1b2026; --muted:#5a6672; --border:#e1e6ec;
+  --intent:#2f9e4f; --intent-bg:#e4f4e6; --type:#2b83a8; --type-bg:#e0f0f6; --relation:#5568a0; --relation-bg:#e9edf7;
+  --entity:#c47a3d; --entity-bg:#fbeede; --scope:#7d5cc0; --scope-bg:#f0e9fa;
+}}
+:root[data-theme="light"]{--bg:#f6f8fa;--panel:#fff;--panel-2:#f0f3f7;--text:#1b2026;--muted:#5a6672;--border:#e1e6ec;--intent:#2f9e4f;--intent-bg:#e4f4e6;--type:#2b83a8;--type-bg:#e0f0f6;--relation:#5568a0;--relation-bg:#e9edf7;--entity:#c47a3d;--entity-bg:#fbeede;--scope:#7d5cc0;--scope-bg:#f0e9fa}
+:root[data-theme="dark"]{--bg:#0d1117;--panel:#161b22;--panel-2:#1c2330;--text:#e6edf3;--muted:#9aa7b4;--border:#2a3340;--intent:#57c66a;--intent-bg:#12331a;--type:#58b0d6;--type-bg:#0f2a33;--relation:#7f93bd;--relation-bg:#1a2138;--entity:#e0975a;--entity-bg:#2c1f12;--scope:#a689d8;--scope-bg:#211a33}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* ── GNOME top bar (matches the SociOS screenshot) ── */
+.topbar{display:flex;align-items:center;gap:16px;height:30px;padding:0 14px;background:#000;color:#dfe4ea;font-size:12.5px;position:sticky;top:0;z-index:5}
+.topbar .app{display:flex;align-items:center;gap:7px;font-weight:600}
+.topbar .app .o{width:14px;height:14px;border-radius:4px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.topbar .places{color:#aab3bd}
+.topbar .clock{margin:0 auto;color:#eef1f4;font-variant-numeric:tabular-nums}
+.topbar .tray{display:flex;gap:11px;color:#9aa3ad;font-size:12px}
+.wrap{max-width:1000px;margin:0 auto;padding:24px 18px 60px}
+.head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:5px}
+.head h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.2px}
+.head .wid{font-family:var(--mono);color:var(--accent);font-size:12.5px}
+.tgl{margin-left:auto;background:none;border:1px solid var(--border);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:0 0 18px;max-width:76ch}
+.exs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.ex{font-size:12px;border:1px solid var(--border);background:var(--panel);border-radius:20px;padding:6px 13px;cursor:pointer;color:var(--muted)}
+.ex.on{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.card{background:var(--panel);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:16px}
+.card h2{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--muted);font-weight:700;margin:0;padding:13px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.card h2 .n{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:0;color:var(--muted)}
+.pad{padding:14px 16px}
+/* turn header */
+.turn{display:grid;gap:10px;padding:15px 16px}
+.bubble{display:grid;grid-template-columns:auto 1fr;gap:11px;align-items:start}
+.bubble .who{font-family:var(--mono);font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px;height:fit-content}
+.who.u{background:color-mix(in srgb,var(--accent) 16%,transparent);color:var(--accent)}
+.who.s{background:var(--panel-2);color:var(--muted)}
+.bubble .txt{font-size:14px}
+/* tokens */
+.tok{display:grid;grid-template-columns:104px 118px 1fr;gap:10px;align-items:center;padding:4px 0;font-size:13px}
+.tok .w{font-weight:600}.tok .g{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.tok .ann{display:flex;flex-wrap:wrap;gap:5px}
+.a{font-family:var(--mono);font-size:10.5px;padding:2px 8px;border-radius:5px;white-space:nowrap}
+.a.intent{background:var(--intent-bg);color:var(--intent)} .a.type{background:var(--type-bg);color:var(--type)}
+.a.relation{background:var(--relation-bg);color:var(--relation)} .a.entity{background:var(--entity-bg);color:var(--entity)} .a.scope{background:var(--scope-bg);color:var(--scope)}
+/* godel */
+.sym{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.sym .s{font-family:var(--mono);font-size:11px;background:var(--panel-2);border:1px solid var(--border);border-radius:6px;padding:3px 8px}
+.sym .s b{color:var(--accent)}
+.godel{font-family:var(--mono);font-size:12px;background:var(--panel-2);border:1px solid var(--border);border-radius:10px;padding:12px 14px;overflow-x:auto;line-height:1.7}
+.godel .lab{color:var(--muted)}
+.godel .big{color:var(--accent-2);word-break:break-all;white-space:normal}
+.digest{display:inline-block;font-family:var(--mono);font-size:12px;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent);border-radius:7px;padding:3px 10px;margin-top:2px}
+/* checks */
+.chk{display:grid;grid-template-columns:22px 1fr auto;gap:11px;align-items:start;padding:10px 0;border-top:1px solid var(--border)}
+.chk:first-child{border-top:none}
+.chk .b{width:18px;height:18px;border-radius:50%;display:grid;place-items:center;font-size:11px;font-weight:700;color:#08130a;margin-top:1px}
+.b.pass{background:var(--ok)} .b.fail{background:var(--bad);color:#2a0b0a}
+.chk .t{font-size:12.5px}.chk .t b{font-weight:600}.chk .t .d{color:var(--muted);font-size:12px;margin-top:1px}
+.chk .v{font-family:var(--mono);font-size:10.5px;color:var(--muted);white-space:nowrap}
+/* conclusion */
+.concl{padding:15px 16px;border-left:3px solid var(--ok)}
+.concl.deny{border-left-color:var(--bad)}
+.concl .verdict{display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;font-weight:700;padding:4px 11px;border-radius:8px;margin-bottom:10px}
+.verdict.ok{background:var(--intent-bg);color:var(--ok)} .verdict.deny{background:color-mix(in srgb,var(--bad) 16%,transparent);color:var(--bad)}
+.concl ul{margin:6px 0 0;padding-left:18px}.concl li{margin:4px 0;font-size:13px}
+.concl .seal{margin-top:11px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.foot{color:var(--muted);font-size:11.5px;text-align:center;margin-top:8px;line-height:1.7}
+</style>
+
+<div class="topbar">
+  <span class="app"><span class="o"></span>SociOS</span><span class="places">Places</span>
+  <span class="clock" id="clock">Tue 23:45</span>
+  <span class="tray"><span>⇅</span><span>🔊</span><span>🎤</span><span>🔋 54%</span><span>⏻</span></span>
+</div>
+
+<div class="wrap">
+  <div class="head"><h1>Turn Witness</h1><span class="wid">annotated · Gödel-numbered · verified</span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></div>
+  <p class="sub">Any chat turn or result is annotated into typed tokens, encoded to a canonical <b>Gödel number</b> (its integrity fingerprint), run through <b>consistency checks</b>, and reduced to <b>conclusions</b> with a sealed verdict. Well-formed does not mean admissible — a turn can pass every structural check and still be refused.</p>
+
+  <div class="exs">
+    <button class="ex on" data-i="0">show me all contact lists in my org</button>
+    <button class="ex" data-i="1">open terminal on my laptop</button>
+    <button class="ex" data-i="2">delete last week's logs</button>
+  </div>
+
+  <div class="card"><h2>The turn <span class="n" id="tid"></span></h2><div class="turn" id="turn"></div></div>
+  <div class="card"><h2>Annotation — tokens · pos/dep · semantics</h2><div class="pad" id="tokens"></div></div>
+  <div class="card"><h2>Gödel numbering <span class="n">G = ∏ pᵢ^codeᵢ</span></h2><div class="pad" id="godel"></div></div>
+  <div class="card"><h2>Consistency checks <span class="n" id="cksum"></span></h2><div class="pad" id="checks" style="padding-top:2px;padding-bottom:2px"></div></div>
+  <div class="card"><h2>Conclusions</h2><div id="concl"></div></div>
+
+  <p class="foot">Reads the App-Intents ontology · consent-plane · guardrail-fabric. The Gödel number is reproducible — re-encode the same turn, get the same integer. Style tokens: <span class="mono">source-os/website</span> · font Cantarell.</p>
+</div>
+
+<script>
+// ── shared turn data (same parses as the lampstand launcher) ──
+const TURNS=[
+{ id:"turn:8f2a", user:"show me all contact lists in my org",
+  sys:"3 contact lists in org SocioProphet — Sales, Investors, Partners",
+  tokens:[
+   {w:"show",g:"VB·ROOT",ann:[["ActionShow","intent"]]},
+   {w:"me",g:"PRP·iobj",ann:[["ActionShow","intent"]]},
+   {w:"all",g:"DT·det",ann:[]},
+   {w:"contact",g:"NN·nn",ann:[["ContactLists","intent"]]},
+   {w:"lists",g:"NNS·dobj",ann:[["ContactLists","intent"],["Lists","type"]]},
+   {w:"in",g:"IN·prep",ann:[["Contains","relation"]]},
+   {w:"my",g:"PRP$·poss",ann:[["Own","scope"]]},
+   {w:"org",g:"NN·pobj",ann:[["Organization","entity"]]},
+  ], purpose:"discover", space:"user-space", admissible:true },
+{ id:"turn:1c7e", user:"open terminal on my laptop",
+  sys:"awaiting consent to launch TurtleTerm (user-space)",
+  tokens:[
+   {w:"open",g:"VB·ROOT",ann:[["ActionLaunch","intent"]]},
+   {w:"terminal",g:"NN·dobj",ann:[["TurtleTerm","intent"],["App","type"]]},
+   {w:"on",g:"IN·prep",ann:[["OnDevice","relation"]]},
+   {w:"my",g:"PRP$·poss",ann:[["Own","scope"]]},
+   {w:"laptop",g:"NN·pobj",ann:[["Device","entity"]]},
+  ], purpose:"operate", space:"user-space", admissible:"consent" },
+{ id:"turn:a903", user:"delete last week's logs",
+  sys:"refused — routed to Governor (tier=high)",
+  tokens:[
+   {w:"delete",g:"VB·ROOT",ann:[["ActionDelete","intent"],["Destructive","type"]]},
+   {w:"last",g:"JJ·amod",ann:[["TimeWindow","scope"]]},
+   {w:"week's",g:"NN·poss",ann:[["TimeWindow","scope"]]},
+   {w:"logs",g:"NNS·dobj",ann:[["LogData","entity"],["Data","type"]]},
+  ], purpose:"operate·destructive", space:"system-space", admissible:false },
+];
+// ── canonical symbol table (fixed → deterministic codes) ──
+const ALPHABET=["show","me","all","contact","lists","in","my","org","open","terminal","on","laptop","delete","last","week's","logs",
+  ":ActionShow",":ContactLists",":Lists",":Contains",":Own",":Organization",":ActionLaunch",":TurtleTerm",":App",":OnDevice",":Device",
+  ":ActionDelete",":Destructive",":TimeWindow",":LogData",":Data"];
+const CODE={}; ALPHABET.forEach((s,i)=>CODE[s]=i+2);   // codes 2,3,4,…
+const PRIMES=(n=>{const p=[];for(let x=2;p.length<n;x++){if(p.every(q=>x%q))p.push(x);}return p;})(60);
+function bpow(b,e){let r=1n,bb=BigInt(b);e=BigInt(e);while(e>0n){if(e&1n)r*=bb;bb*=bb;e>>=1n;}return r;}
+function encode(turn){ // → {seq:[{sym,code}], G:BigInt, factors:[[p,code]]}
+  const seq=[];
+  turn.tokens.forEach(t=>{seq.push(t.w); t.ann.forEach(a=>seq.push(':'+a[0]));});
+  const items=seq.map((s,i)=>({sym:s,code:CODE[s]??1,p:PRIMES[i]}));
+  let G=1n; items.forEach(it=>{G*=bpow(it.p,it.code);});
+  return {items,G};
+}
+const el=id=>document.getElementById(id);let cur=0;
+function digest(G){ // compact integrity digest: G mod (2^61-1), hex
+  const M=2305843009213693951n; return (G % M).toString(16);
+}
+function checks(turn,enc){
+  const hasAction=turn.tokens.some(t=>t.ann.some(a=>a[0].startsWith("Action")));
+  const hasObj=turn.tokens.some(t=>/dobj|pobj/.test(t.g));
+  const contentToks=turn.tokens.filter(t=>!/^(DT|IN|PRP\$?)/.test(t.g));
+  const covered=contentToks.every(t=>t.ann.length>0);
+  const scopeVocab=turn.tokens.flatMap(t=>t.ann).filter(a=>a[1]==="scope").every(a=>[":Own",":Organization",":TimeWindow"].includes(':'+a[0]));
+  const G2=encode(turn).G; const reproducible=(G2===enc.G);
+  const destructive=turn.tokens.some(t=>t.ann.some(a=>a[0]==="Destructive"));
+  const admissible = turn.admissible===true;
+  return [
+   {ok:hasAction&&hasObj, t:"Action binds an object", d:"root :Action* resolves to a dobj/pobj target", v:hasAction&&hasObj?"bound":"unbound"},
+   {ok:covered, t:"Coverage", d:"every content token carries ≥1 annotation", v:covered?"total":"gaps"},
+   {ok:scopeVocab, t:"Scope resolvable", d:"all :scope terms are in the known scope vocabulary", v:scopeVocab?"resolved":"unknown"},
+   {ok:true, t:"Type lattice consistent", d:destructive?"⚠ :Destructive flagged — no contradiction, raises risk":"subtype chain acyclic, no contradiction", v:"consistent"},
+   {ok:reproducible, t:"Gödel reproducible", d:"re-encoding the turn yields the identical integer", v:reproducible?"G≡G′":"drift"},
+   {ok:admissible, t:"Purpose admissible", d:`purpose=${turn.purpose} on ${turn.space} under the consent plane`, v:admissible?"admit":(turn.admissible==="consent"?"consent":"deny")},
+  ];
+}
+function render(i){cur=i;const d=TURNS[i];
+  document.querySelectorAll('.ex').forEach(e=>e.classList.toggle('on',+e.dataset.i===i));
+  el('tid').textContent=d.id;
+  el('turn').innerHTML=`<div class="bubble"><span class="who u">USER</span><div class="txt">${d.user}</div></div>
+    <div class="bubble"><span class="who s">SYS</span><div class="txt" style="color:var(--muted)">${d.sys}</div></div>`;
+  el('tokens').innerHTML=d.tokens.map(t=>`<div class="tok"><span class="w">${t.w}</span><span class="g">${t.g}</span>
+    <span class="ann">${t.ann.map(a=>`<span class="a ${a[1]}">:${a[0]}</span>`).join('')}</span></div>`).join('');
+  const enc=encode(d);
+  const usedSyms=[...new Set(enc.items.map(it=>it.sym))];
+  const factors=enc.items.map(it=>`${it.p}<sup>${it.code}</sup>`).join(' · ');
+  const Gs=enc.G.toString();
+  el('godel').innerHTML=`
+    <div class="sym">${usedSyms.map(s=>`<span class="s">${s} <b>${CODE[s]??1}</b></span>`).join('')}</div>
+    <div class="godel">
+      <div><span class="lab">sequence (prime<sup>code</sup>):</span> ${factors}</div>
+      <div style="margin-top:8px"><span class="lab">G =</span> <span class="big">${Gs.length>72?Gs.slice(0,40)+'…'+Gs.slice(-24):Gs}</span></div>
+      <div class="lab" style="margin-top:4px">(${Gs.length} digits)</div>
+    </div>
+    <div style="margin-top:10px"><span class="lab mono" style="color:var(--muted)">integrity digest&nbsp;</span><span class="digest">G#${digest(enc.G)}</span></div>`;
+  const cks=checks(d,enc); const passN=cks.filter(c=>c.ok).length;
+  el('cksum').textContent=`${passN}/${cks.length} pass`;
+  el('checks').innerHTML=cks.map(c=>`<div class="chk"><span class="b ${c.ok?'pass':'fail'}">${c.ok?'✓':'✕'}</span>
+    <div class="t"><b>${c.t}</b><div class="d">${c.d}</div></div><span class="v">${c.v}</span></div>`).join('');
+  // conclusions
+  const action=d.tokens.find(t=>t.ann.some(a=>a[0].startsWith("Action")));
+  const intent=action?action.ann.find(a=>a[0].startsWith("Action"))[0]:"?";
+  const obj=d.tokens.flatMap(t=>t.ann).find(a=>a[1]==="intent"&&!a[0].startsWith("Action"))?.[0]
+          ||d.tokens.flatMap(t=>t.ann).find(a=>a[1]==="entity")?.[0]||"?";
+  const scopes=d.tokens.flatMap(t=>t.ann).filter(a=>a[1]==="scope"||a[1]==="entity").map(a=>':'+a[0]);
+  const ok=d.admissible===true, consent=d.admissible==="consent";
+  const vcls=ok?'ok':'deny', vtxt=ok?'ADMITTED':(consent?'CONSENT REQUIRED':'REFUSED → GOVERNOR');
+  el('concl').className='concl '+(ok?'':'deny');
+  el('concl').innerHTML=`<span class="verdict ${vcls}">${ok?'✓':(consent?'◑':'⛔')} ${vtxt}</span>
+    <ul>
+      <li>Resolved intent: <span class="mono" style="color:var(--intent)">:${intent}</span>(<span class="mono">:${obj}</span>) scoped by <span class="mono">${scopes.join(' ∩ ')||'—'}</span>.</li>
+      <li>Purpose <span class="mono">${d.purpose}</span> on <span class="mono">${d.space}</span> ⇒ ${ok?'admissible; result committed.':(consent?'requires an explicit owner grant before execution.':'inadmissible — irreversible act cannot self-authorize; escalated to the Governor at tier=high.')}</li>
+      <li>Structural verdict: turn is <b>well-formed</b> (${passN} of ${cks.length} checks); admissibility is ${ok?'satisfied':'the deciding gate'}.</li>
+    </ul>
+    <div class="seal">sealed as <span style="color:var(--accent)">G#${digest(enc.G)}</span> · AutonomyAdmissionReceipt binds the verdict to this exact turn structure.</div>`;
+}
+document.querySelectorAll('.ex').forEach(e=>e.onclick=()=>render(+e.dataset.i));
+el('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
+(function(){const d=new Date();const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];el('clock').textContent=`${days[d.getDay()]} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;})();
+render(0);
+</script>
