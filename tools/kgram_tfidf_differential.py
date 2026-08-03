@@ -14,13 +14,15 @@ For each order n, over the domain corpora:
   * take the LSA (truncated SVD) of that TF-IDF matrix: the top singular component is the dominant
     axis of cross-domain variation, and a domain-specific n-gram loads heavily on it.
 
-A candidate word's signal at order n = the strongest domain-specific TF-IDF among the n-grams that
-contain it (and its share of the LSA top-component energy). The DIFFERENTIAL across 3..7 is the
-discriminator:
+A candidate word's per-order signal = the strongest domain-specific TF-IDF among the n-grams that
+contain it (discounted by intrinsic unigram specificity), plus its share of the LSA top-component
+energy. Confirmation uses BOTH: the DIFFERENTIAL across 3..7 discriminates:
   * a TRUE domain term PERSISTS — it keeps appearing in domain-specific n-grams as n grows (it is
-    the head of longer collocations), so its signal stays high across orders -> CONFIRMED-TERM;
+    the head of longer collocations), so its TF-IDF signal stays high across orders AND it loads on
+    the dominant cross-domain LSA axis -> CONFIRMED-TERM;
   * a stylistic / noise word DECAYS — its longer n-grams become unique and diffuse (no repeated
-    domain phrase), so its concentrated TF-IDF and LSA energy fall away -> UNCONFIRMED.
+    domain phrase), so its concentrated TF-IDF falls away and/or it never loads on the LSA axis
+    -> UNCONFIRMED.
 
 Confirmed candidates are the strongest un-stoplist proposals; unconfirmed ones stay stoplisted.
 """
@@ -63,9 +65,16 @@ def order_signal(domain_tokens: dict[str, list[str]], n: int, candidates: list[s
     vocab = sorted(vocab)
     df = {g: sum(1 for d in domains if g in counts[d]) for g in vocab}
 
-    # TF-IDF matrix rows=n-grams, cols=domains (smoothed idf).
+    # TF-IDF matrix rows=n-grams, cols=domains (smoothed idf). Precompute, in the SAME single pass
+    # over vocab, the row indices for each candidate word (an n-gram has <= n tokens) — so we don't
+    # rescan the whole vocab once per candidate.
     M = np.zeros((len(vocab), D))
     idx = {g: i for i, g in enumerate(vocab)}
+    cand_set = set(candidates)
+    cand_rows: dict[str, list[int]] = {w: [] for w in candidates}
+    for g, i in idx.items():
+        for tok in set(g) & cand_set:
+            cand_rows[tok].append(i)
     for j, d in enumerate(domains):
         for g, c in counts[d].items():
             M[idx[g], j] = (1 + math.log(c)) * math.log((1 + D) / (1 + df[g]))
@@ -81,7 +90,7 @@ def order_signal(domain_tokens: dict[str, list[str]], n: int, candidates: list[s
 
     out = {}
     for w in candidates:
-        rows = [idx[g] for g in vocab if w in g]
+        rows = cand_rows[w]
         tfidf = float(M[rows].max() / col_max) if rows else 0.0            # strongest domain-specific phrase w heads
         energy = float(loading[rows].sum() / total_energy) if rows else 0.0  # share of latent variation from w's n-grams
         out[w] = {"tfidf": round(tfidf, 3), "lsaEnergy": round(energy, 3)}
@@ -100,7 +109,13 @@ def _unigram_specificity(domain_tokens: dict[str, list[str]], w: str) -> float:
     return max(0.0, min(1.0, (concentration - 1 / D) / (1 - 1 / D))) if D > 1 else 1.0
 
 
+LSA_PARTICIPATION_FLOOR = 0.03   # a confirmed term must load on the dominant cross-domain LSA axis
+
+
 def differential(domains: dict[str, str], candidates: list[str]) -> dict:
+    if len(domains) < 2:
+        raise ValueError("k-gram differential is a CROSS-domain measure — needs >= 2 domains "
+                         "(TF-IDF and LSA are meaningless with fewer)")
     domain_tokens = {d: raw_tokenize(t) for d, t in domains.items()}
     by_order = {n: order_signal(domain_tokens, n, candidates) for n in ORDERS}
     uspec = {w: _unigram_specificity(domain_tokens, w) for w in candidates}
@@ -115,6 +130,11 @@ def differential(domains: dict[str, str], candidates: list[str]) -> dict:
                   for i in range(len(ORDERS) - 1)}
         cleared = sum(1 for n in ORDERS if signal[n] >= SIGNAL_TERMLIKE)
         persists = cleared >= math.ceil(len(ORDERS) * PERSIST_FRACTION)
+        # Confirmation uses BOTH signals of the differential: the TF-IDF domain-specificity must
+        # PERSIST across orders AND the word must load on the dominant cross-domain LSA axis (so a
+        # word with high TF-IDF but no latent-axis participation is not confirmed on TF-IDF alone).
+        lsa_participates = max(lsa.values()) >= LSA_PARTICIPATION_FLOOR
+        confirmed = persists and lsa_participates
         rows.append({
             "word": w,
             "unigramSpecificity": round(uspec[w], 3),
@@ -122,7 +142,8 @@ def differential(domains: dict[str, str], candidates: list[str]) -> dict:
             "lsaEnergyByOrder": lsa,
             "differential": deltas,
             "ordersCleared": cleared,
-            "verdict": "confirmed-term" if persists else "unconfirmed",
+            "lsaParticipates": lsa_participates,
+            "verdict": "confirmed-term" if confirmed else "unconfirmed",
         })
     return {"orders": ORDERS, "domains": list(domains),
             "confirmed": [r["word"] for r in rows if r["verdict"] == "confirmed-term"],

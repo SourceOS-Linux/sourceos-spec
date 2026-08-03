@@ -56,6 +56,13 @@ def main() -> int:
     else:
         CHECKS["borrowed-specificity:stripped"] = True
 
+    # 5. Cross-domain measure — a single domain must fail fast, not produce a meaningless result.
+    try:
+        K.differential({"only": list(domains.values())[0]}, candidates)
+        FAILURES.append("differential with <2 domains must raise, not silently run")
+    except ValueError:
+        CHECKS["single-domain:rejected"] = True
+
     for m in FAILURES:
         print(f"FAIL: {m}", file=sys.stderr)
     ok = not FAILURES and all(CHECKS.values())
