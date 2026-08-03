@@ -1,0 +1,35 @@
+{
+  "id": "urn:srcos:multiverseal-twin:abc123:v1",
+  "type": "MultiversealTwin",
+  "specVersion": "2.0.0",
+  "createdAt": "2026-08-01T00:00:00Z",
+  "coreRef": "urn:srcos:digital-soul:abc123:v1",
+  "space": {
+    "encoding": "hrr-vsa",
+    "dimension": 4096
+  },
+  "unlinkability": {
+    "epsilon": 0.03,
+    "isReversibilityBudget": true
+  },
+  "sharing": {
+    "n": 5,
+    "k": 1,
+    "d": 3
+  },
+  "mintAnchor": {
+    "scheme": "vrf",
+    "verifyKeyRef": "key:vk:abc123",
+    "proofOfSelfRef": "urn:srcos:proof-of-self:abc123"
+  },
+  "impersonationWall": {
+    "rule": "mint-only-under-subject-key-or-subject-signed-capability",
+    "phaseRetrievalHardened": true
+  },
+  "bundle": {
+    "digest": "b3:H-abc",
+    "attestationRefs": [
+      "urn:srcos:twin-attestation:abc123:math-commons:1"
+    ]
+  }
+}

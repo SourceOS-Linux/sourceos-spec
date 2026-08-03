@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/TwinAttestation.json",
+  "title": "TwinAttestation",
+  "description": "A single foreign attestation admitted into a MultiversealTwin, bound-at-ingest against a context reference. Realizes the Powell-Stetson rule: an imported claim (object beam o) is admissible ONLY as t = bind(o, r_c) with a provenance envelope; a bare unbound score is never summed into reputation. The context reference r_c is VRF-derived (see TwinRecord.mintAnchor). Reconcilability is manufactured at ingest, not deferred. This is the holographic form of the capture-time receipt: purpose/authorization are bound to the event before it enters the reputation ledger.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "capturedAt", "twinRef", "contextRef", "boundVector", "envelope", "grounding"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:twin-attestation:", "description": "Stable URN for this bound attestation." },
+    "type": { "const": "TwinAttestation", "description": "Type discriminator; always 'TwinAttestation'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract." },
+    "capturedAt": { "type": "string", "format": "date-time", "description": "Ingest time (record-beam time) — when binding occurred." },
+    "twinRef": { "type": "string", "pattern": "^urn:srcos:multiverseal-twin:", "description": "The twin this attestation is bundled into." },
+    "contextRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["contextId", "referenceId"],
+      "description": "The context reference r_c this claim was bound against (VRF-derived; see TwinRecord.mintAnchor).",
+      "properties": {
+        "contextId": { "type": "string", "description": "The federation context/neighbourhood this binding is for." },
+        "referenceId": { "type": "string", "description": "Identifier of the VRF-derived reference r_c used to bind." }
+      }
+    },
+    "boundVector": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["encoding", "digest"],
+      "description": "The bound record t = bind(o, r_c). The bare object o is NEVER stored here; only its binding against the reference.",
+      "properties": {
+        "encoding": { "type": "string", "enum": ["hrr-vsa"], "description": "Substrate: Holographic Reduced Representation / Vector-Symbolic Algebra over C^D. Phase carries provenance; magnitude carries raw score." },
+        "digest": { "type": "string", "description": "Content digest of the bound vector (the stored, opaque-without-reference record)." },
+        "dimension": { "type": "integer", "minimum": 1, "description": "D of the twin space (must match the twin's dimension)." }
+      }
+    },
+    "envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["src", "method", "issuedAt", "authorization"],
+      "description": "Provenance envelope pi = (src, method, tau, w). Bound with the claim so purpose/authorization are sealed at capture, not inferred later.",
+      "properties": {
+        "src": { "type": "string", "description": "Source of the attestation (issuing neighbourhood / authority)." },
+        "method": { "type": "string", "description": "How the claim was produced/measured." },
+        "issuedAt": { "type": "string", "format": "date-time", "description": "tau: source time of the claim." },
+        "weight": { "type": "number", "description": "w: source-assigned weight/confidence." },
+        "evidenceRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" }, "description": "Works-receipts on the reasoning-evidence fabric substantiating the claim." },
+        "authorization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["declaredPurpose", "authorizationProof"],
+          "description": "The purpose/consent bit — provably unrecoverable from the signal, so it must be bound here at ingest (reidentification-economy §A.5).",
+          "properties": {
+            "declaredPurpose": { "type": "string", "description": "The purpose under which this claim was captured/admitted." },
+            "authorizationProof": { "type": "string", "description": "Proof of authorization for that purpose." }
+          }
+        }
+      }
+    },
+    "grounding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state"],
+      "description": "Coherence-length gate. If the context/temporal distance delta(o, r_c) exceeds the trust reference's coherence length L_c, the import is ungroundable — retained as inert evidence, never summed.",
+      "properties": {
+        "state": { "type": "string", "enum": ["coherent", "decohered"], "description": "coherent = groundable and summable into reputation; decohered = inert evidence only." },
+        "coherenceLength": { "type": "number", "description": "L_c ~= c/Delta-nu, the derived trust horizon (replaces an arbitrary reputation-decay constant)." },
+        "distance": { "type": "number", "description": "delta(o, r_c) — context/temporal distance from the reference." }
+      }
+    }
+  }
+}

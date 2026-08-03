@@ -1,0 +1,34 @@
+{
+  "id": "urn:srcos:twin-attestation:abc123:math-commons:1",
+  "type": "TwinAttestation",
+  "specVersion": "2.0.0",
+  "capturedAt": "2026-08-01T00:00:00Z",
+  "twinRef": "urn:srcos:multiverseal-twin:abc123:v1",
+  "contextRef": {
+    "contextId": "nh:math-commons",
+    "referenceId": "vrf:rc:math-commons:sess-1"
+  },
+  "boundVector": {
+    "encoding": "hrr-vsa",
+    "digest": "b3:bound-abc",
+    "dimension": 4096
+  },
+  "envelope": {
+    "src": "nh:math-commons",
+    "method": "peer-review",
+    "issuedAt": "2026-08-01T00:00:00Z",
+    "weight": 0.8,
+    "evidenceRefs": [
+      "urn:srcos:reasoning-receipt:work-1"
+    ],
+    "authorization": {
+      "declaredPurpose": "reputation-attestation",
+      "authorizationProof": "cap:signed:holder:abc123"
+    }
+  },
+  "grounding": {
+    "state": "coherent",
+    "coherenceLength": 180.0,
+    "distance": 12.0
+  }
+}

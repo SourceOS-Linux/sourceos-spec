@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/MultiversealTwin.json",
+  "title": "MultiversealTwin",
+  "description": "The federation-facing projection of a sovereign private identity core (DigitalSoulIdentity). The core is authoritative and private; the twin is the object that touches the untrusted world, carries imported non-first-party reputation, and is watched/replayed by relying parties. It is one reference-gated holographic bundle: TwinAttestations bound-at-ingest against VRF-derived context references, superposed into a single vector that is opaque without a reference and reconstructed only by unbinding with it. Privacy, capacity, and reconstruction fidelity are one surface governed by a single unlinkability budget epsilon (= the reversibility-distance ledger of the reidentification economy). Minting is asymmetric: only the subject's master key (anchored to ProofOfSelfToken / Identity-Is-Prime) may mint a watchable persona of that subject.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "createdAt", "coreRef", "space", "unlinkability", "sharing", "mintAnchor", "impersonationWall", "bundle"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:multiverseal-twin:", "description": "Stable URN for this twin." },
+    "type": { "const": "MultiversealTwin", "description": "Type discriminator; always 'MultiversealTwin'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract." },
+    "createdAt": { "type": "string", "format": "date-time", "description": "When the twin projection was created." },
+    "coreRef": { "type": "string", "pattern": "^urn:srcos:digital-soul:", "description": "The private core (DigitalSoulIdentity) this twin projects. The core is never included in the twin; only reference-gated projections of it are." },
+    "space": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["encoding", "dimension"],
+      "description": "The holographic medium V = C^D (complex, so phase = provenance is literal).",
+      "properties": {
+        "encoding": { "type": "string", "enum": ["hrr-vsa"], "description": "Holographic Reduced Representation / Vector-Symbolic Algebra." },
+        "dimension": { "type": "integer", "minimum": 1, "description": "D — the twin space dimension." }
+      }
+    },
+    "unlinkability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["epsilon", "isReversibilityBudget"],
+      "description": "The single number governing capacity, crosstalk, AND cross-context unlinkability (Johnson-Lindenstrauss / almost-orthogonality). Two contexts are epsilon-unlinkable iff their reference inner product |<r_c, r_c'>| <= epsilon. This IS the reversibility-distance budget from the reidentification-economy appendix: tightening epsilon buys unlinkability + fidelity at the cost of capacity. There is no separate privacy parameter.",
+      "properties": {
+        "epsilon": { "type": "number", "exclusiveMinimum": 0, "description": "Orthogonality tolerance = crosstalk bound = linkability leakage bound." },
+        "isReversibilityBudget": { "const": true, "description": "Asserts epsilon is the reversibility-distance ledger, not a cosmetic knob. Always true." }
+      }
+    },
+    "sharing": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["n", "k", "d"],
+      "description": "QEC [[n,k,d]] erasure-style sharing. Resilience and access control are ONE threshold: any region holding more than n-d shares reconstructs; any region below threshold reveals nothing. d = policy (the access-control wedge IS the code distance).",
+      "properties": {
+        "n": { "type": "integer", "minimum": 1, "description": "Total shares." },
+        "k": { "type": "integer", "minimum": 1, "description": "Logical payload dimension." },
+        "d": { "type": "integer", "minimum": 1, "description": "Code distance = access/resilience threshold, set by policy." }
+      }
+    },
+    "mintAnchor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scheme", "verifyKeyRef", "proofOfSelfRef"],
+      "description": "Mint/verify asymmetry via a Verifiable Random Function. The core holds the master secret msk; the world holds the verify key vk. Context references r_c and their proofs are VRF_msk(context) — pseudorandom, near-orthogonal (they ARE the references §space/§unlinkability assume). A twin record is valid iff VRF.Verify(vk, context, r_c, proof)=1. Forging an un-minted record reduces to breaking VRF unforgeability.",
+      "properties": {
+        "scheme": { "type": "string", "enum": ["vrf"], "description": "Trust anchor scheme." },
+        "verifyKeyRef": { "type": "string", "description": "Reference to the public verify key vk (relying parties verify freely; cannot mint)." },
+        "proofOfSelfRef": { "type": "string", "pattern": "^urn:srcos:proof-of-self:", "description": "Anchors the master key to the verified-identity core (ProofOfSelfToken / Identity-Is-Prime). Binds 'who may mint this twin' to a proven subject." }
+      }
+    },
+    "impersonationWall": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rule", "phaseRetrievalHardened"],
+      "description": "The tightest discipline in the system (twin spec §E.3). A watchable persona of subject u may be minted ONLY under u's own master key, or under a capability explicitly signed by u. No third party mints a replayable u. Phase-retrieval (reconstruct provenance from enough intensity-only views without the key) is the attack that erodes this wall, so hardening is mandatory.",
+      "properties": {
+        "rule": { "const": "mint-only-under-subject-key-or-subject-signed-capability", "description": "Always this value." },
+        "phaseRetrievalHardened": { "const": true, "description": "Countermeasures active: measurement starvation (rate-limit per party), per-view phase nonce, per-session (non-reusable) references, non-generic served views. Always true." },
+        "capabilityRef": { "type": "string", "description": "Optional: a subject-signed capability authorizing a specific third party to mint a bounded persona." }
+      }
+    },
+    "bundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["digest", "attestationRefs"],
+      "description": "The superposed twin vector H = bundle(t_k) and the attestations it holds. H is a hiding commitment: without a reference it is a sum of pseudo-random vectors.",
+      "properties": {
+        "digest": { "type": "string", "description": "Content digest of the bundled twin vector H." },
+        "attestationRefs": { "type": "array", "items": { "type": "string", "pattern": "^urn:srcos:twin-attestation:" }, "description": "The TwinAttestations superposed into H (each bound-at-ingest)." }
+      }
+    }
+  }
+}
