@@ -1,0 +1,182 @@
+<title>SociOS — Model Catalog & Leaderboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0a0e18; --panel:#111726; --panel2:#161e30; --line:#212b42; --line2:#2c3854;
+  --text:#e8edf7; --muted:#8b96b0; --faint:#586179;
+  --cyan:#4fd0e0; --cyan2:#7aa2ff;
+  --cloud:#7aa2ff; --local:#5cc9c0; --both:#c9a9ff;
+  --ok:#43c68a; --warn:#e0a83a; --bad:#e5594f;
+  --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;
+  --cyan:#1787a0;--cyan2:#3762d6;--cloud:#3762d6;--local:#1f9188;--both:#7b52d6;--ok:#1f9e63;--warn:#a6791b;--bad:#c23a31;
+}}
+:root[data-theme="light"]{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--cloud:#3762d6;--local:#1f9188;--both:#7b52d6;--ok:#1f9e63;--warn:#a6791b;--bad:#c23a31}
+:root[data-theme="dark"]{--bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;--text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;--cloud:#7aa2ff;--local:#5cc9c0;--both:#c9a9ff;--ok:#43c68a;--warn:#e0a83a;--bad:#e5594f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 18px 60px}
+header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:4px}
+header.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.3px}
+header.top .id{font-family:var(--mono);color:var(--cyan);font-size:12.5px}
+.prov{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--muted)}
+.prov.sample{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 42%,transparent);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.prov.live{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 42%,transparent);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:14px 0 18px;max-width:80ch}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:16px;font-size:11.5px;color:var(--muted)}
+.legend b{padding:2px 8px;border-radius:5px;font-family:var(--mono);font-size:10.5px;font-weight:700}
+.b-cloud{background:color-mix(in srgb,var(--cloud) 16%,transparent);color:var(--cloud)}
+.b-local{background:color-mix(in srgb,var(--local) 16%,transparent);color:var(--local)}
+.b-both{background:color-mix(in srgb,var(--both) 18%,transparent);color:var(--both)}
+.grid{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card h2{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0;padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card h2 .n{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:0;color:var(--muted)}
+/* catalog table */
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);font-weight:700;padding:9px 12px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--panel)}
+td{padding:9px 12px;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+tr.intersect{background:color-mix(in srgb,var(--both) 8%,transparent)}
+.mname{font-weight:600}.mname small{display:block;color:var(--faint);font-size:10.5px;font-weight:400}
+.runs{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;white-space:nowrap}
+.runs.cloud{background:color-mix(in srgb,var(--cloud) 16%,transparent);color:var(--cloud)}
+.runs.local{background:color-mix(in srgb,var(--local) 16%,transparent);color:var(--local)}
+.runs.both{background:color-mix(in srgb,var(--both) 18%,transparent);color:var(--both)}
+.sov{font-family:var(--mono);font-size:10.5px}
+.sov.owned{color:var(--ok)} .sov.hybrid{color:var(--warn)} .sov.vendor{color:var(--bad)}
+.gov{font-size:15px;text-align:center}
+/* leaderboard */
+.lb{padding:6px 14px 10px}
+.lrow{display:grid;grid-template-columns:20px 1fr auto;gap:9px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.lrow:last-child{border-bottom:none}
+.lrank{font-family:var(--mono);color:var(--faint);font-size:11px;text-align:right}
+.lname{font-size:12.5px;font-weight:600}.lname small{color:var(--faint);font-weight:400;font-size:10.5px}
+.bar{height:7px;border-radius:4px;background:var(--panel2);overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--cyan),var(--cyan2))}
+.score{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--cyan)}
+.toggle{display:flex;gap:6px;padding:2px 0 0}
+.tb{font-size:10.5px;font-family:var(--mono);border:1px solid var(--line2);background:var(--panel2);color:var(--muted);border-radius:14px;padding:3px 10px;cursor:pointer}
+.tb.on{border-color:var(--cyan);color:var(--cyan);background:color-mix(in srgb,var(--cyan) 12%,transparent)}
+/* positioning */
+.pos{padding:14px 16px}
+.draft{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.4px;color:var(--warn);border:1px solid color-mix(in srgb,var(--warn) 40%,transparent);background:color-mix(in srgb,var(--warn) 10%,transparent);border-radius:4px;padding:1px 6px;vertical-align:middle}
+.thesis{font-size:14px;font-weight:600;margin:0 0 12px;line-height:1.4}
+.thesis .a{color:var(--muted)} .thesis .b{color:var(--cyan)}
+.roles{display:grid;gap:7px}
+.role{display:grid;grid-template-columns:auto 1fr;gap:9px;font-size:12px;padding:7px 0;border-top:1px solid var(--line)}
+.role .k{font-family:var(--mono);font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;height:fit-content;background:var(--panel2);color:var(--muted)}
+.role .k.risk{color:var(--bad);background:color-mix(in srgb,var(--bad) 12%,transparent)}
+.role .t b{color:var(--text)} .role .t{color:var(--muted)}
+.foot{margin-top:20px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+</style>
+
+<div class="wrap">
+  <header class="top"><h1>Model Catalog &amp; Leaderboard</h1><span class="id">cockpit · intersection surface</span>
+    <span class="prov" id="prov" title="data provenance"></span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></header>
+  <p class="sub">Every foundation model and OS capability, with <b>where it runs</b> — cloud (prophet-platform) ∩ local (sourceos/noetica). The <span style="color:var(--both)">intersection</span> (runs <b>both</b>) is the shared core to build first; the edges fan out. Ranked not on raw capability alone but <b>sovereignty × governance-weighted</b> — because the client owning their stack and every call being governed is the thesis.</p>
+
+  <div class="legend">
+    <span><b class="b-cloud">CLOUD</b> prophet-platform</span>
+    <span><b class="b-local">LOCAL</b> sourceos / agent-machine</span>
+    <span><b class="b-both">BOTH ▸ intersection</b> build first</span>
+    <span style="margin-left:auto">🛡 = governed under the SP agent layer</span>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Catalog <span class="n" id="catN"></span></h2>
+      <div style="overflow-x:auto"><table id="catalog"></table></div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>Leaderboard <span class="n" id="lbmode">SP-weighted</span></h2>
+        <div class="toggle" style="padding:10px 14px 0">
+          <button class="tb on" data-m="sp">Sovereignty × Governance</button>
+          <button class="tb" data-m="raw">Raw capability</button>
+        </div>
+        <div class="lb" id="leaderboard"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Positioning <span class="n">vs Claude Enterprise</span></h2>
+        <div class="pos">
+          <p class="thesis"><span class="a">Claude Enterprise governs people.</span><br><span class="b">SocioProphet governs agents.</span> <span class="draft">DRAFT · VERIFY</span></p>
+          <div class="roles">
+            <div class="role"><span class="k">supplier</span><div class="t"><b>Claude via API</b> — one engine in the client's LLM stable.</div></div>
+            <div class="role"><span class="k">competitor</span><div class="t">Answer to "we already have Claude": it governs the <b>workforce interface</b>, not <b>agentic execution</b>.</div></div>
+            <div class="role"><span class="k">component</span><div class="t">Claude Enterprise + SocioProphet <b>coexist</b> — different layers, buyers, examiner conversations. <span class="draft">NEEDS APPROVAL</span></div></div>
+            <div class="role"><span class="k risk">supplier-risk</span><div class="t">API dependency on a future competitor → the <b>LLM-stable</b> (open-weight, client-owned) is the architectural answer. <span class="draft">NEEDS APPROVAL</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="foot">
+    Reads the shared <span class="mono">InferenceGateway</span> contract; every call emits a <span class="mono">GatewayCallAudit</span> receipt (cloud &amp; local alike). Competitive claims marked <span class="draft">DRAFT · VERIFY</span> require Michael/Gus sign-off before external use.<br>
+    Intersection surface · fans out to per-model screens in prophet-platform · lattice · notebooks.
+  </p>
+</div>
+
+<script>
+let __prov='sample';
+async function loadFeed(name){try{const base=(window.SURFACE_FEED_URL||'./data/');const r=await fetch(base+name+'.json',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();__prov=j.provenance||'live';return j;}catch(e){__prov='sample';return null;}}
+function setProv(){const b=document.getElementById('prov');if(b){b.textContent=(__prov==='live'?'LIVE':'SAMPLE DATA');b.className='prov '+(__prov==='live'?'live':'sample');}}
+
+// cap 0-100 · sov: owned|hybrid|vendor · gov: 2 governed / 1 partial / 0 no
+let MODELS=[
+ {name:"Claude Opus 4.8",prov:"Anthropic",runs:"cloud",ctx:"200k",cap:97,sov:"vendor",gov:1,note:"supplier + component; not client-owned"},
+ {name:"Claude Sonnet 5",prov:"Anthropic",runs:"cloud",ctx:"200k",cap:93,sov:"vendor",gov:1,note:"API; workforce-layer governance only"},
+ {name:"Llama 3.3 70B",prov:"Meta (open-weight)",runs:"both",ctx:"128k",cap:86,sov:"owned",gov:2,note:"the LLM-stable answer — client-owned"},
+ {name:"Qwen2.5 72B",prov:"Alibaba (open-weight)",runs:"both",ctx:"128k",cap:85,sov:"owned",gov:2,note:"open-weight; runs in client cloud + local"},
+ {name:"DeepSeek-V3",prov:"DeepSeek (open-weight)",runs:"both",ctx:"128k",cap:88,sov:"owned",gov:2,note:"strong reasoning; client-hostable"},
+ {name:"Mistral Large",prov:"Mistral",runs:"both",ctx:"128k",cap:82,sov:"hybrid",gov:2,note:"open-weight tier client-owned"},
+ {name:"gemma-2-9b-it",prov:"Google (open-weight)",runs:"local",ctx:"8k",cap:64,sov:"owned",gov:2,note:"noetica on-node; fully local"},
+ {name:"on-node SLM",prov:"SourceOS",runs:"local",ctx:"32k",cap:58,sov:"owned",gov:2,note:"Noetica concierge default; no egress"},
+];
+// OS capabilities as catalog rows too ("each OS capability needs a screen")
+let CAPS=[
+ {name:"Consent plane",prov:"agent-standards",runs:"both",ctx:"—",cap:90,sov:"owned",gov:2,note:"the governance intersection — spans cloud+local"},
+ {name:"lampstand",prov:"sourceos-shell",runs:"local",ctx:"—",cap:70,sov:"owned",gov:2,note:"semantic launcher; routes to IR"},
+ {name:"System Graph",prov:"hellgraph (vendored)",runs:"both",ctx:"—",cap:80,sov:"owned",gov:2,note:"netwatch ingest; cloud+local"},
+];
+const el=id=>document.getElementById(id);
+function runsCls(r){return r;}
+function sovLabel(s){return {owned:"client-owned",hybrid:"hybrid",vendor:"vendor-dep"}[s];}
+function govGlyph(g){return g===2?"🛡":g===1?"◐":"—";}
+function spScore(m){const sv={owned:100,hybrid:60,vendor:20}[m.sov];const gv={2:100,1:50,0:0}[m.gov];return Math.round(m.cap*0.5+sv*0.3+gv*0.2);}
+function renderCatalog(){
+  const rows=[...MODELS,...CAPS];
+  el('catN').textContent=MODELS.length+" models · "+CAPS.length+" capabilities";
+  el('catalog').innerHTML=`<thead><tr><th>Model / capability</th><th>Runs</th><th>Ctx</th><th>Cap</th><th>Sovereignty</th><th>Gov</th></tr></thead><tbody>`+
+   rows.map(m=>`<tr class="${m.runs==='both'?'intersect':''}">
+     <td><span class="mname">${m.name}<small>${m.prov} · ${m.note}</small></span></td>
+     <td><span class="runs ${runsCls(m.runs)}">${m.runs.toUpperCase()}</span></td>
+     <td class="mono" style="color:var(--muted)">${m.ctx}</td>
+     <td class="mono">${m.cap||'—'}</td>
+     <td class="sov ${m.sov}">${sovLabel(m.sov)}</td>
+     <td class="gov">${govGlyph(m.gov)}</td></tr>`).join('')+`</tbody>`;
+}
+let lbMode='sp';
+function renderLeaderboard(){
+  const scored=MODELS.map(m=>({...m,s:lbMode==='sp'?spScore(m):m.cap})).sort((a,b)=>b.s-a.s);
+  const max=Math.max(...scored.map(x=>x.s));
+  el('lbmode').textContent=lbMode==='sp'?'SP-weighted':'raw capability';
+  el('leaderboard').innerHTML=scored.map((m,i)=>`<div class="lrow">
+    <span class="lrank">${i+1}</span>
+    <div><div class="lname">${m.name} <small>${m.runs==='both'?'· intersection':''}</small></div>
+      <div class="bar"><i style="width:${Math.round(m.s/max*100)}%"></i></div></div>
+    <span class="score">${m.s}</span></div>`).join('');
+}
+document.querySelectorAll('.tb').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tb').forEach(x=>x.classList.remove('on'));b.classList.add('on');lbMode=b.dataset.m;renderLeaderboard();});
+el('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
+(async()=>{const f=await loadFeed('model-catalog');if(f){if(Array.isArray(f.models))MODELS=f.models;if(Array.isArray(f.capabilities))CAPS=f.capabilities;}setProv();renderCatalog();renderLeaderboard();})();
+</script>

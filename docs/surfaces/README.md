@@ -43,6 +43,9 @@ the real SociOS/GNOME chrome (top bar, launcher card) so they read as in-shell, 
 - **`lampstand-launcher.html`** — Tier 2, *actionable*. The Spotlight replacement: natural
   language → typed intents/entities/relations (the annotation tree) → **governed actions**
   (purpose-bound, consent-gated, receipted), ranked by sherlock (IR). Not web search — typed acts.
+- **`model-catalog.html`** — Tier 2, *intersection cockpit*. Every foundation model + OS
+  capability, cloud∩local placement, a sovereignty×governance-weighted leaderboard, and the
+  SP-vs-Claude-Enterprise positioning (marked DRAFT/VERIFY). Backed by `inference-gateway-intersection.md`.
 - **`genesis-flywheel.html`** — Tier 1. The install spine + growth dynamics: the T₀–T₁₁
   genesis braid (sealed, four-space colored), the five-phase zero-trust install, and the
   connected flywheel topology with correct ΔEP=(P−C)·X−λK / K=k₀·α·cov(A)·φ(P) /

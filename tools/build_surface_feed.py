@@ -18,11 +18,13 @@ REQUIRED = {
     "b11": ["spaces", "tripwires", "transitions"],
     "e11": ["surfaces", "receipts", "governor"],
     "turn-witness": ["turns"],
+    "model-catalog": ["models", "capabilities"],
 }
 SOURCE_HINT = {
     "b11": "netwatch snapshot + guardrail-fabric transitions",
     "e11": "consent-plane catalog (spaces_v1.yaml) + receipt stream + Governor queue",
     "turn-witness": "App-Intents parser output",
+    "model-catalog": "InferenceGateway catalog + GatewayCallAudit leaderboard",
 }
 
 
