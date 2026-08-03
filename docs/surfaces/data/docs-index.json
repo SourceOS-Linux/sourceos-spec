@@ -1,0 +1,1157 @@
+{
+  "provenance": "live",
+  "generated_by": "tools/build_docs_index.py",
+  "doc_count": 43,
+  "docs": [
+    {
+      "path": "docs/contract-additions/2026-04-fog-contract-index.md",
+      "title": "Fog contract additions index",
+      "summary": "- **Status:** bootstrap index",
+      "headings": [
+        "New schema types",
+        "FogVault (storage + topics)",
+        "FogCompute (offers + execution evidence)",
+        "Matching examples",
+        "Why these additions exist",
+        "Relationship to existing schema families",
+        "Intended next updates"
+      ],
+      "keywords": [
+        "json",
+        "examples",
+        "additions",
+        "schema",
+        "fog",
+        "contract",
+        "execution",
+        "these",
+        "topic",
+        "index",
+        "fogvault",
+        "storage"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/2026-04-triune-exodus-contract-index.md",
+      "title": "Triune / Exodus contract additions index",
+      "summary": "- **Status:** bootstrap index",
+      "headings": [
+        "New schema types",
+        "Replay and anchoring",
+        "Quorum / review",
+        "Time-boxed bypass governance",
+        "Matching examples",
+        "Why these additions exist",
+        "Relationship to existing schema families",
+        "Intended next updates"
+      ],
+      "keywords": [
+        "json",
+        "examples",
+        "additions",
+        "contract",
+        "index",
+        "schema",
+        "these",
+        "replay",
+        "triune",
+        "exodus",
+        "anchoring",
+        "quorum"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/2026-05-agent-machine-model-carry-contracts.md",
+      "title": "Agent Machine and Model Carry Contract Additions — May 2026",
+      "summary": "Status: Draft additive contract family",
+      "headings": [
+        "Purpose",
+        "Added schemas",
+        "Boundary rules",
+        "Integration path",
+        "Validation posture",
+        "Non-goals"
+      ],
+      "keywords": [
+        "model",
+        "runtime",
+        "urn",
+        "not",
+        "agent",
+        "contract",
+        "agentplane",
+        "srcos",
+        "machine",
+        "path",
+        "sourceos",
+        "evidence"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/agent-machine-local-data-plane.md",
+      "title": "Agent Machine Local Data Plane and TopoLVM Mount Contracts",
+      "summary": "This contract addition defines the shared mount semantics for SourceOS Agent Machine local workspaces and their cluster-local TopoLVM analogue.",
+      "headings": [
+        "Why this exists",
+        "New schema types",
+        "Local mode",
+        "Cluster mode",
+        "Security invariants",
+        "Example files",
+        "Implementation owners",
+        "Current status"
+      ],
+      "keywords": [
+        "mount",
+        "agent",
+        "local",
+        "machine",
+        "topolvm",
+        "downloads",
+        "mode",
+        "workspace",
+        "host",
+        "not",
+        "json",
+        "cluster"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/browser-write-accountability.md",
+      "title": "SourceOS Browser Write Accountability v0.1",
+      "summary": "This contract specializes SourceOS Mutation and Evidence Accountability for browser write-pressure incidents.",
+      "headings": [
+        "Purpose",
+        "Decision",
+        "Required actor classes",
+        "Extension inventory states",
+        "Normative rule",
+        "Evidence-quality rule",
+        "Design consequence"
+      ],
+      "keywords": [
+        "browser",
+        "extension",
+        "profile",
+        "storage",
+        "inventory",
+        "state",
+        "evidence",
+        "class",
+        "sourceos",
+        "accountability",
+        "write-pressure",
+        "visible"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/command-bus.md",
+      "title": "CommandBus contract addition",
+      "summary": "This addition introduces `CommandBus` as the typed routing contract for keyboard-first",
+      "headings": [
+        "Why this contract exists",
+        "Intended use",
+        "Relationship to InteractionSurface"
+      ],
+      "keywords": [
+        "contract",
+        "commandbus",
+        "addition",
+        "interactionsurface",
+        "routing",
+        "typed",
+        "command",
+        "dispatch",
+        "surfaces",
+        "why",
+        "exists",
+        "intended"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/compression-evaluation-v0-placement.md",
+      "title": "CompressionEvaluation v0 placement note",
+      "summary": "This note turns the Compression Commons design assessment into an exact `sourceos-spec` landing plan.",
+      "headings": [
+        "Purpose",
+        "New top-level schema",
+        "Reused existing contracts",
+        "Proposed schema outline",
+        "Proposed REST addition",
+        "Not in v0",
+        "Semantic overlay impact",
+        "First real PR file list",
+        "Rationale"
+      ],
+      "keywords": [
+        "schema",
+        "compressionevaluation",
+        "first",
+        "top-level",
+        "semantic",
+        "existing",
+        "not",
+        "schemas",
+        "should",
+        "note",
+        "purpose",
+        "proposed"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/digital-soul-identity-reputation.md",
+      "title": "Contract additions — digital soul: identity & reputation",
+      "summary": "Adds the two-layer \"digital soul\" contract family: a private, given **identity**",
+      "headings": [
+        "Why (the three forks this closes)",
+        "Contracts",
+        "URN identifiers",
+        "Binding to the evidence fabric",
+        "Cross-plane anchoring (verified vs constitutional identity)",
+        "Enforced invariants (machine-checked)",
+        "Validate",
+        "CHANGELOG entry (ready to merge into [Unreleased] → Added)"
+      ],
+      "keywords": [
+        "identity",
+        "reputation",
+        "urn",
+        "soul",
+        "srcos",
+        "digital",
+        "inner",
+        "contract",
+        "spine",
+        "reputationdimension",
+        "ascensionreading",
+        "fabric"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/e11-consent-receipts-ux.md",
+      "title": "E11 — Consent & Receipts UX (Privacy/Security Center)",
+      "summary": "**Gap #2 of the feature-gaps-zero campaign.**",
+      "headings": [
+        "Regions (normative)",
+        "Binding to what exists (build, don't rebuild)",
+        "Done-definition",
+        "Non-goals"
+      ],
+      "keywords": [
+        "consent",
+        "purpose",
+        "e11",
+        "surface",
+        "receipt",
+        "governor",
+        "receipts",
+        "privacy",
+        "action",
+        "consent-plane",
+        "deny",
+        "region"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/e12-ota-backup.md",
+      "title": "E12 — Sovereign OTA + Snapshot/Backup (Software Update + Time Machine)",
+      "summary": "**Gap #5 of the feature-gaps-zero campaign.**",
+      "headings": [
+        "Update model — signed atomic generations",
+        "Backup model — generations to a sovereign store",
+        "Governance",
+        "Superiority over macOS",
+        "Done-definition",
+        "Non-goals"
+      ],
+      "keywords": [
+        "update",
+        "generation",
+        "restore",
+        "sovereign",
+        "backup",
+        "generations",
+        "model",
+        "signed",
+        "consent",
+        "ota",
+        "snapshot",
+        "software"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/e3-mesh-transport.md",
+      "title": "E3 — Personal Mesh Transport (Continuity / Handoff / AirDrop / AirPlay parity)",
+      "summary": "**Gap #3 of the feature-gaps-zero campaign.**",
+      "headings": [
+        "Layered model",
+        "The `MeshTransfer` envelope (normative, schema to follow)",
+        "Consent binding (build, don't rebuild)",
+        "Superiority over Continuity (why it's a superset)",
+        "Done-definition",
+        "Non-goals"
+      ],
+      "keywords": [
+        "mesh",
+        "transfer",
+        "continuity",
+        "handoff",
+        "egress",
+        "airdrop",
+        "airplay",
+        "meshtransfer",
+        "consent",
+        "fabric",
+        "not",
+        "personal"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/focus-state.md",
+      "title": "FocusState contract addition",
+      "summary": "This addition introduces `FocusState` as the typed ownership/state record for",
+      "headings": [
+        "Why this contract exists",
+        "Intended use",
+        "Relationship to the other keyboard-navigation contracts"
+      ],
+      "keywords": [
+        "focusstate",
+        "contract",
+        "addition",
+        "ownership",
+        "keyboard-navigation",
+        "typed",
+        "state",
+        "record",
+        "surface",
+        "what",
+        "why",
+        "exists"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/focus-transition.md",
+      "title": "FocusTransition contract addition",
+      "summary": "This addition introduces `FocusTransition` as the typed transition edge between",
+      "headings": [
+        "Why this contract exists",
+        "Intended use",
+        "Relationship to the other keyboard-navigation contracts"
+      ],
+      "keywords": [
+        "focustransition",
+        "transition",
+        "contract",
+        "addition",
+        "ownership",
+        "how",
+        "why",
+        "exists",
+        "intended",
+        "use",
+        "relationship",
+        "other"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/immutable-node-profiles.md",
+      "title": "Immutable Node Profile Contracts",
+      "summary": "This contract addition defines the first SourceOS machine-readable surface for immutable Linux node and agent-runtime substrate profiles.",
+      "headings": [
+        "Why this exists",
+        "Added schemas",
+        "Added examples",
+        "Validation",
+        "Downstream implementation map",
+        "Non-goals"
+      ],
+      "keywords": [
+        "node",
+        "substrate",
+        "json",
+        "immutable",
+        "schemas",
+        "examples",
+        "sourceos",
+        "evidence",
+        "posture",
+        "desktop",
+        "state",
+        "added"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/inference-gateway-intersection.md",
+      "title": "InferenceGateway — the cloud ∩ local intersection (model serving)",
+      "summary": "**Campaign gap #8, done the right way: start at the intersection, then fan out.**",
+      "headings": [
+        "The shared seam",
+        "Intersection-first, then fan out",
+        "Every model + capability gets a surface across the estate",
+        "Positioning (governs-people vs governs-agents)",
+        "Done-definition",
+        "The governed model plane — beyond foundation models"
+      ],
+      "keywords": [
+        "model",
+        "cloud",
+        "local",
+        "out",
+        "plane",
+        "inferencegateway",
+        "intersection",
+        "shared",
+        "fan",
+        "both",
+        "then",
+        "capability"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/integrated-agent-native-stack.md",
+      "title": "SourceOS Integrated Agent-Native Stack v0.1",
+      "summary": "macOS wins because it is **one integrated system**, not a pile of apps. SourceOS",
+      "headings": [
+        "Purpose",
+        "Decision — one integrated, agent-native, owned stack",
+        "Per-app feature-modification matrix (agent-native integration)",
+        "Intelligence layer — Siri + Apple Intelligence, native and *extended*",
+        "Accessibility — first-class defaults (opt-in for agent modes)",
+        "Semantic grounding & ontology bindings",
+        "Security seams (the enforcement boundaries)",
+        "Purple-team tests (mandatory, must fire)",
+        "Implementation boundary"
+      ],
+      "keywords": [
+        "seam",
+        "agent",
+        "not",
+        "stack",
+        "accessibility",
+        "every",
+        "each",
+        "agent-native",
+        "intelligence",
+        "app",
+        "receipted",
+        "action"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/interaction-surface.md",
+      "title": "InteractionSurface contract addition",
+      "summary": "This addition introduces `InteractionSurface` as the first canonical contract for",
+      "headings": [
+        "Why this contract exists",
+        "Intended use",
+        "Current scope"
+      ],
+      "keywords": [
+        "contract",
+        "interactionsurface",
+        "addition",
+        "scope",
+        "first",
+        "canonical",
+        "policy",
+        "may",
+        "why",
+        "exists",
+        "intended",
+        "use"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/isolation-spaces-and-taints.md",
+      "title": "SourceOS Isolation Spaces and Taints v0.1",
+      "summary": "This contract makes the isolation **spaces** used by the consent-plane",
+      "headings": [
+        "Purpose",
+        "Decision",
+        "Admission (taint ⇄ toleration)",
+        "Accountability",
+        "Implementation boundary",
+        "Cross-references"
+      ],
+      "keywords": [
+        "space",
+        "toleration",
+        "consent-plane",
+        "isolation",
+        "spaces",
+        "ring",
+        "taint",
+        "surface",
+        "sourceos",
+        "docs",
+        "adr",
+        "noentry"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/keymap-profile.md",
+      "title": "KeymapProfile contract addition",
+      "summary": "`KeymapProfile` is the typed mapping profile for keyboard-first interaction in SourceOS and SociOS.",
+      "headings": [],
+      "keywords": [
+        "keymapprofile",
+        "profile",
+        "contract",
+        "addition",
+        "typed",
+        "mapping",
+        "keyboard-first",
+        "interaction",
+        "sourceos",
+        "socios",
+        "records",
+        "platform"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/macos-replacement-matrix.md",
+      "title": "macOS → SourceOS/SociOS replacement & enhancement matrix",
+      "summary": "**The census.** The integrated-agent-native-stack contract",
+      "headings": [
+        "Status legend",
+        "Core apps & shell",
+        "System & intelligence subsystems",
+        "Hardware-gap register — where Apple silicon wins, honestly",
+        "How to use this matrix",
+        "Long tail (audit-flagged as unspecified — now enumerated, mostly `gap`)"
+      ],
+      "keywords": [
+        "partial",
+        "gap",
+        "agent",
+        "macos",
+        "owned",
+        "not",
+        "source-os",
+        "mesh",
+        "sourceos",
+        "replacement",
+        "built",
+        "sovereign"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/mutation-evidence-accountability.md",
+      "title": "SourceOS Mutation and Evidence Accountability v0.1",
+      "summary": "This contract defines the minimum evidence model for mutation, resource pressure, policy denials, evidence routing, media/codec work, temporary artifacts, service lifecycle, and compromise assessment in SourceOS.",
+      "headings": [
+        "Purpose",
+        "Normative principles",
+        "Required event families",
+        "Minimum event envelope",
+        "Required evidence-quality states",
+        "Required compromise-assessment states",
+        "Required artifact classes",
+        "Required operator queries",
+        "Initial repo placement"
+      ],
+      "keywords": [
+        "evidence",
+        "sourceos",
+        "required",
+        "must",
+        "compromise",
+        "explain",
+        "event",
+        "policy",
+        "routing",
+        "media",
+        "degraded",
+        "mutation"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/network-assistant-model-doors.md",
+      "title": "Network, Mesh, BYOM, and Native Assistant Door contracts",
+      "summary": "This contract addition defines the SourceOS boundary for enterprise networking, user firewalls, service mesh integrations, bring-your-own-model endpoints, and native assistant bridges such as Apple App Intents/Siri/Shortcuts.",
+      "headings": [
+        "Why this exists",
+        "New schema types",
+        "Profile separation",
+        "Firewall and mesh posture",
+        "BYOM posture",
+        "Native assistant posture",
+        "Examples",
+        "Implementation owners",
+        "Non-goals"
+      ],
+      "keywords": [
+        "profile",
+        "firewall",
+        "enterprise",
+        "mesh",
+        "policy",
+        "network",
+        "native",
+        "assistant",
+        "user",
+        "json",
+        "byom",
+        "app"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/onboarding-control-plane.md",
+      "title": "Onboarding Control-Plane Contract Additions",
+      "summary": "This note documents the additive SourceOS/SociOS onboarding and agent-workbench control-plane contract family introduced by ADR-0012.",
+      "headings": [
+        "Contract family",
+        "Example payloads",
+        "Validation",
+        "Reuse boundaries",
+        "Follow-on work"
+      ],
+      "keywords": [
+        "json",
+        "onboarding",
+        "urn",
+        "contract",
+        "family",
+        "schemas",
+        "srcos",
+        "examples",
+        "sourceos",
+        "workspace",
+        "remains",
+        "control-plane"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/ops-history-catalog.md",
+      "title": "OpsHistory Contract Catalog",
+      "summary": "Status: additive contract catalog for OpsHistory, BearHistory, local-first service manifests, operational receipts, context-pack references, and redaction tombstones.",
+      "headings": [
+        "Schema additions",
+        "Example additions",
+        "Validation",
+        "Consumer repos",
+        "Contract discipline"
+      ],
+      "keywords": [
+        "json",
+        "urn",
+        "srcos",
+        "contract",
+        "opshistory",
+        "catalog",
+        "schema",
+        "additions",
+        "context-pack",
+        "socioprophet",
+        "local-first",
+        "service"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/ops-history.md",
+      "title": "OpsHistory and Local-First Service Contracts",
+      "summary": "Initial additive contract seed for SourceOS/SociOS spec issue #84.",
+      "headings": [
+        "Status",
+        "Purpose",
+        "Contract family",
+        "Downstream consumers",
+        "Non-negotiables",
+        "Linux service mapping",
+        "Initial service endpoints",
+        "Implementation posture"
+      ],
+      "keywords": [
+        "sourceos",
+        "service",
+        "policy",
+        "redaction",
+        "org",
+        "opshistory",
+        "contract",
+        "owns",
+        "local",
+        "export",
+        "initial",
+        "posture"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/os-build-cybernetic-boundary.md",
+      "title": "OS Build / Cybernetic Boundary — additive contract note",
+      "summary": "Merged into `main` via PR #26.",
+      "headings": [
+        "Status",
+        "Purpose",
+        "Intent",
+        "Where to look",
+        "What this note does not do",
+        "Why this note exists"
+      ],
+      "keywords": [
+        "note",
+        "json",
+        "build",
+        "cybernetic",
+        "additive",
+        "not",
+        "osimage",
+        "nodebinding",
+        "cyberneticassignment",
+        "schemas",
+        "examples",
+        "does"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/radio-spatial-derived-context.md",
+      "title": "Radio-Spatial, Learned Location, and Home Context Boundaries",
+      "summary": "Status: additive security-contract placement note.",
+      "headings": [
+        "Summary",
+        "Security rule",
+        "Claim discipline",
+        "Required receipt family",
+        "Required user-visible controls",
+        "Integration points",
+        "Acceptance tests",
+        "Non-goals"
+      ],
+      "keywords": [
+        "context",
+        "receipts",
+        "radio-spatial",
+        "location",
+        "home",
+        "derived",
+        "routine",
+        "model",
+        "wi-fi",
+        "state",
+        "protected",
+        "required"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/reasoning-run-contracts.md",
+      "title": "Reasoning Run Contract Additions",
+      "summary": "This tranche adds the first canonical SourceOS/SociOS contracts for governed recursive reasoning runs.",
+      "headings": [
+        "Purpose",
+        "Added schemas",
+        "Boundary",
+        "Safe trace rule",
+        "Open item"
+      ],
+      "keywords": [
+        "reasoning",
+        "owns",
+        "run",
+        "urn",
+        "schemas",
+        "safe",
+        "tranche",
+        "srcos",
+        "socioprophet",
+        "canonical",
+        "contracts",
+        "superconscious"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/runtime-causality-contracts-v0.md",
+      "title": "Runtime Causality Contracts v0",
+      "summary": "This additive contract slice introduces runtime-causality records derived from ordered diagnostic evidence. The goal is to collapse opaque operating-system log storms into typed, bounded, user-explainable evidence objects.",
+      "headings": [
+        "Added schemas",
+        "Added examples",
+        "Design intent",
+        "Observed failure classes covered",
+        "Downstream consumers",
+        "Implementation notes",
+        "Follow-up work"
+      ],
+      "keywords": [
+        "json",
+        "schemas",
+        "examples",
+        "runtime",
+        "state",
+        "urn",
+        "srcos",
+        "evidence",
+        "broker",
+        "session",
+        "records",
+        "browser"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/shared-content-build-release-family-v0.md",
+      "title": "Shared Content / Build / Release Family v0",
+      "summary": "This additive contract family introduces shared object shapes that can be reused across:",
+      "headings": [
+        "Design intent",
+        "Object family",
+        "Boundaries",
+        "Follow-on"
+      ],
+      "keywords": [
+        "family",
+        "build",
+        "object",
+        "shared",
+        "content",
+        "release",
+        "additive",
+        "can",
+        "evidence",
+        "catalog",
+        "design",
+        "intent"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-catalog.md",
+      "title": "SourceOS Interaction Substrate Catalog",
+      "summary": "Status: Informational",
+      "headings": [
+        "Purpose",
+        "Contract objects",
+        "Generated type consumption",
+        "Required downstream bindings",
+        "Payload posture",
+        "Operational flow",
+        "Completion status"
+      ],
+      "keywords": [
+        "generated",
+        "sourceos",
+        "interaction",
+        "noetica",
+        "agentterm",
+        "python",
+        "socioprophet",
+        "schema",
+        "sourceosinteractionevent",
+        "typescript",
+        "downstream",
+        "artifacts"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-implementation-ledger.md",
+      "title": "SourceOS Interaction Substrate Implementation Ledger",
+      "summary": "Status: implementation ledger",
+      "headings": [
+        "Purpose",
+        "Canonical contract estate",
+        "Downstream implementation estate",
+        "Validation lanes",
+        "Authority boundaries",
+        "Non-goals of the completed tranche",
+        "Remaining non-blocking future work"
+      ],
+      "keywords": [
+        "sourceos",
+        "interaction",
+        "contract",
+        "noetica",
+        "sourceos-linux",
+        "reference-flow",
+        "socioprophet",
+        "adds",
+        "substrate",
+        "implementation",
+        "downstream",
+        "superconscious"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-noetica-placement-addendum.md",
+      "title": "SourceOS Interaction Noetica Placement Addendum",
+      "summary": "Status: placement addendum",
+      "headings": [
+        "Purpose",
+        "Placement rule",
+        "Transitional fallback",
+        "Fixture relationship",
+        "Non-goals"
+      ],
+      "keywords": [
+        "noetica",
+        "interaction",
+        "placement",
+        "addendum",
+        "transport",
+        "boundary",
+        "authority",
+        "fallback",
+        "shell",
+        "owns",
+        "sourceos",
+        "status"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-reference-flow.md",
+      "title": "SourceOS Interaction Reference Flow v0.1",
+      "summary": "Status: Informational reference packet",
+      "headings": [
+        "Purpose",
+        "Authority map",
+        "Pinned implementation commits",
+        "Payload posture",
+        "Validation"
+      ],
+      "keywords": [
+        "reference",
+        "authority",
+        "interaction",
+        "socioprophet",
+        "packet",
+        "artifacts",
+        "flow",
+        "implementation",
+        "commits",
+        "validation",
+        "evidence",
+        "sourceos-linux"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-runtime-bridge-ledger.md",
+      "title": "SourceOS Interaction Runtime Bridge Ledger",
+      "summary": "Status: implementation ledger",
+      "headings": [
+        "Purpose",
+        "Completed bridge tranches",
+        "Current implementation shape",
+        "Validation lanes",
+        "Boundary posture",
+        "Follow-up issue routing",
+        "Remaining work"
+      ],
+      "keywords": [
+        "noetica",
+        "bridge",
+        "added",
+        "runtime",
+        "socioprophet",
+        "artifact",
+        "export",
+        "sourceos",
+        "import",
+        "validation",
+        "agentterm",
+        "interaction"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-substrate.md",
+      "title": "SourceOS Interaction Substrate v0.1",
+      "summary": "Status: Proposed",
+      "headings": [
+        "Purpose",
+        "Relationship to OpsHistory",
+        "Normative boundaries",
+        "Required producers",
+        "Minimum event content",
+        "Surface obligations",
+        "Non-goals",
+        "Acceptance criteria"
+      ],
+      "keywords": [
+        "surface",
+        "memory",
+        "event",
+        "policy",
+        "not",
+        "noetica",
+        "agentterm",
+        "evidence",
+        "matrix",
+        "owns",
+        "task",
+        "replay"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sourceos-interaction-top-level-index.md",
+      "title": "SourceOS Interaction Substrate Top-Level Index",
+      "summary": "Status: informational index",
+      "headings": [],
+      "keywords": [
+        "interaction",
+        "sourceos",
+        "generated",
+        "python",
+        "reference",
+        "substrate",
+        "index",
+        "noetica",
+        "chat",
+        "task-boundary",
+        "evidence",
+        "json"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/sovereign-shell-assembly.md",
+      "title": "Sovereign Shell Assembly — how the OS is built from the parts",
+      "summary": "The build index for the SociOS/SourceOS agentic shell: every component the",
+      "headings": [
+        "Components (built this campaign)",
+        "Vendored dependencies (consumed, not forked)",
+        "Build order (bottom-up)",
+        "What remains to a bootable image"
+      ],
+      "keywords": [
+        "build",
+        "source-os",
+        "surfaces",
+        "shell",
+        "vendored",
+        "hellgraph",
+        "built",
+        "not",
+        "image",
+        "sourceos-spec",
+        "replacement",
+        "sourceos-shell"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/systema-capability-radius.md",
+      "title": "Systema: Capability Radius Mapping to SourceOS Typed Contracts",
+      "summary": "Systema's `capability_radius_profile.yaml` models the bounded scope within which an agent or component may exercise capabilities: a spatial/contextual radius beyond which capability requests are automatically denied, regardless of individual capability grants.",
+      "headings": [
+        "What Systema defines",
+        "Existing SourceOS/SociOS coverage",
+        "Gap: radius boundary document",
+        "Mapping rules",
+        "No new schemas required"
+      ],
+      "keywords": [
+        "radius",
+        "systema",
+        "capability",
+        "sourceos",
+        "which",
+        "agentcapabilitylease",
+        "mapping",
+        "new",
+        "profile",
+        "scope",
+        "agent",
+        "capabilitygrantstate"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/systema-membrane-boundary.md",
+      "title": "Systema: Membrane Boundary Mapping to SourceOS Typed Contracts",
+      "summary": "Systema's `membrane_boundary_profile.yaml` defines isolation boundaries between system zones: what may cross a membrane (data, events, capability grants), under what conditions, and what evidence is required to authorize a crossing.",
+      "headings": [
+        "What Systema defines",
+        "Existing SourceOS/SociOS coverage",
+        "Gap: membrane crossing event record",
+        "Mapping rules",
+        "No new schemas required"
+      ],
+      "keywords": [
+        "membrane",
+        "systema",
+        "crossing",
+        "what",
+        "boundary",
+        "capabilitygrantstate",
+        "sourceos",
+        "mapping",
+        "defines",
+        "event",
+        "required",
+        "capability"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/systema-projection-loss.md",
+      "title": "Systema: Projection Loss Mapping to SourceOS Typed Contracts",
+      "summary": "Systema's `projection_loss_profile.yaml` models the degradation between a source truth and its projected representation: information loss during transformation, summarization, embedding, or model inference. A `projectionLoss` score of 0.0 is lossless; 1.0 is total loss.",
+      "headings": [
+        "What Systema defines",
+        "Existing SourceOS/SociOS coverage",
+        "Gap: projection-loss scalar on emitted artifacts",
+        "Mapping rules",
+        "No new schemas required"
+      ],
+      "keywords": [
+        "systema",
+        "loss",
+        "projection",
+        "sourceos",
+        "projectionloss",
+        "mapping",
+        "projection-loss",
+        "schemas",
+        "score",
+        "reasoningassay",
+        "localreasoningfailure",
+        "socios"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/systema-source-confidence.md",
+      "title": "Systema: Source Confidence Mapping to SourceOS Typed Contracts",
+      "summary": "Systema's `source_confidence_profile.yaml` models the trustworthiness of a data source across axes: recency, provenance, verifiability, and authority. It produces a scalar confidence score and a named confidence tier (`high`, `medium`, `low`, `unverified`).",
+      "headings": [
+        "What Systema defines",
+        "Existing SourceOS/SociOS coverage",
+        "Gap: runtime source-confidence metadata on local objects",
+        "Mapping rules",
+        "No new schemas required"
+      ],
+      "keywords": [
+        "confidence",
+        "systema",
+        "source",
+        "sourceos",
+        "schemas",
+        "authority",
+        "mapping",
+        "source-confidence",
+        "axes",
+        "tier",
+        "existing",
+        "socios"
+      ]
+    },
+    {
+      "path": "docs/surfaces/README.md",
+      "title": "Surfaces — the diagram is a witness, not an illustration",
+      "summary": "Canonical visual surfaces for the estate. **The rule:** a diagram of a governed,",
+      "headings": [
+        "Live-feed wiring",
+        "Three tiers",
+        "Style is validated against source",
+        "In this directory",
+        "Provenance note",
+        "Backlog (to finish Tier 1)"
+      ],
+      "keywords": [
+        "tier",
+        "html",
+        "surface",
+        "surfaces",
+        "not",
+        "source",
+        "canonical",
+        "every",
+        "diagram",
+        "live",
+        "state",
+        "instrument"
+      ]
+    }
+  ]
+}
