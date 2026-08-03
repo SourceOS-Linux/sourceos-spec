@@ -1,13 +1,16 @@
 """Bounded non-negative integer / bounded-payload validation — generalized.
 
-ESTATE SAFETY KIT — canonical source. See ../PROVENANCE.md for what this closes, which
-repo hit the defect first, and the vendoring contract every consumer must follow. Do not
-edit a vendored copy directly — edit this file, re-vendor, done.
+ESTATE SAFETY KIT — canonical source (SourceOS-Linux/sourceos-spec's estate-safety-kit/).
+See estate-safety-kit/PROVENANCE.md in that repo for what this closes, which repo hit the
+defect first, and the vendoring contract every consumer must follow. Do not edit a
+vendored copy directly — edit this file, re-vendor, done.
 
 THE DEFECT, first caught in prophet-platform's compute-gateway exhaust guard
-(`apps/compute-gateway/src/compute_gateway/engine.py`, closed in PR #1118 after an
-adversarial review of PR #1104 flagged it): "must be a non-negative int" is a type/sign
-check, NOT a size bound, because Python ints are arbitrary precision.
+(`apps/compute-gateway/src/compute_gateway/engine.py`): introduced in PR #1067, an open
+door in it found in PR #1071, and the specific gap this module closes — an int field
+bounded only by type and sign, not size — found and fixed in PR #1118.
+"must be a non-negative int" is a type/sign check, NOT a size bound, because Python ints
+are arbitrary precision.
 
     def _bad_nonneg_int(v) -> bool:
         return isinstance(v, bool) or not isinstance(v, int) or v < 0

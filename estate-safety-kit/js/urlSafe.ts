@@ -1,7 +1,8 @@
 /**
  * Scheme allow-list for URLs whose source is not the app rendering them.
  *
- * ESTATE SAFETY KIT — canonical source. See ../PROVENANCE.md for what this closes,
+ * ESTATE SAFETY KIT — canonical source (SourceOS-Linux/sourceos-spec's estate-safety-kit/).
+ * See estate-safety-kit/PROVENANCE.md in that repo for what this closes,
  * which repos hit the defect independently, and the vendoring contract every consumer
  * must follow (verbatim copy + PROVENANCE.txt + `tools/check_vendored_safety_kit.py`).
  * Do not edit a vendored copy directly — edit this file, re-vendor, done.

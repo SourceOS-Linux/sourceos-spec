@@ -1,7 +1,8 @@
 /**
  * ONE decision about where an identifier comes from, for every ledger that mints one.
  *
- * ESTATE SAFETY KIT — canonical source. See ../PROVENANCE.md for what this closes,
+ * ESTATE SAFETY KIT — canonical source (SourceOS-Linux/sourceos-spec's estate-safety-kit/).
+ * See estate-safety-kit/PROVENANCE.md in that repo for what this closes,
  * which repos hit the defect independently, and the vendoring contract every consumer
  * must follow. Do not edit a vendored copy directly — edit this file, re-vendor, done.
  *
