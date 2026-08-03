@@ -1,0 +1,14 @@
+{
+  "domain": "formal",
+  "documents": [
+    {
+      "text": "An empty set is a set with no elements. The empty set is unique. A finite state machine has a start state. The state machine transitions on input. A base class defines behaviour; a derived class extends the base class. Each required field is validated; a required field with no value fails. The set of states of the state machine forms a state space."
+    },
+    {
+      "text": "The empty set contains nothing. A state machine has states. The base class is abstract; the base class defines the interface. A required field must be present; the required field is checked. The state machine reads the set and updates the state."
+    },
+    {
+      "text": "Set theory studies the empty set and every set. The state machine and its state set. The base class and each required field. A required field maps to a state in the state machine."
+    }
+  ]
+}

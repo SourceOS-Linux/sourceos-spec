@@ -1,0 +1,12 @@
+{
+  "stoplist": [
+    "the",
+    "and",
+    "set",
+    "class",
+    "state",
+    "required",
+    "field",
+    "with"
+  ]
+}
