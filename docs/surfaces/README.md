@@ -8,6 +8,12 @@ nothing about the system; it is a mood board, **disqualified** from documenting 
 An instrument that can lie is worse than none — the same reason the Life-Mirror surface
 flags a never-fired tripwire as SUSPECT.
 
+## Live-feed wiring
+The Tier-2 surfaces are **wired to a live feed**: each reads `./data/<name>.json`
+(or `window.SURFACE_FEED_URL`) at load, falls back to an embedded seed, and shows a
+**LIVE / SAMPLE** badge — an instrument that declares its own provenance. Regenerate a
+feed from real state with `tools/build_surface_feed.py`; see `data/README.md`.
+
 ## Three tiers
 | Tier | What | Medium | Reads |
 |---|---|---|---|

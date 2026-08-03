@@ -33,6 +33,9 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);fon
 .head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:5px}
 .head h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.2px}
 .head .wid{font-family:var(--mono);color:var(--accent);font-size:12.5px}
+.prov{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--border);color:var(--muted)}
+.prov.sample{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 42%,transparent);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.prov.live{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 42%,transparent);background:color-mix(in srgb,var(--ok) 12%,transparent)}
 .tgl{margin-left:auto;background:none;border:1px solid var(--border);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
 .sub{color:var(--muted);margin:0 0 18px;max-width:76ch}
 .exs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
@@ -88,7 +91,7 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);fon
 </div>
 
 <div class="wrap">
-  <div class="head"><h1>Turn Witness</h1><span class="wid">annotated · Gödel-numbered · verified</span>
+  <div class="head"><h1>Turn Witness</h1><span class="wid">annotated · Gödel-numbered · verified</span><span class="prov" id="prov" title="data provenance"></span>
     <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></div>
   <p class="sub">Any chat turn or result is annotated into typed tokens, encoded to a canonical <b>Gödel number</b> (its integrity fingerprint), run through <b>consistency checks</b>, and reduced to <b>conclusions</b> with a sealed verdict. Well-formed does not mean admissible — a turn can pass every structural check and still be refused.</p>
 
@@ -108,8 +111,13 @@ body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);fon
 </div>
 
 <script>
-// ── shared turn data (same parses as the lampstand launcher) ──
-const TURNS=[
+// ── surface feed loader: fetch ./data/<name>.json (or window.SURFACE_FEED_URL),
+//    fall back to the embedded seed, and declare provenance truthfully. ──
+let __prov='sample';
+async function loadFeed(name){try{const base=(window.SURFACE_FEED_URL||'./data/');const r=await fetch(base+name+'.json',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();__prov=j.provenance||'live';return j;}catch(e){__prov='sample';return null;}}
+function setProv(){const b=document.getElementById('prov');if(b){b.textContent=(__prov==='live'?'LIVE':'SAMPLE DATA');b.className='prov '+(__prov==='live'?'live':'sample');}}
+// ── shared turn data (same parses as the lampstand launcher) — embedded fallback ──
+let TURNS=[
 { id:"turn:8f2a", user:"show me all contact lists in my org",
   sys:"3 contact lists in org SocioProphet — Sales, Investors, Partners",
   tokens:[
@@ -219,5 +227,5 @@ function render(i){cur=i;const d=TURNS[i];
 document.querySelectorAll('.ex').forEach(e=>e.onclick=()=>render(+e.dataset.i));
 el('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
 (function(){const d=new Date();const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];el('clock').textContent=`${days[d.getDay()]} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;})();
-render(0);
+(async()=>{const f=await loadFeed('turn-witness');if(f&&Array.isArray(f.turns)&&f.turns.length)TURNS=f.turns;setProv();render(0);})();
 </script>

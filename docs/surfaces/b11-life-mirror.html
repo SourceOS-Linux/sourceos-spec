@@ -27,6 +27,9 @@
 header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:4px}
 .top h1{font-size:19px;margin:0;font-weight:680;letter-spacing:.3px}
 .top .id{font-family:var(--mono);color:var(--cyan);font-size:13px}
+.prov{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--muted)}
+.prov.sample{color:var(--watchful);border-color:color-mix(in srgb,var(--watchful) 42%,transparent);background:color-mix(in srgb,var(--watchful) 12%,transparent)}
+.prov.live{color:var(--normal);border-color:color-mix(in srgb,var(--normal) 42%,transparent);background:color-mix(in srgb,var(--normal) 12%,transparent)}
 .tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:7px;width:32px;height:32px;color:var(--muted);cursor:pointer}
 .sub{color:var(--muted);margin:0 0 20px;max-width:74ch}
 /* state banner */
@@ -101,7 +104,7 @@ header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bott
 
 <div class="wrap">
   <header class="top">
-    <h1>Life-Mirror Automaton</h1><span class="id">B₁₁ · surface_map</span>
+    <h1>Life-Mirror Automaton</h1><span class="id">B₁₁ · surface_map</span><span class="prov" id="prov" title="data provenance"></span>
     <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button>
   </header>
   <p class="sub">The twin mirrors the live system across the four spaces. Deviation drives the automaton <b>NORMAL → WATCHFUL → SAFE-HALT</b>; every transition is receipted and shows its warrant. This is a <i>witness surface</i> — it reads guardrail-fabric decisions, consent-plane state, and netwatch tripwires. It renders the real state or it renders nothing.</p>
@@ -165,24 +168,28 @@ header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bott
 </div>
 
 <script>
-const WORLDS=[
+let WORLDS=[
  {g:'א',c:'--atzilut',nm:'Atzilut',sub:'emanation · kernel / source',st:'sealed',cls:'ok'},
  {g:'ב',c:'--beriah',nm:'Beriah',sub:'creation · system-space',st:'nominal',cls:'ok'},
  {g:'י',c:'--yetzirah',nm:'Yetzirah',sub:'formation · user-space',st:'nominal',cls:'ok'},
  {g:'ה',c:'--assiah',nm:'Assiah',sub:'action · agent + twin-bridge',st:'watching',cls:'watch'},
 ];
-const TRIPS=[
+let TRIPS=[
  {name:'consent.denied-rate',pct:14,fired:'last fired 3h ago',never:false},
  {name:'twin.divergence',pct:8,fired:'last fired 2d ago',never:false},
  {name:'exfil.fanout',pct:2,fired:'never fired',never:true},
 ];
-const LOG=[
+let LOG=[
  {t:'12:04:11',g:'w',m:'NORMAL → WATCHFUL',why:'consent.denied-rate crossed soft threshold (agent egress attempts)',seal:'sha256:ca43bf38…'},
  {t:'12:05:02',g:'n',m:'WATCHFUL → NORMAL',why:'rate settled; netwatch throttled pid:1234; no owner action needed',seal:'sha256:9f7712ac…'},
  {t:'09:20:44',g:'w',m:'NORMAL → WATCHFUL',why:'twin.divergence 4.1% after staged update A→B (verify pending)',seal:'sha256:2b384a17…'},
  {t:'09:22:10',g:'n',m:'WATCHFUL → NORMAL',why:'verify passed, owner QR-consent committed generation',seal:'sha256:db6f9677…'},
 ];
 const el=id=>document.getElementById(id);
+let __prov='sample';
+async function loadFeed(name){try{const base=(window.SURFACE_FEED_URL||'./data/');const r=await fetch(base+name+'.json',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();__prov=j.provenance||'live';return j;}catch(e){__prov='sample';return null;}}
+function setProv(){const b=el('prov');if(b){b.textContent=(__prov==='live'?'LIVE':'SAMPLE DATA');b.className='prov '+(__prov==='live'?'live':'sample');}}
+function renderAll(){
 el('worlds').innerHTML=WORLDS.map(w=>`<div class="world">
   <span class="glyph" style="background:var(${w.c})">${w.g}</span>
   <div class="nm">${w.nm}<small>${w.sub}</small></div>
@@ -193,5 +200,7 @@ el('trips').innerHTML=TRIPS.map(t=>{const col=t.pct>60?'--halt':t.pct>25?'--watc
   <div class="seg"><span>soft</span><span>hard</span><span>trip</span></div></div>`}).join('');
 el('log').innerHTML=LOG.map(l=>`<div class="le"><span class="t">${l.t}</span><span class="g ${l.g}"></span>
   <div><span class="m">${l.m}</span><div class="why">${l.why}</div><div class="seal">${l.seal}</div></div></div>`).join('');
+}
 el('tgl').onclick=()=>{const r=document.documentElement;const cur=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',cur==='dark'?'light':'dark');};
+(async()=>{const f=await loadFeed('b11');if(f){if(Array.isArray(f.spaces))WORLDS=f.spaces;if(Array.isArray(f.tripwires))TRIPS=f.tripwires;if(Array.isArray(f.transitions))LOG=f.transitions;if(f.state)el('stateV').textContent=f.state;}setProv();renderAll();})();
 </script>

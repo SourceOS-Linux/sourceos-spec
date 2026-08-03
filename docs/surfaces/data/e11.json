@@ -1,0 +1,23 @@
+{
+  "provenance": "sample",
+  "generated_at": "2026-08-03T00:00:00Z",
+  "source": "sample seed — replace via tools/build_surface_feed.py --e11-catalog <spaces_v1.yaml>",
+  "surfaces": [
+    {"name":"goose-notes","surface":"notes","space":"user-space","allow":["discover","implement"],"deny":["egress","operate"],"posture":"ask","pk":"per-purpose · personal documents"},
+    {"name":"BearBrowser","surface":"browser","space":"agent-space","allow":["discover","egress"],"deny":["implement","operate"],"posture":"deny","pk":"untrusted input · agent-space only"},
+    {"name":"TurtleTerm","surface":"terminal","space":"user-space","allow":["discover","implement","verify"],"deny":["egress","operate"],"posture":"allow","pk":"agent denied egress/operate"},
+    {"name":"netwatch","surface":"cluster-operator","space":"system-space","allow":["discover","operate"],"deny":[],"posture":"ask","pk":"operate → Governor approval"},
+    {"name":"Noetica concierge","surface":"cockpit","space":"user-space","allow":["discover","administer"],"deny":["operate"],"posture":"ask","pk":"voice · every act receipted"}
+  ],
+  "receipts": [
+    {"t":"12:04:11","g":"escalate","v":"escalate","act":"net.block suspicious.example","why":"netwatch: agent egress on system-space → Governor approval required","seal":"sha256:ca43bf38…"},
+    {"t":"12:03:52","g":"deny","v":"deny","act":"external-send (notes agent)","why":"surface 'notes' denies purpose 'egress' (envelope) — refused fail-closed","seal":"sha256:9f7712ac…"},
+    {"t":"12:01:30","g":"allow","v":"allow","act":"source-mutate README.md","why":"implementer · terminal · user-space · admissible","seal":"sha256:2b384a17…"},
+    {"t":"11:58:04","g":"deny","v":"deny","act":"browser agent → implement","why":"prompt-injection containment: browser surface denies implement","seal":"sha256:6076fa86…"},
+    {"t":"11:55:19","g":"allow","v":"allow","act":"data-namespace read (tenant=acme, region=EU)","why":"tenant + region tolerations present (Art 6/7 + Ch. V)","seal":"sha256:db6f9677…"}
+  ],
+  "governor": [
+    {"cap":"net.block","target":"suspicious.example","tier":"medium","rz":"netwatch flagged beaconing to this host from process curl#100; blocking is reversible but touches the firewall."},
+    {"cap":"net.throttle","target":"pid:1234","tier":"high","rz":"Egress fan-out to 14 external hosts — possible exfil. Throttling a running process is production-impacting; needs explicit approval + evidence."}
+  ]
+}

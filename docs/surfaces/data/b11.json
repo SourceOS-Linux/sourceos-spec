@@ -1,0 +1,91 @@
+{
+  "provenance": "sample",
+  "generated_at": "2026-08-03T08:55:40Z",
+  "source": "sample seed (netwatch snapshot + guardrail-fabric transitions)",
+  "state": "NORMAL",
+  "divergence": "0.4% / 5% trip",
+  "spaces": [
+    {
+      "g": "א",
+      "c": "--atzilut",
+      "nm": "Atzilut",
+      "sub": "emanation · kernel / source",
+      "st": "sealed",
+      "cls": "ok"
+    },
+    {
+      "g": "ב",
+      "c": "--beriah",
+      "nm": "Beriah",
+      "sub": "creation · system-space",
+      "st": "nominal",
+      "cls": "ok"
+    },
+    {
+      "g": "י",
+      "c": "--yetzirah",
+      "nm": "Yetzirah",
+      "sub": "formation · user-space",
+      "st": "nominal",
+      "cls": "ok"
+    },
+    {
+      "g": "ה",
+      "c": "--assiah",
+      "nm": "Assiah",
+      "sub": "action · agent + twin-bridge",
+      "st": "watching",
+      "cls": "watch"
+    }
+  ],
+  "tripwires": [
+    {
+      "name": "consent.denied-rate",
+      "pct": 14,
+      "fired": "last fired 3h ago",
+      "never": false
+    },
+    {
+      "name": "twin.divergence",
+      "pct": 8,
+      "fired": "last fired 2d ago",
+      "never": false
+    },
+    {
+      "name": "exfil.fanout",
+      "pct": 2,
+      "fired": "never fired",
+      "never": true
+    }
+  ],
+  "transitions": [
+    {
+      "t": "12:04:11",
+      "g": "w",
+      "m": "NORMAL → WATCHFUL",
+      "why": "consent.denied-rate crossed soft threshold (agent egress attempts)",
+      "seal": "sha256:ca43bf38…"
+    },
+    {
+      "t": "12:05:02",
+      "g": "n",
+      "m": "WATCHFUL → NORMAL",
+      "why": "rate settled; netwatch throttled pid:1234; no owner action needed",
+      "seal": "sha256:9f7712ac…"
+    },
+    {
+      "t": "09:20:44",
+      "g": "w",
+      "m": "NORMAL → WATCHFUL",
+      "why": "twin.divergence 4.1% after staged update A→B (verify pending)",
+      "seal": "sha256:2b384a17…"
+    },
+    {
+      "t": "09:22:10",
+      "g": "n",
+      "m": "WATCHFUL → NORMAL",
+      "why": "verify passed, owner QR-consent committed generation",
+      "seal": "sha256:db6f9677…"
+    }
+  ]
+}
