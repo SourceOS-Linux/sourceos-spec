@@ -1,0 +1,160 @@
+<title>SourceOS — Consent & Receipts Center</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0f1523; --panel:#161d2e; --panel2:#1b2436; --line:#242f45; --line2:#2e3a54;
+  --text:#e6ebf5; --muted:#8b95ad; --faint:#5a6580;
+  --accent:#7aa2ff; --accent-dim:#2b3a63;
+  --ok:#49b881; --warn:#d8a63e; --crit:#e5594f; --info:#5fb0d6;
+  --ok-bg:#12291d; --warn-bg:#2a2312; --crit-bg:#2b1512;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; --sans:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#eef1f7; --panel:#fff; --panel2:#f4f7fc; --line:#dde3ef; --line2:#c9d2e2;
+  --text:#182034; --muted:#5a6580; --faint:#8b95ad; --accent:#3762d6; --accent-dim:#c3d2f7;
+  --ok:#2c8d59; --warn:#a97c1e; --crit:#c23a31; --info:#2c7fa8; --ok-bg:#e3f1e9; --warn-bg:#f5efdb; --crit-bg:#f7e4e2;
+}}
+:root[data-theme="dark"]{--bg:#0f1523;--panel:#161d2e;--panel2:#1b2436;--line:#242f45;--line2:#2e3a54;--text:#e6ebf5;--muted:#8b95ad;--faint:#5a6580;--accent:#7aa2ff;--accent-dim:#2b3a63;--ok:#49b881;--warn:#d8a63e;--crit:#e5594f;--info:#5fb0d6;--ok-bg:#12291d;--warn-bg:#2a2312;--crit-bg:#2b1512}
+:root[data-theme="light"]{--bg:#eef1f7;--panel:#fff;--panel2:#f4f7fc;--line:#dde3ef;--line2:#c9d2e2;--text:#182034;--muted:#5a6580;--faint:#8b95ad;--accent:#3762d6;--accent-dim:#c3d2f7;--ok:#2c8d59;--warn:#a97c1e;--crit:#c23a31;--info:#2c7fa8;--ok-bg:#e3f1e9;--warn-bg:#f5efdb;--crit-bg:#f7e4e2}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+button{font-family:inherit;color:inherit;cursor:pointer}:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:5px}
+.wrap{max-width:1120px;margin:0 auto;padding:22px 20px 60px}
+header.top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.top .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 20%,transparent)}
+.top h1{font-size:19px;margin:0;font-weight:680;letter-spacing:.2px}
+.sub{color:var(--muted);margin:0 0 20px;font-size:13px;max-width:70ch}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:7px;width:32px;height:32px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 340px;gap:16px}
+@media (max-width:880px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden}
+.card h2{font-size:11px;letter-spacing:.8px;text-transform:uppercase;color:var(--faint);font-weight:680;margin:0;padding:13px 15px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card h2 .n{margin-left:auto;font-family:var(--mono);color:var(--muted);font-size:11px;letter-spacing:0}
+/* purpose legend */
+.legend{display:flex;flex-wrap:wrap;gap:6px;padding:12px 15px}
+.chip{font-family:var(--mono);font-size:10.5px;padding:3px 9px;border-radius:11px;border:1px solid var(--line2);color:var(--muted)}
+.chip.deny{background:var(--crit-bg);color:var(--crit);border-color:color-mix(in srgb,var(--crit) 30%,transparent)}
+/* app rows */
+.app{display:grid;grid-template-columns:1.4fr 1fr auto;align-items:center;gap:12px;padding:12px 15px;border-top:1px solid var(--line)}
+.app:first-of-type{border-top:none}
+.app .name{font-weight:600;font-size:13.5px}
+.app .name .sp{display:block;font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:2px}
+.purps{display:flex;flex-wrap:wrap;gap:4px}
+.p{font-family:var(--mono);font-size:10px;padding:2px 7px;border-radius:5px;background:var(--panel2);color:var(--muted);border:1px solid var(--line)}
+.p.on{background:color-mix(in srgb,var(--ok) 15%,transparent);color:var(--ok);border-color:color-mix(in srgb,var(--ok) 30%,transparent)}
+.p.deny{background:var(--crit-bg);color:var(--crit);border-color:color-mix(in srgb,var(--crit) 28%,transparent);text-decoration:line-through;opacity:.85}
+.posture{font-family:var(--mono);font-size:11px;padding:4px 10px;border-radius:7px;border:1px solid var(--line2);background:var(--panel2);white-space:nowrap}
+.posture.ask{color:var(--warn)} .posture.deny{color:var(--crit)} .posture.allow{color:var(--ok)}
+/* receipts timeline */
+.rcpt{display:grid;grid-template-columns:52px 12px 1fr;gap:9px;align-items:start;padding:9px 15px;border-top:1px solid var(--line);font-size:12.5px}
+.rcpt:first-of-type{border-top:none}
+.rcpt .t{font-family:var(--mono);font-size:10.5px;color:var(--faint)}
+.rcpt .g{width:9px;height:9px;border-radius:50%;margin-top:4px}
+.g.allow{background:var(--ok)} .g.deny{background:var(--crit)} .g.escalate{background:var(--warn)}
+.rcpt .act{font-family:var(--mono);font-size:11.5px}
+.rcpt .why{color:var(--muted);font-size:12px;margin-top:1px}
+.rcpt .seal{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:2px}
+.verdict{font-family:var(--mono);font-size:9.5px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:4px;margin-left:6px}
+.verdict.allow{background:var(--ok-bg);color:var(--ok)} .verdict.deny{background:var(--crit-bg);color:var(--crit)} .verdict.escalate{background:var(--warn-bg);color:var(--warn)}
+/* governor queue */
+.gov{padding:12px 15px;border-top:1px solid var(--line)}
+.gov:first-of-type{border-top:none}
+.gov .h{display:flex;align-items:center;gap:8px}
+.gov .cap{font-family:var(--mono);font-size:12.5px;font-weight:600}
+.gov .tier{font-family:var(--mono);font-size:9.5px;font-weight:700;text-transform:uppercase;padding:2px 7px;border-radius:5px;margin-left:auto}
+.tier.high{background:var(--crit-bg);color:var(--crit)} .tier.medium{background:var(--warn-bg);color:var(--warn)}
+.gov .rz{color:var(--muted);font-size:12px;margin:6px 0 9px}
+.gov .btns{display:flex;gap:7px}
+.btn{border:1px solid var(--line2);background:var(--panel2);border-radius:7px;padding:6px 12px;font-size:12px;font-weight:550}
+.btn.approve{background:var(--accent);border-color:var(--accent);color:#08152e;font-weight:650}
+.btn.deny{color:var(--crit)}
+.foot{margin-top:22px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+.foot .mono{color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="dot"></span><h1>Consent &amp; Receipts Center</h1>
+    <button class="tgl" id="tgl" title="Toggle theme" aria-label="Toggle theme">◑</button>
+  </header>
+  <p class="sub">macOS shows you a checkbox per app. SourceOS shows you <b>which purpose</b> each app (and each agent) may act under, on which surface and space — and keeps a <b>hash-sealed receipt of every action</b> with the reason it was allowed, denied, or escalated. This is the E11 surface: privacy you can read, not just toggle.</p>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>Purpose vocabulary <span class="n">GDPR Art 5(1)(b)</span></h2>
+        <div class="legend" id="legend"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Surfaces &amp; their consent envelope <span class="n" id="surfN"></span></h2>
+        <div id="apps"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Receipt timeline — every action, sealed <span class="n">E4 warrant</span></h2>
+        <div id="receipts"></div>
+      </div>
+    </div>
+
+    <aside>
+      <div class="card">
+        <h2>Governor — awaiting approval <span class="n" id="govN"></span></h2>
+        <div id="gov"></div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <h2>Data residency <span class="n">GDPR Ch. V</span></h2>
+        <div style="padding:13px 15px;font-size:12.5px;color:var(--muted)">
+          <div style="display:flex;justify-content:space-between"><span>Tenant isolation</span><span class="chip" style="color:var(--ok);border-color:color-mix(in srgb,var(--ok) 30%,transparent)">enforced</span></div>
+          <div style="display:flex;justify-content:space-between;margin-top:9px"><span>Region (jurisdiction)</span><span class="chip mono">EU only</span></div>
+          <div style="margin-top:9px;font-size:11.5px;color:var(--faint)">A data-namespace crossing needs a per-tenant <i>and</i> a <span class="mono">region=EU</span> toleration, or it's refused fail-closed.</div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <p class="foot">
+    Backed by the real stack shipped this session: <span class="mono">consent-plane/001</span> · <span class="mono">policy-fabric purpose_admissibility_gate</span> · <span class="mono">goose-guard::consent</span> · <span class="mono">guardrail-fabric PolicyDecision</span> · hash-sealed <span class="mono">AutonomyAdmissionReceipt</span>.<br>Enhancement <b>E11</b> · every decision here is fail-closed and receipted.
+  </p>
+</div>
+
+<script>
+const PURPOSES=['discover','implement','verify','ship','operate','egress','administer'];
+const APPS=[
+ {name:'goose-notes',surface:'notes',space:'user-space',allow:['discover','implement'],deny:['egress','operate'],posture:'ask',pk:'per-purpose · personal documents'},
+ {name:'BearBrowser',surface:'browser',space:'agent-space',allow:['discover','egress'],deny:['implement','operate'],posture:'deny',pk:'untrusted input · agent-space only'},
+ {name:'TurtleTerm',surface:'terminal',space:'user-space',allow:['discover','implement','verify'],deny:['egress','operate'],posture:'allow',pk:'agent denied egress/operate'},
+ {name:'netwatch',surface:'cluster-operator',space:'system-space',allow:['discover','operate'],deny:[],posture:'ask',pk:'operate → Governor approval'},
+ {name:'Noetica concierge',surface:'cockpit',space:'user-space',allow:['discover','administer'],deny:['operate'],posture:'ask',pk:'voice · every act receipted'},
+];
+const RECEIPTS=[
+ {t:'12:04:11',g:'escalate',v:'escalate',act:'net.block suspicious.example',why:'netwatch: agent egress on system-space → Governor approval required',seal:'sha256:ca43bf38…'},
+ {t:'12:03:52',g:'deny',v:'deny',act:'external-send (notes agent)',why:"surface 'notes' denies purpose 'egress' (envelope) — refused fail-closed",seal:'sha256:9f7712ac…'},
+ {t:'12:01:30',g:'allow',v:'allow',act:'source-mutate README.md',why:'implementer · terminal · user-space · admissible',seal:'sha256:2b384a17…'},
+ {t:'11:58:04',g:'deny',v:'deny',act:'browser agent → implement',why:'prompt-injection containment: browser surface denies implement',seal:'sha256:6076fa86…'},
+ {t:'11:55:19',g:'allow',v:'allow',act:'data-namespace read (tenant=acme, region=EU)',why:'tenant + region tolerations present (Art 6/7 + Ch. V)',seal:'sha256:db6f9677…'},
+];
+const GOV=[
+ {cap:'net.block',target:'suspicious.example',tier:'medium',rz:'netwatch flagged beaconing to this host from process curl#100; blocking is reversible but touches the firewall.'},
+ {cap:'net.throttle',target:'pid:1234',tier:'high',rz:'Egress fan-out to 14 external hosts — possible exfil. Throttling a running process is production-impacting; needs explicit approval + evidence.'},
+];
+document.getElementById('legend').innerHTML=PURPOSES.map(p=>`<span class="chip${(p==='egress'||p==='operate')?' deny':''}">${p}</span>`).join('')+'<span class="chip deny">✕ = denied on a contained surface</span>';
+document.getElementById('surfN').textContent=APPS.length+' surfaces';
+document.getElementById('apps').innerHTML=APPS.map(a=>`<div class="app">
+  <div class="name">${a.name}<span class="sp">${a.surface} · ${a.space} · ${a.pk}</span></div>
+  <div class="purps">${PURPOSES.filter(p=>a.allow.includes(p)||a.deny.includes(p)).map(p=>`<span class="p ${a.deny.includes(p)?'deny':'on'}">${p}</span>`).join('')}</div>
+  <span class="posture ${a.posture}">${a.posture}</span></div>`).join('');
+document.getElementById('receipts').innerHTML=RECEIPTS.map(r=>`<div class="rcpt">
+  <span class="t">${r.t}</span><span class="g ${r.g}"></span>
+  <div><span class="act">${r.act}</span><span class="verdict ${r.v}">${r.v}</span>
+  <div class="why">${r.why}</div><div class="seal">${r.seal}</div></div></div>`).join('');
+document.getElementById('govN').textContent=GOV.length+' pending';
+function renderGov(){document.getElementById('gov').innerHTML=GOV.map((g,i)=>`<div class="gov">
+  <div class="h"><span class="cap">${g.cap} → ${g.target}</span><span class="tier ${g.tier}">${g.tier}</span></div>
+  <div class="rz">${g.rz}</div>
+  <div class="btns"><button class="btn approve" onclick="decide(${i},'allow')">Approve</button><button class="btn deny" onclick="decide(${i},'deny')">Deny</button><button class="btn">Evidence</button></div></div>`).join('')||'<div style="padding:14px 15px;color:var(--faint);font-size:12.5px">Queue clear — no actions awaiting approval.</div>';}
+function decide(i,d){GOV.splice(i,1);document.getElementById('govN').textContent=GOV.length+' pending';renderGov();}
+renderGov();
+document.getElementById('tgl').onclick=()=>{const r=document.documentElement;const d=(r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'))==='dark'?'light':'dark';r.setAttribute('data-theme',d);};
+</script>
