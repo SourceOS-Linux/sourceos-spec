@@ -25,6 +25,9 @@ header.top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
 .top h1{font-size:19px;margin:0;font-weight:680;letter-spacing:.2px}
 .sub{color:var(--muted);margin:0 0 20px;font-size:13px;max-width:70ch}
 .tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:7px;width:32px;height:32px;color:var(--muted)}
+.prov{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--muted)}
+.prov.sample{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 42%,transparent);background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.prov.live{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 42%,transparent);background:color-mix(in srgb,var(--ok) 12%,transparent)}
 .grid{display:grid;grid-template-columns:1fr 340px;gap:16px}
 @media (max-width:880px){.grid{grid-template-columns:1fr}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden}
@@ -75,7 +78,7 @@ header.top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
 
 <div class="wrap">
   <header class="top">
-    <span class="dot"></span><h1>Consent &amp; Receipts Center</h1>
+    <span class="dot"></span><h1>Consent &amp; Receipts Center</h1><span class="prov" id="prov" title="data provenance"></span>
     <button class="tgl" id="tgl" title="Toggle theme" aria-label="Toggle theme">◑</button>
   </header>
   <p class="sub">macOS shows you a checkbox per app. SourceOS shows you <b>which purpose</b> each app (and each agent) may act under, on which surface and space — and keeps a <b>hash-sealed receipt of every action</b> with the reason it was allowed, denied, or escalated. This is the E11 surface: privacy you can read, not just toggle.</p>
@@ -121,24 +124,28 @@ header.top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
 
 <script>
 const PURPOSES=['discover','implement','verify','ship','operate','egress','administer'];
-const APPS=[
+let APPS=[
  {name:'goose-notes',surface:'notes',space:'user-space',allow:['discover','implement'],deny:['egress','operate'],posture:'ask',pk:'per-purpose · personal documents'},
  {name:'BearBrowser',surface:'browser',space:'agent-space',allow:['discover','egress'],deny:['implement','operate'],posture:'deny',pk:'untrusted input · agent-space only'},
  {name:'TurtleTerm',surface:'terminal',space:'user-space',allow:['discover','implement','verify'],deny:['egress','operate'],posture:'allow',pk:'agent denied egress/operate'},
  {name:'netwatch',surface:'cluster-operator',space:'system-space',allow:['discover','operate'],deny:[],posture:'ask',pk:'operate → Governor approval'},
  {name:'Noetica concierge',surface:'cockpit',space:'user-space',allow:['discover','administer'],deny:['operate'],posture:'ask',pk:'voice · every act receipted'},
 ];
-const RECEIPTS=[
+let RECEIPTS=[
  {t:'12:04:11',g:'escalate',v:'escalate',act:'net.block suspicious.example',why:'netwatch: agent egress on system-space → Governor approval required',seal:'sha256:ca43bf38…'},
  {t:'12:03:52',g:'deny',v:'deny',act:'external-send (notes agent)',why:"surface 'notes' denies purpose 'egress' (envelope) — refused fail-closed",seal:'sha256:9f7712ac…'},
  {t:'12:01:30',g:'allow',v:'allow',act:'source-mutate README.md',why:'implementer · terminal · user-space · admissible',seal:'sha256:2b384a17…'},
  {t:'11:58:04',g:'deny',v:'deny',act:'browser agent → implement',why:'prompt-injection containment: browser surface denies implement',seal:'sha256:6076fa86…'},
  {t:'11:55:19',g:'allow',v:'allow',act:'data-namespace read (tenant=acme, region=EU)',why:'tenant + region tolerations present (Art 6/7 + Ch. V)',seal:'sha256:db6f9677…'},
 ];
-const GOV=[
+let GOV=[
  {cap:'net.block',target:'suspicious.example',tier:'medium',rz:'netwatch flagged beaconing to this host from process curl#100; blocking is reversible but touches the firewall.'},
  {cap:'net.throttle',target:'pid:1234',tier:'high',rz:'Egress fan-out to 14 external hosts — possible exfil. Throttling a running process is production-impacting; needs explicit approval + evidence.'},
 ];
+let __prov='sample';
+async function loadFeed(name){try{const base=(window.SURFACE_FEED_URL||'./data/');const r=await fetch(base+name+'.json',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();__prov=j.provenance||'live';return j;}catch(e){__prov='sample';return null;}}
+function setProv(){const b=document.getElementById('prov');if(b){b.textContent=(__prov==='live'?'LIVE':'SAMPLE DATA');b.className='prov '+(__prov==='live'?'live':'sample');}}
+function renderAll(){
 document.getElementById('legend').innerHTML=PURPOSES.map(p=>`<span class="chip${(p==='egress'||p==='operate')?' deny':''}">${p}</span>`).join('')+'<span class="chip deny">✕ = denied on a contained surface</span>';
 document.getElementById('surfN').textContent=APPS.length+' surfaces';
 document.getElementById('apps').innerHTML=APPS.map(a=>`<div class="app">
@@ -150,11 +157,13 @@ document.getElementById('receipts').innerHTML=RECEIPTS.map(r=>`<div class="rcpt"
   <div><span class="act">${r.act}</span><span class="verdict ${r.v}">${r.v}</span>
   <div class="why">${r.why}</div><div class="seal">${r.seal}</div></div></div>`).join('');
 document.getElementById('govN').textContent=GOV.length+' pending';
+renderGov();
+}
 function renderGov(){document.getElementById('gov').innerHTML=GOV.map((g,i)=>`<div class="gov">
   <div class="h"><span class="cap">${g.cap} → ${g.target}</span><span class="tier ${g.tier}">${g.tier}</span></div>
   <div class="rz">${g.rz}</div>
   <div class="btns"><button class="btn approve" onclick="decide(${i},'allow')">Approve</button><button class="btn deny" onclick="decide(${i},'deny')">Deny</button><button class="btn">Evidence</button></div></div>`).join('')||'<div style="padding:14px 15px;color:var(--faint);font-size:12.5px">Queue clear — no actions awaiting approval.</div>';}
 function decide(i,d){GOV.splice(i,1);document.getElementById('govN').textContent=GOV.length+' pending';renderGov();}
-renderGov();
 document.getElementById('tgl').onclick=()=>{const r=document.documentElement;const d=(r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'))==='dark'?'light':'dark';r.setAttribute('data-theme',d);};
+(async()=>{const f=await loadFeed('e11');if(f){if(Array.isArray(f.surfaces))APPS=f.surfaces;if(Array.isArray(f.receipts))RECEIPTS=f.receipts;if(Array.isArray(f.governor))GOV=f.governor;}setProv();renderAll();})();
 </script>

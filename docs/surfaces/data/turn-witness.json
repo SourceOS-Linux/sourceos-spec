@@ -1,0 +1,36 @@
+{
+  "provenance": "sample",
+  "generated_at": "2026-08-03T00:00:00Z",
+  "source": "sample seed — replace via tools/build_surface_feed.py --turns <parsed-turns.json>",
+  "turns": [
+    { "id":"turn:8f2a", "user":"show me all contact lists in my org",
+      "sys":"3 contact lists in org SocioProphet — Sales, Investors, Partners",
+      "tokens":[
+       {"w":"show","g":"VB·ROOT","ann":[["ActionShow","intent"]]},
+       {"w":"me","g":"PRP·iobj","ann":[["ActionShow","intent"]]},
+       {"w":"all","g":"DT·det","ann":[]},
+       {"w":"contact","g":"NN·nn","ann":[["ContactLists","intent"]]},
+       {"w":"lists","g":"NNS·dobj","ann":[["ContactLists","intent"],["Lists","type"]]},
+       {"w":"in","g":"IN·prep","ann":[["Contains","relation"]]},
+       {"w":"my","g":"PRP$·poss","ann":[["Own","scope"]]},
+       {"w":"org","g":"NN·pobj","ann":[["Organization","entity"]]}
+      ], "purpose":"discover", "space":"user-space", "admissible":true },
+    { "id":"turn:1c7e", "user":"open terminal on my laptop",
+      "sys":"awaiting consent to launch TurtleTerm (user-space)",
+      "tokens":[
+       {"w":"open","g":"VB·ROOT","ann":[["ActionLaunch","intent"]]},
+       {"w":"terminal","g":"NN·dobj","ann":[["TurtleTerm","intent"],["App","type"]]},
+       {"w":"on","g":"IN·prep","ann":[["OnDevice","relation"]]},
+       {"w":"my","g":"PRP$·poss","ann":[["Own","scope"]]},
+       {"w":"laptop","g":"NN·pobj","ann":[["Device","entity"]]}
+      ], "purpose":"operate", "space":"user-space", "admissible":"consent" },
+    { "id":"turn:a903", "user":"delete last week's logs",
+      "sys":"refused — routed to Governor (tier=high)",
+      "tokens":[
+       {"w":"delete","g":"VB·ROOT","ann":[["ActionDelete","intent"],["Destructive","type"]]},
+       {"w":"last","g":"JJ·amod","ann":[["TimeWindow","scope"]]},
+       {"w":"week's","g":"NN·poss","ann":[["TimeWindow","scope"]]},
+       {"w":"logs","g":"NNS·dobj","ann":[["LogData","entity"],["Data","type"]]}
+      ], "purpose":"operate·destructive", "space":"system-space", "admissible":false }
+  ]
+}
