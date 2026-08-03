@@ -1,7 +1,7 @@
 {
   "provenance": "live",
   "generated_by": "tools/build_docs_index.py",
-  "doc_count": 43,
+  "doc_count": 44,
   "docs": [
     {
       "path": "docs/contract-additions/2026-04-fog-contract-index.md",
@@ -304,6 +304,30 @@
         "fabric",
         "not",
         "personal"
+      ]
+    },
+    {
+      "path": "docs/contract-additions/ergonomics-superiority.md",
+      "title": "Ergonomics — one integrated system, more ergonomic than Apple",
+      "summary": "Apple ships excellent apps that do **not** share a spine: each has its own permissions",
+      "headings": [
+        "The one spine (every app rides all five)",
+        "Why it beats Apple (the dimensions)",
+        "Done-definition for \"integrated\""
+      ],
+      "keywords": [
+        "apple",
+        "one",
+        "every",
+        "app",
+        "integrated",
+        "can",
+        "not",
+        "its",
+        "own",
+        "same",
+        "spine",
+        "agent"
       ]
     },
     {
@@ -1145,12 +1169,12 @@
         "surfaces",
         "not",
         "source",
-        "canonical",
         "every",
+        "canonical",
+        "model",
         "diagram",
         "live",
-        "state",
-        "instrument"
+        "state"
       ]
     }
   ]
