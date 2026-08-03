@@ -47,7 +47,7 @@ The rule (from the contract): a replacement is not "done" until it is **agent-na
 | Keychain / Secure Enclave | **sovereign identity + digital twin** (TPM/vTPM) | agent-registry, prophet-health | portable, agent-scoped credentials; twin binds identity | E9 | TPM2, vTPM | partial · **hw** |
 | Time Machine / Migration Assistant | **sovereign snapshot + backup** | source-os | Guix generations + snapshot/backup to sovereign store (prophet-backups) | E12 E8 | Guix, restic/borg, MinIO | **gap** |
 | Software Update | **sovereign OTA** | source-os | signed, reproducible, rollbackable images | E12 E5 | Guix, image-builder | partial |
-| Continuity / Handoff / AirDrop | **mesh federation** | memory-mesh, hellgraph-federated | cross-device over the personal mesh (WireGuard/mDNS), not iCloud | E3 | WireGuard, Avahi, libp2p | partial |
+| Continuity / Handoff / AirDrop | **[personal mesh transport](./e3-mesh-transport.md)** | sourceos-shell (memory-mesh/hellgraph-federated ride as tenants) | cross-device over your WireGuard mesh, not iCloud; every transfer consent-gated + receipted | E3 | WireGuard, Avahi, libp2p | spec |
 | Xcode / dev tools | **prophet-cli** (zero-config → continuum + tritfabric) | prophet-cli | one dev entrypoint; sourceos-continuum onboard→dev→test→rollout | E8 | Go CLI | partial |
 
 ## Hardware-gap register — where Apple silicon wins, honestly
@@ -85,7 +85,7 @@ Spec cannot close these; they are silicon, not software. State them so nothing i
 | Disk Utility | GNOME Disks + snapshot tooling | source-os | snapshots tie to E12 backup plane | E12 | gap |
 | Console / logs | telemetry plane + System Graph | hellgraph, telemetry | logs are queryable graph + receipts | E4 | partial |
 | FaceTime / Screen Sharing | mesh A/V (owned, Matrix/WebRTC) | sourceos-shell | first-class, on the personal mesh | E3 | gap |
-| AirPlay | mesh cast (owned) | memory-mesh | sovereign cast over the mesh | E3 | gap |
+| AirPlay | mesh cast (owned) | sourceos-shell | sovereign cast over the [personal mesh](./e3-mesh-transport.md) (kind=cast) | E3 | spec |
 | Dictation | Noetica on-device STT (whisper.cpp) | goose-voice | on-device, no cloud STT (a Guard Goose requirement) | E2 | partial |
 
 > With this, the census enumerates **~37 stock-macOS surfaces** — the full replacement scope. `gap` rows are the feature-gaps-zero backlog; `hw` rows are honestly capped by the register above.
