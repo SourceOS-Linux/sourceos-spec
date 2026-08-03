@@ -83,6 +83,44 @@ gatekeeping.
 - Accessibility settings live in the owned shell's Privacy/Accessibility pane (E11),
   not scattered across apps.
 
+## Semantic grounding & ontology bindings
+
+The stack's vocabulary — purposes, intents, actions, profiles, accessibility roles
+— MUST be **ontologically grounded, not ad-hoc**. Everything binds to the canonical
+stack:
+
+- **KKO upper set** (`KBpedia`/KKO, ~58k reference concepts) — the upper ontology
+  every OS concept subsumes under. Purposes, app intents, and data classes are
+  KKO-anchored types, not free strings.
+- **Action Ontology** (`socioprophet-agent-standards` `agent-plane/001`) — every
+  action/tool call is an Action-Ontology action with a trace + receipt binding
+  (this is what E4 records). The consent-plane purpose is a property of the action.
+- **Semantic Coordinate Algebra** (`procyber/semantic/`) — intents and actions are
+  placed as coordinates; admission/routing/similarity are algebraic operations, not
+  heuristics.
+- **Intent grid (23×6)** — the launcher/concierge intents map onto the intent grid;
+  each app's intents are a slice of it.
+
+**Proper ontologies to author** (OWL + SHACL, in `ontogenesis` — E10's home — and
+*projected into runtime* enforcement, closing E10's "not projected" gap):
+
+1. **OS-layer ontology** — spaces (kernel/system/user/agent/data-namespace),
+   surfaces (terminal/notes/browser/…), planes, and the six security **seams** as
+   classes with SHACL constraints (a taint/toleration is a modelled relation).
+2. **Accessibility-binding ontology** — AT-SPI roles ↔ intents ↔ the agent assistive
+   layer, so "the agent operates the UI" is a typed, consented, receipted action.
+3. **Per-app intent + profile ontology** — each app's intents and profiles as
+   classes on the intent grid, bound to Action-Ontology actions.
+4. **Consent-purpose ontology** — the purpose vocabulary (discover/implement/verify/
+   ship/operate/egress/administer) as KKO-anchored classes with SHACL admissibility
+   constraints, so `purpose_admissibility_gate` decisions are ontology-checked, not
+   string-matched.
+
+Conformance: the ontologies validate with SHACL in CI, and the runtime gate/receipt
+path consumes them (a purpose or intent absent from the ontology is refused —
+fail-closed). This is what makes the stack's semantics *machine-checkable and
+coherent* across every app, the launcher, the concierge, and accessibility.
+
 ## Security seams (the enforcement boundaries)
 
 Every integration crosses exactly one named seam; the seam is where policy is
