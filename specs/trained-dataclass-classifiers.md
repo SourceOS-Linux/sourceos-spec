@@ -6,7 +6,7 @@ trained*. This closes that gap with real, verifiable artifacts.
 
 `tools/train_dataclass_classifiers.py` trains, on a labelled fixture, **per-class LOGISTIC** heads
 (one-vs-rest, individually testable per glossary-term) and a **per-table SOFTMAX** (the n-ary head),
-both **MONOTONE-constrained** in the declared `monotonicFeatures` — the TF-Lattice essence: the
+a monotone-logistic **realisation** of the declared `tf-lattice-wide-and-deep` contract (a faithful monotonicity-satisfying model, not a full calibrated lattice), both **MONOTONE-constrained** in the declared `monotonicFeatures` — the TF-Lattice essence: the
 weight on a monotone feature is projected `>= 0` each gradient step, so raising that feature never
 lowers the class score. Deterministic (seeded, full-batch GD) so the weights — and thus the
 `ModelManifest.modelDigest` — are reproducible. It emits the trained weights, a conformant
