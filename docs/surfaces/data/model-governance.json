@@ -1,0 +1,105 @@
+{
+  "provenance": "sample",
+  "generated_at": "2026-08-03T09:41:30Z",
+  "source": "sample seed (governed model plane ledger + DataClass classifier registry)",
+  "targets": [
+    {
+      "id": "fraud",
+      "name": "Card fraud",
+      "industry": "payments · real-time",
+      "champion": {
+        "name": "GBM-fraud",
+        "ver": "v4",
+        "met": "AUC",
+        "val": 0.962
+      },
+      "challenger": {
+        "name": "GNN-fraud",
+        "ver": "v1",
+        "met": "AUC",
+        "val": 0.971
+      },
+      "verdict": "promote",
+      "drift": 0.08,
+      "driftWarn": false,
+      "history": [
+        {
+          "l": "v3",
+          "c": 0.955,
+          "h": 0.958
+        },
+        {
+          "l": "v4",
+          "c": 0.962,
+          "h": 0.971
+        }
+      ],
+      "classifiers": [
+        {
+          "n": "transaction-class",
+          "d": "txn type · MCC",
+          "st": "registered",
+          "cov": "99.8%"
+        },
+        {
+          "n": "merchant-risk-class",
+          "d": "reputation tier",
+          "st": "registered",
+          "cov": "97.2%"
+        },
+        {
+          "n": "pii-class",
+          "d": "PII tagging",
+          "st": "registered",
+          "cov": "100%"
+        }
+      ]
+    },
+    {
+      "id": "credit",
+      "name": "Credit risk",
+      "industry": "lending · regulated",
+      "champion": {
+        "name": "Scorecard",
+        "ver": "v12",
+        "met": "Gini",
+        "val": 0.58
+      },
+      "challenger": {
+        "name": "LGBM-credit",
+        "ver": "v3",
+        "met": "Gini",
+        "val": 0.61
+      },
+      "verdict": "promote",
+      "drift": 0.11,
+      "driftWarn": true,
+      "history": [
+        {
+          "l": "v11",
+          "c": 0.56,
+          "h": 0.59
+        },
+        {
+          "l": "v12",
+          "c": 0.58,
+          "h": 0.61
+        }
+      ],
+      "classifiers": [
+        {
+          "n": "bureau-class",
+          "d": "bureau tier",
+          "st": "registered",
+          "cov": "99.4%"
+        },
+        {
+          "n": "protected-attr-class",
+          "d": "fairness guard",
+          "st": "registered",
+          "cov": "100%"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,194 @@
+<title>SociOS — Model Governance Registry</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;
+  --text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;
+  --champ:#43c68a;--chall:#e0a83a;--promote:#7aa2ff;--bad:#e5594f;--both:#c9a9ff;
+  --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--champ:#1f9e63;--chall:#a6791b;--promote:#3762d6;--bad:#c23a31;--both:#7b52d6}}
+:root[data-theme="light"]{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--champ:#1f9e63;--chall:#a6791b;--promote:#3762d6;--bad:#c23a31;--both:#7b52d6}
+:root[data-theme="dark"]{--bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;--text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;--champ:#43c68a;--chall:#e0a83a;--promote:#7aa2ff;--bad:#e5594f;--both:#c9a9ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.wrap{max-width:1200px;margin:0 auto;padding:22px 18px 60px}
+header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:4px}
+header.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.3px}
+header.top .id{font-family:var(--mono);color:var(--cyan);font-size:12.5px}
+header.top a{color:var(--cyan2);text-decoration:none;font-size:12px;font-family:var(--mono)}
+.prov{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--muted)}
+.prov.sample{color:var(--chall);border-color:color-mix(in srgb,var(--chall) 42%,transparent);background:color-mix(in srgb,var(--chall) 12%,transparent)}
+.prov.live{color:var(--champ);border-color:color-mix(in srgb,var(--champ) 42%,transparent);background:color-mix(in srgb,var(--champ) 12%,transparent)}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:14px 0 18px;max-width:82ch}
+.grid{display:grid;grid-template-columns:1.5fr 1fr;gap:16px;align-items:start}
+@media (max-width:920px){.grid{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.card h2{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0;padding:13px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card h2 .n{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:0;color:var(--muted)}
+/* target rows */
+.tgt{display:grid;grid-template-columns:1.3fr 1fr 1fr auto;gap:10px;align-items:center;padding:11px 15px;border-bottom:1px solid var(--line);cursor:pointer}
+.tgt:last-child{border-bottom:none}
+.tgt:hover{background:var(--panel2)}
+.tgt.sel{background:color-mix(in srgb,var(--cyan) 9%,transparent);box-shadow:inset 3px 0 0 var(--cyan)}
+.tgt .nm{font-weight:600}.tgt .nm small{display:block;color:var(--faint);font-size:10.5px;font-weight:400}
+.mdl{font-size:11.5px}.mdl .who{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.4px;padding:1px 5px;border-radius:4px;margin-right:5px}
+.who.champ{background:color-mix(in srgb,var(--champ) 18%,transparent);color:var(--champ)}
+.who.chall{background:color-mix(in srgb,var(--chall) 18%,transparent);color:var(--chall)}
+.mdl .met{font-family:var(--mono);color:var(--muted);font-size:10.5px}
+.verdict{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:3px 8px;border-radius:6px;white-space:nowrap;text-align:center}
+.v-hold{background:color-mix(in srgb,var(--champ) 15%,transparent);color:var(--champ)}
+.v-promote{background:color-mix(in srgb,var(--promote) 18%,transparent);color:var(--promote)}
+.v-shadow{background:var(--panel2);color:var(--muted);border:1px solid var(--line2)}
+.drift{font-family:var(--mono);font-size:10px;color:var(--muted)}.drift.warn{color:var(--bad)}
+/* detail panel */
+.dt{padding:14px 16px}
+.dt h3{font-size:13px;margin:0 0 3px;font-weight:600}
+.dt .indu{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-bottom:12px}
+.cc{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.ccx{border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.ccx.champ{border-color:color-mix(in srgb,var(--champ) 35%,transparent)}
+.ccx.chall{border-color:color-mix(in srgb,var(--chall) 35%,transparent)}
+.ccx .lab{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase}
+.ccx.champ .lab{color:var(--champ)} .ccx.chall .lab{color:var(--chall)}
+.ccx .mn{font-weight:600;font-size:12.5px;margin:3px 0 1px}
+.ccx .mv{font-family:var(--mono);font-size:17px;font-weight:700}
+.ccx .mvs{font-family:var(--mono);font-size:10px;color:var(--muted)}
+/* historic */
+.hist{margin-bottom:6px}
+.hlab{font-size:9.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:8px}
+.hbars{display:flex;align-items:flex-end;gap:10px;height:88px;padding-top:4px}
+.hcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end}
+.hcol .pair{display:flex;gap:2px;align-items:flex-end;width:100%;justify-content:center;height:100%}
+.hcol .bar{width:11px;border-radius:3px 3px 0 0}
+.hcol .bar.c{background:var(--champ)} .hcol .bar.h{background:var(--chall)}
+.hcol .vl{font-family:var(--mono);font-size:9px;color:var(--faint)}
+/* classifiers */
+.clf{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line);font-size:12px}
+.clf:first-of-type{border-top:none}
+.clf .cn{font-weight:600}.clf .cn small{display:block;font-family:var(--mono);color:var(--faint);font-size:10px;font-weight:400}
+.clf .st{font-family:var(--mono);font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px}
+.st.registered{background:color-mix(in srgb,var(--champ) 15%,transparent);color:var(--champ)}
+.st.training{background:color-mix(in srgb,var(--chall) 15%,transparent);color:var(--chall)}
+.clf .cov{font-family:var(--mono);font-size:10.5px;color:var(--muted)}
+.foot{margin-top:20px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+</style>
+
+<div class="wrap">
+  <header class="top"><h1>Model Governance Registry</h1><span class="id">champion · challenger · historic · classifiers</span>
+    <a href="./model-catalog.html">foundation models →</a>
+    <span class="prov" id="prov"></span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></header>
+  <p class="sub">Every business model target — fraud, churn, credit, AML, propensity — with its <b style="color:var(--champ)">champion</b> in production, its <b style="color:var(--chall)">challenger</b> in shadow, the <b>historic</b> version comparison, and the <b>DataClass classifiers</b> governing each target's data. Every promotion is a receipted, replayable, examiner-ready decision — this is model risk management as a witness surface, not a slide.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h2>Business targets <span class="n" id="tgtN"></span></h2>
+      <div id="targets"></div>
+    </div>
+    <div class="card">
+      <h2>Champion / Challenger <span class="n" id="detName"></span></h2>
+      <div class="dt" id="detail"></div>
+    </div>
+  </div>
+
+  <p class="foot">
+    Reads the governed model plane (labs · eval · <span class="mono">ledger</span> · router) + the <span class="mono">DataClass</span> classifier registry (specified→trained→reproduced). Promotions gate through SHACL+eval, fail-closed; each is a <span class="mono">RunReceipt</span>. Regulated targets (credit, AML) require examiner sign-off before promotion.<br>
+    Champion/challenger + historic + data lineage = APRA CPS 230 / model-risk-ready.
+  </p>
+</div>
+
+<script>
+let __prov='sample';
+async function loadFeed(name){try{const base=(window.SURFACE_FEED_URL||'./data/');const r=await fetch(base+name+'.json',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();__prov=j.provenance||'live';return j;}catch(e){__prov='sample';return null;}}
+function setProv(){const b=document.getElementById('prov');if(b){b.textContent=(__prov==='live'?'LIVE':'SAMPLE DATA');b.className='prov '+(__prov==='live'?'live':'sample');}}
+
+let TARGETS=[
+ {id:"fraud",name:"Card fraud",industry:"payments · real-time",
+  champion:{name:"GBM-fraud",ver:"v4",met:"AUC",val:0.962},
+  challenger:{name:"GNN-fraud",ver:"v1",met:"AUC",val:0.971},
+  verdict:"promote",drift:0.08,driftWarn:false,
+  history:[{l:"v1",c:0.931,h:null},{l:"v2",c:0.944,h:null},{l:"v3",c:0.955,h:0.958},{l:"v4",c:0.962,h:0.971}],
+  classifiers:[
+   {n:"transaction-class",d:"txn type · MCC · amount band",st:"registered",cov:"99.8%"},
+   {n:"merchant-risk-class",d:"merchant reputation tier",st:"registered",cov:"97.2%"},
+   {n:"device-fingerprint-class",d:"device / session risk",st:"registered",cov:"94.1%"},
+   {n:"geo-jurisdiction-class",d:"region (GDPR Ch.V toleration)",st:"registered",cov:"100%"},
+   {n:"pii-class",d:"PII field tagging (masking)",st:"registered",cov:"100%"},
+   {n:"velocity-class",d:"spend-velocity anomaly",st:"training",cov:"88.0%"}]},
+ {id:"churn",name:"Customer churn",industry:"retention · batch",
+  champion:{name:"XGB-churn",ver:"v7",met:"PR-AUC",val:0.71},
+  challenger:{name:"TabNet-churn",ver:"v2",met:"PR-AUC",val:0.69},
+  verdict:"hold",drift:0.04,driftWarn:false,
+  history:[{l:"v5",c:0.66,h:null},{l:"v6",c:0.69,h:0.67},{l:"v7",c:0.71,h:0.69}],
+  classifiers:[
+   {n:"tenure-class",d:"lifecycle stage",st:"registered",cov:"100%"},
+   {n:"engagement-class",d:"activity decay signal",st:"registered",cov:"96.5%"},
+   {n:"support-contact-class",d:"ticket sentiment tier",st:"registered",cov:"91.0%"},
+   {n:"pii-class",d:"PII field tagging",st:"registered",cov:"100%"}]},
+ {id:"credit",name:"Credit risk",industry:"lending · regulated",
+  champion:{name:"Scorecard",ver:"v12",met:"Gini",val:0.58},
+  challenger:{name:"LGBM-credit",ver:"v3",met:"Gini",val:0.61},
+  verdict:"promote",drift:0.11,driftWarn:true,
+  history:[{l:"v10",c:0.54,h:null},{l:"v11",c:0.56,h:0.59},{l:"v12",c:0.58,h:0.61}],
+  classifiers:[
+   {n:"income-class",d:"verified income band",st:"registered",cov:"98.0%"},
+   {n:"bureau-class",d:"credit-bureau tier",st:"registered",cov:"99.4%"},
+   {n:"affordability-class",d:"DTI / affordability",st:"registered",cov:"95.5%"},
+   {n:"protected-attr-class",d:"fairness / adverse-action guard",st:"registered",cov:"100%"},
+   {n:"pii-class",d:"PII field tagging",st:"registered",cov:"100%"}]},
+ {id:"aml",name:"AML / sanctions",industry:"financial crime · regulated",
+  champion:{name:"Rules+GBM",ver:"v3",met:"recall",val:0.88},
+  challenger:{name:"GNN-AML",ver:"v1",met:"recall",val:0.91},
+  verdict:"shadow",drift:0.06,driftWarn:false,
+  history:[{l:"v1",c:0.82,h:null},{l:"v2",c:0.85,h:null},{l:"v3",c:0.88,h:0.91}],
+  classifiers:[
+   {n:"counterparty-class",d:"entity risk tier",st:"registered",cov:"97.8%"},
+   {n:"sanctions-list-class",d:"watchlist match confidence",st:"registered",cov:"100%"},
+   {n:"typology-class",d:"laundering typology",st:"training",cov:"84.0%"},
+   {n:"jurisdiction-class",d:"cross-border risk",st:"registered",cov:"100%"}]},
+ {id:"propensity",name:"Propensity / next-best",industry:"growth · batch",
+  champion:{name:"LR-propensity",ver:"v5",met:"AUC",val:0.78},
+  challenger:{name:"GBM-propensity",ver:"v2",met:"AUC",val:0.79},
+  verdict:"shadow",drift:0.05,driftWarn:false,
+  history:[{l:"v3",c:0.74,h:null},{l:"v4",c:0.76,h:null},{l:"v5",c:0.78,h:0.79}],
+  classifiers:[
+   {n:"segment-class",d:"behavioural segment",st:"registered",cov:"99.0%"},
+   {n:"consent-class",d:"marketing consent (opt-in)",st:"registered",cov:"100%"}]},
+];
+const el=id=>document.getElementById(id);
+const V={hold:["v-hold","champion holds"],promote:["v-promote","promote ▸"],shadow:["v-shadow","shadow"]};
+let sel="fraud";
+function renderTargets(){
+  el('tgtN').textContent=TARGETS.length+" targets";
+  el('targets').innerHTML=TARGETS.map(t=>{const v=V[t.verdict];
+   return `<div class="tgt ${t.id===sel?'sel':''}" onclick="pick('${t.id}')">
+    <div class="nm">${t.name}<small>${t.industry}</small></div>
+    <div class="mdl"><span class="who champ">CHAMP</span>${t.champion.name} ${t.champion.ver}<div class="met">${t.champion.met} ${t.champion.val}</div></div>
+    <div class="mdl"><span class="who chall">CHALL</span>${t.challenger.name} ${t.challenger.ver}<div class="met">${t.challenger.met} ${t.challenger.val} (${(t.challenger.val-t.champion.val>=0?'+':'')}${(t.challenger.val-t.champion.val).toFixed(3)})</div></div>
+    <div style="text-align:right"><span class="verdict ${v[0]}">${v[1]}</span><div class="drift ${t.driftWarn?'warn':''}">PSI ${t.drift}${t.driftWarn?' ⚠':''}</div></div></div>`;}).join('');
+}
+function renderDetail(){
+  const t=TARGETS.find(x=>x.id===sel);el('detName').textContent=t.name;
+  const maxv=Math.max(...t.history.flatMap(h=>[h.c,h.h||0]));const minv=Math.min(...t.history.flatMap(h=>[h.c,h.h].filter(x=>x!=null)))*0.96;
+  const H=v=>v==null?0:Math.max(6,Math.round((v-minv)/(maxv-minv)*100));
+  el('detail').innerHTML=`
+   <h3>${t.name}</h3><div class="indu">${t.industry} · verdict: <b>${V[t.verdict][1]}</b></div>
+   <div class="cc">
+     <div class="ccx champ"><div class="lab">Champion (prod)</div><div class="mn">${t.champion.name} ${t.champion.ver}</div><div class="mv">${t.champion.val}</div><div class="mvs">${t.champion.met}</div></div>
+     <div class="ccx chall"><div class="lab">Challenger (shadow)</div><div class="mn">${t.challenger.name} ${t.challenger.ver}</div><div class="mv">${t.challenger.val}</div><div class="mvs">${t.challenger.met} · Δ ${(t.challenger.val-t.champion.val>=0?'+':'')}${(t.challenger.val-t.champion.val).toFixed(3)}</div></div>
+   </div>
+   <div class="hist"><div class="hlab">Historic — ${t.champion.met} by version (champion vs challenger)</div>
+    <div class="hbars">${t.history.map(h=>`<div class="hcol"><div class="pair" title="${h.l}">
+      <div class="bar c" style="height:${H(h.c)}%" title="champ ${h.c}"></div>
+      <div class="bar h" style="height:${H(h.h)}%" title="chall ${h.h??'—'}"></div></div><div class="vl">${h.l}</div></div>`).join('')}</div></div>
+   <div class="hlab" style="margin-top:14px">Data catalog classifiers · ${t.classifiers.length}</div>
+   ${t.classifiers.map(c=>`<div class="clf"><div class="cn">${c.n}<small>${c.d}</small></div>
+     <span class="st ${c.st}">${c.st.toUpperCase()}</span><span class="cov">${c.cov}</span></div>`).join('')}`;
+}
+function pick(id){sel=id;renderTargets();renderDetail();}
+el('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
+(async()=>{const f=await loadFeed('model-governance');if(f&&Array.isArray(f.targets)&&f.targets.length){TARGETS=f.targets;sel=TARGETS[0].id;}setProv();renderTargets();renderDetail();})();
+</script>
