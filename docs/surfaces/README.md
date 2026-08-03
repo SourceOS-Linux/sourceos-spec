@@ -16,6 +16,9 @@ flags a never-fired tripwire as SUSPECT.
 | **3 · Dynamics / math** | the model, falsifiable | typeset spec | states what each term is measured from |
 
 ## Style is validated against source
+The **house theme** is the *first theme* (the B₁₁ instrument): deep instrument ground
+(#0a0e18) + cyan action accent + the four-space semantic hues, sitting on the OS dark base.
+`sourceos.tokens.css` documents both the source-derived base and this chosen house layer.
 Every surface imports `sourceos.tokens.css` — the canonical palette + font (**Cantarell**,
 `color-scheme`-honored) extracted from `source-os/website/index.html` and the GNOME
 workstation-v0 appearance profile. A surface that invents its own colors is **not
@@ -34,6 +37,10 @@ the real SociOS/GNOME chrome (top bar, launcher card) so they read as in-shell, 
 - **`lampstand-launcher.html`** — Tier 2, *actionable*. The Spotlight replacement: natural
   language → typed intents/entities/relations (the annotation tree) → **governed actions**
   (purpose-bound, consent-gated, receipted), ranked by sherlock (IR). Not web search — typed acts.
+- **`genesis-flywheel.html`** — Tier 1. The install spine + growth dynamics: the T₀–T₁₁
+  genesis braid (sealed, four-space colored), the five-phase zero-trust install, and the
+  connected flywheel topology with correct ΔEP=(P−C)·X−λK / K=k₀·α·cov(A)·φ(P) /
+  m(t+1)=σ(W·ΔEP+B·K+A·m) / Moufang equations.
 - **`turn-witness.html`** — Tier 2, *verifiable*. Any chat turn annotated → **Gödel-numbered**
   (canonical G = ∏ pᵢ^codeᵢ, reproducible integrity fingerprint) → **consistency-checked** →
   **conclusions** with a sealed verdict. Demonstrates *well-formed ≠ admissible*: a turn can

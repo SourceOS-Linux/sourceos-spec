@@ -1,19 +1,30 @@
-/* Canonical SociOS design tokens — the single source of truth for every surface.
- * Extracted from source-os/website/index.html (the brand site) + the GNOME
- * workstation-v0 appearance profile (profiles/linux-dev/workstation-v0/gnome/
- * appearance-apply.sh: color-scheme honored, font Cantarell, font-antialiasing
- * grayscale). Surfaces MUST import these — a surface that invents its own palette
- * is not validated against the OS and is therefore not canonical.
+/* Canonical SociOS surface tokens.
+ *
+ * BASE (from source): the OS dark ground + brand accents are taken from
+ * source-os/website/index.html and the GNOME workstation-v0 appearance profile
+ * (color-scheme honored, font Cantarell, antialiasing grayscale):
+ *   #0d1117 ground · accent #4f8cff · secondary #7c5cff · ok #3fb950 · radius 14.
+ *
+ * HOUSE THEME ("first theme" — the B11 instrument): the chosen design language for
+ * operational surfaces — a slightly deeper instrument ground (#0a0e18), a cyan action
+ * accent (#4fd0e0), and the four-space semantic hues. It sits directly on the OS dark
+ * base and is what Michael selected as the standard across surfaces.
  */
 :root{
-  --bg:#0d1117; --panel:#161b22; --panel-2:#1c2330; --text:#e6edf3; --muted:#9aa7b4;
-  --accent:#4f8cff; --accent-2:#7c5cff; --border:#2a3340; --ok:#3fb950; --warn:#d29922; --bad:#f85149;
+  --bg:#0a0e18; --panel:#111726; --panel-2:#161e30; --line:#212b42; --line-2:#2c3854;
+  --text:#e8edf7; --muted:#8b96b0; --faint:#586179;
+  --accent:#4fd0e0; --accent-2:#7aa2ff; --ok:#43c68a; --warn:#e0a83a; --bad:#e5594f;
+  /* four spaces / four worlds */
+  --atzilut:#c9a9ff; --beriah:#7aa2ff; --yetzirah:#5cc9c0; --assiah:#e8926b;
   --radius:14px; --maxw:1040px;
   --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
   --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
 }
 @media (prefers-color-scheme:light){:root{
-  --bg:#f6f8fa; --panel:#fff; --panel-2:#f0f3f7; --text:#1b2026; --muted:#5a6672; --border:#e1e6ec;
+  --bg:#eceff5; --panel:#fff; --panel-2:#f5f7fb; --line:#dde3ef; --line-2:#c8d1e2;
+  --text:#141b2c; --muted:#54607a; --faint:#8792ab; --accent:#1787a0; --accent-2:#3762d6;
+  --ok:#1f9e63; --warn:#a6791b; --bad:#c23a31;
+  --atzilut:#7b52d6; --beriah:#3762d6; --yetzirah:#1f9188; --assiah:#c05f38;
 }}
-/* The viewer's GNOME color-scheme (light/dark) drives prefers-color-scheme; a
- * data-theme override may be stamped for an in-shell toggle. Both must be honored. */
+/* GNOME color-scheme drives prefers-color-scheme; an in-shell toggle may stamp
+ * :root[data-theme="dark"|"light"] and must win in both directions. */

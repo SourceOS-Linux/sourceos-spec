@@ -1,0 +1,168 @@
+<title>SociOS — Genesis & Flywheel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+/* first theme — the B11 instrument palette (house style), dark ground on the OS base */
+:root{
+  --bg:#0a0e18; --panel:#111726; --panel2:#161e30; --line:#212b42; --line2:#2c3854;
+  --text:#e8edf7; --muted:#8b96b0; --faint:#586179;
+  --cyan:#4fd0e0; --cyan2:#7aa2ff;
+  --atzilut:#c9a9ff; --beriah:#7aa2ff; --yetzirah:#5cc9c0; --assiah:#e8926b;
+  --normal:#43c68a; --watchful:#e0a83a; --halt:#e5594f;
+  --base:#7aa2ff; --knowledge:#5cc9c0; --financial:#e0a83a; --friction:#e5594f;
+  --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{
+  --bg:#eceff5; --panel:#fff; --panel2:#f5f7fb; --line:#dde3ef; --line2:#c8d1e2;
+  --text:#141b2c; --muted:#54607a; --faint:#8792ab; --cyan:#1787a0; --cyan2:#3762d6;
+  --atzilut:#7b52d6; --beriah:#3762d6; --yetzirah:#1f9188; --assiah:#c05f38;
+  --normal:#1f9e63; --watchful:#a6791b; --halt:#c23a31; --base:#3762d6; --knowledge:#1f9188; --financial:#a6791b; --friction:#c23a31;
+}}
+:root[data-theme="light"]{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--atzilut:#7b52d6;--beriah:#3762d6;--yetzirah:#1f9188;--assiah:#c05f38;--normal:#1f9e63;--watchful:#a6791b;--halt:#c23a31;--base:#3762d6;--knowledge:#1f9188;--financial:#a6791b;--friction:#c23a31}
+:root[data-theme="dark"]{--bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;--text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;--atzilut:#c9a9ff;--beriah:#7aa2ff;--yetzirah:#5cc9c0;--assiah:#e8926b;--normal:#43c68a;--watchful:#e0a83a;--halt:#e5594f;--base:#7aa2ff;--knowledge:#5cc9c0;--financial:#e0a83a;--friction:#e5594f}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.eq{font-family:var(--mono);font-size:12.5px}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 18px 60px}
+header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:6px}
+header.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.3px}
+header.top .id{font-family:var(--mono);color:var(--cyan);font-size:12.5px}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:14px 0 20px;max-width:78ch}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px}
+.card h2{font-size:11px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0;padding:14px 17px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.card h2 .n{margin-left:auto;font-family:var(--mono);font-size:10.5px;letter-spacing:0;color:var(--muted)}
+.pad{padding:16px 17px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.cap{color:var(--muted);font-size:12px;margin-top:10px;line-height:1.55}
+.cap b{color:var(--text)}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:11.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend i{width:20px;height:0;border-top:2.4px solid;display:inline-block}
+.eqs{display:grid;grid-template-columns:1fr 1fr;gap:10px 22px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
+@media (max-width:640px){.eqs{grid-template-columns:1fr}}
+.eqrow .l{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);margin-bottom:3px}
+.eqrow .e{font-family:var(--mono);font-size:13px;color:var(--text)}
+.eqrow .e b{color:var(--cyan);font-weight:600}
+.eqrow small{color:var(--muted);font-family:var(--sans);font-size:11.5px}
+</style>
+
+<div class="wrap">
+  <header class="top"><h1>Genesis &amp; Flywheel</h1><span class="id">SociOS · Tier-1 architecture</span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></header>
+  <p class="sub">The install spine and the growth dynamics, drawn correctly. Colour follows the four spaces — <span style="color:var(--atzilut)">Atzilut</span> · <span style="color:var(--beriah)">Beriah</span> · <span style="color:var(--yetzirah)">Yetzirah</span> · <span style="color:var(--assiah)">Assiah</span>. Regenerable from data; the earlier renders of these were beautiful but false.</p>
+
+  <!-- ── 1. Genesis braid ── -->
+  <div class="card"><h2>Twelve-Step Genesis Braid <span class="n">T₀ → T₁₁, sealed</span></h2>
+    <div class="pad"><svg id="braid" viewBox="0 0 640 470" role="img" aria-label="Twelve step genesis braid"></svg></div>
+  </div>
+
+  <!-- ── 2. Five-phase install ── -->
+  <div class="card"><h2>Five-Phase Genesis — Initial Install <span class="n">zero-trust at every seam</span></h2>
+    <div class="pad"><svg id="install" viewBox="0 0 640 260" role="img" aria-label="Five phase install flow"></svg>
+    <div class="cap"><b>System → User → Mesh.</b> Measured boot (PureBoot/Heads + dm-verity) seals the base; the AUM-Arch bundle runs class <span class="mono">nspawn : Kata</span>; the Prophet Mesh + Twin come up last. Nothing trusts anything it didn't verify.</div></div>
+  </div>
+
+  <!-- ── 3. Flywheel ── -->
+  <div class="card"><h2>Connected Flywheel Topology <span class="n">Trust · Growth · Dev · Device</span></h2>
+    <div class="pad"><svg id="fly" viewBox="0 0 640 300" role="img" aria-label="Flywheel topology"></svg>
+      <div class="legend">
+        <span><i style="border-color:var(--base)"></i>baseline dynamics</span>
+        <span><i style="border-color:var(--knowledge)"></i>knowledge reinforcement</span>
+        <span><i style="border-color:var(--financial)"></i>financial reinforcement</span>
+        <span><i style="border-color:var(--friction);border-top-style:dashed"></i>friction / damping</span>
+      </div>
+      <div class="eqs">
+        <div class="eqrow"><div class="l">Economic profit</div><div class="e"><b>ΔEP</b> = (P − C)·X − λK</div><small>margin × volume, less the cost of knowledge debt λK</small></div>
+        <div class="eqrow"><div class="l">Knowledge reinforcement</div><div class="e"><b>K</b> = k₀ · α · cov(A) · φ(P)</div><small>coverage × provenance quality</small></div>
+        <div class="eqrow"><div class="l">Platform recurrence</div><div class="e"><b>m(t+1)</b> = σ( W·ΔEP(t) + B·K(t) + A·m(t) )</div><small>a governed loop — bounded, convergent, fail-closed</small></div>
+        <div class="eqrow"><div class="l">Composition (Moufang)</div><div class="e">(mᵢ·mⱼ)·mₖ = mᵢ·(mⱼ·mₖ) <small>on the loop</small></div><small>non-associative in general; associative along a single flywheel</small></div>
+      </div>
+    </div>
+  </div>
+
+  <p class="cap" style="text-align:center">Style tokens: the first theme (B₁₁ instrument) on the SociOS dark base · font Cantarell · light + dark.</p>
+</div>
+
+<script>
+const NS="http://www.w3.org/2000/svg";
+function mk(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function txt(x,y,s,a={}){const e=mk('text',Object.assign({x,y},a));e.textContent=s;return e;}
+// ── braid ──
+(function(){const g=document.getElementById('braid');
+ const steps=[
+  ['0','Inception','Container','atzilut'],['1','Orientation','Policy','beriah'],
+  ['2','Unity','Features','yetzirah'],['3','Defense','Security','assiah'],
+  ['4','Kernel','Seal','beriah'],['5','Completion','Twin-Bridge','atzilut'],
+  ['6','Re-Container','Glossary','beriah'],['7','Mesh','Bundles','yetzirah'],
+  ['8','Anchor','Topics','yetzirah'],['9','Recur','Delta','assiah'],
+  ['10','Bind','Surface','beriah'],['11','Witness','Sync','assiah']];
+ const bands=[['Proof of Life',0,3,'normal'],['Twin Bridge',5,5,'atzilut'],['User',6,8,'yetzirah'],['Agent',9,11,'assiah']];
+ const x=40,w=260,h=26,gap=10,y0=16;
+ const yOf=i=>y0+i*(h+gap);
+ // spine
+ g.appendChild(mk('line',{x1:x+18,y1:yOf(0)+h/2,x2:x+18,y2:yOf(11)+h/2,stroke:'var(--line2)','stroke-width':2}));
+ // band brackets
+ bands.forEach(b=>{const ya=yOf(b[1])-3,yb=yOf(b[2])+h+3,bx=x+w+150;
+   g.appendChild(mk('path',{d:`M${bx-8} ${ya} H${bx} V${yb} H${bx-8}`,fill:'none',stroke:`var(--${b[3]})`,'stroke-width':1.5,opacity:.7}));
+   g.appendChild(txt(bx+8,(ya+yb)/2+4,b[0],{'font-size':12,fill:`var(--${b[3]})`,'font-weight':600}));});
+ steps.forEach((s,i)=>{const y=yOf(i);
+   g.appendChild(mk('circle',{cx:x+18,cy:y+h/2,r:5,fill:`var(--${s[3]})`}));
+   const r=mk('rect',{x:x+34,y,width:w,height:h,rx:7,fill:`var(--${s[3]})`,'fill-opacity':.14,stroke:`var(--${s[3]})`,'stroke-width':1.2});g.appendChild(r);
+   g.appendChild(txt(x+2,y+h/2+4,'T'+s[0],{'font-size':12,fill:'var(--muted)','font-family':'var(--mono)','text-anchor':'end',transform:`translate(${x-2},0)`}));
+   g.appendChild(txt(x+46,y+h/2+4,s[1],{'font-size':13,fill:'var(--text)','font-weight':600}));
+   // connector + artifact
+   g.appendChild(mk('line',{x1:x+34+w,y1:y+h/2,x2:x+34+w+22,y2:y+h/2,stroke:'var(--line2)','stroke-width':1}));
+   g.appendChild(txt(x+34+w+30,y+h/2+4,s[2],{'font-size':12.5,fill:'var(--cyan)','font-family':'var(--mono)'}));});
+ g.appendChild(txt(x-2,yOf(11)+h+22,'each step emits one signed artifact',{'font-size':11,fill:'var(--faint)','font-style':'italic'}));
+})();
+// ── install ──
+(function(){const g=document.getElementById('install');
+ const layers=[['System Install','PureBoot / Heads · Guix','beriah'],['AUM-Arch Bundle','nspawn : Kata','atzilut'],['Prophet Mesh + Twin','runner class','yetzirah']];
+ const lx=20,lw=190,lh=52,ly=14,lg=12;
+ layers.forEach((l,i)=>{const y=ly+i*(lh+lg);
+   g.appendChild(mk('rect',{x:lx,y,width:lw,height:lh,rx:9,fill:`var(--${l[2]})`,'fill-opacity':.13,stroke:`var(--${l[2]})`,'stroke-width':1.3}));
+   g.appendChild(txt(lx+14,y+22,l[0],{'font-size':13,fill:'var(--text)','font-weight':600}));
+   g.appendChild(txt(lx+14,y+40,l[1],{'font-size':11.5,fill:'var(--muted)','font-family':'var(--mono)'}));
+   g.appendChild(mk('line',{x1:lx+lw,y1:y+lh/2,x2:330,y2:130,stroke:'var(--line2)','stroke-width':1.2,'marker-end':'url(#ah)'}));});
+ // user space
+ g.appendChild(mk('rect',{x:330,y:100,width:150,height:60,rx:10,fill:'var(--panel2)',stroke:'var(--yetzirah)','stroke-width':1.4}));
+ g.appendChild(txt(405,126,'User Space',{'font-size':13.5,fill:'var(--text)','font-weight':600,'text-anchor':'middle'}));
+ g.appendChild(txt(405,144,'Creator ⟷ Twin',{'font-size':11,fill:'var(--muted)','text-anchor':'middle','font-family':'var(--mono)'}));
+ g.appendChild(mk('line',{x1:480,y1:130,x2:540,y2:130,stroke:'var(--line2)','stroke-width':1.2,'marker-end':'url(#ah)'}));
+ // mesh node cluster
+ const cx=590,cy=130;
+ [[0,-34],[30,-14],[30,20],[0,38],[-30,20],[-30,-14]].forEach(p=>{g.appendChild(mk('circle',{cx:cx+p[0],cy:cy+p[1],r:6,fill:'var(--yetzirah)','fill-opacity':.7}));});
+ g.appendChild(mk('circle',{cx,cy,r:8,fill:'var(--cyan)'}));
+ g.appendChild(txt(cx,cy+58,'Prophet Mesh',{'font-size':11,fill:'var(--muted)','text-anchor':'middle'}));
+ // zero-trust footer
+ g.appendChild(mk('rect',{x:20,y:222,width:600,height:28,rx:8,fill:'var(--halt)','fill-opacity':.1,stroke:'var(--halt)','stroke-width':1,'stroke-opacity':.5}));
+ g.appendChild(txt(320,240,'zero-trust principles apply to bootstrap and every interface',{'font-size':12,fill:'var(--halt)','text-anchor':'middle'}));
+ g.appendChild(mk('marker',{id:'ah',markerWidth:7,markerHeight:7,refX:6,refY:3.5,orient:'auto'})).appendChild(mk('path',{d:'M0 0 L7 3.5 L0 7 z',fill:'var(--line2)'}));
+})();
+// ── flywheel ──
+(function(){const g=document.getElementById('fly');
+ const loops=[['TRUST',120,80,'base'],['GROWTH',500,80,'knowledge'],['DEV PLATFORM',310,215,'base'],['DEVICE',500,215,'financial']];
+ const nodes={
+  TRUST:['Governance','Security','Community'],GROWTH:['Deploy','Eval','Detect'],
+  'DEV PLATFORM':['Agents','Capabilities','Docs'],DEVICE:['Design','Distribution']};
+ function loop(cx,cy,label,col){
+   const r=44;const st=`var(--${col})`;
+   g.appendChild(mk('circle',{cx,cy,r,fill:'none',stroke:st,'stroke-width':2,opacity:.8}));
+   // rotation arrow head on the ring
+   g.appendChild(mk('path',{d:`M${cx+r} ${cy-3} l6 3 l-6 3`,fill:'none',stroke:st,'stroke-width':2}));
+   g.appendChild(txt(cx,cy-r-8,label,{'font-size':11.5,fill:st,'font-weight':700,'text-anchor':'middle','letter-spacing':'.5px'}));
+   const ns=nodes[label];ns.forEach((n,i)=>{const a=-Math.PI/2+i*2*Math.PI/ns.length;const nx=cx+Math.cos(a)*r,ny=cy+Math.sin(a)*r;
+     g.appendChild(mk('circle',{cx:nx,cy:ny,r:4,fill:st}));
+     const ox=cx+Math.cos(a)*(r+3),oy=cy+Math.sin(a)*(r+3);
+     g.appendChild(txt(ox+(Math.cos(a)>0?4:-4),oy+3,n,{'font-size':9.5,fill:'var(--muted)','text-anchor':Math.cos(a)>0?'start':'end'}));});
+ }
+ // cross-loop couplings (typed edges)
+ const links=[[120,80,500,80,'knowledge',0],[500,80,500,215,'financial',0],[310,215,120,80,'base',1],[310,215,500,215,'friction',1],[500,215,310,215,'knowledge',1]];
+ links.forEach(l=>{const my=(l[1]+l[3])/2-40;
+   g.appendChild(mk('path',{d:`M${l[0]} ${l[1]} Q ${(l[0]+l[2])/2} ${my} ${l[2]} ${l[3]}`,fill:'none',stroke:`var(--${l[4]})`,'stroke-width':1.4,'stroke-dasharray':l[5]?'5 4':'0',opacity:.55}));});
+ loops.forEach(l=>loop(l[1],l[2],l[0],l[3]));
+})();
+document.getElementById('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
+</script>
