@@ -43,6 +43,9 @@ the real SociOS/GNOME chrome (top bar, launcher card) so they read as in-shell, 
 - **`lampstand-launcher.html`** — Tier 2, *actionable*. The Spotlight replacement: natural
   language → typed intents/entities/relations (the annotation tree) → **governed actions**
   (purpose-bound, consent-gated, receipted), ranked by sherlock (IR). Not web search — typed acts.
+- **`docs-support.html`** — Tier 2, *grounded NLQA + support*. Answers only from the
+  auto-generated docs index (`tools/build_docs_index.py`), cites every source, and **abstains**
+  to support when a question isn't in the docs. A CI drift-guard keeps the index fresh from source.
 - **`model-governance.html`** — Tier 2, *regulated model registry*. Business targets (fraud/churn/
   credit/AML/propensity) with champion-vs-challenger, historic version comparison, PSI drift, and the
   DataClass classifiers per target. Model risk management as a witness surface.

@@ -1,0 +1,142 @@
+<title>SociOS — Docs &amp; Support (grounded NLQA)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;
+  --text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;
+  --ground:#43c68a;--partial:#e0a83a;--abstain:#e5594f;
+  --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--ground:#1f9e63;--partial:#a6791b;--abstain:#c23a31}}
+:root[data-theme="light"]{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--ground:#1f9e63;--partial:#a6791b;--abstain:#c23a31}
+:root[data-theme="dark"]{--bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;--text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;--ground:#43c68a;--partial:#e0a83a;--abstain:#e5594f}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono)}
+.wrap{max-width:820px;margin:0 auto;padding:24px 18px 60px}
+header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:4px}
+header.top h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.3px}
+header.top .id{font-family:var(--mono);color:var(--cyan);font-size:12.5px}
+.prov{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.5px;padding:2px 7px;border-radius:5px;border:1px solid var(--line2);color:var(--muted)}
+.prov.sample{color:var(--partial);border-color:color-mix(in srgb,var(--partial) 42%,transparent);background:color-mix(in srgb,var(--partial) 12%,transparent)}
+.prov.live{color:var(--ground);border-color:color-mix(in srgb,var(--ground) 42%,transparent);background:color-mix(in srgb,var(--ground) 12%,transparent)}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:14px 0 16px}
+.qbar{display:flex;align-items:center;gap:11px;background:var(--panel);border:1px solid var(--line2);border-radius:12px;padding:13px 15px;margin-bottom:12px}
+.qbar .mag{color:var(--faint);font-size:17px}
+.qbar input{flex:1;border:none;background:none;outline:none;font:inherit;font-size:16px;color:var(--text)}
+.exs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:18px}
+.ex{font-size:12px;border:1px solid var(--line2);background:var(--panel);border-radius:16px;padding:5px 12px;cursor:pointer;color:var(--muted)}
+.ex:hover{border-color:var(--cyan);color:var(--cyan)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:14px}
+.card h2{font-size:10.5px;letter-spacing:.9px;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0;padding:12px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px}
+.badge{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.4px;padding:2px 8px;border-radius:5px}
+.badge.ground{background:color-mix(in srgb,var(--ground) 16%,transparent);color:var(--ground)}
+.badge.partial{background:color-mix(in srgb,var(--partial) 16%,transparent);color:var(--partial)}
+.badge.abstain{background:color-mix(in srgb,var(--abstain) 16%,transparent);color:var(--abstain)}
+.ans{padding:15px 16px;font-size:14px;line-height:1.65}
+.ans sup{font-family:var(--mono);font-size:9.5px;color:var(--cyan);font-weight:700;cursor:pointer;padding:0 1px}
+.src{display:block;padding:11px 16px;border-top:1px solid var(--line);text-decoration:none;color:inherit}
+.src:hover{background:var(--panel2)}
+.src .st{font-weight:600;font-size:12.5px;display:flex;gap:8px;align-items:baseline}
+.src .st .cn{font-family:var(--mono);font-size:9.5px;color:var(--cyan)}
+.src .sp{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin-top:1px}
+.src .sn{color:var(--muted);font-size:12px;margin-top:4px}
+.abstain-box{padding:15px 16px}
+.abstain-box .big{font-size:14px;font-weight:600;color:var(--abstain);margin:0 0 8px}
+.abstain-box p{color:var(--muted);margin:0 0 12px;font-size:13px}
+.ticket{display:inline-flex;align-items:center;gap:8px;background:var(--cyan);color:#08152e;border:none;border-radius:9px;padding:8px 15px;font:inherit;font-weight:650;font-size:13px;cursor:pointer}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chips .c{font-size:11px;font-family:var(--mono);color:var(--muted);border:1px solid var(--line2);border-radius:14px;padding:3px 10px;cursor:pointer}
+.route{display:flex;align-items:center;gap:8px;padding:11px 16px;font-size:11px;color:var(--faint);font-family:var(--mono);border-top:1px solid var(--line);background:var(--panel2)}
+.route b{color:var(--muted)}
+.foot{margin-top:18px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--text);color:var(--bg);padding:11px 16px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:.2s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-4px)}
+</style>
+
+<div class="wrap">
+  <header class="top"><h1>Docs &amp; Support</h1><span class="id">grounded NLQA</span>
+    <span class="prov" id="prov"></span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></header>
+  <p class="sub">Ask in plain language. Answers come <b>only from the auto-generated documentation</b> — every claim is cited back to a source doc, and if the answer isn't in the docs the assistant <b>abstains</b> and opens support rather than guessing. Grounded, not generative-from-nowhere.</p>
+
+  <div class="qbar"><span class="mag">⌕</span>
+    <input id="q" placeholder="e.g. how does consent work? what replaces Time Machine?" spellcheck="false" value="how does consent work?"></div>
+  <div class="exs" id="exs"></div>
+
+  <div id="out"></div>
+
+  <p class="foot">Docs auto-generated from source specs by <span class="mono">build_docs_index.py</span> (a doc is a witness of source). Retrieval: <span class="mono">lampstand → sherlock (IR) → InferenceGateway</span> over the grounded corpus; every answer is receipted, every abstention is honest.</p>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+let __prov='sample';
+async function loadFeed(name){try{const base=(window.SURFACE_FEED_URL||'./data/');const r=await fetch(base+name+'.json',{cache:'no-store'});if(!r.ok)throw 0;const j=await r.json();__prov=j.provenance||'live';return j;}catch(e){__prov='sample';return null;}}
+function setProv(){const b=document.getElementById('prov');if(b){b.textContent=(__prov==='live'?'LIVE · autogen':'SAMPLE DATA');b.className='prov '+(__prov==='live'?'live':'sample');}}
+
+// embedded fallback = a real subset of the generated docs-index (docs/surfaces/data/docs-index.json)
+let DOCS=[
+ {path:"docs/contract-additions/e11-consent-receipts-ux.md",title:"E11 — Consent & Receipts UX (Privacy/Security Center)",
+  summary:"macOS surfaces privacy as a per-app checkbox; E11 makes the consent-plane legible: which purpose each app may act under, plus a hash-sealed receipt of every action.",
+  headings:["Regions","Binding to what exists","Done-definition"],keywords:["consent","purpose","receipts","privacy","surface","warrant","gdpr","governed"]},
+ {path:"docs/contract-additions/e12-ota-backup.md",title:"E12 — Sovereign OTA + Snapshot/Backup (Software Update + Time Machine)",
+  summary:"Replaces Software Update and Time Machine with signed, reproducible, rollbackable generations. No vendor cloud; every update and restore is consent-gated and receipted.",
+  headings:["Update model","Backup model","Superiority over macOS"],keywords:["ota","backup","time","machine","update","generation","rollback","snapshot","restore","signed"]},
+ {path:"docs/contract-additions/e3-mesh-transport.md",title:"E3 — Personal Mesh Transport (Continuity / Handoff / AirDrop / AirPlay parity)",
+  summary:"A sovereign personal mesh: your devices form one fabric with no vendor cloud, and every cross-device transfer is an egress-purpose act, consent-gated and receipted.",
+  headings:["Layered model","MeshTransfer envelope","Superiority over Continuity"],keywords:["mesh","transport","handoff","airdrop","airplay","continuity","device","transfer","egress","wireguard"]},
+ {path:"docs/contract-additions/inference-gateway-intersection.md",title:"InferenceGateway — the cloud ∩ local intersection (model serving)",
+  summary:"Both the cloud plane and the local plane serve inference through one InferenceGateway contract, emitting the GatewayCallAudit receipt on every call, consent-gated fail-closed.",
+  headings:["The shared seam","Intersection-first, then fan out","The governed model plane"],keywords:["inference","model","serving","gateway","cloud","local","intersection","llm","champion","challenger","fraud","churn","classifiers","leaderboard","sovereignty"]},
+ {path:"docs/contract-additions/macos-replacement-matrix.md",title:"macOS → SourceOS/SociOS replacement & enhancement matrix",
+  summary:"The census: every stock-macOS app and subsystem, its SourceOS replacement, the enhancement that makes it a superset, and an honest status, plus a hardware-gap register.",
+  headings:["Core apps & shell","Hardware-gap register","Long tail"],keywords:["macos","replacement","census","finder","safari","spotlight","lampstand","hardware","asahi","superset"]},
+ {path:"docs/surfaces/README.md",title:"Surfaces — the diagram is a witness, not an illustration",
+  summary:"Canonical visual surfaces: a diagram of a governed, provenance-bearing system must be truthful, legible, version-controlled, and rendered from the source of truth.",
+  headings:["Three tiers","Live-feed wiring","Style is validated against source"],keywords:["surfaces","diagram","witness","tokens","theme","live","feed","b11","turn-witness","leaderboard"]},
+];
+const STOP=new Set("the a an and or of to in for is are on with by as it be this that from at into how does do what when where which why can i my our we you your".split(" "));
+function toks(s){return (s.toLowerCase().match(/[a-z][a-z0-9-]{1,}/g)||[]).filter(w=>!STOP.has(w));}
+function score(doc,qt){let s=0;const t=doc.title.toLowerCase(),h=doc.headings.join(" ").toLowerCase(),k=new Set(doc.keywords),sm=doc.summary.toLowerCase();
+  qt.forEach(w=>{if(t.includes(w))s+=3;if(h.includes(w))s+=1.6;if(k.has(w))s+=1.4;if(sm.includes(w))s+=0.6;});return s;}
+const el=id=>document.getElementById(id);
+function answer(q){
+  const qt=[...new Set(toks(q))];
+  const ranked=DOCS.map(d=>({d,s:score(d,qt)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s);
+  const top=ranked.slice(0,3);
+  const best=top[0]?top[0].s:0;
+  // grounding decision — fail-closed: no real match ⇒ abstain
+  const level = best>=3.0?"ground":best>=1.4?"partial":"abstain";
+  if(level==="abstain"){
+    el('out').innerHTML=`<div class="card"><h2>Answer <span class="badge abstain">ABSTAINED</span></h2>
+      <div class="abstain-box"><p class="big">Not grounded in the documentation.</p>
+      <p>I won't answer what I can't cite. This question isn't covered by the current specs — rather than guess, I'll route it to support and log the gap so a doc can be written.</p>
+      <button class="ticket" onclick="ticket()">◈ Open support ticket</button>
+      <div class="chips">${DOCS.slice(0,5).map(d=>`<span class="c" onclick="ask('${d.title.split('—')[0].trim().replace(/'/g,'')}')">${d.title.split('—')[0].trim()}</span>`).join('')}</div>
+      </div><div class="route"><b>route</b> lampstand → sherlock (IR) → <b>abstain</b> → support · gap logged</div></div>`;
+    return;
+  }
+  const badge = level==="ground"?'<span class="badge ground">GROUNDED</span>':'<span class="badge partial">PARTIAL · verify</span>';
+  const a=top[0].d, b=top[1]&&top[1].s>=1.4?top[1].d:null;
+  let ans=`${a.summary} <sup>[1]</sup>`;
+  const relH=a.headings.find(h=>qt.some(w=>h.toLowerCase().includes(w)));
+  if(relH) ans+=` See <b>${relH}</b> in the source doc. <sup>[1]</sup>`;
+  if(b) ans+=` Related: ${b.title.split('—')[0].trim()}. <sup>[2]</sup>`;
+  const cites=[a,...(b?[b]:[])];
+  el('out').innerHTML=`<div class="card"><h2>Answer ${badge}</h2>
+    <div class="ans">${ans}</div>
+    ${cites.map((d,i)=>`<a class="src" href="https://github.com/SourceOS-Linux/sourceos-spec/blob/main/${d.path}" target="_blank" rel="noopener">
+      <div class="st"><span class="cn">[${i+1}]</span>${d.title}</div><div class="sp">${d.path}</div><div class="sn">${d.summary}</div></a>`).join('')}
+    <div class="route"><b>route</b> lampstand → sherlock (IR) → InferenceGateway → grounded · <span style="margin-left:auto">sealed sha256 · receipted</span></div></div>`;
+}
+function ask(q){el('q').value=q;answer(q);}
+function ticket(){const t=el('toast');t.textContent="Support ticket opened + documentation gap logged";t.classList.add('show');clearTimeout(window._t);window._t=setTimeout(()=>t.classList.remove('show'),2600);}
+el('q').addEventListener('keydown',e=>{if(e.key==='Enter')answer(el('q').value);});
+el('q').addEventListener('input',()=>{if(el('q').value.length>4)answer(el('q').value);});
+el('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
+(async()=>{const f=await loadFeed('docs-index');if(f&&Array.isArray(f.docs)&&f.docs.length)DOCS=f.docs;setProv();
+  el('exs').innerHTML=['how does consent work?','what replaces Time Machine?','how do models run locally?','what is champion challenger?','how is the shell built?','what is the capital of France?'].map(q=>`<button class="ex" onclick="ask('${q}')">${q}</button>`).join('');
+  answer(el('q').value);})();
+</script>

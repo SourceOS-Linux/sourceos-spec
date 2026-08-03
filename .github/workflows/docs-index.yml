@@ -1,0 +1,20 @@
+name: docs-index-fresh
+on:
+  push:
+    paths: ['docs/contract-additions/**', 'docs/surfaces/README.md', 'tools/build_docs_index.py', 'docs/surfaces/data/docs-index.json']
+  pull_request:
+    paths: ['docs/contract-additions/**', 'docs/surfaces/README.md', 'tools/build_docs_index.py', 'docs/surfaces/data/docs-index.json']
+jobs:
+  fresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - name: Regenerate the grounded docs index from source
+        run: python tools/build_docs_index.py
+      - name: Fail if the committed index drifted from source
+        run: |
+          if ! git diff --exit-code docs/surfaces/data/docs-index.json; then
+            echo "::error::docs-index.json is stale — run tools/build_docs_index.py and commit"; exit 1
+          fi
