@@ -1,0 +1,127 @@
+<title>SociOS — One Integrated System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  --bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;
+  --text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;
+  --consent:#c9a9ff;--model:#7aa2ff;--mesh:#5cc9c0;--receipt:#e8926b;--launch:#4fd0e0;
+  --ok:#43c68a;--bad:#e5594f;--warn:#e0a83a;
+  --sans:"Cantarell","Noto Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:light){:root{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--consent:#7b52d6;--model:#3762d6;--mesh:#1f9188;--receipt:#c05f38;--launch:#1787a0;--ok:#1f9e63;--bad:#c23a31;--warn:#a6791b}}
+:root[data-theme="light"]{--bg:#eceff5;--panel:#fff;--panel2:#f5f7fb;--line:#dde3ef;--line2:#c8d1e2;--text:#141b2c;--muted:#54607a;--faint:#8792ab;--cyan:#1787a0;--cyan2:#3762d6;--consent:#7b52d6;--model:#3762d6;--mesh:#1f9188;--receipt:#c05f38;--launch:#1787a0;--ok:#1f9e63;--bad:#c23a31;--warn:#a6791b}
+:root[data-theme="dark"]{--bg:#0a0e18;--panel:#111726;--panel2:#161e30;--line:#212b42;--line2:#2c3854;--text:#e8edf7;--muted:#8b96b0;--faint:#586179;--cyan:#4fd0e0;--cyan2:#7aa2ff;--consent:#c9a9ff;--model:#7aa2ff;--mesh:#5cc9c0;--receipt:#e8926b;--launch:#4fd0e0;--ok:#43c68a;--bad:#e5594f;--warn:#e0a83a}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13.5px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.mono{font-family:var(--mono)}
+.wrap{max-width:1120px;margin:0 auto;padding:24px 18px 60px}
+header.top{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:6px}
+header.top h1{font-size:21px;margin:0;font-weight:720;letter-spacing:.3px}
+header.top .id{font-family:var(--mono);color:var(--cyan);font-size:12.5px}
+.tgl{margin-left:auto;background:none;border:1px solid var(--line2);border-radius:8px;width:32px;height:32px;color:var(--muted);cursor:pointer}
+.sub{color:var(--muted);margin:14px 0 20px;max-width:80ch}
+.sub b{color:var(--text)}
+h2.sec{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--faint);font-weight:700;margin:26px 0 12px}
+/* the spine */
+.spine{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+@media (max-width:820px){.spine{grid-template-columns:repeat(2,1fr)}}
+.plane{background:var(--panel);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:12px;padding:13px 14px}
+.plane .pn{font-weight:680;font-size:13.5px;color:var(--c)}
+.plane .pd{color:var(--muted);font-size:11.5px;margin-top:3px}
+.plane .pm{font-family:var(--mono);font-size:10px;color:var(--faint);margin-top:6px}
+.spinenote{text-align:center;color:var(--muted);font-size:12px;margin-top:10px}
+.spinenote b{color:var(--cyan)}
+/* app grid */
+.grp{margin-bottom:6px}
+.grp .gl{font-family:var(--mono);font-size:10.5px;color:var(--faint);margin:14px 0 7px}
+.apps{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:9px}
+.app{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.app .an{font-weight:620;font-size:12.5px}
+.app .aa{color:var(--faint);font-size:10.5px;font-family:var(--mono);margin-top:1px}
+.app .badges{display:flex;gap:4px;margin-top:7px}
+.app .badges i{width:15px;height:15px;border-radius:4px;display:grid;place-items:center;font-size:9px;font-weight:700;font-style:normal;color:#0a0e18}
+.b-c{background:var(--consent)}.b-m{background:var(--model)}.b-x{background:var(--mesh)}.b-r{background:var(--receipt)}
+/* ergonomics contrast */
+.cmp{width:100%;border-collapse:collapse;font-size:12.5px;background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.cmp th,.cmp td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.cmp th{font-size:10.5px;letter-spacing:.6px;text-transform:uppercase;color:var(--faint);font-weight:700}
+.cmp td.dim{font-weight:600;width:24%}
+.cmp td.apple{color:var(--muted);width:38%}
+.cmp td.sos{color:var(--text)}
+.cmp td.sos b{color:var(--ok)}
+.cmp tr:last-child td{border-bottom:none}
+/* flow */
+.flow{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px 4px}
+.step{display:grid;grid-template-columns:26px 1fr auto;gap:11px;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line)}
+.step:last-child{border-bottom:none}
+.step .n{width:22px;height:22px;border-radius:50%;background:var(--panel2);border:1px solid var(--line2);display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.step .t{font-size:13px}.step .t small{display:block;color:var(--muted);font-size:11.5px}
+.step .p{font-family:var(--mono);font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:5px;color:#0a0e18;white-space:nowrap}
+.p.launch{background:var(--launch)}.p.consent{background:var(--consent)}.p.model{background:var(--model)}.p.receipt{background:var(--receipt)}.p.mesh{background:var(--mesh)}
+.foot{margin-top:22px;color:var(--faint);font-size:11.5px;text-align:center;line-height:1.7}
+</style>
+
+<div class="wrap">
+  <header class="top"><h1>One Integrated System</h1><span class="id">SociOS · not a bag of apps</span>
+    <button class="tgl" id="tgl" aria-label="Toggle theme">◑</button></header>
+  <p class="sub">Apple ships great apps that don't share a spine — each has its own permissions, its own sync, its own idea of the assistant. <b>SociOS is one system.</b> Every app rides the same five planes, so anything you can do, the agent can do the same governed way — and every action leaves a receipt. That shared spine is what makes it <b>more ergonomic than Apple</b>, not just a clone.</p>
+
+  <h2 class="sec">The one spine — every app rides all five</h2>
+  <div class="spine" id="spine"></div>
+  <div class="spinenote">No app is an island: a file drop, a mail draft, a model call, a launcher query — <b>same consent, same receipt, same mesh, same agent</b>.</div>
+
+  <h2 class="sec">The application set — 37 surfaces, one grammar</h2>
+  <div id="grid"></div>
+  <div class="spinenote" style="margin-top:14px">Every chip is <span style="color:var(--consent)">consent-gated</span> · <span style="color:var(--model)">model-plane-aware</span> · <span style="color:var(--mesh)">on your mesh</span> · <span style="color:var(--receipt)">receipted</span> — reachable by name from the one launcher.</div>
+
+  <h2 class="sec">Why it's more ergonomic than Apple</h2>
+  <table class="cmp" id="cmp"></table>
+
+  <h2 class="sec">One flow, many apps — the integration you feel</h2>
+  <div class="flow" id="flow"></div>
+
+  <p class="foot">Every surface here is built to the same contract (agent-native · accessible-by-default · seam purple-tested) and merged across sourceos-spec · agent-machine · prophet-platform · client-vue. This isn't a mockup of an OS — it's the shape of the one that boots.</p>
+</div>
+
+<script>
+const el=id=>document.getElementById(id);
+const SPINE=[
+ {c:'--launch',n:'Launcher + NLQA',d:'Reach any app by name; grounded help everywhere.',m:'lampstand · sherlock · docs-index'},
+ {c:'--consent',n:'Consent plane',d:'One purpose model for every app AND agent.',m:'role×surface×space×purpose'},
+ {c:'--model',n:'Model plane',d:'One board, cloud ∩ local, sovereignty-ranked.',m:'InferenceGateway · GatewayCallAudit'},
+ {c:'--mesh',n:'Personal mesh',d:'Continuity across every device you own.',m:'MeshTransfer · WireGuard'},
+ {c:'--receipt',n:'Receipts',d:'Every action readable, sealed, replayable.',m:'AutonomyAdmissionReceipt'},
+];
+const GROUPS=[
+ {g:'Core & shell',apps:[['lampstand','Spotlight','cmxr'],['BearBrowser','Safari','cx'],['goose-notes','Notes','cmr'],['TurtleTerm','Terminal','cr'],['Mail','Mail','cmxr'],['Files','Finder','cxr'],['Messages','Messages','cxr'],['Calendar','Calendar','cxr']]},
+ {g:'Intelligence & system',apps:[['Noetica','Siri','cmr'],['netwatch','Activity Monitor','cmr'],['Model Board','—','mr'],['Consent Center','TCC','cr'],['Governor','—','cr'],['Photos','Photos','cmxr'],['Mesh Cast','AirPlay','xr'],['App-Intents','Shortcuts','cmr']]},
+ {g:'Trust & lifecycle',apps:[['Identity vault','Keychain','cr'],['OTA + Backup','Time Machine','cr'],['Supply chain','Gatekeeper','cr'],['Turn Witness','—','cr'],['Docs & Support','—','mr'],['Model Governance','—','cmr'],['Isolation spaces','Sandbox','cr'],['Twin bridge','Continuity','cxr']]},
+];
+const CMP=[
+ ['One grammar','Learn each app; Siri can’t act inside most.','Ask in plain language; the launcher routes to a <b>typed, consented</b> action in any app.'],
+ ['Agent = you','Automations are brittle; the assistant can’t use your apps.','The agent uses the <b>same consented surface you do</b> — nothing it can do is off-book.'],
+ ['Permissions','Per-app TCC checkboxes, opaque, all-or-nothing.','One <b>purpose</b> model across every app and agent; fail-closed, editable, legible.'],
+ ['Transparency','You can’t see what an app or Siri actually did.','<b>Every action is a sealed receipt</b> with its warrant — readable and replayable.'],
+ ['Continuity','Handoff/AirDrop only between Apple devices, via iCloud.','<b>Your mesh</b> — any device you own, no vendor cloud, every transfer receipted.'],
+ ['Help','Docs scattered; answers may be wrong.','<b>Grounded NLQA</b> cites the docs and abstains when it can’t — no confident guessing.'],
+ ['Ownership','Apple ID + iCloud required; models are theirs.','No account lock-in; models run <b>local-first</b>, ranked by sovereignty.'],
+];
+const FLOW=[
+ ['You: “triage my unread mail and draft replies”','parsed to a typed intent',{t:'launch',l:'LAUNCH'}],
+ ['Mail opens the unread set','read is consent-gated (purpose=discover)',{t:'consent',l:'CONSENT'}],
+ ['Local model summarizes + drafts','served on-device, no egress',{t:'model',l:'MODEL'}],
+ ['Drafts land in Mail; nothing sent','send would be egress — held for you',{t:'consent',l:'GATED'}],
+ ['A sealed receipt per read + draft','readable in the Consent Center',{t:'receipt',l:'RECEIPT'}],
+ ['Continue on your phone','the thread follows over your mesh',{t:'mesh',l:'MESH'}],
+];
+el('spine').innerHTML=SPINE.map(s=>`<div class="plane" style="--c:var(${s.c})"><div class="pn">${s.n}</div><div class="pd">${s.d}</div><div class="pm">${s.m}</div></div>`).join('');
+const BAD={c:['b-c','consent'],m:['b-m','model'],x:['b-x','mesh'],r:['b-r','receipt']};
+const GLY={c:'C',m:'M',x:'⇄',r:'R'};
+el('grid').innerHTML=GROUPS.map(gr=>`<div class="grp"><div class="gl">${gr.g}</div><div class="apps">${gr.apps.map(a=>`
+  <div class="app"><div class="an">${a[0]}</div><div class="aa">${a[1]==='—'?'new — no Apple analog':'replaces '+a[1]}</div>
+  <div class="badges">${a[2].split('').map(ch=>`<i class="b-${ch}" title="${BAD[ch][1]}">${GLY[ch]}</i>`).join('')}</div></div>`).join('')}</div></div>`).join('');
+el('cmp').innerHTML='<thead><tr><th>Dimension</th><th>Apple</th><th>SociOS</th></tr></thead><tbody>'+
+  CMP.map(r=>`<tr><td class="dim">${r[0]}</td><td class="apple">${r[1]}</td><td class="sos">${r[2]}</td></tr>`).join('')+'</tbody>';
+el('flow').innerHTML=FLOW.map((f,i)=>`<div class="step"><span class="n">${i+1}</span><div class="t">${f[0]}<small>${f[1]}</small></div><span class="p ${f[2].t}">${f[2].l}</span></div>`).join('');
+el('tgl').onclick=()=>{const r=document.documentElement;const c=r.getAttribute('data-theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.setAttribute('data-theme',c==='dark'?'light':'dark');};
+</script>

@@ -46,6 +46,10 @@ the real SociOS/GNOME chrome (top bar, launcher card) so they read as in-shell, 
 - **`docs-support.html`** — Tier 2, *grounded NLQA + support*. Answers only from the
   auto-generated docs index (`tools/build_docs_index.py`), cites every source, and **abstains**
   to support when a question isn't in the docs. A CI drift-guard keeps the index fresh from source.
+- **`integrated.html`** — Tier 1+2, *the whole system*. The E2E application set as one
+  integrated OS: every app riding the shared spine (launcher · consent · model · mesh · receipts),
+  the ergonomic wins over Apple, and one task threaded through many apps. See
+  [ergonomics-superiority.md](../contract-additions/ergonomics-superiority.md).
 - **`model-governance.html`** — Tier 2, *regulated model registry*. Business targets (fraud/churn/
   credit/AML/propensity) with champion-vs-challenger, historic version comparison, PSI drift, and the
   DataClass classifiers per target. Model risk management as a witness surface.
