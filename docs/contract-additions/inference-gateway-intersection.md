@@ -47,3 +47,20 @@ Shared `InferenceGateway` request/response + `GatewayCallAudit` on every call; a
 (agent-machine) and the cloud adapter (model-fabric) both conform; consent-gated + receipted;
 the catalog/leaderboard reads one board across planes. Passes the **inference seam** purple-team
 (no un-consented or un-audited call returns output).
+
+## The governed model plane — beyond foundation models
+The catalog is not only LLMs. Every **business target** (fraud, churn, credit, AML, propensity)
+is a governed model with:
+- **Champion / challenger** — the production champion and shadow challenger(s), each with a
+  metric (AUC / PR-AUC / Gini / recall). A challenger is promoted only through the eval gate
+  (SHACL + eval, fail-closed); a promotion is a `RunReceipt` — replayable, examiner-ready.
+- **Historic comparison** — metric by version, champion vs challenger over time; model lineage.
+- **Drift** — PSI per target; a breach flags the target and can trip the automaton.
+- **DataClass classifiers** — the [trained+registered](./2026-05-agent-machine-model-carry-contracts.md)
+  data-catalog classifiers governing each target's data (transaction / merchant / PII / bureau /
+  protected-attribute / jurisdiction …), each with coverage + registration status.
+
+Surface: [Model Governance Registry](../surfaces/model-governance.html) — the champion/challenger +
+historic + classifier view. Regulated targets (credit, AML) require examiner sign-off before
+promotion. This is model risk management (APRA CPS 230 / OCC model-risk) rendered as a witness
+surface — the governs-agents thesis made examinable.
