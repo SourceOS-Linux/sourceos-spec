@@ -43,13 +43,17 @@ def _sigmoid(z):
     return 1.0 / (1.0 + np.exp(-z))
 
 
-def _matrix(rows, feats):
-    X = np.array([[r["features"][f] for f in feats] for r in rows], dtype=float)
-    # standardise (store mean/std so inference reproduces); monotone direction is preserved by
-    # positive scaling, so the >=0 projection still means "monotone increasing in the raw feature".
-    mean, std = X.mean(axis=0), X.std(axis=0)
+def _raw(rows, feats):
+    return np.array([[r["features"][f] for f in feats] for r in rows], dtype=float)
+
+
+def _fit_standardizer(Xtrain):
+    # Fit standardisation on the TRAIN split ONLY (no test leakage). Positive scaling preserves
+    # monotone direction, so the >=0 weight projection still means "monotone increasing in the raw
+    # feature". Stored so inference/validation reproduce exactly.
+    mean, std = Xtrain.mean(axis=0), Xtrain.std(axis=0)
     std[std == 0] = 1.0
-    return (X - mean) / std, mean, std
+    return mean, std
 
 
 def _train_logistic(X, y, mono_idx):
@@ -88,11 +92,13 @@ def main() -> int:
     label_idx = {"urn:srcos:glossary:revenue": 0, "urn:srcos:glossary:cost": 1}
     y_name = ["revenue", "cost"]
 
-    X, mean, std = _matrix(rows, feats)
+    Xraw = _raw(rows, feats)
     y = np.array([0 if r["label"] == "revenue" else 1 for r in rows], dtype=float)
 
-    # 80/20 split (deterministic order in the fixture)
+    # 80/20 split (deterministic order in the fixture); standardiser FIT ON TRAIN ONLY.
     cut = int(len(rows) * 0.8)
+    mean, std = _fit_standardizer(Xraw[:cut])
+    X = (Xraw - mean) / std
     Xtr, Xte, ytr, yte = X[:cut], X[cut:], y[:cut], y[cut:]
 
     # per-class one-vs-rest logistic (class 0 = revenue as positive; class 1 = cost as positive)
@@ -122,8 +128,11 @@ def main() -> int:
 
     MANIFEST.write_text(json.dumps({
         "id": MODEL_URN, "type": "ModelManifest", "specVersion": "2.1.0",
-        "modelDigest": digest, "displayName": "dataclass-assigner (monotone wide-and-deep)",
-        "architecture": "monotone-logistic-wide-and-deep", "format": "onnx", "quantization": "none",
+        "modelDigest": digest, "displayName": "dataclass-assigner (monotone logistic)",
+        # Honest about what was actually trained: a linear monotone-logistic realisation of the
+        # DataClass classifier.kind 'tf-lattice-wide-and-deep' contract (satisfies the monotonicity
+        # constraint; it is NOT a full TF-Lattice calibrated-lattice model).
+        "architecture": "monotone-logistic", "format": "onnx", "quantization": "none",
         "license": "Apache-2.0",
         "signature": {"algorithm": "ed25519", "keyId": "srcos-model-signing-2026",
                       "signatureDigest": "sha256:" + "b" * 64},

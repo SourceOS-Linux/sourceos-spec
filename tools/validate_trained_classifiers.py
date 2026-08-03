@@ -68,12 +68,14 @@ def main() -> int:
     W = np.array(model["tableSoftmax"]["weights"]); b = np.array(model["tableSoftmax"]["bias"])
     recomputed = float((( Xte @ W + b).argmax(axis=1) == yte).mean())
     claimed = load(RUN_EVAL)["workload"]["params"]["value"]
-    if abs(recomputed - claimed) > 1e-6:
+    # Compare at the stored precision (claims are recorded rounded to 4 decimals); a real
+    # discrepancy is >> this, an inflated claim (+0.1) is far outside it.
+    if round(recomputed, 4) != round(claimed, 4):
         FAILURES.append(f"eval accuracy not reproduced: recomputed {recomputed} != claimed {claimed}")
     else:
         CHECKS["eval:reproduced-from-weights"] = True
     # teeth on the teeth: an inflated claim must NOT reproduce (guards against trusting the number)
-    if abs(recomputed - (claimed + 0.1)) <= 1e-6:
+    if round(recomputed, 4) == round(claimed + 0.1, 4):
         FAILURES.append("reproduction check is not discriminating (would accept an inflated claim)")
     else:
         CHECKS["eval:inflated-claim-would-fail"] = True
@@ -84,25 +86,36 @@ def main() -> int:
         pc = model["perClassLogistic"][name]
         w = np.array(pc["weights"]); bb = pc["bias"]
         acc = float((((1 / (1 + np.exp(-(Xte @ w + bb)))) >= 0.5) == (yte == ci)).mean())
-        if abs(acc - pc["evalAccuracy"]) > 1e-6:
+        if round(acc, 4) != round(pc["evalAccuracy"], 4):
             FAILURES.append(f"per-class '{name}' accuracy not reproduced ({acc} != {pc['evalAccuracy']})")
             ok_pc = False
     if ok_pc:
         CHECKS["per-class:reproduced"] = True
 
-    # 4. MONOTONE in the declared features: raise each monotone feature -> revenue logit never drops.
+    # 4. MONOTONE in the declared features, for EVERY per-class head: raise each monotone feature ->
+    #    the class logit never drops. Checked on both revenue and cost heads (not just one).
     mono = spec["monotonicFeatures"]
-    wr = np.array(model["perClassLogistic"]["revenue"]["weights"]); br = model["perClassLogistic"]["revenue"]["bias"]
-    base_logit = Xte @ wr + br
     mono_ok = True
-    for f in mono:
-        bumped = [dict(r, features={**r["features"], f: r["features"][f] + 1.0}) for r in test]
-        up_logit = _features(bumped, feats, mean, std) @ wr + br
-        if np.any(up_logit < base_logit - 1e-9):
-            FAILURES.append(f"model is NOT monotone in '{f}' — raising it lowered the revenue score")
-            mono_ok = False
+    for name in ("revenue", "cost"):
+        w = np.array(model["perClassLogistic"][name]["weights"]); bb = model["perClassLogistic"][name]["bias"]
+        base = Xte @ w + bb
+        for f in mono:
+            bumped = [dict(r, features={**r["features"], f: r["features"][f] + 1.0}) for r in test]
+            if np.any((_features(bumped, feats, mean, std) @ w + bb) < base - 1e-9):
+                FAILURES.append(f"'{name}' head NOT monotone in '{f}' — raising it lowered the score")
+                mono_ok = False
     if mono_ok:
         CHECKS["monotone:constraint-holds"] = True
+
+    # 4b. The monotone constraint must actually BIND — at least one monotone feature carries a
+    #     non-trivial positive weight on the revenue head — otherwise the monotone check is vacuous
+    #     (a constant/ignored feature would pass trivially). Guards against a toothless fixture.
+    wr = np.array(model["perClassLogistic"]["revenue"]["weights"])
+    mono_w = [wr[feats.index(f)] for f in mono]
+    if max(mono_w) < 0.1:
+        FAILURES.append(f"monotone constraint does not bind — all monotone weights ~0 {mono_w} (vacuous)")
+    else:
+        CHECKS["monotone:constraint-binds"] = True
 
     # 5. DataClass classifier refs resolve to the emitted artifacts.
     clf = load(DATACLASS)["classifier"]
