@@ -1,0 +1,20 @@
+{
+  "id": "urn:srcos:capture-receipt:abc123:qie:1",
+  "type": "CaptureReceipt",
+  "specVersion": "2.0.0",
+  "capturedAt": "2026-08-03T00:00:00Z",
+  "subjectRef": "pseudo:abc123",
+  "transform": {
+    "name": "quasi-identifier-extraction",
+    "inputRef": "urn:srcos:capture-input:abc123:raw"
+  },
+  "contextRef": "urn:srcos:context-ref:abc123:math-commons",
+  "declaredPurpose": "research-cohort-linkage-under-consent",
+  "authorizationProof": "sig:consent:abc123:0xdeadbeef",
+  "boundBeforeTransform": true,
+  "evidenceRefs": [
+    "urn:srcos:reasoning-receipt:abc123:consent-check:1"
+  ],
+  "disposition": "admitted",
+  "reversibilityFloorBits": 12.5
+}
