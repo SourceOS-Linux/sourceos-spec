@@ -1,0 +1,56 @@
+{
+  "id": "urn:srcos:rdr:claude-desktop:2026-08-03",
+  "type": "ResilientDiagnosticRecord",
+  "specVersion": "2.0.0",
+  "schema": "rdr/1",
+  "process": {
+    "id": "pid:claude-desktop",
+    "imageHash": "b3:img-def",
+    "entry": "_main",
+    "profile": "prod"
+  },
+  "fault": {
+    "type": "LoaderFault",
+    "kind": "MissingProvider",
+    "code": "LDR-DEP-MISSING",
+    "severity": "degraded",
+    "import": {
+      "name": "com.apple.CoreSimulator",
+      "versionReq": ">=0",
+      "binding": "FEATURE",
+      "capability": "simulator-control",
+      "requestedBy": "com.facebook.FBSimulatorControl",
+      "chain": [
+        "com.anthropic.claude.desktop",
+        "com.facebook.FBSimulatorControl"
+      ]
+    },
+    "searched": [
+      {
+        "store": "system",
+        "result": "absent"
+      }
+    ]
+  },
+  "phase": "running-lazy",
+  "closure": {
+    "coreSize": 3,
+    "sealedManifestHash": "b3:scm-desktop"
+  },
+  "chain": [
+    "com.anthropic.claude.desktop",
+    "com.facebook.FBSimulatorControl"
+  ],
+  "env": {
+    "osBuild": "25A1",
+    "model": "Mac",
+    "abiLevel": 210,
+    "bootId": "boot-2"
+  },
+  "redaction": {
+    "tier": "local",
+    "saltId": "salt-2"
+  },
+  "reproKey": "b3:repro-def",
+  "capturedAt": "2026-08-03T00:00:00Z"
+}

@@ -1,0 +1,59 @@
+{
+  "id": "urn:srcos:rdr:claude-ios-sim:2026-08-03",
+  "type": "ResilientDiagnosticRecord",
+  "specVersion": "2.0.0",
+  "schema": "rdr/1",
+  "process": {
+    "id": "pid:claude-ios-sim",
+    "imageHash": "b3:img-abc",
+    "entry": "_main",
+    "profile": "prod"
+  },
+  "fault": {
+    "type": "LoaderFault",
+    "kind": "MissingProvider",
+    "code": "LDR-DEP-MISSING",
+    "severity": "fatal",
+    "import": {
+      "name": "com.apple.CoreSimulator",
+      "versionReq": ">=0",
+      "binding": "REQUIRED",
+      "requestedBy": "com.facebook.FBSimulatorControl",
+      "chain": [
+        "com.anthropic.claude.ios-sim",
+        "com.facebook.FBSimulatorControl"
+      ]
+    },
+    "searched": [
+      {
+        "store": "system",
+        "result": "absent"
+      },
+      {
+        "store": "cryptex",
+        "result": "absent"
+      }
+    ]
+  },
+  "phase": "seal-verify",
+  "closure": {
+    "coreSize": 3,
+    "sealedManifestHash": "b3:scm-xyz"
+  },
+  "chain": [
+    "com.anthropic.claude.ios-sim",
+    "com.facebook.FBSimulatorControl"
+  ],
+  "env": {
+    "osBuild": "25A1",
+    "model": "iPhone",
+    "abiLevel": 210,
+    "bootId": "boot-1"
+  },
+  "redaction": {
+    "tier": "telemetry",
+    "saltId": "salt-1"
+  },
+  "reproKey": "b3:repro-abc",
+  "capturedAt": "2026-08-03T00:00:00Z"
+}
