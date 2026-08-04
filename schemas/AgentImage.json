@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AgentImage.json",
+  "title": "AgentImage",
+  "description": "Immutable identity and provenance contract for an agent RUNTIME ARTIFACT — the deployable agent image/bundle — parallel to OSImage for the OS substrate. Distinct from AgentPassport: AgentPassport classifies a running process on a host; AgentImage identifies the built artifact that process was launched from, so an agent image can be measured for trust (via ImageTrustReport) exactly the way an OS image is. Shares OSImage's provenance shape deliberately, so one ImageTrustReport applies to both.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "agentClass", "artifact", "architecture", "digest", "provenance"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:agent-image:[a-z0-9][a-z0-9._-]*$", "description": "Stable URN. Pattern: urn:srcos:agent-image:<local-id>." },
+    "type": { "const": "AgentImage" },
+    "specVersion": { "type": "string" },
+    "agentClass": {
+      "enum": ["system_core", "intelligence_automation", "app_helper", "legacy_bridge", "third_party"],
+      "description": "The five-class agent model shared with AgentPassport — the class the built artifact is authorized to run as."
+    },
+    "artifact": {
+      "enum": ["oci", "wheel", "npm", "binary", "bundle"],
+      "description": "Rendered artifact form for the agent image."
+    },
+    "architecture": {
+      "enum": ["x86_64", "aarch64", "any"],
+      "description": "Target architecture ('any' for a pure-interpreted bundle)."
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$",
+      "description": "Content digest of the built agent artifact — the identity a reproducibility check re-derives."
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional declared runtime binding.",
+      "properties": {
+        "language": { "type": "string", "description": "e.g. python, node, rust." },
+        "entrypoint": { "type": "string", "description": "The invoked entrypoint." }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "description": "Attestation and provenance references for the agent artifact — same shape as OSImage.provenance so both images are measured by one ImageTrustReport.",
+      "additionalProperties": false,
+      "required": ["statementRef", "slsaPredicateRef"],
+      "properties": {
+        "statementRef": { "type": "string", "pattern": "^urn:srcos:attestation:[a-z0-9][a-z0-9._:-]*$", "description": "URN reference to the in-toto or equivalent attestation statement." },
+        "slsaPredicateRef": { "type": "string", "pattern": "^urn:srcos:slsa:[a-z0-9][a-z0-9._:-]*$", "description": "URN reference to the SLSA provenance predicate artifact." },
+        "sbomRef": { "type": "string", "description": "Optional URN or URL reference to the SBOM for this agent image." },
+        "signatureRef": { "type": "string", "description": "Optional URN or URL reference to the signature verification material." }
+      }
+    }
+  }
+}
