@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CapabilityConsentPolicy.json",
+  "title": "CapabilityConsentPolicy",
+  "description": "The consent policy governing ACTIVE capabilities — camera, microphone, screen capture, computer control, remote compute, file writes, network egress, acting as the user. Where ConsentSurfaceRegistry governs what may be observed about the subject, this governs what may be DONE on the subject's behalf, and it holds those to a deliberately stricter standard: the shipped default for an active capability is per-use, not standing. A per-use capability is one-shot by construction — the grant authorises a single use and is not persistable — so the ordinary failure mode of capability consent, where a one-time 'allow' silently becomes a standing permission, is not expressible. This is a POLICY contract: it declares the consent standard, the default state, and the sentence the subject is shown. It contains no capability implementation, no device access, and no invocation path — a capability is named and governed here whether or not anything in the deployment can perform it. Like the registry, it is deployment-scoped to 'self-sovereign': the subject is the principal granting and the principal protected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "deploymentScope", "subjectPrincipal", "capabilities"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:consent-policy:",
+      "description": "Stable URN. Pattern: urn:srcos:consent-policy:<local-id>."
+    },
+    "type": { "const": "CapabilityConsentPolicy" },
+    "specVersion": { "type": "string" },
+    "deploymentScope": {
+      "const": "self-sovereign",
+      "description": "Fixed. The subject grants their own capabilities; there is no shape of this document in which a third party holds the grant."
+    },
+    "subjectPrincipal": {
+      "type": "string",
+      "description": "The principal whose device and authority these capabilities act upon — the only principal who can grant them."
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The governed capabilities. The shipped canonical set and its defaults are pinned by tools/validate_consent_plane_examples.py, so a default cannot be weakened in a file edit without failing the gate.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["capabilityId", "riskClass", "defaultStandard", "effectiveMode", "userOverride", "defaultState", "explanation"],
+        "properties": {
+          "capabilityId": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9_]*$",
+            "description": "Canonical capability token (e.g. camera, screen_capture, control_my_computer, skycomputer, file_write, network_egress, send_on_behalf, microphone)."
+          },
+          "riskClass": {
+            "enum": ["sensor-capture", "device-control", "remote-compute", "data-write", "data-egress", "act-as-user"],
+            "description": "What KIND of risk the capability carries, not how much — a magnitude ('high') compresses away the thing a subject actually needs to decide about. sensor-capture = reads the physical or on-screen environment. device-control = drives the host. remote-compute = sends work off-device. data-write = mutates the subject's data. data-egress = moves data off the device. act-as-user = takes an action attributable to the subject."
+          },
+          "defaultStandard": {
+            "enum": ["off", "per-use", "standing-session", "standing-persistent"],
+            "description": "The shipped consent standard for this capability. For the canonical set this is per-use everywhere except microphone (standing-session, because a per-utterance prompt would make continuous listening unusable and the honest mitigation is a session bound, not a prompt). The validator pins each value against the canonical matrix."
+          },
+          "effectiveMode": {
+            "enum": ["off", "per-use", "standing-session", "standing-persistent"],
+            "description": "What is actually in force. May differ from defaultStandard ONLY when userOverride is true — and a per-use capability may never reach a standing mode even then, because one-shot forbids the persistable grant such a mode would require. The subject may always tighten; nothing may loosen a per-use capability into a standing one."
+          },
+          "userOverride": {
+            "type": "boolean",
+            "description": "True when effectiveMode reflects the subject's own decision rather than the shipped standard. The attributability flag: a divergence that is not marked as the subject's is treated as a silently changed default and rejected."
+          },
+          "defaultState": {
+            "enum": ["enabled", "disabled"],
+            "description": "The state the capability ships in before the subject has decided anything. Default-deny: the validator requires 'disabled' for every per-use capability, so an unanswered active capability is never live."
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 12,
+            "description": "REQUIRED. The plain sentence shown to the subject BEFORE this capability may be enabled — what it would do, in ordinary language. Structural, not cosmetic: an unexplained capability cannot be registered. The validator additionally rejects trivial or placeholder text."
+          },
+          "residency": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Optional residency constraints on anything the capability produces or touches.",
+            "properties": {
+              "ephemeral": {
+                "type": "boolean",
+                "description": "True when nothing is retained past the moment of use."
+              },
+              "onDeviceOnly": {
+                "type": "boolean",
+                "description": "True when nothing may leave the subject's own device."
+              }
+            }
+          },
+          "oneShot": {
+            "type": "boolean",
+            "default": false,
+            "description": "True when a grant authorises exactly one use and is NOT persistable — it cannot be stored, re-presented, or carried into a later invocation. Required true for every per-use capability (enforced): per-use without one-shot is the exact hole through which a single 'allow' becomes a standing permission, so the two are bound together rather than left as independent settings that can drift apart."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "id": "urn:srcos:consent-registry:workstation-default",
+  "type": "ConsentSurfaceRegistry",
+  "specVersion": "2.0.0",
+  "deploymentScope": "self-sovereign",
+  "subjectPrincipal": "urn:srcos:principal:local-operator",
+  "collectorPrincipal": "urn:srcos:principal:local-operator",
+  "surfaces": [
+    {
+      "surfaceId": "telemetry:model:tokens_used",
+      "category": "model-usage",
+      "sensitivity": "benign",
+      "pii": false,
+      "defaultStandard": "standing-persistent",
+      "effectiveMode": "standing-persistent",
+      "userOverride": false,
+      "explanation": "Counts how many tokens each run used, so you can see what your own work costs.",
+      "projectionMode": "LOSSLESS",
+      "residency": { "ephemeral": false, "onDeviceOnly": true },
+      "purpose": "local-cost-and-capacity-visibility",
+      "consent": {
+        "state": "granted",
+        "grantedAt": "2026-07-20T09:12:00Z",
+        "grantRef": "urn:srcos:consent-grant:workstation-tokens-used-2026-07-20"
+      }
+    },
+    {
+      "surfaceId": "telemetry:policy:gate_verdict",
+      "category": "governance-outcome",
+      "sensitivity": "benign",
+      "pii": false,
+      "defaultStandard": "standing-persistent",
+      "effectiveMode": "standing-session",
+      "userOverride": true,
+      "explanation": "Records whether each governance gate passed or failed, so you can see which rules actually fired.",
+      "projectionMode": "LOSSLESS",
+      "residency": { "ephemeral": false, "onDeviceOnly": true },
+      "purpose": "gate-effectiveness-review",
+      "consent": {
+        "state": "granted",
+        "grantedAt": "2026-07-20T09:12:00Z",
+        "grantRef": "urn:srcos:consent-grant:workstation-gate-verdict-2026-07-20"
+      }
+    },
+    {
+      "surfaceId": "telemetry:device:hardware_id",
+      "category": "hardware-identity",
+      "sensitivity": "sensitive",
+      "pii": true,
+      "defaultStandard": "standing-persistent",
+      "effectiveMode": "off",
+      "userOverride": false,
+      "explanation": "Would tie every run to this specific machine's hardware identity. Off, and nothing reads it.",
+      "projectionMode": "OPAQUE_HANDLE_ONLY",
+      "residency": { "ephemeral": true, "onDeviceOnly": true },
+      "purpose": "device-binding-for-fleet-attribution",
+      "consent": {
+        "state": "denied"
+      }
+    },
+    {
+      "surfaceId": "telemetry:app:session_start",
+      "category": "app-activity",
+      "sensitivity": "personal",
+      "pii": false,
+      "defaultStandard": "standing-persistent",
+      "effectiveMode": "off",
+      "userOverride": false,
+      "explanation": "Notes the time each working session begins, which reveals when you are at the machine.",
+      "projectionMode": "LOSSY",
+      "residency": { "ephemeral": true, "onDeviceOnly": true },
+      "purpose": "session-continuity-diagnostics",
+      "consent": {
+        "state": "revoked",
+        "grantedAt": "2026-07-20T09:12:00Z",
+        "revokedAt": "2026-07-28T17:40:00Z",
+        "grantRef": "urn:srcos:consent-grant:workstation-session-start-2026-07-20"
+      }
+    }
+  ]
+}

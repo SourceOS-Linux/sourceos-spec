@@ -191,6 +191,11 @@
       "path": "schemas/BuildValidationEvidenceBundle.json",
       "sha256": "sha256:117e4d8974d7dbb3eae939de0a39d71f48d61baff462293ffe75622b92261dd7"
     },
+    "CapabilityConsentPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityConsentPolicy.json",
+      "path": "schemas/CapabilityConsentPolicy.json",
+      "sha256": "sha256:35a6fce322a3b8466ea6265f30de0e5825c6b3336e14b24f62aaa66dd0eb1a61"
+    },
     "CapabilityContract": {
       "$id": "https://schemas.srcos.ai/v2/CapabilityContract.json",
       "path": "schemas/CapabilityContract.json",
@@ -310,6 +315,11 @@
       "$id": "https://schemas.srcos.ai/v2/ConnectorActionScope.json",
       "path": "schemas/ConnectorActionScope.json",
       "sha256": "sha256:8683bc21b0d8377561e776aa91c5d43155a52e8cf8d58798c253d5f49ec28ca2"
+    },
+    "ConsentSurfaceRegistry": {
+      "$id": "https://schemas.srcos.ai/v2/ConsentSurfaceRegistry.json",
+      "path": "schemas/ConsentSurfaceRegistry.json",
+      "sha256": "sha256:5e14a351b934b5c3bb1ca566b852ebe3114197f172b9c542fb9e70b51af28594"
     },
     "ContentRef": {
       "$id": "https://schemas.srcos.ai/v2/ContentRef.json",
@@ -1827,5 +1837,5 @@
       "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
     }
   },
-  "count": 365
+  "count": 367
 }
