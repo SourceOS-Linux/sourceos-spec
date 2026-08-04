@@ -236,6 +236,11 @@
       "path": "schemas/CaptureDelta.json",
       "sha256": "sha256:8583a8ba400e43f701390d829c766e90f3c48325f82daafbda3f530aa13f02b9"
     },
+    "CaptureReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/CaptureReceipt.json",
+      "path": "schemas/CaptureReceipt.json",
+      "sha256": "sha256:2978227c49c59a2f032ddd7a106b4866501c2b10e95a6fdd9f9ccca141254580"
+    },
     "CatalogEntry": {
       "$id": "https://schemas.srcos.ai/v2/CatalogEntry.json",
       "path": "schemas/CatalogEntry.json",
