@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ReversibilityDistance.json",
+  "title": "ReversibilityDistance",
+  "description": "The published civic meter of the reidentification economy (reidentification-economy Appendix A). For a given release/twin it reports D, the reversibility distance: the residual identity entropy D = E[log2 k] in bits — how many bits of distinguishing information an adversary must still acquire to single a subject out of a population of N. D is measured against the singling-out budget budgetBits = log2 N; a release is fully reversed (reidentified) iff D == 0. The same number is the epsilon-unlinkability budget of a MultiversealTwin: privacy, capacity and reidentifiability are one ledger, not three knobs. Two orthogonal controls act on that ledger — a differential-privacy rate-limit that bounds how fast D may be spent per release, and a capture receipt that gates whether the identifying query Q is produced at all.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "computedAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:reversibility-distance:",
+      "description": "Stable URN for this reversibility-distance reading."
+    },
+    "type": {
+      "const": "ReversibilityDistance",
+      "description": "Type discriminator; always 'ReversibilityDistance'."
+    },
+    "specVersion": {
+      "type": "string",
+      "description": "Semantic version of the contract."
+    },
+    "computedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "When this reading was computed."
+    },
+    "releaseRef": {
+      "type": "string",
+      "description": "What release or twin projection this meter measures."
+    },
+    "populationN": {
+      "type": "number",
+      "description": "N — the population an adversary is singling out from."
+    },
+    "budgetBits": {
+      "type": "number",
+      "description": "The singling-out budget = log2(N). Total bits required to isolate one subject."
+    },
+    "dBits": {
+      "type": "number",
+      "minimum": 0,
+      "description": "D — the reversibility distance = E[log2 k], the residual identity entropy: bits an adversary must still acquire to reidentify. D == 0 means the release is fully reversible."
+    },
+    "reidentified": {
+      "type": "boolean",
+      "description": "True iff dBits == 0 (the release singles subjects out with no residual budget left to spend)."
+    },
+    "unicityCurve": {
+      "type": "array",
+      "description": "The unicity curve: for each number of observed points/joins p, the fraction epsilon_p of the population made unique.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["p", "epsilonP"],
+        "properties": {
+          "p": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Number of observed points / joins."
+          },
+          "epsilonP": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Fraction of the population uniquely singled out after p points."
+          }
+        }
+      }
+    },
+    "bitsPerPoint": {
+      "type": "number",
+      "description": "Fitted log2(r): the per-point distinguishability, how many bits each additional observed point contributes."
+    },
+    "pStar": {
+      "type": "number",
+      "description": "Implied number of points/joins to reach k = 1 (full reidentification) = log_r(N)."
+    },
+    "method": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "version"],
+      "description": "The estimator that produced this reading.",
+      "properties": {
+        "name": { "type": "string", "description": "Estimator name (e.g. the Appendix-A reversibility-distance estimator)." },
+        "version": { "type": "string", "description": "Estimator version." }
+      }
+    },
+    "epsilonUnlinkabilityRef": {
+      "type": "string",
+      "description": "Optional reference to the MultiversealTwin whose unlinkability.epsilon this D is the budget for. D IS that epsilon: one ledger governs privacy, capacity and reidentifiability."
+    },
+    "controlPoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The two orthogonal controls on the same ledger.",
+      "properties": {
+        "differentialPrivacy": {
+          "type": "string",
+          "description": "How a DP mechanism rate-limits the change in D per release (e.g. 'rate-limits ΔD per release')."
+        },
+        "captureReceipt": {
+          "type": "string",
+          "description": "How a capture receipt gates whether the identifying query Q is produced at all (e.g. 'gates whether Q is produced at all')."
+        }
+      }
+    }
+  }
+}
