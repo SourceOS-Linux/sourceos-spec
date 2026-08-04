@@ -1,0 +1,30 @@
+{
+  "id": "urn:srcos:assay-standard-rollout:narration-fidelity-0.3.0",
+  "type": "AssayStandardRollout",
+  "specVersion": "2.0.0",
+  "standardRef": "urn:srcos:assay-standard:narration-fidelity-verifier:0.3.0",
+  "supersedes": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0",
+  "releaseBundleRef": "urn:srcos:runtime-release-bundle:assay-standards-2026-07-05",
+  "strategy": "canary",
+  "phase": "widening",
+  "cohorts": [
+    {
+      "cohortId": "canary-a",
+      "nodeCount": 2,
+      "state": "promoted"
+    },
+    {
+      "cohortId": "fleet-remainder",
+      "nodeCount": 10,
+      "state": "pending"
+    }
+  ],
+  "guard": {
+    "observedRollupRef": "urn:srcos:assay-rollup:fleet-2026-07-05",
+    "metric": "bad_rate_delta",
+    "decision": "continue"
+  },
+  "rolloutPct": 16.7,
+  "startedAt": "2026-07-05T00:30:00Z",
+  "updatedAt": "2026-07-05T01:05:00Z"
+}

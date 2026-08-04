@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/AssayStandardRollout.json",
+  "title": "AssayStandardRollout",
+  "description": "Governs promoting a new AssayStandard version across a fleet — the CLOUD-MESH rollout tier. When a verifier is re-measured and a better AssayStandard is published, nodes must not all switch at once: a bad new standard would silently re-project the whole fleet's verdicts. The rollout advances a canary cohort first, watches its AssayRollup, and widens or halts on that observed evidence. Rides the existing release-bundle + lifecycle machinery rather than a bespoke controller. Not emitted on single-user local deployments (nothing to roll out across).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "standardRef", "strategy", "phase", "cohorts", "startedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:assay-standard-rollout:", "description": "Stable URN for this rollout." },
+    "type": { "const": "AssayStandardRollout" },
+    "specVersion": { "type": "string" },
+    "standardRef": { "type": "string", "pattern": "^urn:srcos:assay-standard:", "description": "The new AssayStandard version being rolled out." },
+    "supersedes": { "type": "string", "pattern": "^urn:srcos:assay-standard:", "description": "The prior standard version this replaces, if any." },
+    "releaseBundleRef": { "type": "string", "description": "Optional runtime-release-bundle this rollout rides (content-hash-pinned promotion lane)." },
+    "strategy": { "enum": ["canary", "staged", "immediate"], "description": "canary = one small cohort first; staged = successive cohorts; immediate = whole fleet at once (discouraged; allowed for hotfix of a broken standard)." },
+    "phase": {
+      "enum": ["canary", "widening", "complete", "halted", "rolled-back"],
+      "description": "Lifecycle of the rollout. 'halted' pauses (guard.decision 'hold'); 'rolled-back' reverts to supersedes (guard.decision 'rollback'). A guard decision must be consistent with the phase (validator-enforced)."
+    },
+    "cohorts": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Fleet cohorts and their per-cohort state. rolloutPct is derived from these (validator-enforced).",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cohortId", "nodeCount", "state"],
+        "properties": {
+          "cohortId": { "type": "string" },
+          "nodeCount": { "type": "integer", "minimum": 1 },
+          "state": { "enum": ["pending", "observing", "promoted", "held", "reverted"], "description": "pending = not yet on the new standard; observing = on it, being watched; promoted = accepted; held = paused; reverted = rolled back to supersedes." }
+        }
+      }
+    },
+    "guard": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The evidence that gates widening: an observed AssayRollup and the decision it drove. Widening without an observedRollupRef is promotion-by-hope, which this contract forbids.",
+      "properties": {
+        "observedRollupRef": { "type": "string", "pattern": "^urn:srcos:assay-rollup:", "description": "The canary cohort's AssayRollup that this decision was read from." },
+        "metric": { "type": "string", "description": "What was watched, e.g. 'bad_rate_delta' or 'ok_rate'." },
+        "decision": { "enum": ["continue", "hold", "rollback"], "description": "continue → widening/complete; hold → halted; rollback → rolled-back." }
+      }
+    },
+    "rolloutPct": { "type": "number", "minimum": 0, "maximum": 100, "description": "Fraction of fleet nodes on the new standard. Validator checks it matches the promoted/observing cohort node share." },
+    "startedAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" }
+  }
+}
