@@ -1,0 +1,31 @@
+name: contract-reconciliation
+
+# Detection layer for contract drift. Keeps registry/contract-registry.json canonical (fails if
+# a schema change didn't regenerate it) and runs the reconciliation tests that catch orphan /
+# stale / unregistered contracts — the drift that stopped the canon self-updating.
+on:
+  push:
+    branches: [main]
+    paths: ['schemas/**', 'tools/reconcile_contracts.py', 'registry/**', '.github/workflows/contract-reconciliation.yml']
+  pull_request:
+    paths: ['schemas/**', 'tools/reconcile_contracts.py', 'registry/**', 'tools/test_reconcile_contracts.py']
+
+permissions:
+  contents: read
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install pytest
+      - name: Registry is current (a schema change must regenerate it)
+        run: |
+          python3 tools/reconcile_contracts.py --emit-registry
+          git diff --exit-code registry/contract-registry.json \
+            || { echo "::error::registry/contract-registry.json is stale — run: python3 tools/reconcile_contracts.py --emit-registry"; exit 1; }
+      - name: Reconciliation tests (orphan / stale / owned / fail-closed)
+        run: python3 -m pytest tools/test_reconcile_contracts.py -q
