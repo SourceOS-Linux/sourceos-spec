@@ -250,7 +250,6 @@ validate-multiverseal-twin-examples:
 	python3 -m pip install --user jsonschema >/dev/null
 	python3 tools/validate_multiverseal_twin_examples.py
 
-<<<<<<< HEAD
 # The reference implementation's own self-test (reference/multiverseal-twin/test_mvtwin.py)
 # proves the four load-bearing properties (reference-gating, epsilon-unlinkability, fringe
 # as leading indicator, holographic tamper-evidence) with measured numbers and asserts.
@@ -259,8 +258,7 @@ validate-multiverseal-twin-examples:
 validate-multiverseal-twin-reference-impl:
 	python3 -m pip install --user numpy >/dev/null
 	cd reference/multiverseal-twin && python3 test_mvtwin.py
-=======
+
 validate-rld-examples:
 	python3 -m pip install --user jsonschema referencing >/dev/null
 	python3 tools/validate_rld_examples.py
->>>>>>> 6a21e9f (feat(schema): RLD loader/diagnostics contracts — LoaderFault + ResilientDiagnosticRecord)
