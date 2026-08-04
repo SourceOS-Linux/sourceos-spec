@@ -811,6 +811,11 @@
       "path": "schemas/LivenessProfile.json",
       "sha256": "sha256:2ba5665d3322c3861f70c7b8e25b0c13b306c65103a53cabf190f137d3a47578"
     },
+    "LoaderFault": {
+      "$id": "https://schemas.srcos.ai/v2/LoaderFault.json",
+      "path": "schemas/LoaderFault.json",
+      "sha256": "sha256:f1ca80e3aeec7402ad46d6682ff35d96cd7227ae745b9e96441c6b91fd9a2684"
+    },
     "LocalArtifactRef": {
       "$id": "https://schemas.srcos.ai/v2/LocalArtifactRef.json",
       "path": "schemas/LocalArtifactRef.json",
@@ -1250,6 +1255,11 @@
       "$id": "https://schemas.srcos.ai/v2/ReserveScenarioReport.json",
       "path": "schemas/ReserveScenarioReport.json",
       "sha256": "sha256:e4a878579aae3d3795d8d8a4fb2eb24e1159877ed6306a5fdbf6fadf3f6b4545"
+    },
+    "ResilientDiagnosticRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ResilientDiagnosticRecord.json",
+      "path": "schemas/ResilientDiagnosticRecord.json",
+      "sha256": "sha256:4de57a2346de5316b7b501b27b339729742f8252105e446846d707751791ec2b"
     },
     "ResourceContract": {
       "$id": "https://schemas.srcos.ai/v2/ResourceContract.json",
@@ -1837,5 +1847,5 @@
       "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
     }
   },
-  "count": 367
+  "count": 369
 }
