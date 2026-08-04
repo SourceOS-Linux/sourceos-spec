@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/LoaderFault.json",
+  "title": "LoaderFault",
+  "description": "A typed, stable-coded fault the resilient loader (rld) constructs BEFORE any degradation or halt (invariant I5 / rule R2: no bare abort). The class of the failing import edge deterministically fixes severity (REQUIRED->fatal, FEATURE->degraded, LAZY->handled-or-fatal, WEAK->info) — the classifier is a table, not a heuristic. Degradations (non-fatal FEATURE/LAZY misses) are recorded here too, giving a full 'what quietly turned off' trail. Embedded in a ResilientDiagnosticRecord.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["type", "kind", "code", "severity"],
+  "properties": {
+    "type": { "const": "LoaderFault", "description": "Type discriminator; always 'LoaderFault'." },
+    "kind": {
+      "type": "string",
+      "enum": ["MissingProvider", "VersionUnsatisfied", "InterfaceMismatch", "SignatureInvalid", "CorruptImage", "SandboxDenied", "ResourceExhausted"],
+      "description": "The fault variant."
+    },
+    "code": {
+      "type": "string",
+      "enum": ["LDR-DEP-MISSING", "LDR-DEP-VERSION", "LDR-ABI-MISMATCH", "LDR-SIG-INVALID", "LDR-IMG-CORRUPT", "LDR-SBX-DENY", "LDR-RES-EXHAUST"],
+      "description": "Stable machine code; the root-cause line is a pure lookup on this (no free-text parsing)."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["fatal", "degraded", "handled", "info"],
+      "description": "Determined by the failing edge's binding class, not by heuristics."
+    },
+    "import": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The import reference that failed (present for dependency/ABI faults).",
+      "properties": {
+        "name": { "type": "string", "description": "Required interface name." },
+        "versionReq": { "type": "string", "description": "Requested version range." },
+        "binding": { "type": "string", "enum": ["REQUIRED", "FEATURE", "LAZY", "WEAK"], "description": "Binding class of the failing edge (drives severity). The reference incident's defect: this was REQUIRED where it should have been FEATURE." },
+        "capability": { "type": "string", "description": "Feature capability token kappa, when binding=FEATURE." },
+        "requestedBy": { "type": "string", "description": "The module that requested the import." },
+        "chain": { "type": "array", "items": { "type": "string" }, "description": "Causal requester chain root -> ... -> requester." }
+      }
+    },
+    "searched": { "type": "array", "items": { "type": "object", "additionalProperties": true }, "description": "Symbolic store queries attempted (named stores, not filesystem paths) — PII-free by construction." },
+    "want": { "type": "string", "description": "Expected interface/ABI digest (InterfaceMismatch)." },
+    "got": { "type": "string", "description": "Actual digest found (InterfaceMismatch)." },
+    "hash": { "type": "string", "description": "Content hash of the offending image (SignatureInvalid/CorruptImage)." },
+    "reason": { "type": "string", "description": "Signature-failure reason (SignatureInvalid)." },
+    "candidate": { "type": "string", "description": "Symbolic store candidate rejected by policy (SandboxDenied)." },
+    "rule": { "type": "string", "description": "Policy rule id that denied the load (SandboxDenied)." },
+    "resourceKind": { "type": "string", "enum": ["VMEM", "FD", "MAPSLOTS"], "description": "Exhausted resource (ResourceExhausted)." },
+    "limit": { "type": "integer", "description": "Resource limit hit (ResourceExhausted)." }
+  }
+}

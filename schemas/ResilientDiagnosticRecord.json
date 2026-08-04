@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ResilientDiagnosticRecord.json",
+  "title": "ResilientDiagnosticRecord",
+  "description": "Root-cause-first crash/diagnostics record emitted by the resilient loader (RDR). The typed LoaderFault and its stable code are field #1, not buried in prose. Deterministic and diffable: identical faults produce byte-identical cores (modulo timestamps), so N occurrences of a defect collapse to one repro_key bucket. Privacy by projection (I8): the telemetry tier is an allowlist projection of the local record, never a scrub — path-like fields are represented symbolically (store names, hashes), so there is no user path to leak. This is the same fabric discipline as the reasoning-evidence receipts and the twin's reference-gated projection.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "schema", "process", "fault", "phase", "reproKey", "redaction", "capturedAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:rdr:", "description": "Stable URN for this record." },
+    "type": { "const": "ResilientDiagnosticRecord", "description": "Type discriminator; always 'ResilientDiagnosticRecord'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract." },
+    "schema": { "const": "rdr/1", "description": "Versioned RDR schema tag." },
+    "process": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "imageHash", "profile"],
+      "description": "The process that faulted. imageHash is content-addressed (no path).",
+      "properties": {
+        "id": { "type": "string" },
+        "imageHash": { "type": "string" },
+        "entry": { "type": "string" },
+        "profile": { "type": "string", "enum": ["prod", "dev"] }
+      }
+    },
+    "fault": { "$ref": "https://schemas.srcos.ai/v2/LoaderFault.json", "description": "The whole typed fault value — root cause as field #1." },
+    "phase": { "type": "string", "enum": ["mapping", "seal-verify", "bind-core", "running-lazy"], "description": "Launch state machine phase at fault time." },
+    "closure": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Sealed-closure context.",
+      "properties": {
+        "coreSize": { "type": "integer", "description": "Size of the REQUIRED core closure." },
+        "sealedManifestHash": { "type": "string", "description": "Hash of the Sealed Closure Manifest (SCM)." }
+      }
+    },
+    "chain": { "type": "array", "items": { "type": "string" }, "description": "Causal requester chain root -> ... -> missing." },
+    "env": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Environment (allowlisted, symbolic — no paths).",
+      "properties": {
+        "osBuild": { "type": "string" },
+        "model": { "type": "string" },
+        "abiLevel": { "type": "integer" },
+        "bootId": { "type": "string" }
+      }
+    },
+    "redaction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tier"],
+      "description": "Which projection this record is. telemetry = allowlist projection (fault code, interface name, versions, repro_key, os build, model) — PII-free by construction.",
+      "properties": {
+        "tier": { "type": "string", "enum": ["local", "telemetry"] },
+        "saltId": { "type": "string" }
+      }
+    },
+    "reproKey": { "type": "string", "description": "= H(fault.code || import.name || chain || image_hash). EXCLUDES timestamps/addresses/PIDs so identical defects coalesce to one bucket." },
+    "capturedAt": { "type": "string", "format": "date-time", "description": "RFC3339 fault time (excluded from reproKey)." }
+  }
+}

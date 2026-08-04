@@ -1,0 +1,17 @@
+{
+  "type": "LoaderFault",
+  "kind": "InterfaceMismatch",
+  "code": "LDR-ABI-MISMATCH",
+  "severity": "fatal",
+  "import": {
+    "name": "libfoo",
+    "versionReq": ">=1.0",
+    "binding": "REQUIRED",
+    "requestedBy": "app",
+    "chain": [
+      "app"
+    ]
+  },
+  "want": "b3:abi-1",
+  "got": "b3:abi-2"
+}
