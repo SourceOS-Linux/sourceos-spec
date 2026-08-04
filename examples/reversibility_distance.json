@@ -1,0 +1,26 @@
+{
+  "id": "urn:srcos:reversibility-distance:mobility-release-2026q3:v1",
+  "type": "ReversibilityDistance",
+  "specVersion": "2.0.0",
+  "computedAt": "2026-08-03T00:00:00Z",
+  "releaseRef": "urn:srcos:multiverseal-twin:abc123:v1",
+  "populationN": 1500000,
+  "budgetBits": 20.516,
+  "dBits": 2.34,
+  "reidentified": false,
+  "unicityCurve": [
+    { "p": 4, "epsilonP": 0.44 },
+    { "p": 5, "epsilonP": 0.978 }
+  ],
+  "bitsPerPoint": 5.197,
+  "pStar": 3.948,
+  "method": {
+    "name": "appendix-a-reversibility-distance-estimator",
+    "version": "1.0.0"
+  },
+  "epsilonUnlinkabilityRef": "urn:srcos:multiverseal-twin:abc123:v1",
+  "controlPoints": {
+    "differentialPrivacy": "rate-limits ΔD per release",
+    "captureReceipt": "gates whether Q is produced at all"
+  }
+}
