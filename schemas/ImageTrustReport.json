@@ -1,0 +1,60 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ImageTrustReport.json",
+  "title": "ImageTrustReport",
+  "description": "The MEASURED trustworthiness of an image — OS or agent — as a bundle of per-dimension Measurements plus a render-time projected verdict. This is the Assay pattern applied to images: as AssayStandard measures a verifier's reliability so a claim can only project 'ok' behind a measured judge, ImageTrustReport measures an image's checks so ImagePromotionGate can only 'approve' behind measured, gate-eligible evidence. An image cannot declare itself trustworthy — each check is a Measurement whose gateEligible ceiling forbids an asserted number from satisfying a gate, and projectedTrust is recomputed from the checks (a cache, never the source of truth). Unifies OS and agent images through subjectKind, so both are measured identically. Distinct from OSImage.provenance / AgentImage.provenance, which say where an artifact came from; this says whether it may be relied upon.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "subjectRef", "subjectKind", "checks", "projectedTrust", "measuredAt"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:image-trust:", "description": "Stable URN. Pattern: urn:srcos:image-trust:<local-id>." },
+    "type": { "const": "ImageTrustReport" },
+    "specVersion": { "type": "string" },
+    "subjectRef": {
+      "type": "string",
+      "description": "The image this report measures — an OSImage (urn:srcos:osimage:) or an AgentImage (urn:srcos:agent-image:). subjectKind disambiguates."
+    },
+    "subjectKind": {
+      "enum": ["os-image", "agent-image"],
+      "description": "Which image family the subject belongs to. The unification point: OS and agent images carry the same trust report."
+    },
+    "checks": {
+      "type": "array",
+      "minItems": 1,
+      "description": "One measured trust check per dimension. Each carries a Measurement (so the gateEligible ceiling applies) and the interpreted pass/fail outcome.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["dimension", "measurement", "passed"],
+        "properties": {
+          "dimension": {
+            "enum": ["reproducibility", "attestation_verify", "sbom_completeness", "signature_verify", "measured_boot", "provenance_depth"],
+            "description": "reproducibility = a rebuild produced the same digest. attestation_verify = the in-toto/SLSA statement actually verified (not merely referenced). sbom_completeness = measured coverage of the SBOM. signature_verify = signature material verified. measured_boot = PCR/measured-boot match (fed by BootProofRecord/AttestationEvidence). provenance_depth = the provenance chain resolved to a trusted root."
+          },
+          "measurement": {
+            "$ref": "Measurement.json",
+            "description": "The measured value for this check. A 'declared' or 'assumed' measurement is not gate-eligible by shape, so it cannot let the image reach 'ok'."
+          },
+          "passed": {
+            "type": "boolean",
+            "description": "The interpreted outcome of the check (did it pass?). Distinct from measurement.gateEligible, which says whether the number may be relied upon: a gate-eligible measurement that records a FAILURE (passed:false) projects the whole report to 'bad'."
+          },
+          "evidenceRef": {
+            "type": "string",
+            "description": "Optional URN of the artifact this check verified (e.g. the OSImage.provenance.slsaPredicateRef, a BootProofRecord)."
+          }
+        }
+      }
+    },
+    "projectedTrust": {
+      "enum": ["ok", "sad", "bad"],
+      "description": "Render-time projection over the checks, AT measuredAt — a cache, re-derivable, never the source of truth. Mirrors ReasoningAssay.projectedState: 'bad' = at least one check whose gate-eligible measurement recorded a failure (passed:false); 'ok' = every check gate-eligible AND passed; 'sad' = otherwise (some check declared/derived/assumed or with unobserved members — not measured-clean — but none decisively failed)."
+    },
+    "unmetReason": {
+      "type": "string",
+      "description": "When projectedTrust is 'sad', the specific dimension(s) not yet measured-clean (e.g. 'sbom_completeness:declared'). Frames the amber state as honest pending-work, not soft failure."
+    },
+    "measuredAt": { "type": "string", "format": "date-time" },
+    "evaluator": { "type": "string", "description": "Optional identifier of the harness that produced this report." }
+  }
+}

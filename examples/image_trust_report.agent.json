@@ -1,0 +1,43 @@
+{
+  "id": "urn:srcos:image-trust:michael-agent-v1",
+  "type": "ImageTrustReport",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:agent-image:michael-agent",
+  "subjectKind": "agent-image",
+  "checks": [
+    {
+      "dimension": "reproducibility",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "rebuild digest matches",
+        "value": true, "source": "measured", "instrument": "srcos-rebuild 2.1 (hermetic)", "gateEligible": true
+      },
+      "passed": true
+    },
+    {
+      "dimension": "signature_verify",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "artifact signature verified",
+        "value": true, "source": "measured", "instrument": "cosign verify 2.4", "gateEligible": true
+      },
+      "passed": true
+    },
+    {
+      "dimension": "sbom_completeness",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "SBOM coverage",
+        "value": "vendor-attested-complete",
+        "source": "declared",
+        "gateEligible": false,
+        "note": "SBOM completeness was asserted by the build manifest, not measured by an SBOM scanner. A declared measurement is gate-ineligible by shape, so the agent image cannot reach 'ok' on trust until a real scan is run."
+      },
+      "passed": true
+    }
+  ],
+  "projectedTrust": "sad",
+  "unmetReason": "sbom_completeness:declared",
+  "measuredAt": "2026-07-05T00:00:00Z",
+  "evaluator": "srcos-image-trust-harness"
+}

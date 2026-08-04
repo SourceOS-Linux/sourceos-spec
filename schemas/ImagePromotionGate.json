@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/ImagePromotionGate.json",
   "title": "ImagePromotionGate",
-  "description": "Promotion decision envelope for whether a candidate image may update a Git repository and mark a task complete.",
+  "description": "Promotion decision envelope for whether a candidate image may update a Git repository and mark a task complete. An 'approved' decision may not be self-asserted: it must reference an ImageTrustReport whose checks are measured and gate-eligible (enforced below via if/then for presence, and by the image-trust validator for the cross-document 'projectedTrust: ok' requirement). A 'waived' decision must carry a reasonCode. This closes the same assert-vs-measure gap the Assay's AssayStandard closes for verifiers.",
   "type": "object",
   "additionalProperties": false,
   "required": ["id", "type", "specVersion", "candidateBuildRef", "profileRef", "requiredArtifacts", "requiredChecks", "decision", "gitUpdate", "taskCompletion"],
@@ -14,6 +14,7 @@
     "profileRef": { "type": "string", "pattern": "^urn:srcos:control-node:" },
     "requiredArtifacts": { "type": "array", "items": { "type": "string" } },
     "requiredChecks": { "type": "array", "items": { "type": "string" } },
+    "trustReportRef": { "type": "string", "pattern": "^urn:srcos:image-trust:", "description": "The ImageTrustReport backing this decision. Required when decision is 'approved' — an approval unbacked by a measured, gate-eligible trust report is exactly the self-asserted 'calibrated' flag the Assay hardening removed." },
     "decision": { "enum": ["pending", "approved", "denied", "waived"] },
     "reasonCodes": { "type": "array", "items": { "type": "string" } },
     "gitUpdate": {
@@ -35,5 +36,15 @@
         "issueRef": { "type": ["string", "null"] }
       }
     }
-  }
+  },
+  "allOf": [
+    {
+      "$comment": "An approval must reference a trust report. The cross-document requirement that the report projects 'ok' is enforced by the image-trust validator, which JSON Schema cannot express across files.",
+      "if": {
+        "required": ["decision"],
+        "properties": { "decision": { "const": "approved" } }
+      },
+      "then": { "required": ["trustReportRef"] }
+    }
+  ]
 }

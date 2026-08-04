@@ -1,0 +1,51 @@
+{
+  "id": "urn:srcos:image-trust:sourceos-workstation-v0",
+  "type": "ImageTrustReport",
+  "specVersion": "2.0.0",
+  "subjectRef": "urn:srcos:osimage:so1-workstation",
+  "subjectKind": "os-image",
+  "checks": [
+    {
+      "dimension": "reproducibility",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "hermetic rebuild digest matches the published digest",
+        "value": true, "source": "measured", "instrument": "srcos-rebuild 2.1 (hermetic, pinned toolchain)", "gateEligible": true
+      },
+      "passed": true,
+      "evidenceRef": "urn:srcos:slsa:sourceos-workstation-v0"
+    },
+    {
+      "dimension": "attestation_verify",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "in-toto/SLSA statement verified against the release key",
+        "value": true, "source": "measured", "instrument": "cosign verify-attestation 2.4", "gateEligible": true
+      },
+      "passed": true,
+      "evidenceRef": "urn:srcos:attestation:sourceos-workstation-v0"
+    },
+    {
+      "dimension": "signature_verify",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "image signature verified",
+        "value": true, "source": "measured", "instrument": "cosign verify 2.4", "gateEligible": true
+      },
+      "passed": true
+    },
+    {
+      "dimension": "measured_boot",
+      "measurement": {
+        "schemaVersion": "0.1.0", "kind": "Measurement",
+        "label": "PCR7 matches the expected measured-boot value",
+        "value": true, "source": "measured", "instrument": "tpm2_quote + BootProofRecord cross-check", "gateEligible": true
+      },
+      "passed": true,
+      "evidenceRef": "urn:srcos:boot-proof:so1-workstation-2026-04-15"
+    }
+  ],
+  "projectedTrust": "ok",
+  "measuredAt": "2026-07-05T00:00:00Z",
+  "evaluator": "srcos-image-trust-harness"
+}

@@ -14,6 +14,7 @@
     "scenario-pass",
     "promotion-evidence-complete"
   ],
+  "trustReportRef": "urn:srcos:image-trust:sourceos-workstation-v0",
   "decision": "approved",
   "reasonCodes": [
     "all-required-checks-passed"

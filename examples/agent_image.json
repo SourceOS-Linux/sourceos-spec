@@ -1,0 +1,19 @@
+{
+  "id": "urn:srcos:agent-image:michael-agent",
+  "type": "AgentImage",
+  "specVersion": "2.0.0",
+  "agentClass": "intelligence_automation",
+  "artifact": "oci",
+  "architecture": "aarch64",
+  "digest": "sha256:1f2e3d4c5b6a70819f2e3d4c5b6a70811f2e3d4c5b6a70819f2e3d4c5b6a7081",
+  "runtime": {
+    "language": "python",
+    "entrypoint": "prophet_mesh.cli:main"
+  },
+  "provenance": {
+    "statementRef": "urn:srcos:attestation:michael-agent-v1",
+    "slsaPredicateRef": "urn:srcos:slsa:michael-agent-v1",
+    "sbomRef": "urn:srcos:sbom:michael-agent-v1",
+    "signatureRef": "urn:srcos:signature:michael-agent-v1"
+  }
+}
