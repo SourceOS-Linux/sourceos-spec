@@ -1651,6 +1651,11 @@
       "path": "schemas/interpretability/artifact-source-lock.v0.json",
       "sha256": "sha256:918bed1a49fd561fcf49c8ae2560d9c1a314403cdc9626c22f08ce312c746798"
     },
+    "autonomy-admission-receipt.v0.2": {
+      "$id": "https://sourceos.dev/schemas/autonomy-admission-receipt.v0.2.json",
+      "path": "schemas/autonomy-admission-receipt.v0.2.json",
+      "sha256": "sha256:3e71216f01cc07a4c75d3ec30a4677a3ef4e4d647c609e0688bc9f87577e474a"
+    },
     "boot-release-set": {
       "$id": "https://socioprophet.org/schemas/control-plane/boot-release-set.schema.json",
       "path": "schemas/control-plane/boot-release-set.schema.json",
@@ -1705,6 +1710,11 @@
       "$id": "https://sourceos.dev/schemas/interpretability/provider-binding.v0.json",
       "path": "schemas/interpretability/provider-binding.v0.json",
       "sha256": "sha256:8077c84ceb1990c3b68ad9d5b38cbbc97310f1706b00ed14006f9bb82548c928"
+    },
+    "quorum-proof.v1.1": {
+      "$id": "https://sourceos.dev/schemas/quorum-proof.v1.1.json",
+      "path": "schemas/quorum-proof.v1.1.json",
+      "sha256": "sha256:043c27bc3b61e60208c4915f2dfc5cda9712c208dcb5b3bfe1570120641d82c4"
     },
     "release-set": {
       "$id": "https://socioprophet.org/schemas/control-plane/release-set.schema.json",
@@ -1777,5 +1787,5 @@
       "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
     }
   },
-  "count": 355
+  "count": 357
 }

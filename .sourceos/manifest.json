@@ -8,7 +8,9 @@
     "SourceChannelEnvelope",
     "SourceGraphWrite",
     "AgentCapabilityLease",
-    "AuditEvent"
+    "AuditEvent",
+    "autonomy-admission-receipt.v0.2",
+    "quorum-proof.v1.1"
   ],
   "syncEngines": [],
   "sourceChannels": [],
