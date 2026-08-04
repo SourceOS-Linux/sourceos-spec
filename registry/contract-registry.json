@@ -1271,6 +1271,11 @@
       "path": "schemas/RetryLoopFingerprint.json",
       "sha256": "sha256:c93fdc10eba1445fe4a2f97df15f8d7c6abf74d78f7fc0d3180d9e32ce14b506"
     },
+    "ReversibilityDistance": {
+      "$id": "https://schemas.srcos.ai/v2/ReversibilityDistance.json",
+      "path": "schemas/ReversibilityDistance.json",
+      "sha256": "sha256:f3727d4bca14663874e102439859b4898953697ed1f5b5de6cbc6e4e7a1ef75d"
+    },
     "RevocationEntry": {
       "$id": "https://schemas.srcos.ai/v2/RevocationEntry.json",
       "path": "schemas/RevocationEntry.json",
@@ -1847,5 +1852,5 @@
       "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
     }
   },
-  "count": 369
+  "count": 370
 }
