@@ -12,12 +12,19 @@ def _write(d: pathlib.Path, name: str, obj: dict):
     (d / name).write_text(json.dumps(obj), encoding="utf-8")
 
 
-def test_registry_has_known_contracts_but_not_the_orphans():
+def test_registry_has_known_contracts():
     reg = rc.build_registry()
     assert reg["count"] > 100
     assert "BootProofRecord" in reg["contracts"]           # properly synced
-    assert "AutonomyAdmissionReceipt" not in reg["contracts"]  # the real orphan this session created
-    assert "QuorumProof" not in reg["contracts"]               # ditto
+
+
+def test_previously_orphaned_contracts_are_now_upstreamed():
+    # AutonomyAdmissionReceipt + QuorumProof were live in services but absent from the spec.
+    # This branch upstreams them under the canonical sourceos.dev kebab-versioned names, so they
+    # now have a home. (The PascalCase consumer copies still need re-vendoring — see CONTRACTS.md.)
+    reg = rc.build_registry()
+    assert "quorum-proof.v1.1" in reg["contracts"]
+    assert "autonomy-admission-receipt.v0.2" in reg["contracts"]
 
 
 def test_clean_vendored_copy_reconciles(tmp_path):
