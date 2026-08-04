@@ -1,0 +1,17 @@
+{
+  "_comment": "Consumers that VENDOR canonical contracts from sourceos-spec. A merge to main that changes schemas/** dispatches a re-sync to each. New consumers add themselves here; the reconciliation gate runs check_consumer against each with its vendored dir.",
+  "consumers": [
+    {
+      "repo": "SocioProphet/socioprophet",
+      "schemasDir": "socioprophet-web/server/src/contracts/schemas",
+      "manifest": "socioprophet-web/server/.sourceos/manifest.json",
+      "dispatchType": "spec-contracts-updated"
+    },
+    {
+      "repo": "SourceOS-Linux/prophet-platform",
+      "schemasDir": "apps/compute-gateway/src/compute_gateway/schemas",
+      "manifest": ".sourceos/manifest.json",
+      "dispatchType": "spec-contracts-updated"
+    }
+  ]
+}

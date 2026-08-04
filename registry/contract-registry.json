@@ -1,0 +1,1781 @@
+{
+  "authority": "SourceOS-Linux/sourceos-spec",
+  "contracts": {
+    "AccessProfile": {
+      "$id": "https://schemas.srcos.ai/v2/AccessProfile.json",
+      "path": "schemas/AccessProfile.json",
+      "sha256": "sha256:0a21ba0190955f75a60eff0b412de0b71f8346a23f94534be8bcb08fc7572ca9"
+    },
+    "AdapterDescriptor": {
+      "$id": "https://schemas.srcos.ai/v2/AdapterDescriptor.json",
+      "path": "schemas/AdapterDescriptor.json",
+      "sha256": "sha256:12a532350f342f29e56ff54c292efffa88710a9053303d865543aad36c51bc0a"
+    },
+    "AdapterPromotionDecision": {
+      "$id": "https://schemas.srcos.ai/v2/AdapterPromotionDecision.json",
+      "path": "schemas/AdapterPromotionDecision.json",
+      "sha256": "sha256:abb85bf1d5a35088a02341d2592f19b7fab218722b599232ae682c54bf01a6af"
+    },
+    "AgentCapabilityLease": {
+      "$id": "https://schemas.srcos.ai/v2/AgentCapabilityLease.json",
+      "path": "schemas/AgentCapabilityLease.json",
+      "sha256": "sha256:c56b476791f4b8959847fdfd498a2dc7b9521920e7f82ef5afcb7b7f62e4e38b"
+    },
+    "AgentHarnessExecutionReceipts": {
+      "$id": "https://sourceos.dev/schemas/AgentHarnessExecutionReceipts.json",
+      "path": "schemas/AgentHarnessExecutionReceipts.json",
+      "sha256": "sha256:3deed00b7d3419e83ce792bd36dbfe9a683fb43b1d34513c4d2f739901e31d19"
+    },
+    "AgentMachineLocalDataPlane": {
+      "$id": "https://schemas.srcos.ai/v2/AgentMachineLocalDataPlane.json",
+      "path": "schemas/AgentMachineLocalDataPlane.json",
+      "sha256": "sha256:fa622d860ca7752b26f51d5f5bb08b616802485fdf1b49ca31fcbe66a2ef8aae"
+    },
+    "AgentMachineMountPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/AgentMachineMountPolicy.json",
+      "path": "schemas/AgentMachineMountPolicy.json",
+      "sha256": "sha256:461d4a55d40f516170698df3682d6f6b020c3cda1fdd8ae82bd0c378919cfb52"
+    },
+    "AgentMachineReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/AgentMachineReceipt.json",
+      "path": "schemas/AgentMachineReceipt.json",
+      "sha256": "sha256:18a833cd6d6b444ede2cb40ca901741d81e10fffaf3864a529339df345884f86"
+    },
+    "AgentPassport": {
+      "$id": "https://schemas.srcos.ai/v2/AgentPassport.json",
+      "path": "schemas/AgentPassport.json",
+      "sha256": "sha256:0648eb7f03046484e6817ad06893388082002a14651ff08ebedb06efdf670ef3"
+    },
+    "AgentPod": {
+      "$id": "https://schemas.srcos.ai/v2/AgentPod.json",
+      "path": "schemas/AgentPod.json",
+      "sha256": "sha256:c0063ca4c871ca1da99e9a08335f895b574f3b43b7bc407f940790453c68384a"
+    },
+    "AgentSession": {
+      "$id": "https://schemas.srcos.ai/v2/AgentSession.json",
+      "path": "schemas/AgentSession.json",
+      "sha256": "sha256:6b7dcc43529cdb0be65ca2c89fa0f10b9311744677a14105b01173a2cbde4d58"
+    },
+    "Agreement": {
+      "$id": "https://schemas.srcos.ai/v2/Agreement.json",
+      "path": "schemas/Agreement.json",
+      "sha256": "sha256:fde366379e4617a9ab7276708543016541636258652e9b3e1ec276693a114a8f"
+    },
+    "AnnotationSet": {
+      "$id": "https://schemas.srcos.ai/v2/AnnotationSet.json",
+      "path": "schemas/AnnotationSet.json",
+      "sha256": "sha256:c6c99a10ea448d58325fd89ccbd4776a337bfb5ed490ac41b00871e12f4ae1d6"
+    },
+    "AppleSiliconAdapterEvidence": {
+      "$id": "https://schemas.srcos.ai/v2/AppleSiliconAdapterEvidence.json",
+      "path": "schemas/AppleSiliconAdapterEvidence.json",
+      "sha256": "sha256:f003fc73b5c2ed8134ec3569a086404ead9c4fbe2e36810fad14c813ae5f3a4b"
+    },
+    "ArchitecturalBuildingBlock": {
+      "$id": "https://schemas.srcos.ai/v2/ArchitecturalBuildingBlock.json",
+      "path": "schemas/ArchitecturalBuildingBlock.json",
+      "sha256": "sha256:3a047720f655dde9433e541da007b5cbdf746e4d9732acf6018e72b68cfc5296"
+    },
+    "ArtifactCacheRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ArtifactCacheRecord.json",
+      "path": "schemas/ArtifactCacheRecord.json",
+      "sha256": "sha256:7065c39ad497116a10105e329da61d4a7f761e59440c2180d5f36e9cebb8b99d"
+    },
+    "AscensionReading": {
+      "$id": "https://schemas.srcos.ai/v2/AscensionReading.json",
+      "path": "schemas/AscensionReading.json",
+      "sha256": "sha256:3896183742563b74e16e5de37ce8694f49b77f8348eaaeb9db2791a16b2d3839"
+    },
+    "AssayRollup": {
+      "$id": "https://schemas.srcos.ai/v2/AssayRollup.json",
+      "path": "schemas/AssayRollup.json",
+      "sha256": "sha256:53cf704372826235450848bd847b80bec94d54c095f049d6f5e64c5d19715a1e"
+    },
+    "AssayStandard": {
+      "$id": "https://schemas.srcos.ai/v2/AssayStandard.json",
+      "path": "schemas/AssayStandard.json",
+      "sha256": "sha256:c308b27ee9b2a3e562cffb1c9556019ef08941d845947ac068843ef3d62a5377"
+    },
+    "AssayStandardRollout": {
+      "$id": "https://schemas.srcos.ai/v2/AssayStandardRollout.json",
+      "path": "schemas/AssayStandardRollout.json",
+      "sha256": "sha256:b504958d6abdc60bee3cb5a9f575db92657bb7f670362c8e09c7c1c19a02d57a"
+    },
+    "AttestationEvidence": {
+      "$id": "https://schemas.srcos.ai/v2/AttestationEvidence.json",
+      "path": "schemas/AttestationEvidence.json",
+      "sha256": "sha256:a2a082c381d27904aeb7e7b9b3f6d36af25e92d9503c70828845cdb75feca8ff"
+    },
+    "AudienceTag": {
+      "$id": "https://schemas.srcos.ai/v2/AudienceTag.json",
+      "path": "schemas/AudienceTag.json",
+      "sha256": "sha256:e32eda713d894718e775f8f05c652e40828e6dd40731b3ec8b9863de969b8434"
+    },
+    "AuditAnchorRecord": {
+      "$id": "https://schemas.srcos.ai/v2/AuditAnchorRecord.json",
+      "path": "schemas/AuditAnchorRecord.json",
+      "sha256": "sha256:5c62a0e8e38ae32008ed4ea495866648f6bfcb4e6003dacf72f1925990e30d1a"
+    },
+    "AuditEvent": {
+      "$id": "https://schemas.srcos.ai/v2/AuditEvent.json",
+      "path": "schemas/AuditEvent.json",
+      "sha256": "sha256:f91aba3ff9cf594240312c72245771fa59403713012282bfd9af4c58b930dec0"
+    },
+    "AuthorityLink": {
+      "$id": "https://schemas.srcos.ai/v2/AuthorityLink.json",
+      "path": "schemas/AuthorityLink.json",
+      "sha256": "sha256:cb1f97103473fc23d4d50a02b7f00cb5ca8a88c27e0bcda97b5d6e45f75d32c1"
+    },
+    "AutomationTemplate": {
+      "$id": "https://schemas.srcos.ai/v2/AutomationTemplate.json",
+      "path": "schemas/AutomationTemplate.json",
+      "sha256": "sha256:363b2633177d56b9fe10deed3eccaf12eb7a21fad611db173183c6f1a0bc635e"
+    },
+    "B11Surface": {
+      "$id": "https://spec.sourceos.linux/schemas/B11Surface.json",
+      "path": "schemas/B11Surface.json",
+      "sha256": "sha256:726871c04dcbe6476cd578b059b0e5d8f76a5a2b7192d44d49600193f471bf2c"
+    },
+    "BearHistoryEvent": {
+      "$id": "https://schemas.srcos.ai/v2/BearHistoryEvent.json",
+      "path": "schemas/BearHistoryEvent.json",
+      "sha256": "sha256:fd61d619ea4ceec161bc0f665afe229ceaa4c035c507c0b6b216dd5124bb9a80"
+    },
+    "BearHistorySyncPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/BearHistorySyncPolicy.json",
+      "path": "schemas/BearHistorySyncPolicy.json",
+      "sha256": "sha256:bb1bd69be550391eb76bc60922d9a70a12be58a12d075794b731969973ec9709"
+    },
+    "BootProofRecord": {
+      "$id": "https://schemas.srcos.ai/v2/BootProofRecord.json",
+      "path": "schemas/BootProofRecord.json",
+      "sha256": "sha256:b54d0094c568912dd1c97e7446687c68c888b1a27f83feb499e8f0f0e5cf2003"
+    },
+    "BootReleaseSet": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/BootReleaseSet.json",
+      "path": "schemas/control-plane/BootReleaseSet.json",
+      "sha256": "sha256:3d6ec22319fefe6fed8532301fc1f67c2c19d37e5f73106e5166753916393450"
+    },
+    "BootSessionPhaseState": {
+      "$id": "https://schemas.srcos.ai/v2/BootSessionPhaseState.json",
+      "path": "schemas/BootSessionPhaseState.json",
+      "sha256": "sha256:779e0a706eda190d7d0a146b766c6cf236aeed02dcde0f0775c047f2b5bad8fb"
+    },
+    "BootSurface": {
+      "$id": "https://schemas.srcos.ai/v2/BootSurface.json",
+      "path": "schemas/BootSurface.json",
+      "sha256": "sha256:bb89f1e1f563ec6149e04097f3da0c88566b31ece12056e35b0b20150b355d2f"
+    },
+    "BrowserAutomationReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/BrowserAutomationReceipt.json",
+      "path": "schemas/BrowserAutomationReceipt.json",
+      "sha256": "sha256:b981efbb0bbc5d52ae914a6822b8a812bfd1eab1f5a755a429e47f18a1837181"
+    },
+    "BrowserLaunchTransaction": {
+      "$id": "https://schemas.srcos.ai/v2/BrowserLaunchTransaction.json",
+      "path": "schemas/BrowserLaunchTransaction.json",
+      "sha256": "sha256:10decf007f57d2ba46f033243d82fdff24d1f34b171a8bedc0935fef70d353f6"
+    },
+    "BuildRequest": {
+      "$id": "https://schemas.srcos.ai/v2/BuildRequest.json",
+      "path": "schemas/BuildRequest.json",
+      "sha256": "sha256:9e0eb20e62d101cbea74046b10daba4e1f8e4bb71fb97e5f9fa67f0ffee750b1"
+    },
+    "BuildValidationEvidenceBundle": {
+      "$id": "https://schemas.srcos.ai/v2/BuildValidationEvidenceBundle.json",
+      "path": "schemas/BuildValidationEvidenceBundle.json",
+      "sha256": "sha256:117e4d8974d7dbb3eae939de0a39d71f48d61baff462293ffe75622b92261dd7"
+    },
+    "CapabilityContract": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityContract.json",
+      "path": "schemas/CapabilityContract.json",
+      "sha256": "sha256:d66916c6320482d4be59fc0a507963fa1a5901dc2da816650ae47611eaa9d3eb"
+    },
+    "CapabilityGrantState": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityGrantState.json",
+      "path": "schemas/CapabilityGrantState.json",
+      "sha256": "sha256:b46fcdbcb83365f145c9bb958bf43d4bbc7e256bdc8a11ff655867e59a9ee410"
+    },
+    "CapabilityLedger": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityLedger.json",
+      "path": "schemas/CapabilityLedger.json",
+      "sha256": "sha256:16780ff8ccf73800cca3bcb9a58d99b5dea9c80035c645b17ffe958b3986384d"
+    },
+    "CapabilityPack": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityPack.json",
+      "path": "schemas/CapabilityPack.json",
+      "sha256": "sha256:145e187bc1fc030e34408de232d9fbd578d97a35270db5e6b58efc5f834104a0"
+    },
+    "CapabilityPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityPolicy.json",
+      "path": "schemas/CapabilityPolicy.json",
+      "sha256": "sha256:cc30846e059192036782f85e6b5205e3b4538105fb4b33704695199cf0fcdff7"
+    },
+    "CapabilityToken": {
+      "$id": "https://schemas.srcos.ai/v2/CapabilityToken.json",
+      "path": "schemas/CapabilityToken.json",
+      "sha256": "sha256:298c3c55b702d9337cac7a06fc0b8f57e8ec98fb5fe9b93816d9b320f0b45efe"
+    },
+    "CaptureCadence": {
+      "$id": "https://schemas.srcos.ai/v2/CaptureCadence.json",
+      "path": "schemas/CaptureCadence.json",
+      "sha256": "sha256:186bd8d204f91107941a0f6a2ef471bd5e0b368beca39ebb3eb24fe4d54c41a7"
+    },
+    "CaptureDelta": {
+      "$id": "https://schemas.srcos.ai/v2/CaptureDelta.json",
+      "path": "schemas/CaptureDelta.json",
+      "sha256": "sha256:8583a8ba400e43f701390d829c766e90f3c48325f82daafbda3f530aa13f02b9"
+    },
+    "CatalogEntry": {
+      "$id": "https://schemas.srcos.ai/v2/CatalogEntry.json",
+      "path": "schemas/CatalogEntry.json",
+      "sha256": "sha256:23ea64970aefa8679f859371dc0685b6756f08ff2fe87086cf0f19cea840b44c"
+    },
+    "CausalEdge": {
+      "$id": "https://schemas.srcos.ai/v2/CausalEdge.json",
+      "path": "schemas/CausalEdge.json",
+      "sha256": "sha256:e849478dfc090bf14d7d554db50fa64f810686dc8e1ed6932325a845f087e748"
+    },
+    "CausalHypothesis": {
+      "$id": "https://schemas.srcos.ai/v2/CausalHypothesis.json",
+      "path": "schemas/CausalHypothesis.json",
+      "sha256": "sha256:cb89e7a31992d1bf96aca19363c27aa25c795ed37af116732ada3843805b75a0"
+    },
+    "Chunk": {
+      "$id": "https://schemas.srcos.ai/v2/Chunk.json",
+      "path": "schemas/Chunk.json",
+      "sha256": "sha256:44334c2f0035ce65196e2aec6422da8d54a6f9d9402fba80d791f3bec27d764f"
+    },
+    "ChunkContext": {
+      "$id": "https://schemas.srcos.ai/v2/ChunkContext.json",
+      "path": "schemas/ChunkContext.json",
+      "sha256": "sha256:da9b97885456592ae07093e5825063cadb63604c7fc4943e7878510d306fa8a3"
+    },
+    "CommandBus": {
+      "$id": "https://schemas.srcos.ai/v2/CommandBus.json",
+      "path": "schemas/CommandBus.json",
+      "sha256": "sha256:3fa9833ef7781ff9bfddaa73abd8c1d076bb76f8aa6b4d784e3b3798f8fae45a"
+    },
+    "Comment": {
+      "$id": "https://schemas.srcos.ai/v2/Comment.json",
+      "path": "schemas/Comment.json",
+      "sha256": "sha256:6eaed48018a193568d01dbf7912213730c4032efbd4dec0001be84344b808f0c"
+    },
+    "Community": {
+      "$id": "https://schemas.srcos.ai/v2/Community.json",
+      "path": "schemas/Community.json",
+      "sha256": "sha256:df95bbcb196c6960b8478bfeef14920a0f26c702b317cc9a48a2d41a5cd25e4c"
+    },
+    "CompressionEvaluation": {
+      "$id": "https://schemas.srcos.ai/v2/CompressionEvaluation.json",
+      "path": "schemas/CompressionEvaluation.json",
+      "sha256": "sha256:244540570af2f25447d80300b7d1f91ebb3154d6fdc29bf28199d60408a97aa6"
+    },
+    "ConfigSource": {
+      "$id": "https://schemas.srcos.ai/v2/ConfigSource.json",
+      "path": "schemas/ConfigSource.json",
+      "sha256": "sha256:67c0f42083fbf155123867c7830041701d43a76d3cd8b61743be70f8b11f24e4"
+    },
+    "Connector": {
+      "$id": "https://schemas.srcos.ai/v2/Connector.json",
+      "path": "schemas/Connector.json",
+      "sha256": "sha256:8a35531a49ae41991ef4b55af0be7e182fc5f6ef2122c9b76e9efbc5dba5afe1"
+    },
+    "ConnectorActionScope": {
+      "$id": "https://schemas.srcos.ai/v2/ConnectorActionScope.json",
+      "path": "schemas/ConnectorActionScope.json",
+      "sha256": "sha256:8683bc21b0d8377561e776aa91c5d43155a52e8cf8d58798c253d5f49ec28ca2"
+    },
+    "ContentRef": {
+      "$id": "https://schemas.srcos.ai/v2/ContentRef.json",
+      "path": "schemas/ContentRef.json",
+      "sha256": "sha256:5f1e3b63fca6983d00ad422538a51ab907e3f5d82899cdc3bfcfa16825c30672"
+    },
+    "ContentSpec": {
+      "$id": "https://schemas.srcos.ai/v2/ContentSpec.json",
+      "path": "schemas/ContentSpec.json",
+      "sha256": "sha256:66f780002fc4e684db2f52b08b743b4fb0279752d995b4dd63ee05a44c0bf424"
+    },
+    "ControlLoop": {
+      "$id": "https://schemas.srcos.ai/v2/ControlLoop.json",
+      "path": "schemas/ControlLoop.json",
+      "sha256": "sha256:2a0a507898ffff73f98a761c908c93fc44a37dfdf2e79b87a6e4d76dc03e7bb6"
+    },
+    "ControlLoopTick": {
+      "$id": "https://schemas.srcos.ai/v2/ControlLoopTick.json",
+      "path": "schemas/ControlLoopTick.json",
+      "sha256": "sha256:a043d618e7d925b83900b01ec7c9df455679a69d7c2c02ec3aa5c68777f10195"
+    },
+    "ControlNodeProfile": {
+      "$id": "https://schemas.srcos.ai/v2/ControlNodeProfile.json",
+      "path": "schemas/ControlNodeProfile.json",
+      "sha256": "sha256:dc9212110418c507b178cc17416f69606fdeb39ea91cc74333a216fc386b2e0b"
+    },
+    "ConversationEvent": {
+      "$id": "https://schemas.srcos.ai/v2/ConversationEvent.json",
+      "path": "schemas/ConversationEvent.json",
+      "sha256": "sha256:b64945dfe849a1c28cbc391246f679df8f2f1e3bb924a7c671575eed243d78a0"
+    },
+    "CyberneticAssignment": {
+      "$id": "https://schemas.srcos.ai/v2/CyberneticAssignment.json",
+      "path": "schemas/CyberneticAssignment.json",
+      "sha256": "sha256:83917393223b472c8bb5677463237b5c11bb5d009221449f997aa85782b5078b"
+    },
+    "DataAcquisitionRequest": {
+      "$id": "https://schemas.srcos.ai/v2/DataAcquisitionRequest.json",
+      "path": "schemas/DataAcquisitionRequest.json",
+      "sha256": "sha256:683eff4a948e9caaef59f6374c303d7f0622c84cce886d5fdcc21e95eebc316b"
+    },
+    "DataClass": {
+      "$id": "https://schemas.srcos.ai/v2/DataClass.json",
+      "path": "schemas/DataClass.json",
+      "sha256": "sha256:5fdedf40896b8f3f9b51ab04012648688391ff0b1c9002b64b0f157e6b822355"
+    },
+    "DataContract": {
+      "$id": "https://schemas.srcos.ai/v2/DataContract.json",
+      "path": "schemas/DataContract.json",
+      "sha256": "sha256:9986181902c6180810d531270d1869d7d5e8a8b1754d310ba06cc13f37bffbfd"
+    },
+    "DataProduct": {
+      "$id": "https://schemas.srcos.ai/v2/DataProduct.json",
+      "path": "schemas/DataProduct.json",
+      "sha256": "sha256:9bdcd4dcf30966f4c76a512c1f6eb4f6760aa5d607a053e57e1fb47ebaa07421"
+    },
+    "DataRef": {
+      "$id": "https://schemas.srcos.ai/v2/DataRef.json",
+      "path": "schemas/DataRef.json",
+      "sha256": "sha256:39da68df0aa922fdac0e570d80873d240678ff43995b6a99868a6a9a40212cff"
+    },
+    "DataSphere": {
+      "$id": "https://schemas.srcos.ai/v2/DataSphere.json",
+      "path": "schemas/DataSphere.json",
+      "sha256": "sha256:fd30d23818636069b116aba3770830a69bc8ee3a3f5f5f9fe0babcc9933b8550"
+    },
+    "Dataset": {
+      "$id": "https://schemas.srcos.ai/v2/Dataset.json",
+      "path": "schemas/Dataset.json",
+      "sha256": "sha256:76e99f4d54e5c199dab1d33e08d084726b9ee207ef3c720ebbe83026bebe6578"
+    },
+    "DeltaSurface": {
+      "$id": "https://schemas.srcos.ai/v2/DeltaSurface.json",
+      "path": "schemas/DeltaSurface.json",
+      "sha256": "sha256:05ad5ec373e51091e0220532a3d3c7526b478f45506fc941bd63d807a68053b7"
+    },
+    "DesignRegister": {
+      "$id": "https://schemas.srcos.ai/v2/DesignRegister.json",
+      "path": "schemas/DesignRegister.json",
+      "sha256": "sha256:e1cd664e84d8c34f2e92a79b7ea31cf9c4c6e1fadef8e495a4b001260ae87ef3"
+    },
+    "DesktopProfile": {
+      "$id": "https://schemas.srcos.ai/v2/DesktopProfile.json",
+      "path": "schemas/DesktopProfile.json",
+      "sha256": "sha256:8fe61d4b06a2140f15a30fbafd561cf505b49817d0cd45e7ed3d75aaa551b3ac"
+    },
+    "DesktopServiceBrokerState": {
+      "$id": "https://schemas.srcos.ai/v2/DesktopServiceBrokerState.json",
+      "path": "schemas/DesktopServiceBrokerState.json",
+      "sha256": "sha256:efcd652b7822c3bddec3ca03659e5429858b542acaa9b9fe1734f66d5f870ce7"
+    },
+    "DeviceIdentity": {
+      "$id": "https://schemas.srcos.ai/v2/DeviceIdentity.json",
+      "path": "schemas/DeviceIdentity.json",
+      "sha256": "sha256:83237c3af3e8ca7b31db353b81efda6f9025f5ada698ab5725ceb77cc70c2614"
+    },
+    "DeviceProfile": {
+      "$id": "https://schemas.srcos.ai/v2/DeviceProfile.json",
+      "path": "schemas/DeviceProfile.json",
+      "sha256": "sha256:88394821d633529f1ecb0346145e9c224731ccb51ee0f4240871f3c350f15de2"
+    },
+    "DeviceReading": {
+      "$id": "https://schemas.srcos.ai/v2/DeviceReading.json",
+      "path": "schemas/DeviceReading.json",
+      "sha256": "sha256:49bfbce849e1e5b204651f05e6ed2b976a2d59015df2cd2025734ff7e78e80f3"
+    },
+    "DiagnosticBundle": {
+      "$id": "https://schemas.srcos.ai/v2/DiagnosticBundle.json",
+      "path": "schemas/DiagnosticBundle.json",
+      "sha256": "sha256:fa0f784d9eae3e888f62496553b846ebe24a5d168267e015d45579145ae4e453"
+    },
+    "DiagnosticProbeResult": {
+      "$id": "https://schemas.srcos.ai/v2/DiagnosticProbeResult.json",
+      "path": "schemas/DiagnosticProbeResult.json",
+      "sha256": "sha256:6465226472b65c7a3af827f7878b3a6636015a183d478bc3a39fb1855c01dc5d"
+    },
+    "DiagnosticStormRecord": {
+      "$id": "https://schemas.srcos.ai/v2/DiagnosticStormRecord.json",
+      "path": "schemas/DiagnosticStormRecord.json",
+      "sha256": "sha256:1b00ae07a7c3e8b1320a9911e706e19cd398e201631b8c4765c025491c29a402"
+    },
+    "DiagnosticsBundle": {
+      "$id": "https://schemas.srcos.ai/v2/DiagnosticsBundle.json",
+      "path": "schemas/DiagnosticsBundle.json",
+      "sha256": "sha256:367896e5055d0bf5cd940f463537ede66b01ea018047cf0380987623a8920949"
+    },
+    "DiagnosticsProbeRecord": {
+      "$id": "https://schemas.srcos.ai/v2/DiagnosticsProbeRecord.json",
+      "path": "schemas/DiagnosticsProbeRecord.json",
+      "sha256": "sha256:7fe40243efa5947f4dc00648388da2a28e28cf3f4d4427f38292cf8a68cade4d"
+    },
+    "DiagnosticsRedactionPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/DiagnosticsRedactionPolicy.json",
+      "path": "schemas/DiagnosticsRedactionPolicy.json",
+      "sha256": "sha256:d5d00f5f8cef636339f05a4dec4f126162a5cb0058016ed1c681aae96a8b6ee3"
+    },
+    "DigitalSoulIdentity": {
+      "$id": "https://schemas.srcos.ai/v2/DigitalSoulIdentity.json",
+      "path": "schemas/DigitalSoulIdentity.json",
+      "sha256": "sha256:90e7c8ee5c84ee4756ca835b7e3f37836e4aae335e52f6480804539dbd720fdd"
+    },
+    "EffectDecision": {
+      "$id": "https://schemas.srcos.ai/v2/EffectDecision.json",
+      "path": "schemas/EffectDecision.json",
+      "sha256": "sha256:fb7b4950dd8a77003d5f72059a7d362f536fadb63bfab524e0771877cec9cf5a"
+    },
+    "EffectRecord": {
+      "$id": "https://schemas.srcos.ai/v2/EffectRecord.json",
+      "path": "schemas/EffectRecord.json",
+      "sha256": "sha256:9e767c2c218f9285bd582b0a4c87a571a9dddf38e49bd23c14b2d4d7858431c4"
+    },
+    "EffectRequest": {
+      "$id": "https://schemas.srcos.ai/v2/EffectRequest.json",
+      "path": "schemas/EffectRequest.json",
+      "sha256": "sha256:4f60f2034390eb5262697ea6b0be78be2c90cdf664189ab8a99aa74041bd6e63"
+    },
+    "EmbeddingRequest": {
+      "$id": "https://schemas.srcos.ai/v2/EmbeddingRequest.json",
+      "path": "schemas/EmbeddingRequest.json",
+      "sha256": "sha256:fad4b0eac2072d07971e021d43ace2805b80058ed34d2ad58b673576be6219ff"
+    },
+    "EnrollmentProfile": {
+      "$id": "https://schemas.srcos.ai/v2/EnrollmentProfile.json",
+      "path": "schemas/EnrollmentProfile.json",
+      "sha256": "sha256:3abe4a67e40791c0af16abcf5b8783a8b8277c6e0aca53e72e7bd31592b028f7"
+    },
+    "EnrollmentToken": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/EnrollmentToken.json",
+      "path": "schemas/control-plane/EnrollmentToken.json",
+      "sha256": "sha256:137c4982b0ec3bcd7a1319c34b0e30754f7784408e672193d9fd275797cd1838"
+    },
+    "EntityField": {
+      "$id": "https://schemas.srcos.ai/v2/EntityField.json",
+      "path": "schemas/EntityField.json",
+      "sha256": "sha256:ad05b239faabc04e982a572cfa1d555c94fd49fc59638030a5e8d265fc4adad9"
+    },
+    "EscalationDecision": {
+      "$id": "https://schemas.srcos.ai/v2/EscalationDecision.json",
+      "path": "schemas/EscalationDecision.json",
+      "sha256": "sha256:96f2516bc4e7d13be91412b9057686dab92c9d7c2c189da02520394cbe11aa87"
+    },
+    "EvalItem": {
+      "$id": "https://schemas.srcos.ai/v2/EvalItem.json",
+      "path": "schemas/EvalItem.json",
+      "sha256": "sha256:e6f4eeeeaa9f9f03127941b4e9052e0a42046e600e13f81fb5929ef39a7de7d7"
+    },
+    "EvaluationBundle": {
+      "$id": "https://schemas.srcos.ai/v2/EvaluationBundle.json",
+      "path": "schemas/EvaluationBundle.json",
+      "sha256": "sha256:e9fcf4f23f46d5ef27e732ba0f1452d88927d53d7f0e49311488e63bd057c782"
+    },
+    "EventEnvelope": {
+      "$id": "https://schemas.srcos.ai/v2/EventEnvelope.json",
+      "path": "schemas/EventEnvelope.json",
+      "sha256": "sha256:5ba76f3355d22112e63c80821b055ea1713dac1d62770f65b0c7a60b369c6978"
+    },
+    "EvidenceBundle": {
+      "$id": "https://schemas.srcos.ai/v2/EvidenceBundle.json",
+      "path": "schemas/EvidenceBundle.json",
+      "sha256": "sha256:f627924b5cc1e4ee32e9d4b3f390a1b50d002b49e88027ef90a7ccaa126f2f83"
+    },
+    "ExactnessArtifactRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ExactnessArtifactRecord.json",
+      "path": "schemas/ExactnessArtifactRecord.json",
+      "sha256": "sha256:ff5bdc5c4473cf454d8702441d49a07820f41f2255756f19b4d267cb6a947050"
+    },
+    "Exception": {
+      "$id": "https://schemas.srcos.ai/v2/Exception.json",
+      "path": "schemas/Exception.json",
+      "sha256": "sha256:c422c81ddfbf189971149a48881dc4ac527f478b67843c3db88c165a86d3dbf8"
+    },
+    "ExceptionLedgerEntry": {
+      "$id": "https://schemas.srcos.ai/v2/ExceptionLedgerEntry.json",
+      "path": "schemas/ExceptionLedgerEntry.json",
+      "sha256": "sha256:057db24006aa8bdef84ed1f55e8a2e4c4dca992c50185bfd8e871f14f1aedc25"
+    },
+    "ExecutionDecision": {
+      "$id": "https://schemas.srcos.ai/v2/ExecutionDecision.json",
+      "path": "schemas/ExecutionDecision.json",
+      "sha256": "sha256:e1a685ba1775481d58f4b18d073094a7e0949c0c9a5f9c233b0da904b2dfbd45"
+    },
+    "ExecutionFork": {
+      "$id": "https://schemas.srcos.ai/v2/ExecutionFork.json",
+      "path": "schemas/ExecutionFork.json",
+      "sha256": "sha256:392d5e1d6b45a57828f9554d3abda43358d3a9619222107b0352802fba1a5d07"
+    },
+    "ExecutionReport": {
+      "$id": "https://schemas.srcos.ai/v2/ExecutionReport.json",
+      "path": "schemas/ExecutionReport.json",
+      "sha256": "sha256:0719f500577c72f5d9e03a2f412ef22ed67e9a9a9e57e648890102ad9749dfce"
+    },
+    "ExecutionSurface": {
+      "$id": "https://schemas.srcos.ai/v2/ExecutionSurface.json",
+      "path": "schemas/ExecutionSurface.json",
+      "sha256": "sha256:8bbe8849822b7367e55c0baf736dfb05141a691ab56d636318158aac6ecc81e5"
+    },
+    "ExhaustRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ExhaustRecord.json",
+      "path": "schemas/ExhaustRecord.json",
+      "sha256": "sha256:cebdaab18ef64a293777c2f04c8a75f359e75e29b0e075d352c27a294d28171a"
+    },
+    "ExperienceProfile": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/ExperienceProfile.json",
+      "path": "schemas/control-plane/ExperienceProfile.json",
+      "sha256": "sha256:af971c071ab97603b57b7f6058a8baa6c1ff06cffe79d9bb2cbdaea3405efc42"
+    },
+    "ExperienceRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ExperienceRecord.json",
+      "path": "schemas/ExperienceRecord.json",
+      "sha256": "sha256:08fcd9f305244087f67523096cd3d9f30070244ef2d7585f847ec3cf79f885af"
+    },
+    "ExperimentFlag": {
+      "$id": "https://schemas.srcos.ai/v2/ExperimentFlag.json",
+      "path": "schemas/ExperimentFlag.json",
+      "sha256": "sha256:4c0d44465b95c02b4825ee9bce1954429eafbce35316b960ce124cbcb8655086"
+    },
+    "ExternalModelProviderProfile": {
+      "$id": "https://schemas.srcos.ai/v2/ExternalModelProviderProfile.json",
+      "path": "schemas/ExternalModelProviderProfile.json",
+      "sha256": "sha256:ca73acf2dcc9a7a6e402bcab1fac0df30735b2ffa82cc7e74a6dd84120d3462a"
+    },
+    "ExtractedEntity": {
+      "$id": "https://schemas.srcos.ai/v2/ExtractedEntity.json",
+      "path": "schemas/ExtractedEntity.json",
+      "sha256": "sha256:70c023d9cd4137441c9ee6416fdc725f8708369b783a96976230b703c5785c3a"
+    },
+    "Factsheet": {
+      "$id": "https://schemas.srcos.ai/v2/Factsheet.json",
+      "path": "schemas/Factsheet.json",
+      "sha256": "sha256:2357f5d53ce5b6272c8ee980693a694b9bc6d67657d79bc8cddf4b6d7e47eb29"
+    },
+    "Field": {
+      "$id": "https://schemas.srcos.ai/v2/Field.json",
+      "path": "schemas/Field.json",
+      "sha256": "sha256:93636c8c27bab2f062cd532ce832fc802f3451838238b3cc1b511f3c9b02d229"
+    },
+    "Fingerprint": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/Fingerprint.json",
+      "path": "schemas/control-plane/Fingerprint.json",
+      "sha256": "sha256:5a35fe098e79db0f021342324a2973a625313b1980e0eb02df195c8f5b42ca25"
+    },
+    "FirewallBindingProfile": {
+      "$id": "https://schemas.srcos.ai/v2/FirewallBindingProfile.json",
+      "path": "schemas/FirewallBindingProfile.json",
+      "sha256": "sha256:c82b8b4215ee5af739f31efc0dbc2bbce5fd33c96270b25800b47f87bb754cd5"
+    },
+    "FitScore": {
+      "$id": "https://schemas.srcos.ai/v2/FitScore.json",
+      "path": "schemas/FitScore.json",
+      "sha256": "sha256:4c2ff3c9d49505f9a7e6d3be71bf27a3385a7006825460bfe82298661e65a4cd"
+    },
+    "FocusState": {
+      "$id": "https://schemas.srcos.ai/v2/FocusState.json",
+      "path": "schemas/FocusState.json",
+      "sha256": "sha256:6f1bff9ad6732bd86f1378e5d27bf44b6131ba7f9df143cebe0d2d3f8121d08e"
+    },
+    "FocusTransition": {
+      "$id": "https://schemas.srcos.ai/v2/FocusTransition.json",
+      "path": "schemas/FocusTransition.json",
+      "sha256": "sha256:9046c69668af0581a415bb275bc1223152c1493af3ee1b227892989f11504e6e"
+    },
+    "FrustrationSignal": {
+      "$id": "https://schemas.srcos.ai/v2/FrustrationSignal.json",
+      "path": "schemas/FrustrationSignal.json",
+      "sha256": "sha256:b5d2d3575f213b3612749c950c2a2cbe1cf3350e1b35478500c7c8334b3d42f0"
+    },
+    "GaiaObservation": {
+      "$id": "https://schemas.srcos.ai/v2/GaiaObservation.json",
+      "path": "schemas/GaiaObservation.json",
+      "sha256": "sha256:682d10904953ddc7595cd7313253e161abd6e00759cc6caed16400e391b19f85"
+    },
+    "GenesisAttestationDocument": {
+      "$id": "https://schemas.srcos.ai/v2/GenesisAttestationDocument.json",
+      "path": "schemas/GenesisAttestationDocument.json",
+      "sha256": "sha256:be397d44ee6f64810bff868c8b8f248ddef4d3546ff465b211bc1a26e3ef54b7"
+    },
+    "GenesisSeed": {
+      "$id": "https://schemas.srcos.ai/v2/GenesisSeed.json",
+      "path": "schemas/GenesisSeed.json",
+      "sha256": "sha256:c4d6edbcccecd6ff351cb65a44934f398af4e4a4fd4260e40b8515caee9d2c02"
+    },
+    "GitRefBuild": {
+      "$id": "https://schemas.srcos.ai/v2/GitRefBuild.json",
+      "path": "schemas/GitRefBuild.json",
+      "sha256": "sha256:aed6b71d5836a2d7893f61bf0536ca019803b8f43e6f404cb27cc8ce2bf4cd69"
+    },
+    "GitWorkspaceState": {
+      "$id": "https://schemas.srcos.ai/v2/GitWorkspaceState.json",
+      "path": "schemas/GitWorkspaceState.json",
+      "sha256": "sha256:68633ecd8f9f8ce0eafd70dc605ea42fb8081899d16addec5e689dcb4594b6d5"
+    },
+    "GlossaryTerm": {
+      "$id": "https://schemas.srcos.ai/v2/GlossaryTerm.json",
+      "path": "schemas/GlossaryTerm.json",
+      "sha256": "sha256:e471a14e4f225a08219e3e74d7d7561fcfc6faed11975ddd8baadf281d539aad"
+    },
+    "GovernedLoop": {
+      "$id": "https://schemas.srcos.ai/v2/GovernedLoop.json",
+      "path": "schemas/GovernedLoop.json",
+      "sha256": "sha256:0b3e1a9ee992e56cdfe7a5a13e482318854f799b5664f43d9f999b178db0d891"
+    },
+    "GuardrailEvalReport": {
+      "$id": "https://schemas.srcos.ai/v2/GuardrailEvalReport.json",
+      "path": "schemas/GuardrailEvalReport.json",
+      "sha256": "sha256:947b8305524aedced9796fb84f8be08420e03c3f3a2648688d5e56f85b35e582"
+    },
+    "Hologram": {
+      "$id": "https://schemas.srcos.ai/v2/Hologram.json",
+      "path": "schemas/Hologram.json",
+      "sha256": "sha256:fd7791d3bbea511eed32fd19468a35a66e4fe1bc67b4dafbd656f7f242fafc39"
+    },
+    "HostCapabilityPlacement": {
+      "$id": "https://schemas.srcos.ai/v2/HostCapabilityPlacement.json",
+      "path": "schemas/HostCapabilityPlacement.json",
+      "sha256": "sha256:4905c186a412d1ccfdfdc1d6d8677e89e30c8f4da11b9ede87c0f32b3510a59d"
+    },
+    "IdentityQuorumPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/IdentityQuorumPolicy.json",
+      "path": "schemas/IdentityQuorumPolicy.json",
+      "sha256": "sha256:1925d1bea88baf5ff868b4419bbeb780a82089d1cf77d9d445a82b6695afdbd9"
+    },
+    "IdentitySpine": {
+      "$id": "https://schemas.srcos.ai/v2/IdentitySpine.json",
+      "path": "schemas/IdentitySpine.json",
+      "sha256": "sha256:a1f5b6543a3ff4cbda3a3ac510b9352aabaf408642a2409498fbb38c88bb14fa"
+    },
+    "ImagePromotionGate": {
+      "$id": "https://schemas.srcos.ai/v2/ImagePromotionGate.json",
+      "path": "schemas/ImagePromotionGate.json",
+      "sha256": "sha256:e4634fa50248359b8649e4aa90ec2056d90f9b62c70aeccab88a160e869a2c8a"
+    },
+    "ImmutableNodeProfile": {
+      "$id": "https://schemas.srcos.ai/v2/ImmutableNodeProfile.json",
+      "path": "schemas/ImmutableNodeProfile.json",
+      "sha256": "sha256:d4967e72ec3bf4fd35005f6a6d2f28fe00d98d5870be4a4abd1140742c92fe09"
+    },
+    "Impulse": {
+      "$id": "https://schemas.srcos.ai/v2/Impulse.json",
+      "path": "schemas/Impulse.json",
+      "sha256": "sha256:d0a426d2b57e8876a14989976c602fb45f42a21bfbdb57f2a61e0d9aae5a1d19"
+    },
+    "ImpulseGate": {
+      "$id": "https://schemas.srcos.ai/v2/ImpulseGate.json",
+      "path": "schemas/ImpulseGate.json",
+      "sha256": "sha256:b85e312f5855c9155276d181e4054209902aa8b5ee10b34210ca07a6dcd65bd9"
+    },
+    "IncidentEvent": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/IncidentEvent.json",
+      "path": "schemas/control-plane/IncidentEvent.json",
+      "sha256": "sha256:c0fe0f76a9ecc45fbf739157b14a5c9d33f72521babc8a5cf57bbb57af548c08"
+    },
+    "InferenceProvider": {
+      "$id": "https://schemas.srcos.ai/v2/InferenceProvider.json",
+      "path": "schemas/InferenceProvider.json",
+      "sha256": "sha256:515ab5100b01ef1356cce876011d0d4351add9c766472ec8f0fa746058caafd1"
+    },
+    "InferenceReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/InferenceReceipt.json",
+      "path": "schemas/InferenceReceipt.json",
+      "sha256": "sha256:469849a906bbf2c7e172df3073fd0fa4cf0fc26e35241ffe74c0845575f77b9e"
+    },
+    "IngestedDocument": {
+      "$id": "https://schemas.srcos.ai/v2/IngestedDocument.json",
+      "path": "schemas/IngestedDocument.json",
+      "sha256": "sha256:75324a8b154ec0dc763e05af5e1fb47786a16c140e94e84e6574fc94ddb62ce7"
+    },
+    "InteractionSurface": {
+      "$id": "https://schemas.srcos.ai/v2/InteractionSurface.json",
+      "path": "schemas/InteractionSurface.json",
+      "sha256": "sha256:068578154ca314fc9419f944b780af8e0a0783444e826018ffa1299a530621a5"
+    },
+    "InterferometricDiff": {
+      "$id": "https://schemas.srcos.ai/v2/InterferometricDiff.json",
+      "path": "schemas/InterferometricDiff.json",
+      "sha256": "sha256:92504aa783f1e3c160d5303288fb76788e4c8a03899798587e7f52382d529d89"
+    },
+    "IsolationProfile": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/IsolationProfile.json",
+      "path": "schemas/control-plane/IsolationProfile.json",
+      "sha256": "sha256:c08410b98e95dc804ee8cf803112f7b1228c14d41ad8df49cb23f9c9c91ec313"
+    },
+    "KeymapProfile": {
+      "$id": "https://schemas.srcos.ai/v2/KeymapProfile.json",
+      "path": "schemas/KeymapProfile.json",
+      "sha256": "sha256:7640280a32fb5a2177f0a1fbf05e6769a7d7fa31c9de62b7630fd3359a91c27c"
+    },
+    "KnowledgeNugget": {
+      "$id": "https://schemas.srcos.ai/v2/KnowledgeNugget.json",
+      "path": "schemas/KnowledgeNugget.json",
+      "sha256": "sha256:3e1aae2476e7182714162da8e75a4d482d942a0923273200e05c697866344f0b"
+    },
+    "LaborAward": {
+      "$id": "https://schemas.srcos.ai/v2/LaborAward.json",
+      "path": "schemas/LaborAward.json",
+      "sha256": "sha256:e68e4cc18360becadcf6711cd4f200e4e4e4739d1c89d99ed97ec7b1bd3b9384"
+    },
+    "LaborRequest": {
+      "$id": "https://schemas.srcos.ai/v2/LaborRequest.json",
+      "path": "schemas/LaborRequest.json",
+      "sha256": "sha256:b1ddf5af56d3672ad744279279ffa0188be91c3b00fce8c126a5dddf4a419617"
+    },
+    "LaborResponse": {
+      "$id": "https://schemas.srcos.ai/v2/LaborResponse.json",
+      "path": "schemas/LaborResponse.json",
+      "sha256": "sha256:35953973a5d10214ad4b1cbe182d77c75a1e78a6d0f13f05b19938d3c7c7a2e5"
+    },
+    "LauncherAction": {
+      "$id": "https://schemas.srcos.ai/v2/LauncherAction.json",
+      "path": "schemas/LauncherAction.json",
+      "sha256": "sha256:671d180eab3d191dedd3be097947e0ab7b0d143481a42c620564a3eaebc88bc7"
+    },
+    "LauncherProvider": {
+      "$id": "https://schemas.srcos.ai/v2/LauncherProvider.json",
+      "path": "schemas/LauncherProvider.json",
+      "sha256": "sha256:b17eacc92d855b0e4c95757aeb2e6cd332ff31b312adb051f4569444886203b7"
+    },
+    "LawfulDispatchReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/LawfulDispatchReceipt.json",
+      "path": "schemas/LawfulDispatchReceipt.json",
+      "sha256": "sha256:509c3aad2c5d457228c728a3113f0bdf0f2341b726fb8bb28ac8b1e27a6d0eb7"
+    },
+    "LifeMirrorState": {
+      "$id": "https://spec.sourceos.linux/schemas/LifeMirrorState.json",
+      "path": "schemas/LifeMirrorState.json",
+      "sha256": "sha256:b045081d832a0b9a8240193c4214858190b98e8eb7d42be91c8e69d1298f0858"
+    },
+    "Link": {
+      "$id": "https://schemas.srcos.ai/v2/Link.json",
+      "path": "schemas/Link.json",
+      "sha256": "sha256:b2b584ed443120b86814600fa843029065c3856aa9053e7436752855114b4600"
+    },
+    "LivenessProfile": {
+      "$id": "https://schemas.srcos.ai/v2/LivenessProfile.json",
+      "path": "schemas/LivenessProfile.json",
+      "sha256": "sha256:2ba5665d3322c3861f70c7b8e25b0c13b306c65103a53cabf190f137d3a47578"
+    },
+    "LocalArtifactRef": {
+      "$id": "https://schemas.srcos.ai/v2/LocalArtifactRef.json",
+      "path": "schemas/LocalArtifactRef.json",
+      "sha256": "sha256:99b9be5a01a20f31201ff3b75d108e70ba1ade5940efab60c87385aa5aacf662"
+    },
+    "LocalEncryptionProfile": {
+      "$id": "https://schemas.srcos.ai/v2/LocalEncryptionProfile.json",
+      "path": "schemas/LocalEncryptionProfile.json",
+      "sha256": "sha256:08a066d27865e5125cc71eecd3995f91fc979b1b1950bad892bdfa9ee02237c9"
+    },
+    "LocalFirstServiceManifest": {
+      "$id": "https://schemas.srcos.ai/v2/LocalFirstServiceManifest.json",
+      "path": "schemas/LocalFirstServiceManifest.json",
+      "sha256": "sha256:aea4def56673dcf26647f615754c59519e492d771e5c0b6d7e49896e8a87dd13"
+    },
+    "LocalOperationLog": {
+      "$id": "https://schemas.srcos.ai/v2/LocalOperationLog.json",
+      "path": "schemas/LocalOperationLog.json",
+      "sha256": "sha256:c1cb4388a2f077330ee37fcf1131c0a2b2db1fecb1bdf90ba362085207f5dac1"
+    },
+    "LocalReasoningFailure": {
+      "$id": "https://schemas.srcos.ai/v2/LocalReasoningFailure.json",
+      "path": "schemas/LocalReasoningFailure.json",
+      "sha256": "sha256:1d9bdd88dc532839843f56b49f304d54affb7c07654469e38093ddc5f8340324"
+    },
+    "MaintenanceEpoch": {
+      "$id": "https://schemas.srcos.ai/v2/MaintenanceEpoch.json",
+      "path": "schemas/MaintenanceEpoch.json",
+      "sha256": "sha256:17851f332d4f8d8e83d603dfc44b5d8a9df23f546bfbc103712175cc2bcc001a"
+    },
+    "MappingEvidence": {
+      "$id": "https://schemas.srcos.ai/v2/MappingEvidence.json",
+      "path": "schemas/MappingEvidence.json",
+      "sha256": "sha256:97ef60ab95c6539d1bf216b1e33982fc38ac6ea9fc8b2e9687f40c9be6f3b98f"
+    },
+    "MappingSpec": {
+      "$id": "https://schemas.srcos.ai/v2/MappingSpec.json",
+      "path": "schemas/MappingSpec.json",
+      "sha256": "sha256:214fa3f8b766b0ec6a19ccbd7b08fd91f83f4169c3c2d951e70d298d8749644b"
+    },
+    "MarketDataEvent": {
+      "$id": "https://schemas.srcos.ai/v2/MarketDataEvent.json",
+      "path": "schemas/MarketDataEvent.json",
+      "sha256": "sha256:28b649ed802b4db5f5897ce2b075716a98d7a3e50f33414d5d333fa69ac03555"
+    },
+    "Measurement": {
+      "$id": "https://schemas.srcos.ai/v2/Measurement.json",
+      "path": "schemas/Measurement.json",
+      "sha256": "sha256:3fe473eeaaf6e47394e5e4d8d66a0a96bd192c9f6e30567f82031eb30c034d15"
+    },
+    "MemoryEntry": {
+      "$id": "https://schemas.srcos.ai/v2/MemoryEntry.json",
+      "path": "schemas/MemoryEntry.json",
+      "sha256": "sha256:7ab6771288058b2633cce34376859bbb821c2b8339f175ec18dfa0b3e2bad27a"
+    },
+    "MeshActionRegistry": {
+      "$id": "https://schemas.srcos.ai/v2/MeshActionRegistry.json",
+      "path": "schemas/MeshActionRegistry.json",
+      "sha256": "sha256:dc576f584b99de2e1bf46d08d9d249e46f6d36190c97bb6a8a5e14bdae845006"
+    },
+    "MeshBindingProfile": {
+      "$id": "https://schemas.srcos.ai/v2/MeshBindingProfile.json",
+      "path": "schemas/MeshBindingProfile.json",
+      "sha256": "sha256:b74e2295417d7ec093fbd974d2a8f6b71dd20698d8f21711987eac6b49132687"
+    },
+    "MeshSkill": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/MeshSkill.json",
+      "path": "schemas/control-plane/MeshSkill.json",
+      "sha256": "sha256:1af4d9d461c91ac8c834c37bf5618fd325412f772e8943c4cf2171ca041026a9"
+    },
+    "ModelAdapterManifest": {
+      "$id": "https://schemas.srcos.ai/v2/ModelAdapterManifest.json",
+      "path": "schemas/ModelAdapterManifest.json",
+      "sha256": "sha256:f10d645e56fa2c041838c84ddd5254ea803f671044c2f4bd6a5f2a280e28a25f"
+    },
+    "ModelManifest": {
+      "$id": "https://schemas.srcos.ai/v2/ModelManifest.json",
+      "path": "schemas/ModelManifest.json",
+      "sha256": "sha256:3cd8ce484d1c4e00c8ab534a0b739db4599a7470ddf6e27399f8ff60148d520c"
+    },
+    "ModelResidency": {
+      "$id": "https://schemas.srcos.ai/v2/ModelResidency.json",
+      "path": "schemas/ModelResidency.json",
+      "sha256": "sha256:1628cd8f8769c8f71abbf37d28d754942a7b0ba32924d4c5e8e72468b30402bb"
+    },
+    "MultiversealTwin": {
+      "$id": "https://schemas.srcos.ai/v2/MultiversealTwin.json",
+      "path": "schemas/MultiversealTwin.json",
+      "sha256": "sha256:0140bbbbd6e9e3560c53ff99379d8240fd708c7c3980b3cd93db76264243704a"
+    },
+    "MutationEvidenceAccountability": {
+      "$id": "https://sourceos.dev/schemas/MutationEvidenceAccountability.schema.json",
+      "path": "schemas/MutationEvidenceAccountability.schema.json",
+      "sha256": "sha256:2062881417d21bf2cece80e92f7e52ec519c081a689247c8e3aa9d70cc8191e4"
+    },
+    "MutationEvidenceUmbrellaPrimitives": {
+      "$id": "https://sourceos.dev/schemas/MutationEvidenceUmbrellaPrimitives.schema.json",
+      "path": "schemas/MutationEvidenceUmbrellaPrimitives.schema.json",
+      "sha256": "sha256:29bfe4bbeac30ca12585150237185659778b45f5da3c9afc237417a02b0e04d5"
+    },
+    "NLBootPlan": {
+      "$id": "https://schemas.srcos.ai/v2/NLBootPlan.json",
+      "path": "schemas/NLBootPlan.json",
+      "sha256": "sha256:186e8aa5bf0fa1946cab8601d1fa03e5de8796c70a6b4252466d64108aa25013"
+    },
+    "NativeAssistantBridgeProfile": {
+      "$id": "https://schemas.srcos.ai/v2/NativeAssistantBridgeProfile.json",
+      "path": "schemas/NativeAssistantBridgeProfile.json",
+      "sha256": "sha256:6d50050ae5d7080fd4db44faecb30acf82ef9310f4ba2053e41f211b0d3ac505"
+    },
+    "NettingCell": {
+      "$id": "https://schemas.srcos.ai/v2/NettingCell.json",
+      "path": "schemas/NettingCell.json",
+      "sha256": "sha256:9413c9ff03549c4e5f01bad4405f3b419c8f593b9103a44a43d09baefe777784"
+    },
+    "NetworkAccessProfile": {
+      "$id": "https://schemas.srcos.ai/v2/NetworkAccessProfile.json",
+      "path": "schemas/NetworkAccessProfile.json",
+      "sha256": "sha256:ec6461799dd4c50566c8868146d6ec6f3bda2e589b2608e4035a8b0f8f16d7ef"
+    },
+    "NetworkTruthState": {
+      "$id": "https://schemas.srcos.ai/v2/NetworkTruthState.json",
+      "path": "schemas/NetworkTruthState.json",
+      "sha256": "sha256:4fc3496515c9993ab526a569cd7b75fb515286132cb9c4d689ceb1fb3f3be78c"
+    },
+    "NodeBinding": {
+      "$id": "https://schemas.srcos.ai/v2/NodeBinding.json",
+      "path": "schemas/NodeBinding.json",
+      "sha256": "sha256:52263db372b69a2d109096952dc020672529564332a6a320d186ebd68db0d4fa"
+    },
+    "NodeCommanderRuntime": {
+      "$id": "https://schemas.srcos.ai/v2/NodeCommanderRuntime.json",
+      "path": "schemas/NodeCommanderRuntime.json",
+      "sha256": "sha256:4a557648e22ac8d9aec33b5dba775c78e441e2eaf2c855b0aabe205c2768b196"
+    },
+    "NodeStateSchema": {
+      "$id": "https://schemas.srcos.ai/v2/NodeStateSchema.json",
+      "path": "schemas/NodeStateSchema.json",
+      "sha256": "sha256:000ab20cd3f5da25ca5103e473bf6715a0379e9612692b05e6d617d4e25cb7ca"
+    },
+    "NullAbsenceRecord": {
+      "$id": "https://schemas.srcos.ai/v2/NullAbsenceRecord.json",
+      "path": "schemas/NullAbsenceRecord.json",
+      "sha256": "sha256:0b51a8ae1e4c021ef15cfdd615cbd69840f0d59a222b6d322d9dbd7bab89ff02"
+    },
+    "OSImage": {
+      "$id": "https://schemas.srcos.ai/v2/OSImage.json",
+      "path": "schemas/OSImage.json",
+      "sha256": "sha256:5742eeeb852cc4a032d4d5057eac71e4205ecbd919d99a60c0c69d0ebe1f4a2b"
+    },
+    "ObjectContext": {
+      "$id": "https://schemas.srcos.ai/v2/ObjectContext.json",
+      "path": "schemas/ObjectContext.json",
+      "sha256": "sha256:bc53ec34a4f57a60493481aa5c323e0327ccc9a569b169f52c81ad6d874caea1"
+    },
+    "ObjectSelector": {
+      "$id": "https://schemas.srcos.ai/v2/ObjectSelector.json",
+      "path": "schemas/ObjectSelector.json",
+      "sha256": "sha256:f08c81ae8b1b607b672500f0b03f41119941303605861e2d2bd3869eb3ccf956"
+    },
+    "Obligation": {
+      "$id": "https://schemas.srcos.ai/v2/Obligation.json",
+      "path": "schemas/Obligation.json",
+      "sha256": "sha256:c3da3cccae9dd4ce8d69ae3e31defe13bfec7d2241ea542f85da19f2573dac64"
+    },
+    "Offer": {
+      "$id": "https://schemas.srcos.ai/v2/Offer.json",
+      "path": "schemas/Offer.json",
+      "sha256": "sha256:b583a066d47f7bfe01c113e08f4efd7104ff96f2a8aec7501a7d6c25f916378d"
+    },
+    "OnboardingReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/OnboardingReceipt.json",
+      "path": "schemas/OnboardingReceipt.json",
+      "sha256": "sha256:021c4c121b4259f962f06efbd7e409f353109976ee1d6d3a104e5916446fe5bc"
+    },
+    "OperationalDAG": {
+      "$id": "https://schemas.srcos.ai/v2/OperationalDAG.json",
+      "path": "schemas/OperationalDAG.json",
+      "sha256": "sha256:4a99c1236677bc9a40fbb2de652f0aa00f727a3956962e3f5b2b84e48ae23868"
+    },
+    "Opportunity": {
+      "$id": "https://schemas.srcos.ai/v2/Opportunity.json",
+      "path": "schemas/Opportunity.json",
+      "sha256": "sha256:d7ea36a85806809d2170edc01a2390b6becd21642d21540d78915a00226e4d2d"
+    },
+    "OpsHistoryContextPackRef": {
+      "$id": "https://schemas.srcos.ai/v2/OpsHistoryContextPackRef.json",
+      "path": "schemas/OpsHistoryContextPackRef.json",
+      "sha256": "sha256:17fc0d1c05726765cc7e143e21607d413b32c5c0431fcc4463a2cba30fbb9a17"
+    },
+    "OpsHistoryEvent": {
+      "$id": "https://schemas.srcos.ai/v2/OpsHistoryEvent.json",
+      "path": "schemas/OpsHistoryEvent.json",
+      "sha256": "sha256:89e812b81c47b34724ebf48a5e40883a8024a90fda5433250d8faa993181cbf8"
+    },
+    "OpsHistorySyncPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/OpsHistorySyncPolicy.json",
+      "path": "schemas/OpsHistorySyncPolicy.json",
+      "sha256": "sha256:1e3b4a27b7365309a4852a17bbc10e992c904914698a8c5e8856cf18e2670235"
+    },
+    "OrderIntent": {
+      "$id": "https://schemas.srcos.ai/v2/OrderIntent.json",
+      "path": "schemas/OrderIntent.json",
+      "sha256": "sha256:9258eaedad5985d6ea961f0d5712b4231cd474eebe1697bdad7c6a706baff6d1"
+    },
+    "Organ": {
+      "$id": "https://schemas.srcos.ai/v2/Organ.json",
+      "path": "schemas/Organ.json",
+      "sha256": "sha256:d5365314f0dfdab4af578911d88834911fc42f6dee4cbbe813094e0896f7980d"
+    },
+    "OrphanEventReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/OrphanEventReceipt.json",
+      "path": "schemas/OrphanEventReceipt.json",
+      "sha256": "sha256:5efd3ec9fc1c8411bf7f8cfd14539410eeadf9f8366e6e900c1391dc60228ab1"
+    },
+    "OverlayBundle": {
+      "$id": "https://schemas.srcos.ai/v2/OverlayBundle.json",
+      "path": "schemas/OverlayBundle.json",
+      "sha256": "sha256:bf5811d649c6c0ab4bd30ee9d875eecbb70158919e14957a781b875bb4b4d81c"
+    },
+    "PackageManifest": {
+      "$id": "https://schemas.srcos.ai/v2/PackageManifest.json",
+      "path": "schemas/PackageManifest.json",
+      "sha256": "sha256:140d9a4fa4178520cbf7afdc14601fc309659c2164ac3c2905ecffad4bfdc048"
+    },
+    "Party": {
+      "$id": "https://schemas.srcos.ai/v2/Party.json",
+      "path": "schemas/Party.json",
+      "sha256": "sha256:ebbd7e9f19222311a363a3b3bc1504a9af4abb6f32f29b7f9d97e4fb5516674f"
+    },
+    "PersonaBundle": {
+      "$id": "https://schemas.srcos.ai/v2/PersonaBundle.json",
+      "path": "schemas/PersonaBundle.json",
+      "sha256": "sha256:3d7af3efcb41129998f78e2b92a028ef1e295adee54fdfb725906d92a2efefe6"
+    },
+    "PhysicalAsset": {
+      "$id": "https://schemas.srcos.ai/v2/PhysicalAsset.json",
+      "path": "schemas/PhysicalAsset.json",
+      "sha256": "sha256:b4735469e3cc78b67e92520d61d2915d8f04be231641e8f7a2e8a73e63206ad0"
+    },
+    "PlacementFact": {
+      "$id": "https://schemas.srcos.ai/v2/PlacementFact.json",
+      "path": "schemas/PlacementFact.json",
+      "sha256": "sha256:6600767a76a834679703ed2c5d2447947ee3398705305bd2630bb9b54228b23a"
+    },
+    "Policy": {
+      "$id": "https://schemas.srcos.ai/v2/Policy.json",
+      "path": "schemas/Policy.json",
+      "sha256": "sha256:fee0d3a003df4650435e22b3660759f9a45959691d90b188b649fc9d7951d55b"
+    },
+    "PolicyBinding": {
+      "$id": "https://schemas.srcos.ai/v2/PolicyBinding.json",
+      "path": "schemas/PolicyBinding.json",
+      "sha256": "sha256:14bcbfde0797f3d1a6e1b6bbc0927c62ec442937233ad2fa60fc45dec8eaa762"
+    },
+    "PolicyCondition": {
+      "$id": "https://schemas.srcos.ai/v2/PolicyCondition.json",
+      "path": "schemas/PolicyCondition.json",
+      "sha256": "sha256:1aa6e2675770998212b5e01a18ee3dcd025f055447bf0f4a3af949ca5521a6c7"
+    },
+    "PolicyDecision": {
+      "$id": "https://schemas.srcos.ai/v2/PolicyDecision.json",
+      "path": "schemas/PolicyDecision.json",
+      "sha256": "sha256:815c64518ee4b4edaeaadcc6a4e11fa33c0672703110102e1eecaa21b7d60244"
+    },
+    "PortableReputationClaim": {
+      "$id": "https://schemas.srcos.ai/v2/PortableReputationClaim.json",
+      "path": "schemas/PortableReputationClaim.json",
+      "sha256": "sha256:6bb0c0ca521e6580d6bda8db0329947c17d4cb874f11a337ed99a2746299b5b0"
+    },
+    "PositionChange": {
+      "$id": "https://schemas.srcos.ai/v2/PositionChange.json",
+      "path": "schemas/PositionChange.json",
+      "sha256": "sha256:bd685bea14f9470db41d4e75a7c0b8614d46c95de60fac702ce8b8cce896fb5b"
+    },
+    "ProfileStats": {
+      "$id": "https://schemas.srcos.ai/v2/ProfileStats.json",
+      "path": "schemas/ProfileStats.json",
+      "sha256": "sha256:c7347370aeb66d2b8824a3697d0bbfda8960f04bc31197cd24547b5d9abe75e0"
+    },
+    "ProofOfLife": {
+      "$id": "https://spec.sourceos.linux/schemas/ProofOfLife.json",
+      "path": "schemas/ProofOfLife.json",
+      "sha256": "sha256:cf413ddad43f6344d8ba2b6750489e3fc955dde3f78299f85138966c199a37ac"
+    },
+    "ProofOfSelfToken": {
+      "$id": "https://schemas.srcos.ai/v2/ProofOfSelfToken.json",
+      "path": "schemas/ProofOfSelfToken.json",
+      "sha256": "sha256:af39b44eb44abb7d91ab6804bf31a018ce5576f830fda42c1d15c78a442c1ac8"
+    },
+    "ProtocolWorkbench": {
+      "$id": "https://schemas.srcos.ai/v2/ProtocolWorkbench.json",
+      "path": "schemas/ProtocolWorkbench.json",
+      "sha256": "sha256:2d8cfc1291d57895a922c6fff788c06b61fe1c0ccd218068459ec99028c90801"
+    },
+    "ProvenanceRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ProvenanceRecord.json",
+      "path": "schemas/ProvenanceRecord.json",
+      "sha256": "sha256:8db37482e344c9703af6993acb7996aba2eca65a4d6b3e17e48703250b87e68d"
+    },
+    "PublicationArtifact": {
+      "$id": "https://schemas.srcos.ai/v2/PublicationArtifact.json",
+      "path": "schemas/PublicationArtifact.json",
+      "sha256": "sha256:1c4dcf85cb84d5c71dcbb091a60d7864945c61eb1b3e4db776e82e06982d769e"
+    },
+    "QualityMetric": {
+      "$id": "https://schemas.srcos.ai/v2/QualityMetric.json",
+      "path": "schemas/QualityMetric.json",
+      "sha256": "sha256:1f8937536fa1ed8a5e3a9618f79310c0d946688deb706c57841368f9bcf4cbc9"
+    },
+    "QualityProfile": {
+      "$id": "https://schemas.srcos.ai/v2/QualityProfile.json",
+      "path": "schemas/QualityProfile.json",
+      "sha256": "sha256:4d5b6b7336d51648fa7d0d5bd6995e5cef90e613cfc0f98853fc956269811969"
+    },
+    "QuarantineReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/QuarantineReceipt.json",
+      "path": "schemas/QuarantineReceipt.json",
+      "sha256": "sha256:db96bbb3e53c53e1658c54d81c89b2571a65015df9f02c2e283a271e8f65fd3d"
+    },
+    "QuotaPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/QuotaPolicy.json",
+      "path": "schemas/QuotaPolicy.json",
+      "sha256": "sha256:d18fabac5f0b19c32e47d354aba5826c3ee2a777be0714c23f53b14d1dfe280c"
+    },
+    "RadioSpatialActivationReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/RadioSpatialActivationReceipt.json",
+      "path": "schemas/RadioSpatialActivationReceipt.json",
+      "sha256": "sha256:9f6cec5d693bf9222a6adba211b6b0472ca4d46c2324bda304d34feb1e1e4dca"
+    },
+    "RadioSpatialInferenceReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/RadioSpatialInferenceReceipt.json",
+      "path": "schemas/RadioSpatialInferenceReceipt.json",
+      "sha256": "sha256:4fb85e8944e124596ad0b1824e16821a054bb368dd4f47a85e8a9499ec794e40"
+    },
+    "RadioSpatialSignalReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/RadioSpatialSignalReceipt.json",
+      "path": "schemas/RadioSpatialSignalReceipt.json",
+      "sha256": "sha256:a092cf3c5b71d82aaa7fa2ba19bb64f9da915eb72cfed55800d90adfc56e9c6f"
+    },
+    "Rating": {
+      "$id": "https://schemas.srcos.ai/v2/Rating.json",
+      "path": "schemas/Rating.json",
+      "sha256": "sha256:c93e079a8bbaa1c2eb81bfd22c1fd9bf88a8cefe51ae19df3ceff5797c3848db"
+    },
+    "ReadinessScore": {
+      "$id": "https://schemas.srcos.ai/v2/ReadinessScore.json",
+      "path": "schemas/ReadinessScore.json",
+      "sha256": "sha256:67448cfa11efdf5948a08049d971f2e6466da0f9a352e54f89dc9dd4d14b4a26"
+    },
+    "ReasoningAssay": {
+      "$id": "https://schemas.srcos.ai/v2/ReasoningAssay.json",
+      "path": "schemas/ReasoningAssay.json",
+      "sha256": "sha256:6848253cc9d5e38bcf6b4f8180e8e9e113709c8e4938595456f88518f7541fcf"
+    },
+    "ReasoningBenchmark": {
+      "$id": "https://schemas.srcos.ai/v2/ReasoningBenchmark.json",
+      "path": "schemas/ReasoningBenchmark.json",
+      "sha256": "sha256:06ac64727b3121216f6a3123eea1fbf1e5bd55969d25bc4c19251cd9308941be"
+    },
+    "ReasoningEvent": {
+      "$id": "https://schemas.srcos.ai/v2/ReasoningEvent.json",
+      "path": "schemas/ReasoningEvent.json",
+      "sha256": "sha256:ff24597df3907ea708fbcd083a1d6310351281f4b4045f01cc3f17b837f0b4f5"
+    },
+    "ReasoningReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/ReasoningReceipt.json",
+      "path": "schemas/ReasoningReceipt.json",
+      "sha256": "sha256:c1c54d95ee4d304d2e4c93098675be82ddca093d2311743e62eebb2ab502dd38"
+    },
+    "ReasoningReplayPlan": {
+      "$id": "https://schemas.srcos.ai/v2/ReasoningReplayPlan.json",
+      "path": "schemas/ReasoningReplayPlan.json",
+      "sha256": "sha256:fdff95a270448844df5bc872f40e5ccc8b502989eb736a94015958f340cf2e1f"
+    },
+    "ReasoningRun": {
+      "$id": "https://schemas.srcos.ai/v2/ReasoningRun.json",
+      "path": "schemas/ReasoningRun.json",
+      "sha256": "sha256:2d5fab0db9f02868850814c77fbc3d7d35f35c2ace93c585c97bab86acc613b6"
+    },
+    "RecommendationObject": {
+      "$id": "https://schemas.srcos.ai/v2/RecommendationObject.json",
+      "path": "schemas/RecommendationObject.json",
+      "sha256": "sha256:b31e6dc864fdac752761787dd050c6f3a40bc68d0ae9c5dc73707f2f57c1cb37"
+    },
+    "ReconciliationRecord": {
+      "$id": "https://schemas.srcos.ai/v2/ReconciliationRecord.json",
+      "path": "schemas/ReconciliationRecord.json",
+      "sha256": "sha256:59b3cb1bca2bf67af37f03e5e6d0a863d67a149a1aba8ffff4bc3b7022e4c079"
+    },
+    "RecoveryCeremony": {
+      "$id": "https://schemas.srcos.ai/v2/RecoveryCeremony.json",
+      "path": "schemas/RecoveryCeremony.json",
+      "sha256": "sha256:8711aff10b2d1e4ff11de9a0e759b47f9c23bca94a16aebcdd19ddc5bae22285"
+    },
+    "RedactionTombstone": {
+      "$id": "https://schemas.srcos.ai/v2/RedactionTombstone.json",
+      "path": "schemas/RedactionTombstone.json",
+      "sha256": "sha256:3d2b766d201fb2b795a62f325663c6e645e8cb1e1703ad746fec7a8ea7425223"
+    },
+    "Region": {
+      "$id": "https://schemas.srcos.ai/v2/Region.json",
+      "path": "schemas/Region.json",
+      "sha256": "sha256:29e325b44393f6de93aca64f17b309d507dafddc5490ac321d5b40adbf464bcc"
+    },
+    "ReleaseManifest": {
+      "$id": "https://schemas.srcos.ai/v2/ReleaseManifest.json",
+      "path": "schemas/ReleaseManifest.json",
+      "sha256": "sha256:17c390ca3c945a71260f3625521aff790c69b6a98209129fc8f28e1551798081"
+    },
+    "ReleaseReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/ReleaseReceipt.json",
+      "path": "schemas/ReleaseReceipt.json",
+      "sha256": "sha256:0d02205d5eabac09da8643b716b4a8a35be81642fc7ed4c701bbb90a9e0a5247"
+    },
+    "ReleaseSet": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/ReleaseSet.json",
+      "path": "schemas/control-plane/ReleaseSet.json",
+      "sha256": "sha256:7eaf8e080226d8e818f040eebedc8f33ea651886e483c9e78b49a68584f26331"
+    },
+    "ReplayEnvelope": {
+      "$id": "https://schemas.srcos.ai/v2/ReplayEnvelope.json",
+      "path": "schemas/ReplayEnvelope.json",
+      "sha256": "sha256:217d45d7e804ceae1630bae1b017f69a825cef1e3d62b92de0f5c6763b0ef734"
+    },
+    "ReplicationPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/ReplicationPolicy.json",
+      "path": "schemas/ReplicationPolicy.json",
+      "sha256": "sha256:d8937e6595b0fb0983c492af2859b2d9390b8e2635e80d5b464f97f3ad8ab667"
+    },
+    "ReputationDimension": {
+      "$id": "https://schemas.srcos.ai/v2/ReputationDimension.json",
+      "path": "schemas/ReputationDimension.json",
+      "sha256": "sha256:c3f225e801e51dc44e2d1966e05fa8c680cc061ba47904a048362269048533ea"
+    },
+    "ReserveScenarioReport": {
+      "$id": "https://schemas.srcos.ai/v2/ReserveScenarioReport.json",
+      "path": "schemas/ReserveScenarioReport.json",
+      "sha256": "sha256:e4a878579aae3d3795d8d8a4fb2eb24e1159877ed6306a5fdbf6fadf3f6b4545"
+    },
+    "ResourceContract": {
+      "$id": "https://schemas.srcos.ai/v2/ResourceContract.json",
+      "path": "schemas/ResourceContract.json",
+      "sha256": "sha256:5648cfff204e27b949c30b2466a7730cbfbf9e4ad2056c112753704b8392be32"
+    },
+    "RetryLoopFingerprint": {
+      "$id": "https://schemas.srcos.ai/v2/RetryLoopFingerprint.json",
+      "path": "schemas/RetryLoopFingerprint.json",
+      "sha256": "sha256:c93fdc10eba1445fe4a2f97df15f8d7c6abf74d78f7fc0d3180d9e32ce14b506"
+    },
+    "RevocationEntry": {
+      "$id": "https://schemas.srcos.ai/v2/RevocationEntry.json",
+      "path": "schemas/RevocationEntry.json",
+      "sha256": "sha256:90786fc4e0e76895c155a92e6965dcfc82ee12f23f6163e293b3a5d16763807b"
+    },
+    "RiskCluster": {
+      "$id": "https://schemas.srcos.ai/v2/RiskCluster.json",
+      "path": "schemas/RiskCluster.json",
+      "sha256": "sha256:79ea1a24ce78e49fd18d26e22385d63486a2dd9470460ca46fb6381bda6f4a84"
+    },
+    "RiskIndicator": {
+      "$id": "https://schemas.srcos.ai/v2/RiskIndicator.json",
+      "path": "schemas/RiskIndicator.json",
+      "sha256": "sha256:7ebc7d704bbae24402701ddc7f0cfda631d464f37404f2dc904a18d7b859daa1"
+    },
+    "RiskNode": {
+      "$id": "https://schemas.srcos.ai/v2/RiskNode.json",
+      "path": "schemas/RiskNode.json",
+      "sha256": "sha256:c75122663d7662129c5bf75b69225b986da1457464047536c3b9a363bc1b1225"
+    },
+    "RiskPath": {
+      "$id": "https://schemas.srcos.ai/v2/RiskPath.json",
+      "path": "schemas/RiskPath.json",
+      "sha256": "sha256:0223fac4342f317b08019a422c009edde19277900313545c63856578c7731d44"
+    },
+    "RolloutPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/RolloutPolicy.json",
+      "path": "schemas/RolloutPolicy.json",
+      "sha256": "sha256:2569d57834e5cd87c009da069a95b2fccf2aadf1e53b815f5a9b5a53f5b85bd3"
+    },
+    "RoutingContract": {
+      "$id": "https://schemas.srcos.ai/v2/RoutingContract.json",
+      "path": "schemas/RoutingContract.json",
+      "sha256": "sha256:f496863f4063e629a1d9a68731d9dcb03771505015927a2d9cc1c4e85b627615"
+    },
+    "Rule": {
+      "$id": "https://schemas.srcos.ai/v2/Rule.json",
+      "path": "schemas/Rule.json",
+      "sha256": "sha256:661b702427fa32550632ed1440804d6540a60303aca114bc1aac5d00f26a6489"
+    },
+    "RunRecord": {
+      "$id": "https://schemas.srcos.ai/v2/RunRecord.json",
+      "path": "schemas/RunRecord.json",
+      "sha256": "sha256:5b652dc947a8ad506d78b28564764bf8591874f8f8085cbb7afe9fe8a556f0af"
+    },
+    "RunnerGroup": {
+      "$id": "https://schemas.srcos.ai/v2/RunnerGroup.json",
+      "path": "schemas/RunnerGroup.json",
+      "sha256": "sha256:7c74cd27a6ef1e6adae98010b98cb749c9225c937665f99f888a8e084e9629d5"
+    },
+    "RuntimeIdentityGraph": {
+      "$id": "https://schemas.srcos.ai/v2/RuntimeIdentityGraph.json",
+      "path": "schemas/RuntimeIdentityGraph.json",
+      "sha256": "sha256:aa78bf0056ad3079ce2e753cb549f49e63fd43e49ee006f01eed47ca050ad3c9"
+    },
+    "RuntimeInstallReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/RuntimeInstallReceipt.json",
+      "path": "schemas/RuntimeInstallReceipt.json",
+      "sha256": "sha256:91c92fe3189888b9d3b012eb1adfb86fa6f0a1a3374ede6b46f9eeac745149e9"
+    },
+    "RuntimeRegistryIntegrityRecord": {
+      "$id": "https://schemas.srcos.ai/v2/RuntimeRegistryIntegrityRecord.json",
+      "path": "schemas/RuntimeRegistryIntegrityRecord.json",
+      "sha256": "sha256:b82f9addb14e2fc24212c730c0c1ceb91cc234c9d19c28d631be7f80f4b07cc2"
+    },
+    "SacredCapitalLedger": {
+      "$id": "https://schemas.srcos.ai/v2/SacredCapitalLedger.json",
+      "path": "schemas/SacredCapitalLedger.json",
+      "sha256": "sha256:8bf117c16ca91b7a94bb9feb8a0e245340690a7ac4628c4a4b8d696d2a8e31e4"
+    },
+    "SchemaDefinition": {
+      "$id": "https://schemas.srcos.ai/v2/SchemaDefinition.json",
+      "path": "schemas/SchemaDefinition.json",
+      "sha256": "sha256:6003a1ae2abed622dfdc1480e4aaa98c2e563cdfa817e7a74945c0284b020e95"
+    },
+    "SeamDefinition": {
+      "$id": "https://schemas.srcos.ai/v2/SeamDefinition.json",
+      "path": "schemas/SeamDefinition.json",
+      "sha256": "sha256:f843159b6b0ddcce81c757fd2e64fee45a1ded811ea238653b2afc1aa6fe7a62"
+    },
+    "SecurityVerdictState": {
+      "$id": "https://schemas.srcos.ai/v2/SecurityVerdictState.json",
+      "path": "schemas/SecurityVerdictState.json",
+      "sha256": "sha256:e7b86a93712c9f86e9f80c8abb30074868254635320906c6f6e9f5c9a3523725"
+    },
+    "SemanticAction": {
+      "$id": "https://schemas.srcos.ai/v2/SemanticAction.json",
+      "path": "schemas/SemanticAction.json",
+      "sha256": "sha256:54ed61e90fe4a7299284f6d01f000de1b98ff2bb6bccc44e8644495bacd7e32b"
+    },
+    "SemanticEvidenceChain": {
+      "$id": "https://schemas.srcos.ai/v2/SemanticEvidenceChain.json",
+      "path": "schemas/SemanticEvidenceChain.json",
+      "sha256": "sha256:cdb6ae1b466c3757d4f9cb904fce45dd860ed111e2e94a458b5a0288de74a92c"
+    },
+    "SessionReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/SessionReceipt.json",
+      "path": "schemas/SessionReceipt.json",
+      "sha256": "sha256:b18a804ae13b7974ac362407a57fa2582c8e998e2e5ad2545055bc5a0c5cbbc9"
+    },
+    "SessionReview": {
+      "$id": "https://schemas.srcos.ai/v2/SessionReview.json",
+      "path": "schemas/SessionReview.json",
+      "sha256": "sha256:acc9f1bdf36e7698ad2d660e442cf8bb9e79a8873a3dbaf3f382aedb3f3ba9a7"
+    },
+    "SettlementEvent": {
+      "$id": "https://schemas.srcos.ai/v2/SettlementEvent.json",
+      "path": "schemas/SettlementEvent.json",
+      "sha256": "sha256:e12dffbdbc7c95e3004d723b71d3f7dfcaa45950ab4c110ed49f587270d02585"
+    },
+    "SharedLibrary": {
+      "$id": "https://schemas.srcos.ai/v2/SharedLibrary.json",
+      "path": "schemas/SharedLibrary.json",
+      "sha256": "sha256:7658dfc902f7c987206452ab9454014acf530c31db2c9f5cde5ed4a2f8733fdb"
+    },
+    "ShellReceiptEvent": {
+      "$id": "https://schemas.srcos.ai/v2/ShellReceiptEvent.json",
+      "path": "schemas/ShellReceiptEvent.json",
+      "sha256": "sha256:e82c5f0c8761d7396667294d398ebbd477df41c5390499749f3fd9f90a9854c3"
+    },
+    "SkillExecutionEvent": {
+      "$id": "https://schemas.srcos.ai/v2/control-plane/SkillExecutionEvent.json",
+      "path": "schemas/control-plane/SkillExecutionEvent.json",
+      "sha256": "sha256:099caccf4a9c743a71d4f017b9ce371b64834a2be83b54cb9cd66b025cfd5674"
+    },
+    "SkillManifest": {
+      "$id": "https://schemas.srcos.ai/v2/SkillManifest.json",
+      "path": "schemas/SkillManifest.json",
+      "sha256": "sha256:dd50f7ac5a34af27e5b727af9542dd6f41f7e86c3cf227afed5a77640c25c007"
+    },
+    "SoftwareOperationalAnalysisBundle": {
+      "$id": "https://schemas.srcos.ai/v2/SoftwareOperationalAnalysisBundle.json",
+      "path": "schemas/SoftwareOperationalAnalysisBundle.json",
+      "sha256": "sha256:a331fcfe520fa736d33f0723e0ae4b935b3cbb9f5ba686767ceeeee42b3f6084"
+    },
+    "SoftwareOperationalIncident": {
+      "$id": "https://schemas.srcos.ai/v2/SoftwareOperationalIncident.json",
+      "path": "schemas/SoftwareOperationalIncident.json",
+      "sha256": "sha256:b36e12598e7e57e1f663bd2016fc7ed4db608af4d5251a216dd3a1a4675a2ac9"
+    },
+    "SoftwareOperationalScenarioRun": {
+      "$id": "https://schemas.srcos.ai/v2/SoftwareOperationalScenarioRun.json",
+      "path": "schemas/SoftwareOperationalScenarioRun.json",
+      "sha256": "sha256:cbd06ea310542ec4569aee750f1d183a5a9c630ba0f653fda959ea8315148a57"
+    },
+    "SourceChannelEnvelope": {
+      "$id": "https://schemas.srcos.ai/v2/SourceChannelEnvelope.json",
+      "path": "schemas/SourceChannelEnvelope.json",
+      "sha256": "sha256:4a0c15339fdf325949d5622f54b0014f4b884d9d3b55b5aa8f93c5897cf49489"
+    },
+    "SourceGraphWrite": {
+      "$id": "https://schemas.srcos.ai/v2/SourceGraphWrite.json",
+      "path": "schemas/SourceGraphWrite.json",
+      "sha256": "sha256:9b0beb1038080e416260889ef89a3e2e8e1ff4770833dd2e1e6e88da962a2c47"
+    },
+    "SourceLocator": {
+      "$id": "https://schemas.srcos.ai/v2/SourceLocator.json",
+      "path": "schemas/SourceLocator.json",
+      "sha256": "sha256:b306af584c9166e8dd19d5574c3d7def293e9cdd88b89a4740be0f1e7d3108fa"
+    },
+    "SourceOSInteractionEvent": {
+      "$id": "https://schemas.srcos.ai/v2/SourceOSInteractionEvent.json",
+      "path": "schemas/SourceOSInteractionEvent.json",
+      "sha256": "sha256:a7b901b620f0fe63a04f6f0e13dbcc80606d7e7669d493337bab9687eef505d9"
+    },
+    "SourceOSModelCarryRef": {
+      "$id": "https://schemas.srcos.ai/v2/SourceOSModelCarryRef.json",
+      "path": "schemas/SourceOSModelCarryRef.json",
+      "sha256": "sha256:a649452472bef9d6bd4fd99e903561074c371346905beeffc1eb7a990e5a8092"
+    },
+    "SourceOSRepoManifest": {
+      "$id": "https://schemas.srcos.ai/v2/SourceOSRepoManifest.json",
+      "path": "schemas/SourceOSRepoManifest.json",
+      "sha256": "sha256:ee8119bdf6f57d9a850c978644c24fc3e078bcea0fe8ae0629115cd7fb556a8b"
+    },
+    "StagedDeployment": {
+      "$id": "https://schemas.srcos.ai/v2/StagedDeployment.json",
+      "path": "schemas/StagedDeployment.json",
+      "sha256": "sha256:fdae8aeff1efd82aa7386e080c0b7fca0bc226987afbf834aec48bdfdac137dd"
+    },
+    "StaleStateRecord": {
+      "$id": "https://schemas.srcos.ai/v2/StaleStateRecord.json",
+      "path": "schemas/StaleStateRecord.json",
+      "sha256": "sha256:d1ea7cb9e22e7a94f89d24c5c1d3fec0a6ac7c882904681d087067d508ce6089"
+    },
+    "StateVector": {
+      "$id": "https://schemas.srcos.ai/v2/StateVector.json",
+      "path": "schemas/StateVector.json",
+      "sha256": "sha256:d652f61c007447c97139960f013550559dadf39167ad408a99faebb242a078af"
+    },
+    "StorageSurface": {
+      "$id": "https://schemas.srcos.ai/v2/StorageSurface.json",
+      "path": "schemas/StorageSurface.json",
+      "sha256": "sha256:fd47d5591bad7a48ff18d2aaceb2287cb5935b591641dd7d5030de0b4391b047"
+    },
+    "SubjectContext": {
+      "$id": "https://schemas.srcos.ai/v2/SubjectContext.json",
+      "path": "schemas/SubjectContext.json",
+      "sha256": "sha256:f721e509b48ec63a1c38cd5b709fbde82fedfd2dfd0cf55a759efb0b058b27aa"
+    },
+    "SubjectSelector": {
+      "$id": "https://schemas.srcos.ai/v2/SubjectSelector.json",
+      "path": "schemas/SubjectSelector.json",
+      "sha256": "sha256:b5080176d670b9bdc65f5816a24ca2c0e61bec26a4d4ff64e378e49983043558"
+    },
+    "SurfaceRegistry": {
+      "$id": "https://schemas.srcos.ai/v2/SurfaceRegistry.json",
+      "path": "schemas/SurfaceRegistry.json",
+      "sha256": "sha256:a6bd069efadf8e282267eba1d2dbb277200cfc5375c7e5022bf69934210023f2"
+    },
+    "SyncCheckpoint": {
+      "$id": "https://schemas.srcos.ai/v2/SyncCheckpoint.json",
+      "path": "schemas/SyncCheckpoint.json",
+      "sha256": "sha256:7b8d1a411025409d383964af474a030fff8a41880a51e493cf4eaaa0adb657e9"
+    },
+    "SyncConflictRecord": {
+      "$id": "https://schemas.srcos.ai/v2/SyncConflictRecord.json",
+      "path": "schemas/SyncConflictRecord.json",
+      "sha256": "sha256:c50da5bc57d3b56bb4e715462daa2286713beb959c03937cabf1978388a208a5"
+    },
+    "SyncCycleReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/SyncCycleReceipt.json",
+      "path": "schemas/SyncCycleReceipt.json",
+      "sha256": "sha256:7ef7799759d63291bc3673220cb6ec993742435b2f557c165c427abbed404b3c"
+    },
+    "SyncEngineManifest": {
+      "$id": "https://schemas.srcos.ai/v2/SyncEngineManifest.json",
+      "path": "schemas/SyncEngineManifest.json",
+      "sha256": "sha256:0d1648441e0dcddc39e806197a5fe4a0d3219b5b1fbd72f789a3f45beb8d2bb2"
+    },
+    "TableClassifier": {
+      "$id": "https://schemas.srcos.ai/v2/TableClassifier.json",
+      "path": "schemas/TableClassifier.json",
+      "sha256": "sha256:cccef09a342fd9847843d951a6696d3c694e62eb4820fb0ceef301f3acfac8e1"
+    },
+    "TagAssignment": {
+      "$id": "https://schemas.srcos.ai/v2/TagAssignment.json",
+      "path": "schemas/TagAssignment.json",
+      "sha256": "sha256:8e8e8d22466e454703dce58c00befd97bcdcff8cfd5b723a78daa908b5f1ee0d"
+    },
+    "TelemetryEvent": {
+      "$id": "https://schemas.srcos.ai/v2/TelemetryEvent.json",
+      "path": "schemas/TelemetryEvent.json",
+      "sha256": "sha256:09802061841472eab1c75904b3cecec7448957b931be9dafd83d11f3fec9e4f2"
+    },
+    "TokenDoor": {
+      "$id": "https://schemas.srcos.ai/v2/TokenDoor.json",
+      "path": "schemas/TokenDoor.json",
+      "sha256": "sha256:30dbd09242d99a94b71b943ae1d5da5f9c26aac49f6281edb2a733b5f88686ae"
+    },
+    "ToolExposurePolicy": {
+      "$id": "https://schemas.srcos.ai/v2/ToolExposurePolicy.json",
+      "path": "schemas/ToolExposurePolicy.json",
+      "sha256": "sha256:630a986c3416e8625ca174178fbd5d255f3ce05eda043dda1eb1718a3d3dc42c"
+    },
+    "Topic": {
+      "$id": "https://schemas.srcos.ai/v2/Topic.json",
+      "path": "schemas/Topic.json",
+      "sha256": "sha256:33b690272f25ee2ebf9e05dc4152eaa923f68060ee81381260f703c4f38e45f0"
+    },
+    "TopicEnvelope": {
+      "$id": "https://schemas.srcos.ai/v2/TopicEnvelope.json",
+      "path": "schemas/TopicEnvelope.json",
+      "sha256": "sha256:db10efc9ddd96b3adf92edce72ffe3b728d18f93b5edb7a9b62a0899aeafcb1b"
+    },
+    "TopoLVMPlacementProfile": {
+      "$id": "https://schemas.srcos.ai/v2/TopoLVMPlacementProfile.json",
+      "path": "schemas/TopoLVMPlacementProfile.json",
+      "sha256": "sha256:c398aac853c710f7d4187a196129cfb11709ed44d73ba88426211b069c52b07f"
+    },
+    "Trigger": {
+      "$id": "https://schemas.srcos.ai/v2/Trigger.json",
+      "path": "schemas/Trigger.json",
+      "sha256": "sha256:3776c9871cd11c53c5d245a237a22be5774db9f52afbc11c16443e1f65cff612"
+    },
+    "TripartyBundle": {
+      "$id": "https://schemas.srcos.ai/v2/TripartyBundle.json",
+      "path": "schemas/TripartyBundle.json",
+      "sha256": "sha256:05cf0f1739655e88c622873bc73cbe853cc54601d4ce7f7f1620c67e119d9771"
+    },
+    "TriuneRPC": {
+      "$id": "https://spec.sourceos.linux/schemas/TriuneRPC.json",
+      "path": "schemas/TriuneRPC.json",
+      "sha256": "sha256:db75f5e8933f0d73d915f55a8e8a026d31f2047070c28ee8380031a8213297ac"
+    },
+    "TrustEvent": {
+      "$id": "https://schemas.srcos.ai/v2/TrustEvent.json",
+      "path": "schemas/TrustEvent.json",
+      "sha256": "sha256:3e29df514763fc3bc4b7fed3af3c6a769942e1e7f450befb19e7cb23863fd456"
+    },
+    "TrustMode": {
+      "$id": "https://schemas.srcos.ai/v2/TrustMode.json",
+      "path": "schemas/TrustMode.json",
+      "sha256": "sha256:c3e68f4e196ef78cad8eb03c58ac4ea83444b0b845a8930a34f3e0df4eb648f8"
+    },
+    "TruthSurface": {
+      "$id": "https://schemas.srcos.ai/v2/TruthSurface.json",
+      "path": "schemas/TruthSurface.json",
+      "sha256": "sha256:4d23dd9ab71e0fcb7bbcca705a5fce5feb742dcfebf5b5d0b4ebecb201cfe425"
+    },
+    "TwinAttestation": {
+      "$id": "https://schemas.srcos.ai/v2/TwinAttestation.json",
+      "path": "schemas/TwinAttestation.json",
+      "sha256": "sha256:4f39857d4b2685ab9a87be77ba82b64da3e5633e88a72b5a957bb24ffa92ca00"
+    },
+    "TwinEventEnvelope": {
+      "$id": "https://schemas.srcos.ai/v2/TwinEventEnvelope.json",
+      "path": "schemas/TwinEventEnvelope.json",
+      "sha256": "sha256:68a18f33b934a4c37297ad26fdb5082788c15c6ddc22720798eea767674d321d"
+    },
+    "UpdateHealthProbe": {
+      "$id": "https://schemas.srcos.ai/v2/UpdateHealthProbe.json",
+      "path": "schemas/UpdateHealthProbe.json",
+      "sha256": "sha256:b9e179a8555df1716fcff4eddf7d90a9c0b301a87eb2b85cafb82193f2d14f4a"
+    },
+    "UpdateSlot": {
+      "$id": "https://schemas.srcos.ai/v2/UpdateSlot.json",
+      "path": "schemas/UpdateSlot.json",
+      "sha256": "sha256:bc8c96f8065040ddb7fb06c8a49e4249dbedf252504cda3ea60fa279ad2e5606"
+    },
+    "UpdateTransaction": {
+      "$id": "https://schemas.srcos.ai/v2/UpdateTransaction.json",
+      "path": "schemas/UpdateTransaction.json",
+      "sha256": "sha256:f0680cc44c6c5d0cf8feae37bd905a1c353838da2ea47411e943b1eb9d523a1b"
+    },
+    "UpstreamWatchItem": {
+      "$id": "https://schemas.srcos.ai/v2/UpstreamWatchItem.json",
+      "path": "schemas/UpstreamWatchItem.json",
+      "sha256": "sha256:9a9e2ed5d9b2a41662848e0667f408da28698f9caca31f1f578cf0c0d8d7c2ef"
+    },
+    "UsageReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/UsageReceipt.json",
+      "path": "schemas/UsageReceipt.json",
+      "sha256": "sha256:c17394b7dfd320bfa7e5cf2e9dcca7f780a30138286b6e96f0e047ad5930d97e"
+    },
+    "ValidValues": {
+      "$id": "https://schemas.srcos.ai/v2/ValidValues.json",
+      "path": "schemas/ValidValues.json",
+      "sha256": "sha256:c570cf2df19bfa90a1bf43b5882ebec09ac2f32116898f994502751b3f2b8236"
+    },
+    "ValidatorDecision": {
+      "$id": "https://schemas.srcos.ai/v2/ValidatorDecision.json",
+      "path": "schemas/ValidatorDecision.json",
+      "sha256": "sha256:79c60e054eb2dce9a5ef277160e69dadcbd3bebd31f03efa59bd3548ba27b990"
+    },
+    "ValidatorPacket": {
+      "$id": "https://schemas.srcos.ai/v2/ValidatorPacket.json",
+      "path": "schemas/ValidatorPacket.json",
+      "sha256": "sha256:5ebd8a0f343e4239343bf2624a52f607213b8264b12438a947690d3e5df0b053"
+    },
+    "ValidatorReceipt": {
+      "$id": "https://schemas.srcos.ai/v2/ValidatorReceipt.json",
+      "path": "schemas/ValidatorReceipt.json",
+      "sha256": "sha256:39accdab4c7ea4b3d74aa2e8ecf4d28168278d3f6e660eeda4cebc9d9c8f4544"
+    },
+    "ValidatorTrustRoot": {
+      "$id": "https://schemas.srcos.ai/v2/ValidatorTrustRoot.json",
+      "path": "schemas/ValidatorTrustRoot.json",
+      "sha256": "sha256:e0178669b55f6752289c78574a874da6ad2ce38b51ef23816499dafcaaa4a7f7"
+    },
+    "ValueType": {
+      "$id": "https://schemas.srcos.ai/v2/ValueType.json",
+      "path": "schemas/ValueType.json",
+      "sha256": "sha256:8e96b0410c2e08993d266ba17dedadb2a6d4a336690069a221a0cc8bd3d643b4"
+    },
+    "WorkOrder": {
+      "$id": "https://schemas.srcos.ai/v2/WorkOrder.json",
+      "path": "schemas/WorkOrder.json",
+      "sha256": "sha256:c4a4aaeeabe8bcf71d777efdaee8dca0793581fab32cc9461c22f9ef26648006"
+    },
+    "WorkflowEdge": {
+      "$id": "https://schemas.srcos.ai/v2/WorkflowEdge.json",
+      "path": "schemas/WorkflowEdge.json",
+      "sha256": "sha256:8a68d34c8d8b2951048d7220fe9d4795644d397c49c911c5a1c5f748e7e70c88"
+    },
+    "WorkflowNode": {
+      "$id": "https://schemas.srcos.ai/v2/WorkflowNode.json",
+      "path": "schemas/WorkflowNode.json",
+      "sha256": "sha256:ca0c4080cf8aff1d00ac1d4f16b178f93fc6a52deb1a57922e4f16c81dbf432e"
+    },
+    "WorkflowSpec": {
+      "$id": "https://schemas.srcos.ai/v2/WorkflowSpec.json",
+      "path": "schemas/WorkflowSpec.json",
+      "sha256": "sha256:d9257c3817ab3a9af36f6eb20b53bcac13844648f41f9bcd988e4b20f681950f"
+    },
+    "WorkloadSpec": {
+      "$id": "https://schemas.srcos.ai/v2/WorkloadSpec.json",
+      "path": "schemas/WorkloadSpec.json",
+      "sha256": "sha256:06e1ebfef50faaf108a88ee93fa1d093fe34de43cbc1d04d22d4931f46e6a9f2"
+    },
+    "WorkspaceCapabilityProfile": {
+      "$id": "https://schemas.srcos.ai/v2/WorkspaceCapabilityProfile.json",
+      "path": "schemas/WorkspaceCapabilityProfile.json",
+      "sha256": "sha256:7f1dbae508ac13e5eb861cca3df437f9b637647916afcf3b724973ac65cf1047"
+    },
+    "WorkspaceScope": {
+      "$id": "https://schemas.srcos.ai/v2/WorkspaceScope.json",
+      "path": "schemas/WorkspaceScope.json",
+      "sha256": "sha256:579953fdfe93cff1c6aad66beaab7a666182a7007af09fc02f8df6cbed05231b"
+    },
+    "WorkstationDoctorReport": {
+      "$id": "https://schemas.srcos.ai/v2/WorkstationDoctorReport.json",
+      "path": "schemas/WorkstationDoctorReport.json",
+      "sha256": "sha256:c3075005fbfb525777c8c04893e21290cd881e4825eb6987df3d91e0b1b99495"
+    },
+    "WorkstationFixAllReport": {
+      "$id": "https://schemas.srcos.ai/v2/WorkstationFixAllReport.json",
+      "path": "schemas/WorkstationFixAllReport.json",
+      "sha256": "sha256:8fc49c3ad4a6cbd3ce1226e5a8ce1bea8e97cf7010bc14e376b5bbf4ab251f84"
+    },
+    "WorkstationFixFishReport": {
+      "$id": "https://schemas.srcos.ai/v2/WorkstationFixFishReport.json",
+      "path": "schemas/WorkstationFixFishReport.json",
+      "sha256": "sha256:d3c208307a0e623d520422c6b20667962c775858ae1048f6bbed833ac4498e17"
+    },
+    "WorkstationFixShellReport": {
+      "$id": "https://schemas.srcos.ai/v2/WorkstationFixShellReport.json",
+      "path": "schemas/WorkstationFixShellReport.json",
+      "sha256": "sha256:e8a40d006109eee4bd521d58248c8a3dfa8657d386caa14cb21ce85248af1530"
+    },
+    "WorkstationProfile": {
+      "$id": "https://schemas.srcos.ai/v2/WorkstationProfile.json",
+      "path": "schemas/WorkstationProfile.json",
+      "sha256": "sha256:56b643e7b7af24ee304e5e4a3aaa0beb4662810460207ef41bc71c4d058f0ed7"
+    },
+    "WorldModel": {
+      "$id": "https://schemas.srcos.ai/v2/WorldModel.json",
+      "path": "schemas/WorldModel.json",
+      "sha256": "sha256:815f8fa9b15266401de25594d7b145e5ae9f0857ce1353c05af6f22c83ffab18"
+    },
+    "agent-grant.v1.1": {
+      "$id": "https://sourceos.dev/schemas/agent-grant.v1.1.json",
+      "path": "schemas/agent-grant.v1.1.json",
+      "sha256": "sha256:c90fc00c66b01001a12f3ca5d48fe2502f17309150f984ac1352ff2efa04409e"
+    },
+    "artifact-source-lock.v0": {
+      "$id": "https://sourceos.dev/schemas/interpretability/artifact-source-lock.v0.json",
+      "path": "schemas/interpretability/artifact-source-lock.v0.json",
+      "sha256": "sha256:918bed1a49fd561fcf49c8ae2560d9c1a314403cdc9626c22f08ce312c746798"
+    },
+    "boot-release-set": {
+      "$id": "https://socioprophet.org/schemas/control-plane/boot-release-set.schema.json",
+      "path": "schemas/control-plane/boot-release-set.schema.json",
+      "sha256": "sha256:1474359748efccb769ec749c635d6f61713b6578f517185dffd1792f19d63112"
+    },
+    "enrollment-token": {
+      "$id": "https://socioprophet.org/schemas/control-plane/enrollment-token.schema.json",
+      "path": "schemas/control-plane/enrollment-token.schema.json",
+      "sha256": "sha256:11711cea8b36b08f6a50ec2afdd3c452f7d556068238ab87f16f656d231fc9df"
+    },
+    "experience-profile": {
+      "$id": "https://socioprophet.org/schemas/control-plane/experience-profile.schema.json",
+      "path": "schemas/control-plane/experience-profile.schema.json",
+      "sha256": "sha256:32c172d1d51cf143c1cd35474409361c1feef38105628e0e4cbca8761e8e084d"
+    },
+    "fingerprint": {
+      "$id": "https://socioprophet.org/schemas/control-plane/fingerprint.schema.json",
+      "path": "schemas/control-plane/fingerprint.schema.json",
+      "sha256": "sha256:b55bddb22b67b8628c22ec78972c291fd5f6db4550cdb807e8e46c1a7d09c4fc"
+    },
+    "grant-state-decision.v1.1": {
+      "$id": "https://sourceos.dev/schemas/grant-state-decision.v1.1.json",
+      "path": "schemas/grant-state-decision.v1.1.json",
+      "sha256": "sha256:6a544ffddacc2ef82b9d567c6f37955291ee730dfaf67527c6724a9c1253ebc0"
+    },
+    "incident-events": {
+      "$id": "https://socioprophet.org/schemas/events/incident-events.schema.json",
+      "path": "schemas/control-plane/incident-events.schema.json",
+      "sha256": "sha256:ffb5586e02d21d4a44fc9b3d54f41735b64eae51e4ab2d71f6159c67d68e0d98"
+    },
+    "intervention-spec.v0": {
+      "$id": "https://sourceos.dev/schemas/interpretability/intervention-spec.v0.json",
+      "path": "schemas/interpretability/intervention-spec.v0.json",
+      "sha256": "sha256:86cabd6cc02fa4bbd5905993d1aa5c4446f7b6547014ba7024ff388dc84839fd"
+    },
+    "isolation-profile": {
+      "$id": "https://socioprophet.org/schemas/control-plane/isolation-profile.schema.json",
+      "path": "schemas/control-plane/isolation-profile.schema.json",
+      "sha256": "sha256:a6adbfd987cfe225ed2ffe7a1e9c308adb327e57e58676c502920b375a7ab64c"
+    },
+    "mesh-skill": {
+      "$id": "https://socioprophet.org/schemas/control-plane/mesh-skill.schema.json",
+      "path": "schemas/control-plane/mesh-skill.schema.json",
+      "sha256": "sha256:5b086e086beb6eb90044ac74e32cea86d79b56a231ad81c3d9154fd2fdc1e0cd"
+    },
+    "policy-decision.v1.1": {
+      "$id": "https://sourceos.dev/schemas/policy-decision.v1.1.json",
+      "path": "schemas/policy-decision.v1.1.json",
+      "sha256": "sha256:549c6b810e566909f1d6c78ec4198f6b004d33342bb8a4526e8f775c3d1481f1"
+    },
+    "provider-binding.v0": {
+      "$id": "https://sourceos.dev/schemas/interpretability/provider-binding.v0.json",
+      "path": "schemas/interpretability/provider-binding.v0.json",
+      "sha256": "sha256:8077c84ceb1990c3b68ad9d5b38cbbc97310f1706b00ed14006f9bb82548c928"
+    },
+    "release-set": {
+      "$id": "https://socioprophet.org/schemas/control-plane/release-set.schema.json",
+      "path": "schemas/control-plane/release-set.schema.json",
+      "sha256": "sha256:60a41bc10ef6b55011a37dcc26b9e7985e7702d69f008eaf4e8c2259dbf320ba"
+    },
+    "runtime-effect-decision.v1.1": {
+      "$id": "https://sourceos.dev/schemas/runtime-effect-decision.v1.1.json",
+      "path": "schemas/runtime-effect-decision.v1.1.json",
+      "sha256": "sha256:1573875af136d60ca3376742d826940b737ffc4044d9d40a48d9dc3cdc2e2fff"
+    },
+    "skill-execution-events": {
+      "$id": "https://socioprophet.org/schemas/events/skill-execution-events.schema.json",
+      "path": "schemas/control-plane/skill-execution-events.schema.json",
+      "sha256": "sha256:b75747be2cfd75c512c1fbfbaddb886b8c3cff2c6359c270d84dcb59281424d9"
+    },
+    "urn:sourceos:schema:repo-descriptor:0.1.0": {
+      "$id": "urn:sourceos:schema:repo-descriptor:0.1.0",
+      "path": "schemas/repo_descriptor.schema.json",
+      "sha256": "sha256:9ed3821cda2af52cff07329f3927353dd1830e4179a2c06003a176c9231cdb36"
+    },
+    "urn:srcos:schema:AnnotationExport": {
+      "$id": "urn:srcos:schema:AnnotationExport",
+      "path": "schemas/AnnotationExport.json",
+      "sha256": "sha256:3e748c032121fc20837ca022aa38b003bb022145957ecd9ca0dc5702ee5a1885"
+    },
+    "urn:srcos:schema:ArtifactManifest": {
+      "$id": "urn:srcos:schema:ArtifactManifest",
+      "path": "schemas/ArtifactManifest.json",
+      "sha256": "sha256:5737fa3fe09d83e87037b6928eb0b0187b54397e1c530d0cc6b58c27bd19bae4"
+    },
+    "urn:srcos:schema:CommentSignal": {
+      "$id": "urn:srcos:schema:CommentSignal",
+      "path": "schemas/CommentSignal.json",
+      "sha256": "sha256:a96c964e1b3eb1c014a9a08d172244541323b760f2f2a3a7f357587966017d6e"
+    },
+    "urn:srcos:schema:MirrorReceipt": {
+      "$id": "urn:srcos:schema:MirrorReceipt",
+      "path": "schemas/MirrorReceipt.json",
+      "sha256": "sha256:be48dcd3251c34af7c4814b7891d55e6157f59a940ddc3b4a75530a7eb7b77e4"
+    },
+    "urn:srcos:schema:NoetherDiagnostic": {
+      "$id": "urn:srcos:schema:NoetherDiagnostic",
+      "path": "schemas/NoetherDiagnostic.json",
+      "sha256": "sha256:41dfa8d46ebb45f99ceac99a2483a9b77cb7faf20bdfea0511a87e29c7b6b5c4"
+    },
+    "urn:srcos:schema:PdfValidationReport": {
+      "$id": "urn:srcos:schema:PdfValidationReport",
+      "path": "schemas/PdfValidationReport.json",
+      "sha256": "sha256:5592924c0e39217d1cdde2724933ba609a8614270e81b2a1b6ac47b06c945df2"
+    },
+    "urn:srcos:schema:PublishDecision": {
+      "$id": "urn:srcos:schema:PublishDecision",
+      "path": "schemas/PublishDecision.json",
+      "sha256": "sha256:b89ee8475259c78077bdf427936b71ce1bc695b707cfeb7b055e72e3e72e2b43"
+    },
+    "urn:srcos:schema:RunReport": {
+      "$id": "urn:srcos:schema:RunReport",
+      "path": "schemas/RunReport.json",
+      "sha256": "sha256:6691003384b7e9b38c268c1a9c2cb94a1c2a8eac158e96111c7b87045e1e72a0"
+    },
+    "urn:srcos:schema:SearchRouteDecision": {
+      "$id": "urn:srcos:schema:SearchRouteDecision",
+      "path": "schemas/SearchRouteDecision.json",
+      "sha256": "sha256:426b20afaa5607d9b6bb556badbc4e6899574b88020e37f41af171b156bc8672"
+    },
+    "urn:srcos:schema:SignedArtifact": {
+      "$id": "urn:srcos:schema:SignedArtifact",
+      "path": "schemas/SignedArtifact.json",
+      "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
+    }
+  },
+  "count": 355
+}

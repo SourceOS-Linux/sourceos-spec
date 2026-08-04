@@ -1,0 +1,50 @@
+name: propagate-contracts-on-merge
+
+# Actuation layer — the "merge to main solves its own updates" mechanism that was DESIGNED
+# (SourceOSRepoManifest.auditEvents: spec.schema.added) but never actuated. On a merge that
+# changes canonical schemas, dispatch a re-sync to every registered consumer so each opens a
+# vendored-copy update PR (which the self-heal responder can then land). Closes the propagation
+# gap: a contract merged here reaches its consumers without a human chasing each repo.
+on:
+  push:
+    branches: [main]
+    paths: ['schemas/**', 'registry/contract-registry.json']
+
+permissions:
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Dispatch a re-sync to every registered consumer
+        env:
+          # A token with `repository_dispatch` scope on the consumer repos. Minted in CI; never a PAT.
+          DISPATCH_TOKEN: ${{ secrets.CONSUMER_DISPATCH_TOKEN }}
+        run: |
+          if [ -z "${DISPATCH_TOKEN:-}" ]; then
+            echo "::warning::CONSUMER_DISPATCH_TOKEN not set — recording the intent, not dispatching."
+          fi
+          sha="${GITHUB_SHA}"
+          python3 - "$sha" <<'PY'
+          import json, os, subprocess, sys
+          sha = sys.argv[1]
+          consumers = json.load(open("registry/consumers.json"))["consumers"]
+          token = os.environ.get("DISPATCH_TOKEN", "")
+          for c in consumers:
+              payload = {"event_type": c["dispatchType"],
+                         "client_payload": {"spec_sha": sha, "schemasDir": c["schemasDir"]}}
+              print(f"→ {c['repo']}: {c['dispatchType']} @ {sha[:12]}")
+              if not token:
+                  continue
+              subprocess.run(
+                  ["curl", "-sf", "-X", "POST",
+                   "-H", "Accept: application/vnd.github+json",
+                   "-H", f"Authorization: Bearer {token}",
+                   f"https://api.github.com/repos/{c['repo']}/dispatches",
+                   "-d", json.dumps(payload)],
+                  check=False,
+              )
+          print(f"dispatched to {len(consumers)} consumer(s)")
+          PY
