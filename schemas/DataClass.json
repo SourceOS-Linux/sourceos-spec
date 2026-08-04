@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.srcos.ai/v2/DataClass.json",
   "title": "DataClass",
-  "description": "An OntoDT/OntoDQ data class: a data type/class defined ontologically (mereotopology in the datatype ontology) with its value domain, its business glossary term, and an optional TF-Lattice wide-and-deep classifier — registered in the model catalog with a run on Ray/TritFabric — that assigns this class by inference. Bridges the business vocabulary (GlossaryTerm) to the data (EntityField). Governs data quality: a field bound to this class must conform to its domain.",
+  "description": "An OntoDT/OntoDQ data class: a data type/class defined ontologically (mereotopology in the datatype ontology) with its value domain, its business glossary term, and an optional structurally-monotone classifier \u2014 registered in the model catalog with a run on Ray/TritFabric \u2014 that assigns this class by inference. Bridges the business vocabulary (GlossaryTerm) to the data (EntityField). Governs data quality: a field bound to this class must conform to its domain.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -27,12 +27,12 @@
     "ontologyClassRef": {
       "type": "string",
       "pattern": "^urn:srcos:ontology-class:[A-Za-z0-9._~:-]+$",
-      "description": "OntoDT — the datatype-ontology class this data class IS (capture; enables inference-based data-quality logic)."
+      "description": "OntoDT \u2014 the datatype-ontology class this data class IS (capture; enables inference-based data-quality logic)."
     },
     "glossaryTermRef": {
       "type": "string",
       "pattern": "^urn:srcos:glossary:",
-      "description": "The business GlossaryTerm this data class realizes — the biz↔data bridge."
+      "description": "The business GlossaryTerm this data class realizes \u2014 the biz\u2194data bridge."
     },
     "domain": {
       "$ref": "ValidValues.json",
@@ -51,7 +51,7 @@
         "null"
       ],
       "additionalProperties": false,
-      "description": "Optional TF-Lattice wide-and-deep classifier that ASSIGNS this data class by inference. It is a first-class cataloged model: modelRef → ModelManifest, runRef → RunRecord, compute on Ray/TritFabric, labels are GlossaryTerms.",
+      "description": "Optional structurally-monotone classifier that ASSIGNS this data class by inference. It is a first-class cataloged model: modelRef \u2192 ModelManifest, runRef \u2192 RunRecord, compute on Ray/TritFabric, labels are GlossaryTerms.",
       "required": [
         "kind",
         "head",
@@ -64,7 +64,13 @@
       ],
       "properties": {
         "kind": {
-          "const": "tf-lattice-wide-and-deep"
+          "enum": [
+            "monotone-logistic",
+            "monotone-lattice-hll",
+            "monotone-constrained-nn",
+            "tf-lattice-wide-and-deep"
+          ],
+          "description": "The assignment model's construction. What matters is that monotonicity in the declared monotonicFeatures is STRUCTURAL, not that any particular library produced it. 'tf-lattice-wide-and-deep' is DEPRECATED and retained only so existing documents remain valid: the TensorFlow Lattice repository was archived by its owner in April 2026 and is read-only, with its last release in July 2024. Its late releases moved Keras imports to tf_keras (because tf.keras defaults to Keras 3 from TF 2.16) and deprecated Estimators \u2014 it migrated ONTO the Keras 3 era via a compatibility shim and was then archived; it did not become part of Keras. 'monotone-logistic' is what this estate actually trains and ships (weights projected >= 0 each gradient step). 'monotone-lattice-hll' is the Hierarchical Lattice Layer successor, which trains with standard SGD instead of projected gradient descent under many constraints and accepts the high-dimensional input the older lattice layer could not hold in memory \u2014 which is exactly the 6-layer x 2-component input here."
         },
         "modelRef": {
           "type": "string",
@@ -123,7 +129,7 @@
             "type": "string",
             "pattern": "^urn:srcos:glossary:"
           },
-          "description": "Output class labels — each a GlossaryTerm URN (labels are assigned in the glossary)."
+          "description": "Output class labels \u2014 each a GlossaryTerm URN (labels are assigned in the glossary)."
         },
         "head": {
           "const": "logistic",
@@ -132,7 +138,7 @@
         "evalRunRef": {
           "type": "string",
           "pattern": "^urn:srcos:run:",
-          "description": "The per-class evaluation RunRecord — the individual test for this class/label."
+          "description": "The per-class evaluation RunRecord \u2014 the individual test for this class/label."
         },
         "threshold": {
           "type": [
@@ -142,6 +148,52 @@
           "minimum": 0,
           "maximum": 1,
           "description": "Decision threshold on the logistic probability."
+        },
+        "fingerprintStack": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "required": [
+            "assigningLayers",
+            "aggregatorRef",
+            "enforcementPolicyRef"
+          ],
+          "description": "Binds this DataClass to the six-layer fingerprint stack: which metadata layers assign it, the monotone aggregator that pools them, and how the resulting four-valued stance is enforced. The layers are listed because per-layer admissibility is a primary OUTPUT \u2014 an estate must be told which of its layers are trustworthy rather than having unreliable ones silently averaged in.",
+          "properties": {
+            "assigningLayers": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 6,
+              "uniqueItems": true,
+              "items": {
+                "enum": [
+                  "L1-ontodt-type",
+                  "L2-ontodq-profile",
+                  "L3-business-glossary",
+                  "L4-operational-semantics",
+                  "L5-table-topic",
+                  "L6-schema-key-graph"
+                ]
+              }
+            },
+            "aggregatorRef": {
+              "type": "string",
+              "pattern": "^urn:srcos:model-manifest:"
+            },
+            "estateAdmissibilityRef": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^urn:srcos:estate-admissibility:"
+            },
+            "enforcementPolicyRef": {
+              "type": "string",
+              "pattern": "^urn:srcos:classification-enforcement:"
+            }
+          }
         }
       }
     }

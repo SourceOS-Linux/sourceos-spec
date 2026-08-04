@@ -1,0 +1,75 @@
+{
+  "id": "urn:srcos:estate-admissibility:berger-foods-phase0-2026-08-04",
+  "type": "EstateAdmissibilityReport",
+  "specVersion": "2.0.0",
+  "estateRef": "urn:srcos:estate:berger-foods",
+  "generatedAt": "2026-08-04T06:00:00Z",
+  "coldStartPhase": 0,
+  "layers": [
+    {
+      "layer": "L1-ontodt-type",
+      "admissible": true,
+      "reason": null,
+      "measured": 2.91,
+      "floor": 1.5,
+      "degraded": false
+    },
+    {
+      "layer": "L2-ontodq-profile",
+      "admissible": true,
+      "reason": null,
+      "measured": 1240000,
+      "floor": 1000,
+      "degraded": false
+    },
+    {
+      "layer": "L3-business-glossary",
+      "admissible": false,
+      "reason": "glossary-absent-or-thin",
+      "measured": 0,
+      "floor": 50,
+      "degraded": false
+    },
+    {
+      "layer": "L4-operational-semantics",
+      "admissible": false,
+      "reason": "no-declared-operation-profile",
+      "measured": 0,
+      "floor": 1,
+      "degraded": false
+    },
+    {
+      "layer": "L5-table-topic",
+      "admissible": true,
+      "reason": null,
+      "measured": null,
+      "floor": null,
+      "degraded": true
+    },
+    {
+      "layer": "L6-schema-key-graph",
+      "admissible": true,
+      "reason": null,
+      "measured": 0.08,
+      "floor": 0.2,
+      "degraded": true
+    }
+  ],
+  "quorum": {
+    "nEff": 3.6,
+    "nEffFloor": 4.0,
+    "covarianceSpectrum": [2.0, 2.0, 1.0, 1.0],
+    "herfindahl": 0.34,
+    "posAvailable": false
+  },
+  "knownDependencies": [
+    {
+      "between": ["L3-business-glossary", "L4-operational-semantics"],
+      "note": "Both depend on glossary maturity; a thin glossary disables the pair, not one of them."
+    },
+    {
+      "between": ["L3-business-glossary", "L5-table-topic"],
+      "note": "L5 is a bag of L3 labels, so it inherits L3's state rather than corroborating it independently."
+    }
+  ]
+}

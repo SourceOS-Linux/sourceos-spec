@@ -1,0 +1,257 @@
+{
+  "id": "urn:srcos:column-fingerprint:crm-customers-customer-id-vs-surrogate-key",
+  "type": "ColumnFingerprint",
+  "specVersion": "2.0.0",
+  "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+  "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+  "layerEvidence": [
+    {
+      "id": "urn:srcos:layer-evidence:crm-customers-customer-id-l1",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L1-ontodt-type",
+      "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+      "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+      "evidence": {
+        "alpha": 0.72,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "confidenceSource": "declared",
+      "witness": {
+        "kind": "L1",
+        "ontologyVersion": "ontodt-2.0.0",
+        "typePath": [
+          "datatype",
+          "primitive-datatype",
+          "numeric",
+          "integer"
+        ],
+        "closureDepth": 3,
+        "closureRelation": "subtypeOf",
+        "axiomsApplied": [
+          "X1-parthood-subtyping-disjoint"
+        ],
+        "reasoner": {
+          "id": "hermit",
+          "version": "1.4.5"
+        }
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:crm-customers-customer-id-l2",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L2-ontodq-profile",
+      "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+      "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+      "evidence": {
+        "alpha": 0.81,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L2",
+        "profileRunId": "profile-2026-08-01-crm-customers",
+        "sampleSize": 1240000,
+        "sampleMethod": "full-scan",
+        "partitionKey": null,
+        "profiledAt": "2026-08-01T02:14:00Z",
+        "sourceSnapshotId": "crm-snap-2026-08-01",
+        "promotedToHardAxiom": false,
+        "stewardAttestationRef": null
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:crm-customers-customer-id-l3",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L3-business-glossary",
+      "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+      "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+      "evidence": {
+        "alpha": 0.88,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L3",
+        "glossaryVersion": "glossary-2026-07-28",
+        "termId": "urn:srcos:glossary:customer-id",
+        "matchChannel": "lexical",
+        "channelScores": {
+          "levenshtein": 1.0,
+          "jaroWinkler": 1.0,
+          "hamming": 1.0,
+          "lcs": 1.0,
+          "mostFrequentKChars": 0.94,
+          "smc": 0.91
+        },
+        "synonymPath": [],
+        "stewardAttested": true,
+        "attestedAt": "2026-07-28T11:02:00Z"
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:crm-customers-customer-id-l4",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L4-operational-semantics",
+      "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+      "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+      "evidence": {
+        "alpha": 0.66,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L4",
+        "opProfileId": "opprofile-surrogate-key-v1",
+        "declaredOps": [
+          "equal",
+          "not-equal",
+          "join"
+        ],
+        "observedOps": [
+          "equal",
+          "join",
+          "group-by"
+        ],
+        "queryLogWindow": "2026-07-01/2026-08-01",
+        "conflictSet": []
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:crm-customers-customer-id-l5",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L5-table-topic",
+      "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+      "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+      "evidence": {
+        "alpha": 0.54,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L5",
+        "schemaVersion": "crm.customers@v7",
+        "headerBagHash": "sha256:8c1a0f3d2b6e4a9c7f5d1e8b2a4c6d0f9e3b7a5c1d8f2e6b4a0c9d7f3e1b5a8c",
+        "topicModelId": "topic-lsa-bow-v3",
+        "topicVector": [0.61, 0.12, 0.04, 0.23],
+        "tableRef": "urn:srcos:table:crm.customers",
+        "driftRef": null
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:crm-customers-customer-id-l6",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L6-schema-key-graph",
+      "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+      "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+      "evidence": {
+        "alpha": 0.91,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "confidenceSource": "declared",
+      "witness": {
+        "kind": "L6",
+        "ddlVersion": "crm@2026-07-20",
+        "declaredConstraints": [
+          "PRIMARY KEY (customer_id)"
+        ],
+        "inferredInclusionDeps": [],
+        "graphSnapshotId": "keygraph-2026-08-01",
+        "referencedTableRef": null
+      }
+    }
+  ],
+  "pooling": {
+    "operator": "frechet-max",
+    "independenceCertificateRef": null,
+    "pooled": {
+      "alpha": 0.91,
+      "beta": 0.0
+    }
+  },
+  "aggregator": {
+    "modelRef": "urn:srcos:model-manifest:fingerprint-aggregator-v1",
+    "monotonicityEnforcement": "structural",
+    "constraints": [
+      "M1-alpha-nondecreasing",
+      "M2-beta-nondecreasing",
+      "M4-zero-in-zero-out",
+      "M5-layer-knockout-lowers"
+    ]
+  },
+  "quorum": {
+    "nEff": 4.8,
+    "nEffFloor": 3.0,
+    "covarianceSpectrum": [2.0, 1.0, 1.0, 1.0, 0.5, 0.5],
+    "herfindahl": 0.28
+  },
+  "stanceRef": "urn:srcos:stance:crm-customers-customer-id-surrogate-key",
+  "stance": {
+    "id": "urn:srcos:stance:crm-customers-customer-id-surrogate-key",
+    "type": "ClassificationStance",
+    "specVersion": "2.0.0",
+    "reading": "support",
+    "evidence": {
+      "alpha": 0.91,
+      "beta": 0.0
+    },
+    "thresholds": {
+      "tauPos": 0.7,
+      "tauNeg": 0.7,
+      "attestationRef": null
+    },
+    "value": "POS",
+    "inadmissibleOrigin": null,
+    "composition": {
+      "depth": 1,
+      "baseEpsilon": 0.1,
+      "effectiveEpsilon": 0.1
+    },
+    "guards": [
+      {
+        "name": "n-eff-floor",
+        "fired": false,
+        "inputs": ["witness.quorum.nEff"],
+        "reason": null
+      },
+      {
+        "name": "calibration-freshness",
+        "fired": false,
+        "inputs": ["witness.calibrationRef"],
+        "reason": null
+      },
+      {
+        "name": "l5-drift-annihilator",
+        "fired": false,
+        "inputs": ["witness.driftRef"],
+        "reason": null
+      }
+    ],
+    "calibrationRef": "urn:srcos:run:fingerprint-calibration-2026-07-30"
+  }
+}

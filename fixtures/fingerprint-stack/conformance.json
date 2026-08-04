@@ -1,0 +1,237 @@
+{
+  "description": "Negative vectors for the six-layer fingerprint stack v0.1 (SP-FPRINT-STACK-001). Each MUST fail schema validation on its named failValidator; validate_fingerprint_stack.py enforces both the failure and the reason. These cover the structural guarantees — the ones that must be impossible to express, not merely discouraged: a stance without its reading tag, a closure walking parthood, monotonicity by regularization, a guard reading its own outcome, an estate report that omits a layer.",
+  "cases": [
+    {
+      "schema": "ClassificationStance.json",
+      "reason": "reading tag omitted — the tag lives in the TYPE, not the witness, because a lost tag is silently wrong whereas a missing required field is loudly absent (DR-5).",
+      "failValidator": "required",
+      "document": {
+        "id": "urn:srcos:stance:no-reading-tag",
+        "type": "ClassificationStance",
+        "specVersion": "2.0.0",
+        "evidence": { "alpha": 0.9, "beta": 0.0 },
+        "thresholds": { "tauPos": 0.7, "tauNeg": 0.7, "attestationRef": null },
+        "value": "POS",
+        "composition": { "depth": 1, "baseEpsilon": 0.1, "effectiveEpsilon": 0.1 }
+      }
+    },
+    {
+      "schema": "ClassificationStance.json",
+      "reason": "a fifth stance value — FOUR is closed; 'MAYBE' is the collapse of ZERO and INADMISSIBLE this family exists to prevent.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:stance:fifth-value",
+        "type": "ClassificationStance",
+        "specVersion": "2.0.0",
+        "reading": "support",
+        "evidence": { "alpha": 0.5, "beta": 0.5 },
+        "thresholds": { "tauPos": 0.7, "tauNeg": 0.7, "attestationRef": null },
+        "value": "MAYBE",
+        "composition": { "depth": 1, "baseEpsilon": 0.1, "effectiveEpsilon": 0.1 }
+      }
+    },
+    {
+      "schema": "ClassificationStance.json",
+      "reason": "guard reads the outcome — a guard must be measurable with respect to evidence and witness only; reading the outcome breaks exchangeability and voids the coverage guarantee.",
+      "failValidator": "pattern",
+      "document": {
+        "id": "urn:srcos:stance:outcome-reading-guard",
+        "type": "ClassificationStance",
+        "specVersion": "2.0.0",
+        "reading": "support",
+        "evidence": { "alpha": 0.9, "beta": 0.0 },
+        "thresholds": { "tauPos": 0.7, "tauNeg": 0.7, "attestationRef": null },
+        "value": "POS",
+        "composition": { "depth": 1, "baseEpsilon": 0.1, "effectiveEpsilon": 0.1 },
+        "guards": [
+          {
+            "name": "promote-if-already-pos",
+            "fired": true,
+            "inputs": ["value.stance"],
+            "reason": null
+          }
+        ]
+      }
+    },
+    {
+      "schema": "ClassificationStance.json",
+      "reason": "evidence outside [0,1] — the evidence lattice is the unit square.",
+      "failValidator": "maximum",
+      "document": {
+        "id": "urn:srcos:stance:out-of-range",
+        "type": "ClassificationStance",
+        "specVersion": "2.0.0",
+        "reading": "support",
+        "evidence": { "alpha": 1.4, "beta": 0.0 },
+        "thresholds": { "tauPos": 0.7, "tauNeg": 0.7, "attestationRef": null },
+        "value": "POS",
+        "composition": { "depth": 1, "baseEpsilon": 0.1, "effectiveEpsilon": 0.1 }
+      }
+    },
+    {
+      "schema": "FingerprintLayerEvidence.json",
+      "reason": "L1 closure declared over parthood — count aggregation traverses subtyping ONLY; a closure walking part_of makes the 'how many tables contain X' answer wrong by construction (axiom X1).",
+      "failValidator": "oneOf",
+      "document": {
+        "id": "urn:srcos:layer-evidence:closure-walks-parthood",
+        "type": "FingerprintLayerEvidence",
+        "specVersion": "2.0.0",
+        "layer": "L1-ontodt-type",
+        "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+        "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+        "evidence": { "alpha": 0.7, "beta": 0.0 },
+        "admissibility": { "admissible": true, "reason": null },
+        "witness": {
+          "kind": "L1",
+          "ontologyVersion": "ontodt-2.0.0",
+          "typePath": ["datatype", "primitive-datatype"],
+          "closureDepth": 1,
+          "closureRelation": "partOf",
+          "axiomsApplied": [],
+          "reasoner": { "id": "hermit", "version": "1.4.5" }
+        }
+      }
+    },
+    {
+      "schema": "FingerprintLayerEvidence.json",
+      "reason": "an unnamed inadmissibility reason — free text cannot be aggregated into an estate report, so causes are a closed set.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:layer-evidence:freetext-reason",
+        "type": "FingerprintLayerEvidence",
+        "specVersion": "2.0.0",
+        "layer": "L2-ontodq-profile",
+        "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+        "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+        "evidence": { "alpha": 0.0, "beta": 0.0 },
+        "admissibility": { "admissible": false, "reason": "table looked a bit empty" },
+        "witness": {
+          "kind": "L2",
+          "profileRunId": "p1",
+          "sampleSize": 0,
+          "sampleMethod": "full-scan",
+          "partitionKey": null,
+          "profiledAt": "2026-08-01T00:00:00Z",
+          "sourceSnapshotId": "s1",
+          "promotedToHardAxiom": false,
+          "stewardAttestationRef": null
+        }
+      }
+    },
+    {
+      "schema": "ColumnFingerprint.json",
+      "reason": "monotonicity by regularization — a penalty term makes M5 probabilistic, which voids the gate-soundness argument; the constraint must be structural.",
+      "failValidator": "const",
+      "document": {
+        "id": "urn:srcos:column-fingerprint:soft-monotone",
+        "type": "ColumnFingerprint",
+        "specVersion": "2.0.0",
+        "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+        "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+        "layerEvidence": [
+          {
+            "id": "urn:srcos:layer-evidence:soft-monotone-l1",
+            "type": "FingerprintLayerEvidence",
+            "specVersion": "2.0.0",
+            "layer": "L1-ontodt-type",
+            "subjectColumnRef": "urn:srcos:column:crm.customers.customer_id",
+            "candidateClassRef": "urn:srcos:data-class:customer-surrogate-key",
+            "evidence": { "alpha": 0.9, "beta": 0.0 },
+            "admissibility": { "admissible": true, "reason": null },
+            "witness": {
+              "kind": "L1",
+              "ontologyVersion": "ontodt-2.0.0",
+              "typePath": ["datatype"],
+              "closureDepth": 0,
+              "closureRelation": "subtypeOf",
+              "axiomsApplied": [],
+              "reasoner": { "id": "hermit", "version": "1.4.5" }
+            }
+          }
+        ],
+        "pooling": {
+          "operator": "frechet-max",
+          "independenceCertificateRef": null,
+          "pooled": { "alpha": 0.9, "beta": 0.0 }
+        },
+        "aggregator": {
+          "modelRef": "urn:srcos:model-manifest:soft-aggregator",
+          "monotonicityEnforcement": "regularized",
+          "constraints": [
+            "M1-alpha-nondecreasing",
+            "M2-beta-nondecreasing",
+            "M4-zero-in-zero-out",
+            "M5-layer-knockout-lowers"
+          ]
+        },
+        "quorum": {
+          "nEff": 4.8,
+          "nEffFloor": 3.0,
+          "covarianceSpectrum": [2.0, 1.0, 1.0, 1.0, 0.5, 0.5],
+          "herfindahl": 0.28
+        },
+        "stanceRef": "urn:srcos:stance:soft-monotone",
+        "stance": {
+          "id": "urn:srcos:stance:soft-monotone",
+          "type": "ClassificationStance",
+          "specVersion": "2.0.0",
+          "reading": "support",
+          "evidence": { "alpha": 0.9, "beta": 0.0 },
+          "thresholds": { "tauPos": 0.7, "tauNeg": 0.7, "attestationRef": null },
+          "value": "POS",
+          "inadmissibleOrigin": null,
+          "composition": { "depth": 1, "baseEpsilon": 0.1, "effectiveEpsilon": 0.1 },
+          "guards": [],
+          "calibrationRef": null
+        }
+      }
+    },
+    {
+      "schema": "ColumnDriftObservation.json",
+      "reason": "a distributional metric outside the matched set — drift distance must be Jensen-Shannon (categorical), Wasserstein-1 (numeric) or pattern edit distance (strings), not an arbitrary similarity.",
+      "failValidator": "enum",
+      "document": {
+        "id": "urn:srcos:column-drift:wrong-metric",
+        "type": "ColumnDriftObservation",
+        "specVersion": "2.0.0",
+        "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+        "baseline": { "profileRunId": "p0", "schemaVersion": "v12", "observedAt": "2026-02-02T00:00:00Z" },
+        "current": { "profileRunId": "p1", "schemaVersion": "v12", "observedAt": "2026-08-03T00:00:00Z" },
+        "metric": "cosine",
+        "distance": 0.61,
+        "threshold": 0.15,
+        "schemaChanged": false,
+        "drifted": true,
+        "verdict": "silent-repurpose",
+        "stewardQueueRef": "urn:srcos:steward-queue:data-governance-drift"
+      }
+    },
+    {
+      "schema": "EstateAdmissibilityReport.json",
+      "reason": "a layer omitted from the estate report — an omitted layer is indistinguishable from an admissible one, which is exactly the silent averaging this report exists to prevent.",
+      "failValidator": "minItems",
+      "document": {
+        "id": "urn:srcos:estate-admissibility:five-layers",
+        "type": "EstateAdmissibilityReport",
+        "specVersion": "2.0.0",
+        "estateRef": "urn:srcos:estate:berger-foods",
+        "generatedAt": "2026-08-04T06:00:00Z",
+        "coldStartPhase": 0,
+        "layers": [
+          { "layer": "L1-ontodt-type", "admissible": true, "reason": null },
+          { "layer": "L2-ontodq-profile", "admissible": true, "reason": null },
+          { "layer": "L3-business-glossary", "admissible": false, "reason": "glossary-absent-or-thin" },
+          { "layer": "L4-operational-semantics", "admissible": false, "reason": "no-declared-operation-profile" },
+          { "layer": "L6-schema-key-graph", "admissible": true, "reason": null }
+        ],
+        "quorum": {
+          "nEff": 3.6,
+          "nEffFloor": 4.0,
+          "covarianceSpectrum": [2.0, 2.0, 1.0, 1.0],
+          "herfindahl": 0.34,
+          "posAvailable": false
+        }
+      }
+    }
+  ]
+}

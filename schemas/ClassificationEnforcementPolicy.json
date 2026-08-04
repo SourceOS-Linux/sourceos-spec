@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ClassificationEnforcementPolicy.json",
+  "title": "ClassificationEnforcementPolicy",
+  "description": "How a four-valued classification stance is enforced at a policy enforcement point. This settles DR-4, the oldest open question in the stack: what a PEP does with ZERO. It was latent in the 2018 design — which already routed data-quality inference into access enforcement — and could not be addressed there, because without a ZERO value 'we do not know' had nowhere to live and silently became either over-blocking or a leak. POS and NEG are not knobs; ZERO is, per resource class, and only with an attestation; INADMISSIBLE is never a knob.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "posBehavior",
+    "negBehavior",
+    "inadmissibleBehavior",
+    "resourceClasses"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:classification-enforcement:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "ClassificationEnforcementPolicy"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "posBehavior": {
+      "const": "allow",
+      "description": "A supported, unrefuted classification grants access under the resource's own rules. Not a knob."
+    },
+    "negBehavior": {
+      "const": "deny",
+      "description": "A refuted classification denies. Not a knob. Refutation is available before assertion is — hard axioms need no calibration — so this is the enforcement path that works on day one of a cold-start estate."
+    },
+    "inadmissibleBehavior": {
+      "const": "fail-closed",
+      "description": "A glut is NEVER fail-open, and this is deliberately not configurable. INADMISSIBLE means two layers disagree about what this column IS; one of the readings may well be 'personal data'. Granting access while the classification is self-contradictory would let a contradiction resolve itself in the requester's favour, which is the one resolution nobody chose."
+    },
+    "resourceClasses": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The ZERO knob, scoped per resource class. Ignorance is not a severity — it is a different question from refutation, and the right answer genuinely differs by resource: over-blocking a public reference table is a nuisance, over-sharing an unclassified column is a breach.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "resourceClass",
+          "sensitivity",
+          "zeroBehavior"
+        ],
+        "properties": {
+          "resourceClass": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sensitivity": {
+            "enum": [
+              "public",
+              "internal",
+              "confidential",
+              "restricted"
+            ]
+          },
+          "zeroBehavior": {
+            "enum": [
+              "fail-closed",
+              "fail-open"
+            ],
+            "description": "fail-closed over-blocks (a cost in access); fail-open leaks (a cost in exposure). Neither is universally right, which is why this is an attested decision rather than an implementation default."
+          },
+          "attestationRef": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+            "description": "REQUIRED when zeroBehavior is fail-open. Choosing to serve data whose classification is unknown is a decision somebody makes on the record, with a rationale, or it is an accident."
+          },
+          "rationale": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "abstentionBudget": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "maxZeroFraction",
+        "onExceed"
+      ],
+      "description": "Governed abstention is honest, but unbounded abstention is a system that has stopped answering. The budget makes the failure loud rather than letting ZERO quietly become the default verdict for an estate nobody ever calibrated.",
+      "properties": {
+        "maxZeroFraction": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "onExceed": {
+          "enum": [
+            "escalate-human",
+            "block-estate"
+          ],
+          "description": "Never 'continue' — an abstention rate above budget means the classifier is not working on this estate, and continuing silently is how that goes unnoticed for a quarter."
+        }
+      }
+    }
+  }
+}

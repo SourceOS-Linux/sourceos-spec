@@ -1,0 +1,188 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ClassificationStance.json",
+  "title": "ClassificationStance",
+  "description": "The four-valued stance a classification carries over the bilattice FOUR: POS (supported, unrefuted), NEG (refuted, unsupported), ZERO (ignorance — gather evidence), INADMISSIBLE (conflict — resolve contradiction). Distinguishing ZERO from INADMISSIBLE is the point: a gap and a glut are different failures with different remediations, and a two- or three-valued verdict cannot tell them apart. The stance is a QUANTIZATION of an evidence pair (alpha, beta) in [0,1]^2 and is re-derivable from it — stored `value` is a cache, never authority. This is the CLASSIFICATION vocabulary; it does not mix with the ops ternary (ok/sad/bad) or the 5-axis ReasoningAssay (see specs/fingerprint-stack.md).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "reading",
+    "evidence",
+    "thresholds",
+    "value",
+    "composition"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:stance:[A-Za-z0-9._~:-]+$",
+      "description": "Stable URN identifier. Pattern: urn:srcos:stance:<local-id>"
+    },
+    "type": {
+      "const": "ClassificationStance"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "reading": {
+      "enum": [
+        "support",
+        "plausibility"
+      ],
+      "description": "MANDATORY, and carried in the TYPE rather than only in the witness (DR-5, resolved in favour of type: a lost tag is silently wrong, whereas a missing required field is loudly absent). A Belnap SUPPORT set and a conformal PLAUSIBILITY set are conflates of one another (Gamma = -S); mixing the two readings without applying the conflation operator silently exchanges gap and glut. That is a live bug class in any system that pipelines a conformal predictor into a logical reasoner, which is exactly what this stack does."
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alpha",
+        "beta"
+      ],
+      "description": "The pooled evidence pair in [0,1]^2 that `value` quantizes. alpha = support mass, beta = refutation mass. The two are independent coordinates, not endpoints of one axis — that independence is what makes ZERO and INADMISSIBLE expressible.",
+      "properties": {
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Support mass."
+        },
+        "beta": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Refutation mass."
+        }
+      }
+    },
+    "thresholds": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "tauPos",
+        "tauNeg"
+      ],
+      "description": "The quantizer Q_{tauPos,tauNeg}(alpha, beta) = (1[alpha >= tauPos], 1[beta >= tauNeg]). Q commutes with negation iff tauPos == tauNeg; asymmetric thresholds break negation-equivariance, which means deny-rules no longer come free by negating allow-rules and a separate deny path must be maintained. Asymmetry is therefore an ATTESTED platform setting, never an implementation accident (DR-6).",
+      "properties": {
+        "tauPos": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "tauNeg": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "attestationRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+          "description": "REQUIRED when tauPos != tauNeg: the recorded platform decision, with rationale, that licenses breaking negation-equivariance. The validator refuses asymmetric thresholds without it."
+        }
+      }
+    },
+    "value": {
+      "enum": [
+        "POS",
+        "NEG",
+        "ZERO",
+        "INADMISSIBLE"
+      ],
+      "description": "The quantized stance. A CACHE of Q(evidence; thresholds) — the validator recomputes it and fails on drift, so an asserted stance cannot outrun its evidence. Knowledge order (<=_k) on the support/refute bit pair: ZERO=(0,0) <=_k POS=(1,0), NEG=(0,1) <=_k INADMISSIBLE=(1,1); POS and NEG are incomparable."
+    },
+    "inadmissibleOrigin": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "layer-conflict",
+        "declared-vs-observed-operation",
+        "profile-drift",
+        "inconsistent-knowledge-base",
+        "stale-calibration",
+        null
+      ],
+      "description": "REQUIRED (non-null) when value is INADMISSIBLE. The lattice element is identical in every case but the remediations differ completely, so the origin is recorded rather than inferred: a drift glut goes to a steward, an inconsistent-KB glut goes to justification scoping, a stale-calibration glut goes to recalibration."
+    },
+    "composition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "depth",
+        "baseEpsilon",
+        "effectiveEpsilon"
+      ],
+      "description": "Conformal coverage does NOT compose. A chain of n witnessed bindings each valid at level epsilon gives at best n*epsilon by union bound. Silently reporting an unearned guarantee across a deep composition is the exact failure this architecture exists to prevent, so the depth and the loosened level are carried on the stance itself.",
+      "properties": {
+        "depth": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Number of composed witnessed bindings that produced this stance. 1 = a single calibrated prediction."
+        },
+        "baseEpsilon": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "The per-binding calibration miscoverage level."
+        },
+        "effectiveEpsilon": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1,
+          "description": "The honestly-loosened level actually guaranteed after composition. Must be >= depth * baseEpsilon (union bound); the validator refuses a stance claiming the base level at depth > 1."
+        }
+      }
+    },
+    "guards": {
+      "type": "array",
+      "description": "Guards applied as multiplicative (tensor) factors. Guards can only LOWER stance in the knowledge order — no composition of guards can raise necessity or turn ZERO into POS. Because lowering in <=_k widens the plausibility set, gated stances RETAIN the conformal coverage guarantee: policy enforcement costs efficiency (wider sets, more abstention) and never costs validity.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "fired",
+          "inputs"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "fired": {
+            "type": "boolean"
+          },
+          "inputs": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "pattern": "^(evidence|witness)\\."
+            },
+            "description": "Side condition enforced statically: a guard must be measurable with respect to EVIDENCE and WITNESS only. A guard that reads the outcome breaks exchangeability and voids the coverage guarantee, so input paths are restricted to `evidence.*` and `witness.*` by pattern — `value.*` or `stance.*` cannot be named."
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        }
+      }
+    },
+    "calibrationRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+      "description": "The calibration run backing baseEpsilon. Freshness is an admissibility precondition."
+    }
+  }
+}

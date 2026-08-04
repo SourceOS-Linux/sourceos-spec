@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ColumnFingerprint.json",
+  "title": "ColumnFingerprint",
+  "description": "The aggregated six-layer classification of one column against one candidate DataClass: the per-layer evidence emissions, the pooled evidence, the aggregator that pooled them, and the resulting ClassificationStance. The aggregator produces evidence in [0,1]^2; guards can only lower stance in the knowledge order; quantization to the four-valued stance happens LAST. The ordering is the safety property — the pipeline is structurally incapable of manufacturing confidence.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectColumnRef",
+    "candidateClassRef",
+    "layerEvidence",
+    "pooling",
+    "quorum",
+    "stanceRef",
+    "stance"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:column-fingerprint:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "ColumnFingerprint"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectColumnRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+    },
+    "candidateClassRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:data-class:[A-Za-z0-9._~:-]+$"
+    },
+    "layerEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 6,
+      "items": {
+        "$ref": "FingerprintLayerEvidence.json"
+      },
+      "description": "The emissions being pooled. Inline rather than by reference so the pooling is auditable from one document."
+    },
+    "pooling": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "operator",
+        "pooled"
+      ],
+      "description": "Default pooling across ADMISSIBLE layers is the Frechet bound (max alpha, max beta), which assumes nothing about dependence. Its known cost is idempotence: ten corroborating layers buy nothing over one. That is deliberate and conservative — corroboration pays only where the right to claim it has been EARNED.",
+      "properties": {
+        "operator": {
+          "enum": [
+            "frechet-max",
+            "probabilistic-sum"
+          ],
+          "description": "probabilistic-sum is a licensed strengthening and requires a certified independence model for the specific layer pair; the certificate — how independence was established, on what data, when — goes in the witness."
+        },
+        "independenceCertificateRef": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+          "description": "REQUIRED when operator is probabilistic-sum."
+        },
+        "pooled": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "alpha",
+            "beta"
+          ],
+          "properties": {
+            "alpha": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "beta": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Refutation is monotone non-decreasing across pooling: a veto cannot be outvoted WITHIN a pooling step. Retraction requires removing the source, which matches consent-bound revocation rather than majority overrule."
+            }
+          }
+        }
+      }
+    },
+    "aggregator": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": false,
+      "required": [
+        "modelRef",
+        "monotonicityEnforcement",
+        "constraints"
+      ],
+      "description": "The learned aggregator, when one is used in place of bare pooling. Constrained monotone in the knowledge order: it fits the actual interaction structure of the estate while remaining INCAPABLE of the pathology hand-tuning was protecting against — a low-evidence input producing a high-confidence output. The constraint is the governance; the learning is the fit.",
+      "properties": {
+        "modelRef": {
+          "type": "string",
+          "pattern": "^urn:srcos:model-manifest:",
+          "description": "A cataloged ModelManifest — the aggregator is a first-class model, not an implementation detail."
+        },
+        "monotonicityEnforcement": {
+          "const": "structural",
+          "description": "Monotonicity must be STRUCTURALLY guaranteed, never regularization-encouraged. A penalty term makes M5 probabilistic, which voids the gate-soundness argument; a library offering only soft constraints is rejected on those grounds."
+        },
+        "constraints": {
+          "type": "array",
+          "minItems": 4,
+          "items": {
+            "enum": [
+              "M1-alpha-nondecreasing",
+              "M2-beta-nondecreasing",
+              "M3-beta-suppresses-alpha",
+              "M4-zero-in-zero-out",
+              "M5-layer-knockout-lowers"
+            ]
+          },
+          "description": "M1, M2, M4 and M5 are mandatory; M3 (refutation suppressing support directly) is intuitive but may over-constrain the fit and is measured with and without. M5 is the ensemble-level restatement of gate soundness and is property-tested — and the test must be shown to BIND, not merely to pass."
+        }
+      }
+    },
+    "quorum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nEff",
+        "nEffFloor"
+      ],
+      "description": "Effective independence, NOT concentration. The Herfindahl index over normalized layer contributions measures concentration of MAGNITUDE, not dependence between layers: two perfectly correlated layers contributing equally give H = 0.5, which looks healthy, while supplying one layer's worth of information. H catches 'one layer dominates'. It does not catch 'my layers are secretly the same layer', which is the failure that matters for quorum.",
+      "properties": {
+        "nEff": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Participation ratio of the layer covariance spectrum: (sum lambda_i)^2 / sum lambda_i^2, estimated on the calibration set. Given the known L3-L4 dependence (both track glossary maturity) and L5's dependence on L3 (it is a bag of L3 labels), expect n_eff < 6 on every real estate. Report it."
+        },
+        "nEffFloor": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "The floor required for POS. Below it, stance is forced to ZERO."
+        },
+        "covarianceSpectrum": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": "The eigenvalues n_eff was computed from. Present so the claimed n_eff can be RECOMPUTED rather than trusted."
+        },
+        "herfindahl": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Retained as a CHEAP NECESSARY condition evaluated first, never as the quorum statistic. A quorum claim resting on H alone is refused."
+        }
+      }
+    },
+    "stanceRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:stance:[A-Za-z0-9._~:-]+$"
+    },
+    "stance": {
+      "$ref": "ClassificationStance.json",
+      "description": "Inlined so the quantization can be recomputed from the pooled evidence in one document."
+    }
+  }
+}

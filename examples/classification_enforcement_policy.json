@@ -1,0 +1,35 @@
+{
+  "id": "urn:srcos:classification-enforcement:estate-default-v1",
+  "type": "ClassificationEnforcementPolicy",
+  "specVersion": "2.0.0",
+  "posBehavior": "allow",
+  "negBehavior": "deny",
+  "inadmissibleBehavior": "fail-closed",
+  "resourceClasses": [
+    {
+      "resourceClass": "reference-lookup",
+      "sensitivity": "public",
+      "zeroBehavior": "fail-open",
+      "attestationRef": "urn:srcos:attestation:dr4-reference-lookup-2026-08-01",
+      "rationale": "Published reference tables carry no personal data and over-blocking them strands every downstream join. Serving an unclassified reference column is a known, bounded exposure that the data steward accepted on the record."
+    },
+    {
+      "resourceClass": "operational-analytics",
+      "sensitivity": "internal",
+      "zeroBehavior": "fail-closed",
+      "attestationRef": null,
+      "rationale": "Default. An unclassified column in an internal analytics surface is more likely to be an un-onboarded field than a deliberately open one."
+    },
+    {
+      "resourceClass": "customer-master",
+      "sensitivity": "restricted",
+      "zeroBehavior": "fail-closed",
+      "attestationRef": null,
+      "rationale": "Customer master is where the personal data is. A column we cannot classify is exactly the column not to serve."
+    }
+  ],
+  "abstentionBudget": {
+    "maxZeroFraction": 0.35,
+    "onExceed": "escalate-human"
+  }
+}
