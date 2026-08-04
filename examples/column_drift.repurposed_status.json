@@ -1,0 +1,23 @@
+{
+  "id": "urn:srcos:column-drift:ops-orders-status-code-2026-08",
+  "type": "ColumnDriftObservation",
+  "specVersion": "2.0.0",
+  "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+  "baseline": {
+    "profileRunId": "profile-2026-02-02-ops-orders",
+    "schemaVersion": "ops.orders@v12",
+    "observedAt": "2026-02-02T03:15:00Z"
+  },
+  "current": {
+    "profileRunId": "profile-2026-08-03-ops-orders",
+    "schemaVersion": "ops.orders@v12",
+    "observedAt": "2026-08-03T04:40:00Z"
+  },
+  "metric": "jensen-shannon",
+  "distance": 0.61,
+  "threshold": 0.15,
+  "schemaChanged": false,
+  "drifted": true,
+  "verdict": "silent-repurpose",
+  "stewardQueueRef": "urn:srcos:steward-queue:data-governance-drift"
+}

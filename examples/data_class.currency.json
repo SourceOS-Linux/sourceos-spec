@@ -16,7 +16,7 @@
     "dq.currency.usd.scale2"
   ],
   "classifier": {
-    "kind": "tf-lattice-wide-and-deep",
+    "kind": "monotone-logistic",
     "modelRef": "urn:srcos:model-manifest:dataclass-assigner-lattice-v1",
     "version": "1.0.0",
     "runRef": "urn:srcos:run:dataclass-assigner-train-001",
@@ -35,6 +35,18 @@
     ],
     "head": "logistic",
     "evalRunRef": "urn:srcos:run:dataclass-currency-logistic-eval-001",
-    "threshold": 0.5
+    "threshold": 0.5,
+    "fingerprintStack": {
+      "assigningLayers": [
+        "L1-ontodt-type",
+        "L2-ontodq-profile",
+        "L3-business-glossary",
+        "L4-operational-semantics",
+        "L6-schema-key-graph"
+      ],
+      "aggregatorRef": "urn:srcos:model-manifest:fingerprint-aggregator-v1",
+      "estateAdmissibilityRef": "urn:srcos:estate-admissibility:berger-foods-phase0-2026-08-04",
+      "enforcementPolicyRef": "urn:srcos:classification-enforcement:estate-default-v1"
+    }
   }
 }

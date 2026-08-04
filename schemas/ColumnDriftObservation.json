@@ -1,0 +1,121 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ColumnDriftObservation.json",
+  "title": "ColumnDriftObservation",
+  "description": "The L5 drift detector: a rolling L2 profile distance for one column against its baseline profile, used to catch SILENT REPURPOSE — a column reassigned to a new meaning without a rename. Schema structure is highly stable (tables are not redesigned except during deliberate redesign), which is what makes the table-topic layer a low-variance prior; it is also what makes it dangerous, because under silent repurpose L5's evidence is precisely the UNCHANGED schema and it will assert stale semantics with maximum confidence exactly when it is wrong. This detector is blocking for L5 admissibility, not advisory.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "subjectColumnRef",
+    "baseline",
+    "current",
+    "metric",
+    "distance",
+    "threshold",
+    "schemaChanged",
+    "drifted"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:column-drift:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "ColumnDriftObservation"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "subjectColumnRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+    },
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileRunId",
+        "schemaVersion",
+        "observedAt"
+      ],
+      "properties": {
+        "profileRunId": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "string"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "current": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profileRunId",
+        "schemaVersion",
+        "observedAt"
+      ],
+      "properties": {
+        "profileRunId": {
+          "type": "string"
+        },
+        "schemaVersion": {
+          "type": "string"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "metric": {
+      "enum": [
+        "jensen-shannon",
+        "wasserstein-1",
+        "pattern-edit-distance"
+      ],
+      "description": "Distributional metric matched to the column shape: Jensen-Shannon for categorical, Wasserstein-1 for numeric, normalized edit distance on pattern cover for strings."
+    },
+    "distance": {
+      "type": "number",
+      "minimum": 0,
+      "description": "D(c,t) = distance(profile(c,t), profile(c,t0))."
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "description": "delta. Drift is declared when distance > threshold."
+    },
+    "schemaChanged": {
+      "type": "boolean",
+      "description": "Whether schemaVersion moved between baseline and current. Drift WITH a schema change is an ordinary redesign; drift WITHOUT one is the silent-repurpose case that rule L5-D1 exists for."
+    },
+    "drifted": {
+      "type": "boolean",
+      "description": "Cache of (distance > threshold); the validator recomputes it and fails on drift, so the flag cannot be set or cleared independently of the measurement."
+    },
+    "verdict": {
+      "enum": [
+        "no-drift",
+        "drift-with-redesign",
+        "silent-repurpose"
+      ],
+      "description": "RULE L5-D1: silent-repurpose (drifted AND NOT schemaChanged) puts L5 and L2 in conflict; the pair emits (1,1) — INADMISSIBLE — and routes to a steward. RULE L5-D2: L5 must never outvote L2 under drift; the aggregator receives the drift flag as a GUARD and a fired guard annihilates L5's contribution before pooling. The 2018 architecture could not express this, having no glut value to route to."
+    },
+    "stewardQueueRef": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+      "description": "REQUIRED (non-null) on a silent-repurpose verdict — the glut has to land somewhere a human sees it, or routing-to-steward is a claim rather than a behaviour."
+    }
+  }
+}

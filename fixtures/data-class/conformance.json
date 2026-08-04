@@ -3,8 +3,8 @@
   "cases": [
     {
       "schema": "DataClass.json",
-      "reason": "classifier kind is pinned to tf-lattice-wide-and-deep.",
-      "failValidator": "const",
+      "reason": "classifier kind must be one of the structurally-monotone constructions; 'random-forest' offers no monotonicity guarantee at all.",
+      "failValidator": "enum",
       "document": {
         "id": "urn:srcos:data-class:currency-amount-usd",
         "type": "DataClass",
@@ -135,7 +135,7 @@
     },
     {
       "schema": "DataClass.json",
-      "reason": "ontologyClassRef is required — a data class must be ontologically typed.",
+      "reason": "ontologyClassRef is required \u2014 a data class must be ontologically typed.",
       "failValidator": "required",
       "document": {
         "id": "urn:srcos:data-class:currency-amount-usd",

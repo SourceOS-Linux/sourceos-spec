@@ -1,0 +1,430 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/FingerprintLayerEvidence.json",
+  "title": "FingerprintLayerEvidence",
+  "description": "One metadata fingerprint layer's emission for one (column, candidate DataClass) pair: an evidence pair in [0,1]^2, a layer-specific witness, and an admissibility flag. Six layers are specified because they FAIL INDEPENDENTLY — that, not feature count, is the argument. L1 dies where every column is declared VARCHAR; L2 dies on an empty table, which is ANTI-correlated with L1's failure (a newly-declared table has good types and no data; a legacy estate has bad types and abundant data). An INADMISSIBLE layer contributes ZERO — the tensor annihilator — never a guessed value.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "layer",
+    "subjectColumnRef",
+    "candidateClassRef",
+    "evidence",
+    "admissibility",
+    "witness"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:layer-evidence:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "FingerprintLayerEvidence"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "layer": {
+      "enum": [
+        "L1-ontodt-type",
+        "L2-ontodq-profile",
+        "L3-business-glossary",
+        "L4-operational-semantics",
+        "L5-table-topic",
+        "L6-schema-key-graph"
+      ],
+      "description": "L1 type fingerprint (OntoDT); L2 profiling fingerprint (OntoDQ — the ONLY layer that reads data values); L3 business semantic fingerprint (closed glossary, so this is bounded supervised classification, not open-domain NLP); L4 operational semantics (which operations are admissible on the value — no counterpart in commercial catalog tooling); L5 table topic (bag of L3 labels across the header); L6 schema and key graph."
+    },
+    "subjectColumnRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+      "description": "The column being classified."
+    },
+    "candidateClassRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:data-class:[A-Za-z0-9._~:-]+$",
+      "description": "The candidate DataClass this evidence is emitted FOR. Evidence is always per (column, candidate) pair — never a bare column score."
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "alpha",
+        "beta"
+      ],
+      "properties": {
+        "alpha": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Support. L1 CANNOT refute on its own except through a hard disjointness axiom; a type-path compatibility score is support-only."
+        },
+        "beta": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Refutation. Non-zero only from a hard axiom, a CERTIFIED (never inferred) valid-value violation, or a declared-vs-observed operation conflict. Refutation is available before assertion is — hard axioms need no calibration, so an estate can carry NEG on day one."
+        }
+      }
+    },
+    "admissibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admissible"
+      ],
+      "description": "Per-layer admissibility. Reporting WHICH LAYERS ARE TRUSTWORTHY FOR THIS ESTATE is a primary output alongside the classification, not defensive engineering: the alternative is silently averaging over unreliable layers.",
+      "properties": {
+        "admissible": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "declared-type-entropy-below-floor",
+            "row-count-below-floor",
+            "sample-coverage-below-floor",
+            "glossary-absent-or-thin",
+            "no-declared-operation-profile",
+            "too-few-labelled-columns",
+            "active-drift-flag",
+            "constraint-density-below-floor",
+            "witness-unresolvable",
+            "witness-stale",
+            "version-incompatible",
+            null
+          ],
+          "description": "REQUIRED (non-null) when admissible is false. Named causes, not free text, so the estate admissibility report can be aggregated."
+        }
+      }
+    },
+    "confidenceSource": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "declared",
+        "inferred",
+        null
+      ],
+      "description": "L6 in particular degrades rather than failing: where DDL declares no constraints (extremely common in analytic warehouses and lakehouse tables) it falls back to discovered inclusion dependencies, and an `inferred` source CAPS the alpha this layer may contribute. Same degrade-don't-fail rule applies to L4 when no query log is reachable."
+    },
+    "witness": {
+      "description": "The layer-specific witness. Discriminated on `layer` — each layer must produce ITS witness shape, so provenance cannot be satisfied by an empty or generic object.",
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "ontologyVersion",
+            "typePath",
+            "closureRelation",
+            "reasoner"
+          ],
+          "properties": {
+            "kind": {
+              "const": "L1"
+            },
+            "ontologyVersion": {
+              "type": "string"
+            },
+            "typePath": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string"
+              },
+              "description": "Path through the datatype ontology, e.g. datatype > primitive > numeric > ordered > integer."
+            },
+            "closureDepth": {
+              "type": [
+                "integer",
+                "null"
+              ],
+              "minimum": 0
+            },
+            "closureRelation": {
+              "const": "subtypeOf",
+              "description": "AXIOM X1 CONSEQUENCE. Count aggregation traverses subtyping ONLY, never parthood: every table with an `x` is a table with a `y` when x is a KIND of y, but not when x is a PART of y. Pinning this to a const is what stops a closure silently walking the wrong relation."
+            },
+            "axiomsApplied": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "reasoner": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "version"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "version": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "profileRunId",
+            "sampleSize",
+            "sampleMethod",
+            "profiledAt",
+            "sourceSnapshotId"
+          ],
+          "properties": {
+            "kind": {
+              "const": "L2"
+            },
+            "profileRunId": {
+              "type": "string"
+            },
+            "sampleSize": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sampleMethod": {
+              "type": "string",
+              "enum": [
+                "full-scan",
+                "reservoir",
+                "systematic",
+                "partition-stratified"
+              ]
+            },
+            "partitionKey": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "profiledAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "sourceSnapshotId": {
+              "type": "string"
+            },
+            "promotedToHardAxiom": {
+              "type": "boolean",
+              "default": false,
+              "description": "Q3 INVARIANT, load-bearing. Profiling enters as a DEFEASIBLE PRIOR. A profiling-inferred constraint is never promoted to a hard axiom on its own; promotion requires steward attestation. Violating Q3 is the mechanism by which a bad estate poisons its own ontology — the observed becomes the mandatory, and then the estate can never be told it is wrong."
+            },
+            "stewardAttestationRef": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+              "description": "REQUIRED when promotedToHardAxiom is true."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "glossaryVersion",
+            "termId",
+            "matchChannel",
+            "channelScores"
+          ],
+          "properties": {
+            "kind": {
+              "const": "L3"
+            },
+            "glossaryVersion": {
+              "type": "string"
+            },
+            "termId": {
+              "type": "string",
+              "pattern": "^urn:srcos:glossary:"
+            },
+            "matchChannel": {
+              "enum": [
+                "lexical",
+                "structural",
+                "deductive"
+              ],
+              "description": "Three DISTINCT problem classes, not three views of one, and they fail independently. LEXICAL is signal recovery: the intended term is present but corrupted — vowel-stripped for header width (CUST_ADDR_LN1), truncated, encoding-mangled, transposed. That is not a semantic question. STRUCTURAL is ontology-as-evidence: the exact label is absent but position in the hierarchy is informative. DEDUCTIVE is explicit override: structure and lexis both mislead and a disjointness axiom settles it. A single embedding cosine collapses all three into one scalar and destroys the ability to ask which one fired."
+            },
+            "channelScores": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number"
+              },
+              "minProperties": 1,
+              "description": "Per-metric scores retained individually (levenshtein, jaroWinkler, hamming, lcs, mostFrequentKChars, smc). Retained, not pooled away — the whole point of keeping the channel is being able to ask which metric carried the match."
+            },
+            "synonymPath": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "stewardAttested": {
+              "type": "boolean",
+              "default": false
+            },
+            "attestedAt": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "format": "date-time"
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "opProfileId",
+            "declaredOps",
+            "observedOps",
+            "conflictSet"
+          ],
+          "properties": {
+            "kind": {
+              "const": "L4"
+            },
+            "opProfileId": {
+              "type": "string"
+            },
+            "declaredOps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Operations the ontology says are admissible on this class. A surrogate key admits equality and join but NOT addition, multiplication, mean, or ordering — ordering a surrogate key is meaningless. A measured quantity admits arithmetic but not join-as-identity."
+            },
+            "observedOps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Operations actually applied, mined from production query logs. Empty when no query log is reachable — the declared channel still emits (degrade, don't fail)."
+            },
+            "queryLogWindow": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "conflictSet": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "description": "Observed operations inadmissible under the declaration — e.g. production takes AVG() of a column the ontology declares a surrogate key. A non-empty conflict set is a GLUT (both evidence components positive), not a low-confidence match: it means either the label is wrong or downstream code has a bug, and BOTH require a human."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "schemaVersion",
+            "headerBagHash",
+            "topicModelId",
+            "tableRef"
+          ],
+          "properties": {
+            "kind": {
+              "const": "L5"
+            },
+            "schemaVersion": {
+              "type": "string"
+            },
+            "headerBagHash": {
+              "type": "string"
+            },
+            "topicModelId": {
+              "type": "string"
+            },
+            "topicVector": {
+              "type": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            "tableRef": {
+              "type": "string",
+              "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+            },
+            "driftRef": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^urn:srcos:column-drift:[A-Za-z0-9._~:-]+$",
+              "description": "The drift observation, when one exists. THE STABILITY THAT MAKES L5 A GOOD PRIOR MAKES IT A DANGEROUS ONE: if a column is silently repurposed without a rename, the schema does not change, L5's evidence is PRECISELY the unchanged schema, and L5 asserts the stale semantics with maximum confidence exactly when it is wrong. That is the worst possible correlation between confidence and error, and it is why the drift detector is blocking rather than advisory."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "kind",
+            "ddlVersion",
+            "declaredConstraints",
+            "graphSnapshotId"
+          ],
+          "properties": {
+            "kind": {
+              "const": "L6"
+            },
+            "ddlVersion": {
+              "type": "string"
+            },
+            "declaredConstraints": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "inferredInclusionDeps": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "graphSnapshotId": {
+              "type": "string"
+            },
+            "referencedTableRef": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$",
+              "description": "For a foreign key: the target table, whose L5 topic is strong evidence for THIS column's class."
+            }
+          }
+        }
+      ]
+    }
+  }
+}

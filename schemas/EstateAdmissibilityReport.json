@@ -1,0 +1,182 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/EstateAdmissibilityReport.json",
+  "title": "EstateAdmissibilityReport",
+  "description": "Which fingerprint layers are trustworthy for THIS estate, with the reason each unusable one is unusable, plus the estate-level effective independence. This is a first-class deliverable and ships BEFORE any classification does: it is derivable from the catalog and the data alone, needs no glossary and no calibration, and is therefore the honest day-one output for a customer who has neither. The system must report which layers it can trust rather than silently averaging over unreliable ones.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "type",
+    "specVersion",
+    "estateRef",
+    "generatedAt",
+    "coldStartPhase",
+    "layers",
+    "quorum"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:estate-admissibility:[A-Za-z0-9._~:-]+$"
+    },
+    "type": {
+      "const": "EstateAdmissibilityReport"
+    },
+    "specVersion": {
+      "type": "string"
+    },
+    "estateRef": {
+      "type": "string",
+      "pattern": "^urn:srcos:[A-Za-z0-9._~:-]+$"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "coldStartPhase": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 4,
+      "description": "0 = catalog-derived bootstrap (L1/L2/L5/L6 only, no human input; every class assignment ZERO, but hard axioms from a reference ontology carry NEG from day one — refutation is available before assertion is). 1 = candidate glossary proposed from fingerprint clusters, each steward adjudication simultaneously a glossary entry AND a calibration datum. 2 = calibration floor cleared, POS becomes available per class. 3 = query logs attached, L4's observed channel live. 4 = steady state, all six layers, n_eff reported, drift detection running. A customer with a maintained glossary would not need this system, so L3 and L4 being absent at engagement is the NORMAL state, not an error.",
+      "default": 0
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "description": "All six layers, always — an omitted layer would be indistinguishable from an admissible one.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "layer",
+          "admissible"
+        ],
+        "properties": {
+          "layer": {
+            "enum": [
+              "L1-ontodt-type",
+              "L2-ontodq-profile",
+              "L3-business-glossary",
+              "L4-operational-semantics",
+              "L5-table-topic",
+              "L6-schema-key-graph"
+            ]
+          },
+          "admissible": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "declared-type-entropy-below-floor",
+              "row-count-below-floor",
+              "sample-coverage-below-floor",
+              "glossary-absent-or-thin",
+              "no-declared-operation-profile",
+              "too-few-labelled-columns",
+              "active-drift-flag",
+              "constraint-density-below-floor",
+              "witness-unresolvable",
+              "witness-stale",
+              "version-incompatible",
+              null
+            ],
+            "description": "REQUIRED (non-null) when admissible is false."
+          },
+          "measured": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The estate statistic the precondition was evaluated against (declared-type entropy, row count, attested term count, labelled-column count, constraint density)."
+          },
+          "floor": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The precondition floor. Present so 'inadmissible' is a MEASUREMENT with a stated bar, not a verdict."
+          },
+          "degraded": {
+            "type": "boolean",
+            "default": false,
+            "description": "Admissible but operating on a fallback channel — L4 without query logs (declared half only), or L6 falling back to inferred inclusion dependencies, which caps the alpha it may contribute. Degrade, don't fail."
+          }
+        }
+      }
+    },
+    "quorum": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nEff",
+        "nEffFloor",
+        "posAvailable"
+      ],
+      "properties": {
+        "nEff": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "nEffFloor": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "covarianceSpectrum": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number",
+            "minimum": 0
+          },
+          "description": "Eigenvalues of the empirical layer covariance on the calibration set; n_eff is RECOMPUTED from these rather than trusted."
+        },
+        "herfindahl": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Cheap necessary precheck only. Never the quorum statistic."
+        },
+        "posAvailable": {
+          "type": "boolean",
+          "description": "Whether POS is reachable at all on this estate. False below the n_eff floor or before the per-class calibration floor is cleared — in which case the honest outputs are ZERO and NEG only."
+        }
+      }
+    },
+    "knownDependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "between",
+          "note"
+        ],
+        "properties": {
+          "between": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "description": "Declared, not discovered-and-forgotten. L3 and L4 are correlated (both depend on glossary maturity) and L5 depends on L3 (it is a bag of L3 labels). These dependencies are exactly why n_eff is required rather than a naive count of contributing layers."
+    }
+  }
+}

@@ -1,0 +1,250 @@
+{
+  "id": "urn:srcos:column-fingerprint:ops-orders-status-code-silent-repurpose",
+  "type": "ColumnFingerprint",
+  "specVersion": "2.0.0",
+  "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+  "candidateClassRef": "urn:srcos:data-class:order-status-code",
+  "layerEvidence": [
+    {
+      "id": "urn:srcos:layer-evidence:ops-orders-status-code-l1",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L1-ontodt-type",
+      "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+      "candidateClassRef": "urn:srcos:data-class:order-status-code",
+      "evidence": {
+        "alpha": 0.7,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "confidenceSource": "declared",
+      "witness": {
+        "kind": "L1",
+        "ontologyVersion": "ontodt-2.0.0",
+        "typePath": [
+          "datatype",
+          "primitive-datatype",
+          "non-numeric",
+          "string-identifier"
+        ],
+        "closureDepth": 3,
+        "closureRelation": "subtypeOf",
+        "axiomsApplied": [],
+        "reasoner": {
+          "id": "hermit",
+          "version": "1.4.5"
+        }
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:ops-orders-status-code-l2",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L2-ontodq-profile",
+      "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+      "candidateClassRef": "urn:srcos:data-class:order-status-code",
+      "evidence": {
+        "alpha": 0.05,
+        "beta": 0.86
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L2",
+        "profileRunId": "profile-2026-08-03-ops-orders",
+        "sampleSize": 8830000,
+        "sampleMethod": "partition-stratified",
+        "partitionKey": "order_date",
+        "profiledAt": "2026-08-03T04:40:00Z",
+        "sourceSnapshotId": "ops-snap-2026-08-03",
+        "promotedToHardAxiom": false,
+        "stewardAttestationRef": null
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:ops-orders-status-code-l3",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L3-business-glossary",
+      "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+      "candidateClassRef": "urn:srcos:data-class:order-status-code",
+      "evidence": {
+        "alpha": 0.82,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L3",
+        "glossaryVersion": "glossary-2026-07-28",
+        "termId": "urn:srcos:glossary:order-status",
+        "matchChannel": "lexical",
+        "channelScores": {
+          "levenshtein": 0.86,
+          "jaroWinkler": 0.93,
+          "lcs": 0.88
+        },
+        "synonymPath": [
+          "status_code",
+          "order status"
+        ],
+        "stewardAttested": true,
+        "attestedAt": "2026-07-28T11:40:00Z"
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:ops-orders-status-code-l4",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L4-operational-semantics",
+      "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+      "candidateClassRef": "urn:srcos:data-class:order-status-code",
+      "evidence": {
+        "alpha": 0.4,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "witness": {
+        "kind": "L4",
+        "opProfileId": "opprofile-closed-set-code-v1",
+        "declaredOps": [
+          "equal",
+          "not-equal",
+          "count",
+          "group-by"
+        ],
+        "observedOps": [
+          "equal",
+          "count",
+          "group-by"
+        ],
+        "queryLogWindow": "2026-07-01/2026-08-03",
+        "conflictSet": []
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:ops-orders-status-code-l5",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L5-table-topic",
+      "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+      "candidateClassRef": "urn:srcos:data-class:order-status-code",
+      "evidence": {
+        "alpha": 0.0,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": false,
+        "reason": "active-drift-flag"
+      },
+      "witness": {
+        "kind": "L5",
+        "schemaVersion": "ops.orders@v12",
+        "headerBagHash": "sha256:3f7b1c9e5d2a8f4b6c0e7d3a9b5f1c8e2d6a4f0b7c3e9d5a1f8b2c6e4d0a7f3b",
+        "topicModelId": "topic-lsa-bow-v3",
+        "topicVector": [0.08, 0.71, 0.15, 0.06],
+        "tableRef": "urn:srcos:table:ops.orders",
+        "driftRef": "urn:srcos:column-drift:ops-orders-status-code-2026-08"
+      }
+    },
+    {
+      "id": "urn:srcos:layer-evidence:ops-orders-status-code-l6",
+      "type": "FingerprintLayerEvidence",
+      "specVersion": "2.0.0",
+      "layer": "L6-schema-key-graph",
+      "subjectColumnRef": "urn:srcos:column:ops.orders.status_code",
+      "candidateClassRef": "urn:srcos:data-class:order-status-code",
+      "evidence": {
+        "alpha": 0.33,
+        "beta": 0.0
+      },
+      "admissibility": {
+        "admissible": true,
+        "reason": null
+      },
+      "confidenceSource": "inferred",
+      "witness": {
+        "kind": "L6",
+        "ddlVersion": "ops@2026-06-11",
+        "declaredConstraints": [],
+        "inferredInclusionDeps": [
+          "ops.orders.status_code SUBSET-OF ref.status_lookup.code"
+        ],
+        "graphSnapshotId": "keygraph-2026-08-03",
+        "referencedTableRef": "urn:srcos:table:ref.status_lookup"
+      }
+    }
+  ],
+  "pooling": {
+    "operator": "frechet-max",
+    "independenceCertificateRef": null,
+    "pooled": {
+      "alpha": 0.82,
+      "beta": 0.86
+    }
+  },
+  "aggregator": {
+    "modelRef": "urn:srcos:model-manifest:fingerprint-aggregator-v1",
+    "monotonicityEnforcement": "structural",
+    "constraints": [
+      "M1-alpha-nondecreasing",
+      "M2-beta-nondecreasing",
+      "M4-zero-in-zero-out",
+      "M5-layer-knockout-lowers"
+    ]
+  },
+  "quorum": {
+    "nEff": 4.8,
+    "nEffFloor": 3.0,
+    "covarianceSpectrum": [2.0, 1.0, 1.0, 1.0, 0.5, 0.5],
+    "herfindahl": 0.31
+  },
+  "stanceRef": "urn:srcos:stance:ops-orders-status-code-order-status",
+  "stance": {
+    "id": "urn:srcos:stance:ops-orders-status-code-order-status",
+    "type": "ClassificationStance",
+    "specVersion": "2.0.0",
+    "reading": "support",
+    "evidence": {
+      "alpha": 0.82,
+      "beta": 0.86
+    },
+    "thresholds": {
+      "tauPos": 0.7,
+      "tauNeg": 0.7,
+      "attestationRef": null
+    },
+    "value": "INADMISSIBLE",
+    "inadmissibleOrigin": "profile-drift",
+    "composition": {
+      "depth": 2,
+      "baseEpsilon": 0.1,
+      "effectiveEpsilon": 0.2
+    },
+    "guards": [
+      {
+        "name": "l5-drift-annihilator",
+        "fired": true,
+        "inputs": ["witness.driftRef"],
+        "reason": "L5-D2: silent repurpose detected — L5 annihilated so it cannot outvote L2"
+      },
+      {
+        "name": "n-eff-floor",
+        "fired": false,
+        "inputs": ["witness.quorum.nEff"],
+        "reason": null
+      }
+    ],
+    "calibrationRef": "urn:srcos:run:fingerprint-calibration-2026-07-30"
+  }
+}

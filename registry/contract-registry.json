@@ -256,6 +256,26 @@
       "path": "schemas/ChunkContext.json",
       "sha256": "sha256:da9b97885456592ae07093e5825063cadb63604c7fc4943e7878510d306fa8a3"
     },
+    "ClassificationEnforcementPolicy": {
+      "$id": "https://schemas.srcos.ai/v2/ClassificationEnforcementPolicy.json",
+      "path": "schemas/ClassificationEnforcementPolicy.json",
+      "sha256": "sha256:057f615dde592bd49585ad6245829fbfbeadf2079b9a42998aae9754eae54bfd"
+    },
+    "ClassificationStance": {
+      "$id": "https://schemas.srcos.ai/v2/ClassificationStance.json",
+      "path": "schemas/ClassificationStance.json",
+      "sha256": "sha256:bc2774b41943b2229943bc5e399dff6178809ab24669976964a4f52a9f992d27"
+    },
+    "ColumnDriftObservation": {
+      "$id": "https://schemas.srcos.ai/v2/ColumnDriftObservation.json",
+      "path": "schemas/ColumnDriftObservation.json",
+      "sha256": "sha256:b669ecf585317854d391d3fb77f02916773bb357e3aa3034998746a29072db5f"
+    },
+    "ColumnFingerprint": {
+      "$id": "https://schemas.srcos.ai/v2/ColumnFingerprint.json",
+      "path": "schemas/ColumnFingerprint.json",
+      "sha256": "sha256:34c601c570755ad15d1b63d2c5ea4cde76492fc4e076997d77346691ab686efc"
+    },
     "CommandBus": {
       "$id": "https://schemas.srcos.ai/v2/CommandBus.json",
       "path": "schemas/CommandBus.json",
@@ -334,7 +354,7 @@
     "DataClass": {
       "$id": "https://schemas.srcos.ai/v2/DataClass.json",
       "path": "schemas/DataClass.json",
-      "sha256": "sha256:5fdedf40896b8f3f9b51ab04012648688391ff0b1c9002b64b0f157e6b822355"
+      "sha256": "sha256:d5b9f431fd8be45b7c3de833d76a13f15339288206d54e98af593b43ac0ad82f"
     },
     "DataContract": {
       "$id": "https://schemas.srcos.ai/v2/DataContract.json",
@@ -471,6 +491,11 @@
       "path": "schemas/EscalationDecision.json",
       "sha256": "sha256:96f2516bc4e7d13be91412b9057686dab92c9d7c2c189da02520394cbe11aa87"
     },
+    "EstateAdmissibilityReport": {
+      "$id": "https://schemas.srcos.ai/v2/EstateAdmissibilityReport.json",
+      "path": "schemas/EstateAdmissibilityReport.json",
+      "sha256": "sha256:8673fb193c4b9412780f8894dbf1afb29b132e7b4e37adacf2a13fe6fd9ec925"
+    },
     "EvalItem": {
       "$id": "https://schemas.srcos.ai/v2/EvalItem.json",
       "path": "schemas/EvalItem.json",
@@ -570,6 +595,11 @@
       "$id": "https://schemas.srcos.ai/v2/control-plane/Fingerprint.json",
       "path": "schemas/control-plane/Fingerprint.json",
       "sha256": "sha256:5a35fe098e79db0f021342324a2973a625313b1980e0eb02df195c8f5b42ca25"
+    },
+    "FingerprintLayerEvidence": {
+      "$id": "https://schemas.srcos.ai/v2/FingerprintLayerEvidence.json",
+      "path": "schemas/FingerprintLayerEvidence.json",
+      "sha256": "sha256:8d0ff067d3821ad73ecf403e3341620428481b32ebfc3dc2df852a1b92972d12"
     },
     "FirewallBindingProfile": {
       "$id": "https://schemas.srcos.ai/v2/FirewallBindingProfile.json",
@@ -1797,5 +1827,5 @@
       "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
     }
   },
-  "count": 359
+  "count": 365
 }

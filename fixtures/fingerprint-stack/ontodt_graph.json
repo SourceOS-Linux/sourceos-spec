@@ -1,0 +1,74 @@
+{
+  "description": "OntoDT type-graph fragment exercising axiom X1 as a CI invariant. Slide 31 of the 2018 source deck poses two questions against one graph: 'how many total tables contain the personal data field Email Address' (a count over the SUBTYPE closure) and 'what attributes can I expect under the term Client Address' (an enumeration of PARTS). If is_a and part_of share an arrow type, those two answers cannot both be correct — one of them is necessarily wrong. X1 is therefore not a refinement of the original design; it is the precondition for the original design's own stated questions being simultaneously answerable.",
+  "ontologyVersion": "ontodt-2.0.0",
+  "subtypeOf": [
+    ["integer", "numeric"],
+    ["real", "numeric"],
+    ["numeric", "primitive-datatype"],
+    ["email-address", "string-identifier"],
+    ["string-identifier", "non-numeric"],
+    ["non-numeric", "primitive-datatype"],
+    ["primitive-datatype", "datatype"],
+    ["generator-datatype", "datatype"],
+    ["user-defined-datatype", "datatype"],
+    ["bag", "generator-datatype"],
+    ["set", "generator-datatype"],
+    ["sequence", "generator-datatype"],
+    ["record", "generator-datatype"]
+  ],
+  "partOf": [
+    ["street-line-1", "postal-address"],
+    ["street-line-2", "postal-address"],
+    ["city", "postal-address"],
+    ["postcode", "postal-address"],
+    ["country-code", "postal-address"],
+    ["postal-address", "client-record"],
+    ["email-address", "client-record"]
+  ],
+  "connectedTo": [
+    ["postcode", "city"],
+    ["street-line-1", "street-line-2"]
+  ],
+  "aggregateQueries": [
+    {
+      "question": "How many total tables contain the personal data field 'Email Address'?",
+      "root": "email-address",
+      "relation": "subtypeOf",
+      "members": {
+        "POS": 41,
+        "ZERO": 7,
+        "INADMISSIBLE": 2
+      },
+      "answerInterval": [41, 48],
+      "inadmissibleReported": 2,
+      "note": "Under the open-world assumption the answer is an INTERVAL [N+, N+ + N0], not a number: 41 columns are classified POS, 7 are ZERO (ignorance — they may or may not be email addresses, and the honest answer says so). The 2 INADMISSIBLE members are reported SEPARATELY and never folded into the interval, because a contradiction is not a maybe."
+    },
+    {
+      "question": "How many tables contain a postal address?",
+      "root": "postal-address",
+      "relation": "subtypeOf",
+      "members": {
+        "POS": 12,
+        "ZERO": 3,
+        "INADMISSIBLE": 0
+      },
+      "answerInterval": [12, 15],
+      "inadmissibleReported": 0
+    }
+  ],
+  "partEnumerations": [
+    {
+      "question": "What attributes can I expect under the term 'Client Address'?",
+      "root": "postal-address",
+      "relation": "partOf",
+      "expected": [
+        "street-line-1",
+        "street-line-2",
+        "city",
+        "postcode",
+        "country-code"
+      ],
+      "note": "Parthood does NOT roll up: a table containing a postcode is not thereby a table containing a postal address. This is the same graph as the count query above and a different arrow — which is exactly what X1 buys."
+    }
+  ]
+}
