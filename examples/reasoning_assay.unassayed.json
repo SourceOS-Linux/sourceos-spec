@@ -8,6 +8,7 @@
   "binding": "post-hoc",
   "verifier": {
     "verifierId": "urn:srcos:verifier:deployed-nli",
+    "judgment": "supported",
     "calibrationRef": "urn:srcos:assay-standard:deployed-nli:0.1.0"
   },
   "agreement": {

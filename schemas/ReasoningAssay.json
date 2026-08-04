@@ -34,14 +34,18 @@
     "verifier": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["calibrationRef"],
-      "description": "AXIS 3 — who judged, and how reliable that judge is measured to be. A verdict is unanchored unless it points at the verifier's own measured reliability.",
+      "required": ["calibrationRef", "judgment"],
+      "description": "AXIS 3 — what the judge concluded AND how reliable that judge is measured to be. Two distinct facts: the conclusion (judgment) and its trustworthiness (calibrationRef). A verdict is unanchored unless it carries both.",
       "properties": {
         "verifierId": { "type": "string", "description": "Identifier of the judge that issued this verdict." },
+        "judgment": {
+          "enum": ["supported", "refuted", "abstained"],
+          "description": "What the verifier concluded about the claim. 'refuted' by a calibrated verifier projects 'bad'; 'abstained' (or a refutation from an uncalibrated verifier) cannot settle the claim and projects no better than 'sad'. Distinct from calibrationRef, which records only how much that conclusion can be trusted."
+        },
         "calibrationRef": {
           "type": "string",
           "pattern": "^urn:srcos:assay-standard:",
-          "description": "The AssayStandard recording this verifier's measured reliability. Required — a verdict without a calibration reference cannot project above 'sad'."
+          "description": "The AssayStandard recording this verifier's measured reliability. Required — a verdict whose verifier is uncalibrated cannot project above 'sad', and a refutation from an uncalibrated verifier cannot force 'bad'."
         }
       }
     },
@@ -67,7 +71,7 @@
     },
     "projectedState": {
       "enum": ["ok", "sad", "bad"],
-      "description": "The render-time projection assay() produced from the axes AT assayedAt. A cache, not the source of truth: 'ok' = inline-bound + computed/attested + calibrated verifier; 'sad' = unassayed/unresolved (post-hoc, generated-with-citations, uncalibrated verifier, or correlated-arm agreement); 'bad' = refuted, failed, or authority-broken. Re-derivable from the stored axes at any time."
+      "description": "The render-time projection assay() produced from the axes AT assayedAt. A cache, not the source of truth: 'bad' = authority-broken OR refuted by a calibrated verifier; 'ok' = supported + inline-bound + attestable method (computed/retrieved) + calibrated verifier; 'sad' = everything unresolved (post-hoc binding, generated method, uncalibrated verifier, abstention, or a refutation the verifier isn't calibrated enough to force). NOTE: the agreement axis is recorded but intentionally not consumed by the 'ok' rule — a deterministic computed+inline result needs no vote; agreement informs downstream ranking, not the ok/sad/bad gate. Re-derivable from the stored axes at any time."
     },
     "unassayedReason": {
       "type": "string",

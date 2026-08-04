@@ -60,9 +60,15 @@
       "minimum": 1,
       "description": "Number of labelled items the standard was measured over. A standard measured on too few items is itself weak evidence."
     },
+    "calibrationThreshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "The minimum F1 (derived from confusionMatrix) this standard must clear to be marked calibrated. Explicit and per-standard so the bar is auditable, not implicit. Defaults to the project bar (0.6) when absent."
+    },
     "calibrated": {
       "type": "boolean",
-      "description": "Whether this standard clears the project's minimum bar to let a referencing assay project to 'ok'. Uncalibrated standards can still be recorded — a referencing assay then projects no better than 'sad'."
+      "description": "Whether this standard clears its calibrationThreshold and may let a referencing assay project to 'ok'. NOT self-asserted: the validator recomputes F1 from confusionMatrix and rejects any record whose 'calibrated' flag disagrees with (derivedF1 >= calibrationThreshold). A verifier cannot declare itself trustworthy — the numbers must agree."
     },
     "measuredAt": {
       "type": "string",
