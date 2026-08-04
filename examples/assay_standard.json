@@ -20,6 +20,7 @@
     "interpretation": "substantial"
   },
   "sampleSize": 100,
+  "calibrationThreshold": 0.6,
   "calibrated": true,
   "measuredAt": "2026-07-05T00:00:00Z"
 }

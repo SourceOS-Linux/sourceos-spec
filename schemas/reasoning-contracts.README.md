@@ -43,8 +43,10 @@ never a stored opinion. The five axes:
 
 1. **method** — `computed` / `retrieved` / `generated` (categorical; these behave as decorrelated classes).
 2. **binding** — `inline` / `post-hoc` (was evidence produced with the computation, or attached after?).
-3. **verifier** — points at an `AssayStandard` (the judge's *measured* reliability). A verdict without a
-   calibration reference cannot project above `sad`.
+3. **verifier** — records two distinct facts: `judgment` (what the judge concluded — `supported` /
+   `refuted` / `abstained`) and `calibrationRef` (the `AssayStandard` recording the judge's *measured*
+   reliability). A `refuted` verdict projects `bad` only when the verifier is calibrated; an uncalibrated
+   verifier can neither reach `ok` nor force `bad`.
 4. **agreement** — decorrelation-weighted; correlated arms fail together, so `effectiveVotes` discounts raw arm count.
 5. **authority** — authenticity as a property of the actor/channel (mirrors `EventEnvelope.actor`/`integrity`),
    never of the content.
@@ -53,6 +55,12 @@ Because the axes are stored, a verdict is **re-projectable**: when a verifier's 
 historical assays re-project without mutating their records — the same discipline as keeping every benchmark
 arm rather than only its current winner. `tools/validate_reasoning_examples.py` enforces this: it recomputes
 `assay()` from the stored axes and fails CI if the recorded `projectedState` does not follow from them.
+
+**A verifier cannot declare itself trustworthy.** `AssayStandard.calibrated` is not taken on faith — the
+validator recomputes F1 from `confusionMatrix` and rejects any record whose `calibrated` flag disagrees with
+`(derivedF1 >= calibrationThreshold)`, whose declared `metrics` contradict the matrix, or whose
+`agreement.effectiveVotes` exceeds its `arms`. Trust is measured and cross-checked, never asserted — the same
+principle the Assay applies to claims, applied to the judges themselves.
 
 `ReasoningReceipt.assay` is the reserved receipt landing spot: a run-level, render-time summary that
 **references** its run's `ReasoningAssay` records by URN (`assayRefs`) rather than embedding them — so each

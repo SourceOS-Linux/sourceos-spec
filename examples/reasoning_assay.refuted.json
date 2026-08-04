@@ -3,11 +3,12 @@
   "type": "ReasoningAssay",
   "specVersion": "2.0.0",
   "runRef": "urn:srcos:reasoning-run:superconscious-demo",
-  "claimRef": "sha256:claim-authority-broken",
+  "claimRef": "sha256:claim-contradicted-by-verifier",
   "method": "generated",
   "binding": "post-hoc",
   "verifier": {
     "verifierId": "urn:srcos:verifier:narration-fidelity",
+    "judgment": "refuted",
     "calibrationRef": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0"
   },
   "agreement": {
@@ -18,7 +19,7 @@
   "authority": {
     "actorRef": "urn:srcos:agent:superconscious",
     "channel": "sdk",
-    "integrityVerified": false
+    "integrityVerified": true
   },
   "projectedState": "bad",
   "assayedAt": "2026-07-05T00:00:01Z"

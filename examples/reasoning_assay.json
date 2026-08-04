@@ -8,6 +8,7 @@
   "binding": "inline",
   "verifier": {
     "verifierId": "urn:srcos:verifier:narration-fidelity",
+    "judgment": "supported",
     "calibrationRef": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0"
   },
   "agreement": {
