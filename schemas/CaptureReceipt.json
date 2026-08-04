@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/CaptureReceipt.json",
+  "title": "CaptureReceipt",
+  "description": "The universal capture-time receipt: the primitive that binds a declared purpose + authorization to a datum BEFORE the transform f() that would consume it runs. It generalizes TwinAttestation.envelope.authorization into a domain-agnostic object. The reidentification-economy result is the reason it must exist: purpose is provably unrecoverable from the signal — the mutual information I(purpose; Q) between a purpose bit and a quasi-identifier-bearing signal Q is 0 — so purpose CANNOT be inferred post-hoc from the captured data. It has to be bound at capture, sealed into a receipt, or it is gone forever. CaptureReceipt is that seal: it is fail-closed (no valid purpose+proof ⇒ not admitted) and it re-establishes a reversibility-distance floor tying capture to WS-D (ReversibilityDistance).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "capturedAt", "declaredPurpose", "authorizationProof", "boundBeforeTransform", "disposition"],
+  "properties": {
+    "id": { "type": "string", "pattern": "^urn:srcos:capture-receipt:", "description": "Stable URN for this capture receipt." },
+    "type": { "const": "CaptureReceipt", "description": "Type discriminator; always 'CaptureReceipt'." },
+    "specVersion": { "type": "string", "description": "Semantic version of the contract." },
+    "capturedAt": { "type": "string", "format": "date-time", "description": "When capture occurred and this receipt was sealed — necessarily BEFORE the transform f() ran." },
+    "subjectRef": { "type": "string", "description": "Pseudonymous, agent-centric reference to whom/what is captured. Never a real-world identifier." },
+    "transform": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "description": "The transform f() this receipt gates — the operation the capture authorizes and precedes.",
+      "properties": {
+        "name": { "type": "string", "description": "The f() this receipt gates, e.g. 'quasi-identifier-extraction'." },
+        "inputRef": { "type": "string", "description": "Optional reference to the input the transform will consume." }
+      }
+    },
+    "contextRef": { "type": "string", "description": "The reference the capture is bound against (ties to reference-at-ingest / the VRF-derived context reference). Optional but recommended." },
+    "declaredPurpose": { "type": "string", "description": "The purpose under which capture is authorized. Bound at capture because it is provably unrecoverable afterward (I(purpose; Q) = 0)." },
+    "authorizationProof": { "type": "string", "description": "Proof of authorization for the declared purpose." },
+    "boundBeforeTransform": { "const": true, "description": "Asserts the receipt was bound BEFORE f() ran. Always true — the purpose bit cannot be recovered post-hoc, so it must be sealed at capture." },
+    "evidenceRefs": {
+      "type": "array",
+      "description": "Works-receipts on the evidence fabric supporting this capture.",
+      "items": { "type": "string", "pattern": "^urn:srcos:reasoning-receipt:" }
+    },
+    "disposition": {
+      "type": "string",
+      "enum": ["admitted", "refused", "inert"],
+      "description": "admitted = capture proceeds; refused = no valid authorization, capture blocked (fail-closed); inert = retained but never summed/used."
+    },
+    "reversibilityFloorBits": { "type": "number", "description": "The reversibility-distance floor (bits) this capture re-establishes; ties WS-B to WS-D (ReversibilityDistance)." }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "id": "urn:srcos:capture-receipt:def456:qie:1",
+  "type": "CaptureReceipt",
+  "specVersion": "2.0.0",
+  "capturedAt": "2026-08-03T00:00:00Z",
+  "subjectRef": "pseudo:def456",
+  "transform": {
+    "name": "quasi-identifier-extraction"
+  },
+  "contextRef": "urn:srcos:context-ref:def456:unknown",
+  "declaredPurpose": "",
+  "authorizationProof": "",
+  "boundBeforeTransform": true,
+  "disposition": "refused"
+}
