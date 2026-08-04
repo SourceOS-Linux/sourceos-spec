@@ -1,0 +1,94 @@
+{
+  "id": "urn:srcos:consent-policy:workstation-default",
+  "type": "CapabilityConsentPolicy",
+  "specVersion": "2.0.0",
+  "deploymentScope": "self-sovereign",
+  "subjectPrincipal": "urn:srcos:principal:local-operator",
+  "capabilities": [
+    {
+      "capabilityId": "camera",
+      "riskClass": "sensor-capture",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Takes a picture through your camera. Asks every single time, and the answer is never remembered.",
+      "residency": { "ephemeral": true, "onDeviceOnly": true },
+      "oneShot": true
+    },
+    {
+      "capabilityId": "microphone",
+      "riskClass": "sensor-capture",
+      "defaultStandard": "standing-session",
+      "effectiveMode": "off",
+      "userOverride": true,
+      "defaultState": "disabled",
+      "explanation": "Listens through your microphone for as long as the session lasts, then stops.",
+      "residency": { "ephemeral": true, "onDeviceOnly": true },
+      "oneShot": false
+    },
+    {
+      "capabilityId": "screen_capture",
+      "riskClass": "sensor-capture",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Takes a picture of what is on your screen right now, including anything else open.",
+      "residency": { "ephemeral": true, "onDeviceOnly": true },
+      "oneShot": true
+    },
+    {
+      "capabilityId": "control_my_computer",
+      "riskClass": "device-control",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Moves your pointer and types on your behalf, as if you were doing it yourself.",
+      "oneShot": true
+    },
+    {
+      "capabilityId": "skycomputer",
+      "riskClass": "remote-compute",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Sends this piece of work to a remote machine to run, so it leaves your device.",
+      "residency": { "ephemeral": true, "onDeviceOnly": false },
+      "oneShot": true
+    },
+    {
+      "capabilityId": "file_write",
+      "riskClass": "data-write",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Creates or changes files on your disk. Asks before each write, naming the path.",
+      "residency": { "ephemeral": false, "onDeviceOnly": true },
+      "oneShot": true
+    },
+    {
+      "capabilityId": "network_egress",
+      "riskClass": "data-egress",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Sends data out to the network, naming the destination before anything leaves.",
+      "oneShot": true
+    },
+    {
+      "capabilityId": "send_on_behalf",
+      "riskClass": "act-as-user",
+      "defaultStandard": "per-use",
+      "effectiveMode": "per-use",
+      "userOverride": false,
+      "defaultState": "disabled",
+      "explanation": "Sends a message that will appear to come from you, shown to you in full beforehand.",
+      "oneShot": true
+    }
+  ]
+}

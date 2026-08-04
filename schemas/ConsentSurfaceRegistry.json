@@ -1,0 +1,128 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.srcos.ai/v2/ConsentSurfaceRegistry.json",
+  "title": "ConsentSurfaceRegistry",
+  "description": "The governed inventory of every telemetry surface a self-sovereign deployment could observe, and the consent standing on each. This is a CLASSIFICATION AND CONSENT contract, not a capture contract: it records what a surface WOULD be, how sensitive it is, what the subject was told before enabling it, and whether consent currently stands — it defines no collection mechanism, no transport, and no payload shape. A surface may therefore be registered (named, classified, explained) while remaining permanently unobserved, which is precisely how a sensitive surface is meant to appear here: as a default-deny row that makes the non-collection auditable rather than merely absent. The inversion the registry encodes is deployment-scoped by construction — deploymentScope is fixed to 'self-sovereign' and collectorPrincipal must equal subjectPrincipal, so the observed party and the observing party are the same principal and there is no shape in which this document describes one party collecting from another. Consent defaults to 'denied': an unanswered surface is not a permitted one. defaultStandard records the shipped standard for telemetry surfaces (standing-persistent) while effectiveMode records what is actually in force, so a divergence between the two is visible as a fact rather than hidden in a runtime flag — and, for a granted surface, it is only legitimate when userOverride marks it as the subject's own decision.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "type", "specVersion", "deploymentScope", "subjectPrincipal", "collectorPrincipal", "surfaces"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^urn:srcos:consent-registry:",
+      "description": "Stable URN. Pattern: urn:srcos:consent-registry:<local-id>."
+    },
+    "type": { "const": "ConsentSurfaceRegistry" },
+    "specVersion": { "type": "string" },
+    "deploymentScope": {
+      "const": "self-sovereign",
+      "description": "Fixed. This contract has exactly one lawful deployment shape: the subject governs their own observation. There is no multi-tenant or vendor-collection variant of this document — a registry describing a third party observing a subject is not expressible here."
+    },
+    "subjectPrincipal": {
+      "type": "string",
+      "description": "The principal whose activity the registered surfaces describe — the person or node being observed."
+    },
+    "collectorPrincipal": {
+      "type": "string",
+      "description": "The principal that would hold anything observed. MUST equal subjectPrincipal (enforced by tools/validate_consent_plane_examples.py): self-sovereign means the observer and the observed are the same principal. This field exists so the identity is stated and checkable rather than assumed."
+    },
+    "surfaces": {
+      "type": "array",
+      "minItems": 1,
+      "description": "The registered surfaces. Registration is classification, not permission: a row here means the surface is NAMED and GOVERNED, and its consent block says whether anything may stand on it.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["surfaceId", "category", "sensitivity", "pii", "defaultStandard", "effectiveMode", "userOverride", "explanation", "projectionMode", "purpose", "consent"],
+        "properties": {
+          "surfaceId": {
+            "type": "string",
+            "pattern": "^telemetry:(model|policy|app|device):[a-z_]+$",
+            "description": "Canonical surface identifier, namespaced by plane. model = the reasoning/inference layer; policy = gate and governance outcomes; app = product surfaces; device = the host itself (the most sensitive plane, and the one most often defaulted off)."
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Short grouping label used to present related surfaces together in the consent UI (e.g. 'model-usage', 'governance-outcome', 'hardware-identity'). Presentation grouping only — sensitivity, not category, carries the governance weight."
+          },
+          "sensitivity": {
+            "enum": ["benign", "personal", "sensitive"],
+            "description": "benign = carries no information about the person (counters, verdicts). personal = attributable to the subject's activity. sensitive = identity-bearing or otherwise high-consequence. Sensitivity does not by itself permit or forbid anything; it sets the standard of explanation and is the signal a review reads first."
+          },
+          "pii": {
+            "type": "boolean",
+            "description": "Whether the surface would carry personally identifying information. Declared independently of sensitivity so the two can disagree visibly — a 'personal' surface with pii:false is a real and useful combination, and a pii:true row demands a projectionMode that does not carry the identifier in the clear."
+          },
+          "defaultStandard": {
+            "const": "standing-persistent",
+            "description": "The shipped consent standard for TELEMETRY surfaces: once opted into, a telemetry grant stands until revoked. Fixed here so the standard cannot be quietly restated per-surface; what actually applies is effectiveMode, and any divergence must be attributable (see userOverride). Note the deliberate asymmetry with CapabilityConsentPolicy, whose active capabilities default to per-use: passive classification-level telemetry and an active sensor are not governed to the same standard."
+          },
+          "effectiveMode": {
+            "enum": ["off", "per-use", "standing-session", "standing-persistent"],
+            "description": "What is actually in force for this surface now. For a GRANTED surface this may differ from defaultStandard only when userOverride is true — the subject's own decision is the only legitimate source of divergence. When consent is denied or revoked the mode is 'off' by consequence of consent, not by override."
+          },
+          "userOverride": {
+            "type": "boolean",
+            "description": "True when effectiveMode reflects a decision the subject made, rather than the shipped standard. This is what makes a divergence attributable: without it, a mode that quietly differs from the standard is indistinguishable from a silently changed default."
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 12,
+            "description": "REQUIRED. The plain sentence shown to the subject BEFORE enabling this surface — what would be observed, in ordinary language. Consent to something unexplained is not consent, so this contract makes the sentence a structural precondition of registering the surface at all rather than a UI concern. The validator additionally rejects trivial or placeholder text."
+          },
+          "projectionMode": {
+            "enum": ["LOSSLESS", "LOSSY", "OPAQUE_HANDLE_ONLY"],
+            "description": "How the surface would be projected if it were ever observed. LOSSLESS = as-is. LOSSY = reduced/aggregated, the original not reconstructable. OPAQUE_HANDLE_ONLY = only a non-reversible handle, never the underlying value — the standing choice for an identity-bearing surface. Aligned with the semantic-serdes SEM243 projection vocabulary so the consent board and the codec speak the same word."
+          },
+          "residency": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Optional residency constraints on anything observed. Absent means unconstrained by this document, which for a pii:true surface is itself a review finding.",
+            "properties": {
+              "ephemeral": {
+                "type": "boolean",
+                "description": "True when nothing is retained past the moment of use."
+              },
+              "onDeviceOnly": {
+                "type": "boolean",
+                "description": "True when nothing may leave the subject's own device."
+              }
+            }
+          },
+          "purpose": {
+            "type": "string",
+            "minLength": 1,
+            "description": "The single purpose this surface is registered for. Required: a purpose-free consent is an open-ended one, and open-ended consent is what this family exists to make unrepresentable. A second purpose is a second registration, re-explained and re-consented."
+          },
+          "consent": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["state"],
+            "description": "The consent standing on this surface. Default-deny: absence of an answer is a denial, never a permission.",
+            "properties": {
+              "state": {
+                "enum": ["granted", "denied", "revoked"],
+                "default": "denied",
+                "description": "granted = the subject affirmatively enabled this surface. denied = never enabled (the default, including for a surface never presented). revoked = previously granted and since withdrawn — retained as a distinct state so a withdrawal remains legible instead of decaying back into an indistinguishable 'denied'."
+              },
+              "grantedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the grant was given. Required by the validator whenever state is 'granted' — a grant with no moment is an assumed one."
+              },
+              "revokedAt": {
+                "type": "string",
+                "format": "date-time",
+                "description": "When the grant was withdrawn. Required by the validator whenever state is 'revoked'."
+              },
+              "grantRef": {
+                "type": "string",
+                "description": "URN of the grant record evidencing this consent. Required by the validator for 'granted' and 'revoked': consent must point at something that happened, so that a state cannot be edited into existence in this file alone."
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
