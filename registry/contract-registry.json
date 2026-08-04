@@ -26,6 +26,11 @@
       "path": "schemas/AgentHarnessExecutionReceipts.json",
       "sha256": "sha256:3deed00b7d3419e83ce792bd36dbfe9a683fb43b1d34513c4d2f739901e31d19"
     },
+    "AgentImage": {
+      "$id": "https://schemas.srcos.ai/v2/AgentImage.json",
+      "path": "schemas/AgentImage.json",
+      "sha256": "sha256:b09a561d3b6bffbe3026f27d43f03d843ee657cfeaf45000e453fa2afb13f92a"
+    },
     "AgentMachineLocalDataPlane": {
       "$id": "https://schemas.srcos.ai/v2/AgentMachineLocalDataPlane.json",
       "path": "schemas/AgentMachineLocalDataPlane.json",
@@ -654,7 +659,12 @@
     "ImagePromotionGate": {
       "$id": "https://schemas.srcos.ai/v2/ImagePromotionGate.json",
       "path": "schemas/ImagePromotionGate.json",
-      "sha256": "sha256:e4634fa50248359b8649e4aa90ec2056d90f9b62c70aeccab88a160e869a2c8a"
+      "sha256": "sha256:5546c89534e75a0d41e35b2c67f48999c25f74211062641256bbccba029d837b"
+    },
+    "ImageTrustReport": {
+      "$id": "https://schemas.srcos.ai/v2/ImageTrustReport.json",
+      "path": "schemas/ImageTrustReport.json",
+      "sha256": "sha256:3d864c2bef5ff99586a9b844dcaaf6fbd649290d0208440adc3e2629b517d1a8"
     },
     "ImmutableNodeProfile": {
       "$id": "https://schemas.srcos.ai/v2/ImmutableNodeProfile.json",
@@ -1787,5 +1797,5 @@
       "sha256": "sha256:eadc32085987ffda647b090e3eba3726edd102a66d4736e239457bb74867004b"
     }
   },
-  "count": 357
+  "count": 359
 }
