@@ -1,0 +1,43 @@
+{
+  "id": "urn:srcos:assay-rollup:fleet-2026-07-05",
+  "type": "AssayRollup",
+  "specVersion": "2.0.0",
+  "scope": {
+    "mode": "fleet",
+    "nodeCount": 12
+  },
+  "window": {
+    "from": "2026-07-05T00:00:00Z",
+    "to": "2026-07-05T01:00:00Z"
+  },
+  "totalAssays": 100,
+  "distribution": {
+    "ok": 40,
+    "sad": 55,
+    "bad": 5
+  },
+  "byMethod": {
+    "computed": 30,
+    "retrieved": 25,
+    "generated": 45
+  },
+  "unassayedReasons": {
+    "post-hoc-binding": 30,
+    "uncalibrated-verifier": 15,
+    "correlated-arms": 10
+  },
+  "standardAdoption": [
+    {
+      "calibrationRef": "urn:srcos:assay-standard:narration-fidelity-verifier:0.2.0",
+      "nodeCount": 9,
+      "calibrated": true
+    },
+    {
+      "calibrationRef": "urn:srcos:assay-standard:deployed-nli:0.1.0",
+      "nodeCount": 3,
+      "calibrated": false
+    }
+  ],
+  "driftDetected": true,
+  "capturedAt": "2026-07-05T01:00:01Z"
+}
